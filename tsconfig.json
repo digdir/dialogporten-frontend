@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es6",
+    "module": "commonjs",                               
+    "jsx": "react",
+    "rootDir": "./",
+    "esModuleInterop": true,                            
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,           
+    "strict": true,                                     
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "strictNullChecks": true                          
+  },
+  "plugins": [{ "name": "typescript-plugin-css-modules" }]
+}
