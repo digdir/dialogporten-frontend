@@ -7,17 +7,22 @@
   "private": true,
   "scripts": {
     "start": "yarn typecheck:watch & cross-env NODE_ENV=development webpack-dev-server --config ./webpack.config.dev.js --mode development",
-    "typecheck:watch": "tsc --noEmit -w"
+    "typecheck:watch": "tsc --noEmit -w",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.prod.js"
   },
   "devDependencies": {
     "@swc/core": "^1.3.84",
+    "@types/css-modules": "^1.0.3",
     "@types/react-dom": "^18.2.7",
     "cross-env": "^7.0.3",
+    "css-loader": "^6.8.1",
     "mini-css-extract-plugin": "^2.7.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "source-map-loader": "^4.0.1",
+    "style-loader": "^3.3.3",
     "swc-loader": "^0.2.3",
+    "terser-webpack-plugin": "^5.3.9",
     "typescript": "^5.2.2",
     "typescript-plugin-css-modules": "^5.0.1",
     "webpack": "^5.88.2",
