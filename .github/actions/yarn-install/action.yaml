@@ -1,12 +1,12 @@
-name: "My Shared Steps"
-description: "Doing yarn installs with proper caching"
+name: 'Yarn Install with cache'
+description: 'Doing yarn installs with proper caching'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - name: "Setting up Node"
+    - name: 'Setting up Node'
       uses: actions/setup-node@v3
 
-    - name: "Getting yarn cache directory path"
+    - name: 'Getting yarn cache directory path'
       id: yarn-cache-dir-path
       run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
       shell: bash
@@ -19,10 +19,10 @@ runs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: "Installing Dependencies"
+    - name: 'Installing Dependencies'
       run: yarn install --immutable --inline-builds
       shell: bash
       env:
-        YARN_ENABLE_GLOBAL_CACHE: "false"
-        YARN_NM_MODE: "hardlinks-local"
-        HUSKY: "0"
+        YARN_ENABLE_GLOBAL_CACHE: 'false'
+        YARN_NM_MODE: 'hardlinks-local'
+        HUSKY: '0'
