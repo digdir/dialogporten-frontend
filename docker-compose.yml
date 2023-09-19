@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  react-app:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./client/src:/react/src
+    ports:
+      - "3000:3000"  # Map container port to host port
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+    - node-server  # Ensure the backend is up before starting the React app
+  node-server:
+    build:
+      context: ./bff-node
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./bff-node:/app/   # Map the host app directory to the container's /app
+    working_dir: /app/
+    ports:
+      - "3001:3001"  # Map container port to host port
+  
+networks:
+  default:
+    driver: bridge
+    name: dialogporten-frontend-network
