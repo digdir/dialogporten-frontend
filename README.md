@@ -17,11 +17,11 @@ Dev server is running on port 3000 (http://localhost:3000)
 
 ### Running the solution locally
 
-Clone the [Dialogporten Frontend React repo](https://github.com/digdir/dialogporten-frontend-react.git) and navigate to the folder.
+Clone the [Dialogporten Frontend repo](https://github.com/digdir/dialogporten-frontend.git) and navigate to the folder.
 
 ```bash
-git clone https://github.com/digdir/dialogporten-frontend-react.git
-cd dialogporten-frontend-react
+git clone https://github.com/digdir/dialogporten-frontend.git
+cd dialogporten-frontend
 ```
 
 ## Developing Frontend
