@@ -8,6 +8,7 @@ runs:
 
     - name: 'Getting yarn cache directory path'
       id: yarn-cache-dir-path
+      working-directory: ./client
       run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
       shell: bash
 
@@ -20,6 +21,7 @@ runs:
           ${{ runner.os }}-yarn-
 
     - name: 'Installing Dependencies'
+      working-directory: ./client
       run: yarn install --immutable --inline-builds
       shell: bash
       env:
