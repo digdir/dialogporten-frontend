@@ -13,28 +13,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # - name: Login to Azure
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build Docker Image
         run: |
           docker build -t dialogporten-bff-node:latest .
         working-directory: ./ # Set to the directory containing your Dockerfile.
 
-      # - name: Push Docker Image to Azure Container Registry
-      #   run: |
-      #     docker login myregistry.azurecr.io -u ${{ secrets.AZURE_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_REGISTRY_PASSWORD }}
-      #     docker tag my-image:latest myregistry.azurecr.io/my-image:latest
-      #     docker push myregistry.azurecr.io/my-image:latest
+      - name: Push Docker Image to Azure Container Registry
+        run: |
+          docker login myregistry.azurecr.io -u ${{ secrets.AZURE_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+          docker tag my-image:latest myregistry.azurecr.io/my-image:latest
+          docker push myregistry.azurecr.io/my-image:latest
 
-      # - name: Deploy to Azure
-      #   run: az webapp config container set -n mywebapp -g myresourcegroup --docker-custom-image-name myregistry.azurecr.io/my-image:latest
-      #   env:
-      #     AZURE_WEBAPP_NAME: mywebapp
-      #     AZURE_RESOURCE_GROUP: myresourcegroup
-      #   with:
-      #     AZURE_APP_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      #     AZURE_PASSWORD: ${{ secrets.AZURE_CLIENT_SECRET }}
-      #     AZURE_TENANT: ${{ secrets.AZURE_TENANT_ID }}
+      - name: Deploy to Azure
+        run: az webapp config container set -n mywebapp -g myresourcegroup --docker-custom-image-name myregistry.azurecr.io/my-image:latest
+        env:
+          AZURE_WEBAPP_NAME: mywebapp
+          AZURE_RESOURCE_GROUP: myresourcegroup
+        with:
+          AZURE_APP_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_PASSWORD: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT: ${{ secrets.AZURE_TENANT_ID }}

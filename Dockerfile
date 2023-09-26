@@ -34,6 +34,7 @@ COPY ./bff-node/package*.json ./bff-node/yarn.lock ./
 RUN yarn install
 
 COPY ./bff-node ./
+EXPOSE 80
 
 # Start the "bff-node" server (modify the startup command as needed)
 CMD ["yarn", "start"]
