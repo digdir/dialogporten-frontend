@@ -5,7 +5,7 @@ on:
     branches: ['*']
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: altinn/dialogporten-frontend
+  IMAGE_NAME: digdir/dialogporten-frontend
   CONTAINER_APP_CONTAINER_NAME: altinndialogportenfrontend
 jobs:
   build-and-push-image:
