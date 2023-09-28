@@ -36,7 +36,7 @@ jobs:
         with:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          
+
   deploy-at21:
     runs-on: ubuntu-latest
     needs: build-and-push-image
@@ -45,21 +45,21 @@ jobs:
       contents: read
       packages: read
     steps:
-    - name: Azure Login
-      uses: azure/actions/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: Deploy to containerapp
-      uses: azure/CLI@v1
-      with:
-        inlineScript: >
-          az config set extension.use_dynamic_install=yes_without_prompt
+      - name: Azure Login
+        uses: azure/actions/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deploy to containerapp
+        uses: azure/CLI@v1
+        with:
+          inlineScript: >
+            az config set extension.use_dynamic_install=yes_without_prompt
 
-          az containerapp update \
-            --name ${{ vars.CONTAINER_APP_NAME }} \
-            --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
-            --resource-group ${{ vars.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
-            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-    - name: logout
-      run: >
-        az logout
+            az containerapp update \
+              --name ${{ vars.CONTAINER_APP_NAME }} \
+              --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
+              --resource-group ${{ vars.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+              --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      - name: logout
+        run: >
+          az logout

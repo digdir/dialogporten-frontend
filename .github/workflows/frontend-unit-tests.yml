@@ -29,9 +29,11 @@ jobs:
         uses: ./.github/actions/yarn-install
 
       - name: 'Doing the typecheck'
+        working-directory: ./client
         run: yarn typecheck
 
       - name: 'Running Eslint'
+        working-directory: ./client
         run: yarn lint
 
   test:
@@ -47,6 +49,7 @@ jobs:
         uses: ./.github/actions/yarn-install
 
       - name: 'Running Unit Tests'
+        working-directory: ./client
         run: yarn test
 
   build:
@@ -62,4 +65,5 @@ jobs:
         uses: ./.github/actions/yarn-install
 
       - name: 'Building'
+        working-directory: ./client
         run: yarn build
