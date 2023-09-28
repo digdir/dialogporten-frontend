@@ -6,7 +6,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: digdir/dialogporten-frontend
-  CONTAINER_APP_CONTAINER_NAME: altinndialogportenfrontend
+  CONTAINER_APP_CONTAINER_NAME: dialogporten
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
