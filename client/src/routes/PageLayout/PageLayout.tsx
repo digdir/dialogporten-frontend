@@ -19,7 +19,7 @@ export const PageLayout = () => {
   return (
     <div>
       <h1 className={classes.heading}>PageLayout</h1>
-      <h2>Test page</h2>
+      <h2>Azure Test page</h2>
       <Link to={`test`}>Go to React Router Test Page</Link>
       <br />
       ID: {testData?.id}, Message: {testData?.message}
