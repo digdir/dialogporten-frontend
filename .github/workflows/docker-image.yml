@@ -62,7 +62,7 @@ jobs:
         with:
           inlineScript: |
             Get-AzResourceGroup
-             azPSVersion: "latest"
+          azPSVersion: "latest"
           
       - name: Deploy to containerapp
         uses: azure/CLI@v1
