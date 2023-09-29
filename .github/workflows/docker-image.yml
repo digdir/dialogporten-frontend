@@ -46,6 +46,8 @@ jobs:
       id-token: write
       contents: read
       packages: read
+    environment:
+      name: dev
     steps:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
@@ -54,6 +56,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
           enable-AzPSSession: true
+          
       - name: Get resource group with PowerShell action
         uses: azure/powershell@v1
         with:
