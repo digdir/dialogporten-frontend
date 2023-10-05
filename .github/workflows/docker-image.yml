@@ -44,7 +44,6 @@ jobs:
         run: cp -rp .azure artifacts
 
       - name: Upload artifact for deployment job
-        # if: ${{inputs.publishArtifacts}}
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
@@ -110,6 +109,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
         with:
@@ -117,6 +117,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
+
       - name: 'Get resource group with PowerShell action'
         uses: azure/powershell@v1
         with:
@@ -133,7 +134,7 @@ jobs:
         id: bicep
         shell: pwsh
         run: >
-          .azure/deployBicep.ps1 
+          deployBicep.ps1 
           -environment "dev"
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
