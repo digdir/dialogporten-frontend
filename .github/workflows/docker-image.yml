@@ -105,12 +105,6 @@ jobs:
     # environment:
     # ${{ inputs.environment }}
     steps:
-      - name: 'Get resource group with PowerShell action'
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            Get-AzResourceGroup
-          azPSVersion: 'latest'
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -122,7 +116,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-
+      - name: 'Get resource group with PowerShell action'
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            Get-AzResourceGroup
+          azPSVersion: 'latest'
       # - name: Login to azure
       #   id: azureLogin
       #   uses: azure/login@v1
