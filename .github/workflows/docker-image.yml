@@ -109,10 +109,10 @@ jobs:
           inlineScript: |
             Get-AzResourceGroup
           azPSVersion: 'latest'
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
+      # - name: Download artifacts
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: artifacts
 
       # - name: Login to azure
       #   id: azureLogin
