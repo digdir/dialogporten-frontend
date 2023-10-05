@@ -13,7 +13,7 @@
     "sequelize-typescript": "^2.1.5",
     "swagger-autogen": "^2.23.5",
     "swagger-ui-express": "^5.0.0",
-    "zod": "^3.22.2"
+    "zod": "^3.22.3"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
