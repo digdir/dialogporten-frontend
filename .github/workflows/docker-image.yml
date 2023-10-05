@@ -38,12 +38,13 @@ jobs:
         with:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
       - name: Copy bicep files to artifacts folder
-        if: ${{inputs.publishArtifacts}}
+        # if: ${{inputs.publishArtifacts}}
         run: cp -rp .azure /artifacts
 
       - name: Upload artifact for deployment job
-        if: ${{inputs.publishArtifacts}}
+        # if: ${{inputs.publishArtifacts}}
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
