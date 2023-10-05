@@ -39,31 +39,122 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-  deploy-at21:
+  # deploy-at21:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push-image
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #     packages: read
+  #   environment:
+  #     name: dev
+  #   steps:
+  #     - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+  #       uses: azure/login@v1
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #         enable-AzPSSession: true
+
+  #     - name: 'Get resource group with PowerShell action'
+  #       uses: azure/powershell@v1
+  #       with:
+  #         inlineScript: |
+  #           Get-AzResourceGroup
+  #         azPSVersion: "latest"
+
+  #     - name: Deploy to containerapp
+  #       uses: azure/CLI@v1
+  #       with:
+  #         inlineScript: >
+  #           az config set extension.use_dynamic_install=yes_without_prompt
+
+  #           az containerapp update \
+  #             --name ${{ env.CONTAINER_APP_NAME }} \
+  #             --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
+  #             --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+  #             --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+  #     - name: logout
+  #       run: >
+  #         az logout
+
+  deploy:
+    #   runs-on: ubuntu-latest
+    #   needs: build-and-push-image
+    name: Deploy to ${{ inputs.environment }}
     runs-on: ubuntu-latest
     needs: build-and-push-image
     permissions:
       id-token: write
       contents: read
       packages: read
-    environment:
-      name: dev
+    # environment:
+    #   name: dev
+    environment: ${{ inputs.environment }}
     steps:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-          
+
       - name: 'Get resource group with PowerShell action'
         uses: azure/powershell@v1
         with:
           inlineScript: |
             Get-AzResourceGroup
-          azPSVersion: "latest"
-          
+          azPSVersion: 'latest'
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+
+      - name: Login to azure
+        id: azureLogin
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy infrastructure
+        id: bicep
+        shell: pwsh
+        run: >
+          .azure/deployBicep.ps1 
+          -environment ${{ inputs.environment }}
+          -subscriptionId ${{ vars.subscriptionId }}
+
+      - name: Get postgre connectionstring
+        id: postgreConnectionString
+        shell: pwsh
+        run: >
+          .azure/powershell/fetchKeyvaultSecret.ps1
+          -secretId ${{ steps.bicep.outputs.psqlConnectionStringSecretUri }}
+
+      - name: Fetch runners public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Open postgre firewall for migrations
+        run: >
+          az postgres flexible-server firewall-rule create 
+          --rule-name GithubActions 
+          --name ${{ steps.bicep.outputs.postgreServerName }}
+          --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
+          --start-ip-address ${{ steps.ip.outputs.ipv4 }}
+
+      - name: Apply EF migration script
+        run: ${{ steps.postgreConnectionString.outputs.value }} -f ./database/migrate.sql -q
+
+      # - name: Deploy to Azure Web App
+      #   id: deploy-to-webapp
+      #   uses: azure/webapps-deploy@v2
+      #   with:
+      #     app-name: ${{ steps.bicep.outputs.websiteName }}
+      #     slot-name: 'production'
+      #     package: ./webApi
       - name: Deploy to containerapp
         uses: azure/CLI@v1
         with:
@@ -75,6 +166,18 @@ jobs:
               --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
               --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
               --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-      - name: logout
+
+      - name: Close postgre firewall
+        if: ${{failure() || success()}}
+        continue-on-error: true
         run: >
-          az logout
+          az postgres flexible-server firewall-rule delete 
+          --rule-name GithubActions 
+          --name ${{ steps.bicep.outputs.postgreServerName }}
+          --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
+          --yes
+
+      - name: Logout from azure
+        if: ${{failure() || success()}}
+        continue-on-error: true
+        run: az logout
