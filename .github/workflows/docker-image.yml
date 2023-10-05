@@ -125,7 +125,7 @@ jobs:
         shell: pwsh
         run: >
           .azure/deployBicep.ps1 
-          -environment dev
+          -environment "dev"
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Get postgre connectionstring
