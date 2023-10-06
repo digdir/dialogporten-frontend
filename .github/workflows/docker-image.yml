@@ -28,7 +28,7 @@ jobs:
 
       - name: Copy bicep files to artifacts folder
         # if: ${{inputs.publishArtifacts}}
-        run: cp -rp -n .azure ./artifacts/.azure/
+        run: cp -rp -n .azure ./artifacts/azure/
         # run: ls -la $GITHUB_WORKSPACE && cp -R .azure artifacts
 
       - name: Log in to the Container registry
