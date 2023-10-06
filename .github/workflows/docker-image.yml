@@ -26,15 +26,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Copy the .azure directory to the artifacts directory
-        run: cp -R .azure ./artifacts/.azure
+      - name: Copy .azure directory to artifact
+        run: |
+          # Make sure the .azure directory exists
+          if [ -d .azure ]; then
+            # Move the .azure directory to the artifacts folder
+            cp .azure $GITHUB_WORKSPACE
+          fi
+        shell: bash
 
-      - name: Upload the artifacts to GitHub
-        uses: actions/upload-artifact@v3
+      - name: Upload .azure directory as an artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: artifacts
-          path: ./artifacts/.azure
-
+          name: azure-artifact
+          path: ${{ github.workspace }}/.azure
       # - name: Copy bicep files to artifacts folder
       #   # if: ${{inputs.publishArtifacts}}
       #   run: cp -rp -n .azure ./artifacts/azure/
