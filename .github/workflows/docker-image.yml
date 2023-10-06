@@ -49,8 +49,8 @@ jobs:
       - name: Upload .azure directory as an artifact
         uses: actions/upload-artifact@v2
         with:
-          name: azure-artifact
-          path: ${{ github.workspace }}/artifacts/.azure
+          name: artifacts
+          path: ${{ github.workspace }}/artifacts
       # - name: Copy bicep files to artifacts folder
       #   # if: ${{inputs.publishArtifacts}}
       #   run: cp -rp -n .azure ./artifacts/azure/
