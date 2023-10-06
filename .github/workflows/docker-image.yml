@@ -41,7 +41,7 @@ jobs:
 
       - name: Copy bicep files to artifacts folder
         # if: ${{inputs.publishArtifacts}}
-        run: mkdir artifacts/.azure && cp -rp .azure artifacts/.azure/
+        run: mkdir cp -rp .azure/ artifacts
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
