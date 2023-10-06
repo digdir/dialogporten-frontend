@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: azure-artifact
-          path: ${{ github.workspace }}/.azure
+          path: ${{ github.workspace }}/artifacts/.azure
       # - name: Copy bicep files to artifacts folder
       #   # if: ${{inputs.publishArtifacts}}
       #   run: cp -rp -n .azure ./artifacts/azure/
