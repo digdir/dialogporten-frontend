@@ -41,7 +41,7 @@ jobs:
 
       - name: Copy bicep files to artifacts folder
         # if: ${{inputs.publishArtifacts}}
-        run: cp -rp .azure $GITHUB_WORKSPACE/artifacts
+        run: cp -rp .azure $GITHUB_WORKSPACE/artifacts/.azure
         # run: ls -la $GITHUB_WORKSPACE && cp -R .azure artifacts
 
       - name: Upload artifact for deployment job
