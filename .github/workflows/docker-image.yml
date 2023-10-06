@@ -31,7 +31,7 @@ jobs:
           # Make sure the .azure directory exists
           if [ -d .azure ]; then
             # Move the .azure directory to the artifacts folder
-            cp .azure $GITHUB_WORKSPACE
+            cp -r .azure $GITHUB_WORKSPACE
           fi
         shell: bash
 
