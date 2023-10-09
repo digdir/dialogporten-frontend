@@ -40,9 +40,9 @@ Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
 # Format parameters to be used in az deployment sub create
 $formatedParamsJson = $paramsJson `
 	| ConvertTo-Json -Compress -Depth 100 `
-	# | % {$_ -replace "`"", "\`""} `
-	# | % {$_ -replace "`n", ""} `
-	# | % {$_ -replace "\s", ""}
+	| % {$_ -replace "`"", "\`""} `
+	| % {$_ -replace "`n", ""} `
+	| % {$_ -replace "\s", ""}
 
 Write-Host ("********** Starting deployment of $environment **********")
 Write-Host ("********** properties $properties **********")
