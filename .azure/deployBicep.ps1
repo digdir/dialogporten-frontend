@@ -3,7 +3,7 @@ param(
 	[string]$environment,
 
 	[Parameter(Mandatory)]
-	[string]$subscriptionId
+	[string]$subscriptionId,
 
 	[Parameter(Mandatory)]
 	[string]$imageUrl
