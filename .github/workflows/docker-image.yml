@@ -26,15 +26,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # - name: Copy .azure directory to artifact
-      #   run: |
-      #     # Make sure the .azure directory exists
-      #     if [ -d .azure ]; then
-      #       # Move the .azure directory to the artifacts folder
-      #       cp -r .azure ${{ github.workspace }}/artifacts/.azure
-      #     fi
-      #   shell: bash
-
       - name: Copy .azure directory to artifact
         run: |
           # Make sure the .azure directory exists
@@ -51,10 +42,6 @@ jobs:
         with:
           name: artifacts
           path: ${{ github.workspace }}/artifacts
-      # - name: Copy bicep files to artifacts folder
-      #   # if: ${{inputs.publishArtifacts}}
-      #   run: cp -rp -n .azure ./artifacts/azure/
-      #   # run: ls -la $GITHUB_WORKSPACE && cp -R .azure artifacts
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -68,12 +55,6 @@ jobs:
         with:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-
-      # - name: Upload artifact for deployment job
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: artifacts
-      #     path: artifacts
 
   # deploy-at21:
   #   runs-on: ubuntu-latest
@@ -150,11 +131,6 @@ jobs:
           inlineScript: |
             Get-AzResourceGroup
           azPSVersion: 'latest'
-      # - name: Login to azure
-      #   id: azureLogin
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy infrastructure
         id: bicep
@@ -193,6 +169,7 @@ jobs:
       #     app-name: ${{ steps.bicep.outputs.websiteName }}
       #     slot-name: 'production'
       #     package: ./webApi
+
       - name: Deploy to containerapp
         uses: azure/CLI@v1
         with:
@@ -200,10 +177,21 @@ jobs:
             az config set extension.use_dynamic_install=yes_without_prompt
 
             az containerapp update \
-              --name ${{ env.CONTAINER_APP_NAME }} \
-              --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
-              --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+              --name ${{ steps.bicep.outputs.containerAppName }} \
+              --container-name ${{ steps.bicep.outputs.containerAppName }} \
+              --resource-group ${{ steps.bicep.outputs.resourceGroupName }} \
               --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      # - name: Deploy to containerapp
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: >
+      #       az config set extension.use_dynamic_install=yes_without_prompt
+
+      #       az containerapp update \
+      #         --name ${{ env.CONTAINER_APP_NAME }} \
+      #         --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
+      #         --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+      #         --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       # - name: Close postgre firewall
       #   if: ${{failure() || success()}}

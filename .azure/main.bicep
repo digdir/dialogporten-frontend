@@ -23,6 +23,16 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 //     }
 // }
 
+// Create resources without dependencies to other resources
+module containerApp 'containerApp/create.bicep' = {
+    scope: resourceGroup
+    name: 'containerApp'
+    params: {
+        namePrefix: namePrefix
+        location: location
+    }
+}
+
 // module keyVaultModule 'keyvault/create.bicep' = {
 // 	scope: resourceGroup
 // 	name: 'keyVault'
@@ -130,3 +140,4 @@ output resourceGroupName string = resourceGroup.name
 // output postgreServerName string = postgresql.outputs.serverName
 // output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
 // output websiteName string = website.outputs.name
+output containerAppName string = containerApp.outputs.name
