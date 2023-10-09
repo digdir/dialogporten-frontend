@@ -175,13 +175,13 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.3
 
-      - name: Open postgre firewall for migrations
-        run: >
-          az postgres flexible-server firewall-rule create 
-          --rule-name GithubActions 
-          --name ${{ steps.bicep.outputs.postgreServerName }}
-          --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
-          --start-ip-address ${{ steps.ip.outputs.ipv4 }}
+      # - name: Open postgre firewall for migrations
+      #   run: >
+      #     az postgres flexible-server firewall-rule create
+      #     --rule-name GithubActions
+      #     --name ${{ steps.bicep.outputs.postgreServerName }}
+      #     --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
+      #     --start-ip-address ${{ steps.ip.outputs.ipv4 }}
 
       - name: Apply EF migration script
         run: ${{ steps.postgreConnectionString.outputs.value }} -f ./database/migrate.sql -q
@@ -205,15 +205,15 @@ jobs:
               --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
               --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Close postgre firewall
-        if: ${{failure() || success()}}
-        continue-on-error: true
-        run: >
-          az postgres flexible-server firewall-rule delete 
-          --rule-name GithubActions 
-          --name ${{ steps.bicep.outputs.postgreServerName }}
-          --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
-          --yes
+      # - name: Close postgre firewall
+      #   if: ${{failure() || success()}}
+      #   continue-on-error: true
+      #   run: >
+      #     az postgres flexible-server firewall-rule delete
+      #     --rule-name GithubActions
+      #     --name ${{ steps.bicep.outputs.postgreServerName }}
+      #     --resource-group ${{ steps.bicep.outputs.resourceGroupName }}
+      #     --yes
 
       - name: Logout from azure
         if: ${{failure() || success()}}
