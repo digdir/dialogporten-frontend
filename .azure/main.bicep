@@ -24,16 +24,16 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 //     }
 // }
 
-// Create resources without dependencies to other resources
-module containerApp 'containerApp/create.bicep' = {
-    scope: resourceGroup
-    name: 'containerApp'
-    params: {
-        namePrefix: namePrefix
-        location: location
-        imageUrl: imageUrl
-    }
-}
+// // Create resources without dependencies to other resources
+// module containerApp 'containerApp/create.bicep' = {
+//     scope: resourceGroup
+//     name: 'containerApp'
+//     params: {
+//         namePrefix: namePrefix
+//         location: location
+//         imageUrl: imageUrl
+//     }
+// }
 
 // module keyVaultModule 'keyvault/create.bicep' = {
 // 	scope: resourceGroup
@@ -45,29 +45,29 @@ module containerApp 'containerApp/create.bicep' = {
 // 	}
 // }
 
-module appConfiguration 'appConfiguration/create.bicep' = {
-    scope: resourceGroup
-    name: 'appConfiguration'
-    params: {
-        namePrefix: namePrefix
-        location: location
-    }
-}
+// module appConfiguration 'appConfiguration/create.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfiguration'
+//     params: {
+//         namePrefix: namePrefix
+//         location: location
+//     }
+// }
 
-module appInsights 'applicationInsights/create.bicep' = {
-    scope: resourceGroup
-    name: 'appInsights'
-    params: {
-        namePrefix: namePrefix
-        location: location
-    }
-}
+// module appInsights 'applicationInsights/create.bicep' = {
+//     scope: resourceGroup
+//     name: 'appInsights'
+//     params: {
+//         namePrefix: namePrefix
+//         location: location
+//     }
+// }
 
-// Create references to existing resources
-resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
-    name: keyVault.source.name
-    scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
-}
+// // Create references to existing resources
+// resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
+//     name: keyVault.source.name
+//     scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
+// }
 
 // // Create resources with dependencies to other resources
 // module postgresql 'postgreSql/create.bicep' = {
@@ -142,4 +142,5 @@ output resourceGroupName string = resourceGroup.name
 // output postgreServerName string = postgresql.outputs.serverName
 // output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
 // output websiteName string = website.outputs.name
-output containerAppName string = containerApp.outputs.name
+output containerAppName string = 'containerApp.outputs.name'
+// output containerAppName string = containerApp.outputs.name

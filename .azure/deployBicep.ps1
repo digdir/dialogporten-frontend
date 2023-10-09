@@ -28,18 +28,23 @@ AddMemberPath $paramsJson "parameters.secrets.value" @{
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
 
-#Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
+Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
 
 # Format parameters to be used in az deployment sub create
 $formatedParamsJson = $paramsJson `
 	| ConvertTo-Json -Compress -Depth 100 `
-	| % {$_ -replace "`"", "\`""} `
-	| % {$_ -replace "`n", ""} `
-	| % {$_ -replace "\s", ""}
+	# | % {$_ -replace "`"", "\`""} `
+	# | % {$_ -replace "`n", ""} `
+	# | % {$_ -replace "\s", ""}
 
+Write-Host ("********** Starting deployment of $environment **********")
+Write-Host ("********** properties $properties **********")
+Write-Host ("********** formatedParamsJson $formatedParamsJson **********")
 # Deploy
 $deploymentOutputs = @( `
 	az deployment sub create `
+		--debug `
+		--verbose `
 		--subscription $subscriptionId `
 		--location $paramsJson.parameters.location.value `
 		--name "GithubActionsDeploy-$environment" `
@@ -49,6 +54,10 @@ $deploymentOutputs = @( `
 		#--confirm-with-what-if
 	| ConvertFrom-Json `
 )
+Write-Host ("********** deploymentOutputs $deploymentOutputs **********")
+
+
+Write-Host ("********** Starting foreach **********")
 
 # Write outputs to GITHUB_OUTPUT so that they can be used in other steps
 foreach($Property in $deploymentOutputs | Get-Member -type NoteProperty, Property){
