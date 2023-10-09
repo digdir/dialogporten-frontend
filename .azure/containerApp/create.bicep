@@ -8,14 +8,11 @@ resource servicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 	sku: { name: 'F1' }
 }
 
-resource frontend 'Microsoft.Web/sites@2022-03-01' = {
+resource frontend 'Microsoft.App/containerApps@2023-05-01' = {
 	name: '${namePrefix}-frontend'
 	location: location
 	identity: {
 		type: 'SystemAssigned'
-	}
-	properties: {
-		serverFarmId: servicePlan.id
 	}
 }
 

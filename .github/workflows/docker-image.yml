@@ -181,6 +181,7 @@ jobs:
               --container-name ${{ steps.bicep.outputs.containerAppName }} \
               --resource-group ${{ steps.bicep.outputs.resourceGroupName }} \
               --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+              --create-container-if-not-exists
       # - name: Deploy to containerapp
       #   uses: azure/CLI@v1
       #   with:
