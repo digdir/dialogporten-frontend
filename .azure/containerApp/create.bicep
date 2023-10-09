@@ -1,5 +1,6 @@
 param location string
 param namePrefix string
+param imageUrl string
 
 resource servicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 	name: '${namePrefix}-serviceplan'
@@ -13,6 +14,16 @@ resource frontend 'Microsoft.App/containerApps@2023-05-01' = {
 	location: location
 	identity: {
 		type: 'SystemAssigned'
+	}
+	properties: {
+		template: {
+			containers: [
+				{
+					name: 'frontend'
+					image: imageUrl
+				}
+			]
+		}
 	}
 }
 

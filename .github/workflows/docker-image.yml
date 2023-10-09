@@ -139,6 +139,7 @@ jobs:
           .azure/deployBicep.ps1 
           -environment "dev"
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       # - name: Get postgre connectionstring
       #   id: postgreConnectionString
@@ -170,18 +171,18 @@ jobs:
       #     slot-name: 'production'
       #     package: ./webApi
 
-      - name: Deploy to containerapp
-        uses: azure/CLI@v1
-        with:
-          inlineScript: >
-            az config set extension.use_dynamic_install=yes_without_prompt
+      # - name: Deploy to containerapp
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: >
+      #       az config set extension.use_dynamic_install=yes_without_prompt
 
-            az containerapp update \
-              --name ${{ steps.bicep.outputs.containerAppName }} \
-              --container-name ${{ steps.bicep.outputs.containerAppName }} \
-              --resource-group ${{ steps.bicep.outputs.resourceGroupName }} \
-              --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-              --create-container-if-not-exists
+      #       az containerapp update \
+      #         --name ${{ steps.bicep.outputs.containerAppName }} \
+      #         --container-name ${{ steps.bicep.outputs.containerAppName }} \
+      #         --resource-group ${{ steps.bicep.outputs.resourceGroupName }} \
+      #         --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      #         --create-container-if-not-exists
       # - name: Deploy to containerapp
       #   uses: azure/CLI@v1
       #   with:

@@ -3,6 +3,7 @@ targetScope = 'subscription'
 param environment string
 param location string
 param keyVault object
+param imageUrl string
 var namePrefix = 'dp${environment}'
 @secure()
 param secrets object
@@ -30,6 +31,7 @@ module containerApp 'containerApp/create.bicep' = {
     params: {
         namePrefix: namePrefix
         location: location
+        imageUrl: imageUrl
     }
 }
 
