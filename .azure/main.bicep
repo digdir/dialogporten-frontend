@@ -3,7 +3,7 @@ targetScope = 'subscription'
 param environment string
 param location string
 param keyVault object
-param imageUrl string
+param oci object
 var namePrefix = 'dp${environment}'
 @secure()
 param secrets object
@@ -31,7 +31,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 //     params: {
 //         namePrefix: namePrefix
 //         location: location
-//         imageUrl: imageUrl
+//         imageUrl: oci.imageUrl
 //     }
 // }
 
