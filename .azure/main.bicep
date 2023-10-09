@@ -57,19 +57,19 @@ resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
     scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
 }
 
-// Create resources with dependencies to other resources
-module postgresql 'postgreSql/create.bicep' = {
-    scope: resourceGroup
-    name: 'postgresql'
-    params: {
-        namePrefix: namePrefix
-        location: location
-        keyVaultName: keyVaultModule.outputs.name
-        srcKeyVault: keyVault.source
-        srcSecretName: 'dialogportenPgAdminPassword${environment}'
-        administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
-    }
-}
+// // Create resources with dependencies to other resources
+// module postgresql 'postgreSql/create.bicep' = {
+//     scope: resourceGroup
+//     name: 'postgresql'
+//     params: {
+//         namePrefix: namePrefix
+//         location: location
+//         keyVaultName: keyVaultModule.outputs.name
+//         srcKeyVault: keyVault.source
+//         srcSecretName: 'dialogportenPgAdminPassword${environment}'
+//         administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
+//     }
+// }
 
 // module copySecret 'keyvault/copySecrets.bicep' = {
 // 	scope: resourceGroup
@@ -96,16 +96,16 @@ module postgresql 'postgreSql/create.bicep' = {
 // 	}
 // }
 
-module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'AppConfig_Add_DialogDbConnectionString'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'Infrastructure:DialogDbConnectionString'
-        value: postgresql.outputs.adoConnectionStringSecretUri
-        keyValueType: 'keyVaultReference'
-    }
-}
+// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+//     scope: resourceGroup
+//     name: 'AppConfig_Add_DialogDbConnectionString'
+//     params: {
+//         configStoreName: appConfiguration.outputs.name
+//         key: 'Infrastructure:DialogDbConnectionString'
+//         value: postgresql.outputs.adoConnectionStringSecretUri
+//         keyValueType: 'keyVaultReference'
+//     }
+// }
 
 // module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
 //     scope: resourceGroup
@@ -127,6 +127,6 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
 // }
 
 output resourceGroupName string = resourceGroup.name
-output postgreServerName string = postgresql.outputs.serverName
-output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
+// output postgreServerName string = postgresql.outputs.serverName
+// output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
 // output websiteName string = website.outputs.name
