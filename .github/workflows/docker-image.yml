@@ -164,12 +164,12 @@ jobs:
           -environment "dev"
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Get postgre connectionstring
-        id: postgreConnectionString
-        shell: pwsh
-        run: >
-          .azure/powershell/fetchKeyvaultSecret.ps1
-          -secretId ${{ steps.bicep.outputs.psqlConnectionStringSecretUri }}
+      # - name: Get postgre connectionstring
+      #   id: postgreConnectionString
+      #   shell: pwsh
+      #   run: >
+      #     .azure/powershell/fetchKeyvaultSecret.ps1
+      #     -secretId ${{ steps.bicep.outputs.psqlConnectionStringSecretUri }}
 
       - name: Fetch runners public IP
         id: ip
