@@ -117,14 +117,14 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
 //     }
 // }
 
-module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
-    scope: resourceGroup
-    name: 'appConfigReaderAccessPolicy'
-    params: {
-        appConfigurationName: appConfiguration.outputs.name
-        principalIds: [ website.outputs.identityPrincipalId ]
-    }
-}
+// module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfigReaderAccessPolicy'
+//     params: {
+//         appConfigurationName: appConfiguration.outputs.name
+//         principalIds: [ website.outputs.identityPrincipalId ]
+//     }
+// }
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
