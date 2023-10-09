@@ -4,6 +4,9 @@ param(
 
 	[Parameter(Mandatory)]
 	[string]$subscriptionId
+
+	[Parameter(Mandatory)]
+	[string]$imageUrl
 )
 Import-module "$PSScriptRoot/powershell/jsonMerge.ps1" -Force
 Import-module "$PSScriptRoot/powershell/pwdGenerator.ps1" -Force
@@ -25,6 +28,10 @@ AddMemberPath $paramsJson "parameters.secrets.value" @{
 	dialogportenPgAdminPassword = (GeneratePassword -length 30).Password
 }
 
+AddMemberPath $paramsJson "parameters.imageUrl" @{
+	imageUrl = $imageUrl
+}
+
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
 
@@ -40,6 +47,7 @@ $formatedParamsJson = $paramsJson `
 Write-Host ("********** Starting deployment of $environment **********")
 Write-Host ("********** properties $properties **********")
 Write-Host ("********** formatedParamsJson $formatedParamsJson **********")
+
 # Deploy
 $deploymentOutputs = @( `
 	az deployment sub create `
