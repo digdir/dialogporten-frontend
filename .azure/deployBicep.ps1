@@ -34,17 +34,6 @@ AddMemberPath $paramsJson "parameters.environment.value" $environment
 
 Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
 
-# if ($environment = = 'cli-fe-dev') {
-# 	$formatedParamsJson = $paramsJson `
-# 	| ConvertTo-Json -Compress -Depth 100 `
-  
-# }
-# else if (value == 'bar') {
-# 	@echo('Running command for bar.')
-# }
-# else {
-# 	@echo('Unknown value.')
-# }
 
 # Format parameters to be used in az deployment sub create
 $formatedParamsJsonForGHA = $paramsJson `
