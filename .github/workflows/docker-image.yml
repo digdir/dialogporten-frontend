@@ -137,7 +137,7 @@ jobs:
         shell: pwsh
         run: >
           .azure/deployBicep.ps1 
-          -environment "fe-dev"
+          -environment fe-dev
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 

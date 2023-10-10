@@ -28,9 +28,6 @@ AddMemberPath $paramsJson "parameters.secrets.value" @{
 	dialogportenPgAdminPassword = (GeneratePassword -length 30).Password
 }
 AddMemberPath $paramsJson "parameters.imageUrl.value" $imageUrl
-# AddMemberPath $paramssJson "parameters.imageUrl.value" @{
-# 	imageUrl = $imageUrl
-# }
 
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
