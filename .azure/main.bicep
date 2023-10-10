@@ -3,7 +3,7 @@ targetScope = 'subscription'
 param environment string
 param location string
 param keyVault object
-param oci object
+param imageUrl string
 var namePrefix = 'dp${environment}'
 @secure()
 param secrets object
