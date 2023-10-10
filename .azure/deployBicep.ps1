@@ -40,9 +40,9 @@ Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
 # Format parameters to be used in az deployment sub create
 $formatedParamsJson = $paramsJson `
 | ConvertTo-Json -Compress -Depth 100 `
-| % { $_ -replace "`"", "\`"" } `
-| % { $_ -replace "`n", "" } `
-| % { $_ -replace "\s", "" }
+	# | % { $_ -replace "`"", "\`"" } `
+	# | % { $_ -replace "`n", "" } `
+# | % { $_ -replace "\s", "" }
 
 Write-Host ("********** Starting deployment of $environment **********")
 Write-Host ("********** properties $properties **********")
@@ -51,15 +51,16 @@ Write-Host ("********** formatedParamsJson $formatedParamsJson **********")
 # Deploy
 $deploymentOutputs = @( `
 		az deployment sub create `
-		--debug `
-		--verbose `
 		--subscription $subscriptionId `
 		--location $paramsJson.parameters.location.value `
-		--name "GithubActionsDeploy-$environment" `
+		--name "Hei" `
 		--template-file "$($PSScriptRoot)/main.bicep" `
 		--parameters $formatedParamsJson `
 		--query properties.outputs `
-		#--confirm-with-what-if
+		# --debug `
+		# --name "GithubActionsDeploy-$environment" `
+	# --verbose `
+	#--confirm-with-what-if
 	| ConvertFrom-Json `
 )
 Write-Host ("********** deploymentOutputs $deploymentOutputs **********")

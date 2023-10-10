@@ -8,6 +8,7 @@ var namePrefix = 'dp${environment}'
 @secure()
 param secrets object
 
+@description('********** Creating resource group')
 // Create resource groups
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
     name: '${namePrefix}-rg'
@@ -24,16 +25,17 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 //     }
 // }
 
-// // Create resources without dependencies to other resources
-// module containerApp 'containerApp/create.bicep' = {
-//     scope: resourceGroup
-//     name: 'containerApp'
-//     params: {
-//         namePrefix: namePrefix
-//         location: location
-//         imageUrl: oci.imageUrl
-//     }
-// }
+// Create resources without dependencies to other resources
+@description('********** Creating container app')
+module containerApp 'containerApp/create.bicep' = {
+    scope: resourceGroup
+    name: 'containerApp'
+    params: {
+        namePrefix: 'alx'
+        location: location
+        imageUrl: imageUrl
+    }
+}
 
 // module keyVaultModule 'keyvault/create.bicep' = {
 // 	scope: resourceGroup
