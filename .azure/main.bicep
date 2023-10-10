@@ -4,11 +4,10 @@ param environment string
 param location string
 param keyVault object
 param imageUrl string
-var namePrefix = 'dp${environment}'
+var namePrefix = 'dp-${environment}'
 @secure()
 param secrets object
 
-@description('********** Creating resource group')
 // Create resource groups
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
     name: '${namePrefix}-rg'
@@ -26,12 +25,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 // }
 
 // Create resources without dependencies to other resources
-@description('********** Creating container app')
 module containerApp 'containerApp/create.bicep' = {
     scope: resourceGroup
     name: 'containerApp'
     params: {
-        namePrefix: 'alx'
+        namePrefix: namePrefix
         location: location
         imageUrl: imageUrl
     }

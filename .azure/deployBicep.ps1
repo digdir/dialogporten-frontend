@@ -53,14 +53,13 @@ $deploymentOutputs = @( `
 		az deployment sub create `
 		--subscription $subscriptionId `
 		--location $paramsJson.parameters.location.value `
-		--name "Hei" `
+		--name "GithubActionsDeploy-$environment" `
 		--template-file "$($PSScriptRoot)/main.bicep" `
 		--parameters $formatedParamsJson `
 		--query properties.outputs `
-		# --debug `
-		# --name "GithubActionsDeploy-$environment" `
-	# --verbose `
-	#--confirm-with-what-if
+		--debug `
+		--verbose `
+		#--confirm-with-what-if
 	| ConvertFrom-Json `
 )
 Write-Host ("********** deploymentOutputs $deploymentOutputs **********")

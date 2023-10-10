@@ -2,45 +2,45 @@ param location string
 param namePrefix string
 param imageUrl string
 
-// resource servicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-// 	name: '${namePrefix}-serviceplan'
-// 	location: location
-// 	kind: 'app'
-// 	sku: { name: 'F1' }
-// }
+resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
+	name: '${namePrefix}-containerappenv'
+	location: location
+	properties: {}
+}
 
-resource frontend 'Microsoft.App/containerApps@2023-05-01' = {
-	name: '${namePrefix}-frontend'
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+	name: '${namePrefix}-containerapp'
 	location: location
 	properties: {
+		managedEnvironmentId: env.id
+		configuration: {
+			activeRevisionsMode: 'Single'
+			ingress: {
+				external: true
+				targetPort: 80
+			}
+		}
 		template: {
 			containers: [
 				{
-					name: 'alxmy-container'
+					name: '${namePrefix}-ghcr-docker-image'
 					image: imageUrl
+					resources: {
+						cpu: 1
+						memory: '2.0Gi'
+					}
 				}
 			]
+			scale: {
+				minReplicas: 1
+				maxReplicas: 10
+			}
 		}
+	}
+	identity: {
+		type: 'SystemAssigned'
 	}
 }
 
-// resource frontend 'Microsoft.App/containerApps@2023-05-01' = {
-// 	name: '${namePrefix}-frontend'
-// 	location: location
-// 	identity: {
-// 		type: 'SystemAssigned'
-// 	}
-// 	properties: {
-// 		template: {
-// 			containers: [
-// 				{
-// 					name: 'frontend'
-// 					image: imageUrl
-// 				}
-// 			]
-// 		}
-// 	}
-// }
-
-output identityPrincipalId string = frontend.identity.principalId
-output name string = frontend.name
+output identityPrincipalId string = containerApp.identity.principalId
+output name string = containerApp.name
