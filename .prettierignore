@@ -9,3 +9,5 @@ yarn.lock
 .eslintignore
 *.snap
 *.yaml
+*.bicep
+*.ps1

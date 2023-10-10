@@ -34,12 +34,54 @@ AddMemberPath $paramsJson "parameters.environment.value" $environment
 
 Write-Host (ConvertTo-Json -Depth 100 $paramsJson)
 
+# if ($environment = = 'cli-fe-dev') {
+# 	$formatedParamsJson = $paramsJson `
+# 	| ConvertTo-Json -Compress -Depth 100 `
+  
+# }
+# else if (value == 'bar') {
+# 	@echo('Running command for bar.')
+# }
+# else {
+# 	@echo('Unknown value.')
+# }
+
 # Format parameters to be used in az deployment sub create
-$formatedParamsJson = $paramsJson `
+$formatedParamsJsonForGHA = $paramsJson `
 | ConvertTo-Json -Compress -Depth 100 `
 | % { $_ -replace "`"", "\`"" } `
 | % { $_ -replace "`n", "" } `
 | % { $_ -replace "\s", "" }
+
+$formatedParamsJsonForLocalCLI = $paramsJson `
+| ConvertTo-Json -Compress -Depth 100 `
+
+$formatedParamsJson = $formatedParamsJsonForGHA
+
+if ( $environment -match 'cli-fe-dev') {
+	Write-Host ("********** FOUND LOCAL CLI DEPLOYMENT")
+	$formatedParamsJson = $formatedParamsJsonForLocalCLI
+}
+else {
+	Write-Host ("********** FOUND GITHUB ACTIONS DEPLOYMENT")
+}
+# # Format parameters to be used in az deployment sub create
+# $formatedParamsJson = $paramsJson `
+# | ConvertTo-Json -Compress -Depth 100 `
+# | % { $_ -replace "`"", "\`"" } `
+# | % { $_ -replace "`n", "" } `
+# | % { $_ -replace "\s", "" }
+
+
+# if ($environment == 'cli-fe-dev') {
+# 	Write-Host ("********** FOUND LOCAL CLI DEPLOYMENT")
+# 	$formatedParamsJson = $paramsJson `
+# 	| ConvertTo-Json -Compress -Depth 100 `
+
+# }
+# else {
+# 	Write-Host ("********** FOUND GITHUB ACTIONS DEPLOYMENT")
+# }
 
 Write-Host ("********** Starting deployment of $environment **********")
 Write-Host ("********** properties $properties **********")
