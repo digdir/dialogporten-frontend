@@ -7,12 +7,7 @@ resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
 	name: '${namePrefix}-containerappenv'
 	location: location
 	properties: {
-		environmentVariables: [
-			{
-				name: 'FOO'
-				value: 'BAR'
-			}
-		]
+
 	}
 }
 
