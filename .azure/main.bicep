@@ -32,7 +32,18 @@ module containerApp 'containerApp/create.bicep' = {
         namePrefix: namePrefix
         location: location
         imageUrl: imageUrl
+        envVariables: [
+            {
+                name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+                value: appInsights.outputs.connectionString
+            }
+            {
+                name: 'AZURE_APPCONFIG_URI'
+                value: appConfiguration.outputs.endpoint
+            }
+        ]
     }
+
 }
 
 module keyVaultModule 'keyvault/create.bicep' = {

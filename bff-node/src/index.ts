@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
 });
 app.use(bodyParser.json());
 app.use('/api/v1', routes);
+console.log('************* ENVIRONMENT *************');
+console.log('ENV_TEST: ', process.env.ENV_TEST);
+console.log('ALL: ', process.env);
 
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

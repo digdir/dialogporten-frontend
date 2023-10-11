@@ -1,6 +1,7 @@
 param location string
 param namePrefix string
 param imageUrl string
+param envVariables array = []
 
 resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
 	name: '${namePrefix}-containerappenv'
@@ -25,6 +26,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 				{
 					name: '${namePrefix}-ghcr-docker-image'
 					image: imageUrl
+					env: envVariables
 					resources: {
 						cpu: 1
 						memory: '2.0Gi'
