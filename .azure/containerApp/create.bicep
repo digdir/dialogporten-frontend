@@ -6,7 +6,14 @@ param envVariables array = []
 resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
 	name: '${namePrefix}-containerappenv'
 	location: location
-	properties: {}
+	properties: {
+		environmentVariables: [
+			{
+				name: 'FOO'
+				value: 'BAR'
+			}
+		]
+	}
 }
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
