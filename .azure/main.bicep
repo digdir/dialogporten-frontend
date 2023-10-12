@@ -25,34 +25,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 // }
 
 // Create resources without dependencies to other resources
-module containerApp 'containerApp/create.bicep' = {
-    scope: resourceGroup
-    name: 'containerApp'
-    params: {
-        namePrefix: namePrefix
-        location: location
-        imageUrl: imageUrl
-        envVariables: [
-            {
-                name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-                value: appInsights.outputs.connectionString
-            }
-            {
-                name: 'BICEP_TEST_ENV_VARIABLE'
-                value: 'This is a test'
-            }
-            {
-                name: 'AZURE_APPCONFIG_URI'
-                value: appConfiguration.outputs.endpoint
-            }
-            {
-                name: 'ENV_VARIABLE_1'
-                value: '--from=env'
-            }
-        ]
-    }
-
-}
 
 module keyVaultModule 'keyvault/create.bicep' = {
     scope: resourceGroup
@@ -146,6 +118,35 @@ module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
         // TODO: Har lagt til dialogporten-subscription-deploy-principal ettersom den m� hente ut db connectionstring fra keyvault for migrasjon
         principalIds: [ containerApp.outputs.identityPrincipalId, 'ce4fe21d-6e93-41af-8e2d-7ae6f7abef74' ]
     }
+}
+
+module containerApp 'containerApp/create.bicep' = {
+    scope: resourceGroup
+    name: 'containerApp'
+    params: {
+        namePrefix: namePrefix
+        location: location
+        imageUrl: imageUrl
+        envVariables: [
+            {
+                name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+                value: appInsights.outputs.connectionString
+            }
+            {
+                name: 'BICEP_TEST_ENV_VARIABLE'
+                value: 'This is a test'
+            }
+            {
+                name: 'AZURE_APPCONFIG_URI'
+                value: appConfiguration.outputs.endpoint
+            }
+            {
+                name: 'ENV_VARIABLE_1'
+                value: '--from=env'
+            }
+        ]
+    }
+
 }
 
 module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
