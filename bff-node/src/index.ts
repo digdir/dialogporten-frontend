@@ -31,8 +31,11 @@ function printEnvVars() {
   );
 }
 
+console.log('FIRST STARTUP');
+printEnvVars();
+setTimeout(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
 // Call the function every 5 seconds
-setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
+// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
 
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
