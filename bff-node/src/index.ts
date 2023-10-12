@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 // import swaggerUi from 'swagger-ui-express';
 // import swaggerFile from './swagger_output.json';
-import './config/env';
+// import './config/env';
 // import { DBConnection } from './config/database';
 import { routes } from './routes';
 import path from 'path';
