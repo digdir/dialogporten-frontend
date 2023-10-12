@@ -22,6 +22,10 @@ app.use('/api/v1', routes);
 console.log('************* ENVIRONMENT *************');
 console.log('ENV_TEST: ', process.env.ENV_TEST);
 console.log('ALL: ', process.env);
+console.log(
+  'process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE: ',
+  process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE
+);
 
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
