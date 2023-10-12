@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 // import { DBConnection } from './config/database';
 import { routes } from './routes';
 import path from 'path';
+const process = require('process');
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
