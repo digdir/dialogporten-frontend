@@ -20,13 +20,19 @@ app.get('/', (req, res) => {
 });
 app.use(bodyParser.json());
 app.use('/api/v1', routes);
-console.log('************* ENVIRONMENT *************');
-console.log('ENV_TEST: ', process.env.ENV_TEST);
-console.log('ALL: ', process.env);
-console.log(
-  'process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE: ',
-  process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE
-);
+
+function printEnvVars() {
+  console.log('************* ENVIRONMENT *************');
+  console.log('ENV_TEST: ', process.env.ENV_TEST);
+  console.log('ALL: ', process.env);
+  console.log(
+    'process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE: ',
+    process.env.APPSETTING_BICEP_TEST_ENV_VARIABLE
+  );
+}
+
+// Call the function every 5 seconds
+setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
 
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
