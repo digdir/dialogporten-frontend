@@ -24,8 +24,7 @@ FROM node
 
 # Set the working directory in the container
 WORKDIR /app
-ENV DOCKER_BUILDKIT=1
-ENV --from=env
+ENV DOKCER_ENV=12345
 # Copy the compiled React build files from the builder stage to the "bff-node" project folder
 COPY --from=frontend /app/dist ./src/public
 

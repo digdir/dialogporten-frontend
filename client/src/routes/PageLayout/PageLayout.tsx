@@ -13,13 +13,14 @@ export const fetchData = () => {
 
 export const PageLayout = () => {
   const { data: testData, isLoading } = useTestQuery('Mr. Altinn Bruker');
-
+  const currentDate = new Date();
+  const dateTimeString = currentDate.toLocaleString();
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <div>
       <h1 className={classes.heading}>PageLayout</h1>
-      <h2>Azure Test page IAC Bicep Kl 14:48</h2>
+      <h2>Azure Test page IAC Bicep Timestamp: {dateTimeString}</h2>
       <Link to={`test`}>Go to React Router Test Page</Link>
       <br />
       ID: {testData?.id}, Message: {testData?.message}
