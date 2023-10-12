@@ -7,8 +7,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: digdir/dialogporten-frontend
   CONTAINER_APP_CONTAINER_NAME: dialogporten
-  CONTAINER_APP_NAME: altinn-dev-dialogporten-app
-  CONTAINER_APP_RESOURCE_GROUP_NAME: altinn-dev-dialogporten-rg
+  CONTAINER_APP_NAME: altinn-test-dialogporten-app
+  CONTAINER_APP_RESOURCE_GROUP_NAME: altinn-test-dialogporten-rg
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
