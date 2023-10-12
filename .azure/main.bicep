@@ -45,6 +45,10 @@ module containerApp 'containerApp/create.bicep' = {
                 name: 'AZURE_APPCONFIG_URI'
                 value: appConfiguration.outputs.endpoint
             }
+            {
+                name: 'ENV_VARIABLE_1'
+                value: '--from=env'
+            }
         ]
     }
 
