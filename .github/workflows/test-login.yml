@@ -10,7 +10,7 @@ jobs:
   Windows-latest:
       runs-on: windows-latest
       environment:
-        name: dev
+        name: test
       steps:
         - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
           uses: azure/login@v1
