@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import { routes } from './routes';
 import path from 'path';
 import { AppConfigurationClient } from '@azure/app-configuration';
+import { DefaultAzureCredential } from '@azure/identity';
 const process = require('process');
 
 const DIST_DIR = path.join(__dirname, 'public');
@@ -30,9 +31,23 @@ function printEnvVars() {
 }
 async function testAppConf() {
   try {
+    // const credential = await new DefaultAzureCredential();
+    const credential = new DefaultAzureCredential();
+    // Get the access token from the DefaultAzureCredential object
+    const accessToken = await credential.getToken('https://management.azure.com');
+
+    // Convert the AccessToken object to a string
+    const connectionString = accessToken.toString();
+
     console.log('************* APP CONFIG *************');
-    console.log('************* Connection string: ', process.env.APPCONFIG_CONNECTION_STRING);
-    const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
+    console.log(
+      '************* Connection string: ',
+      connectionString,
+      process.env.APPCONFIG_CONNECTION_STRING
+    );
+    // Create a new AppConfigurationClient object using the connection string
+    const client = new AppConfigurationClient(connectionString);
+    // const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
     // const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
     // await DBConnection.sync();
     const result = await client.listConfigurationSettings();

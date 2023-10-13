@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node as frontend
+FROM node:18 as frontend
 
 # Set the working directory in the container
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN yarn build
 RUN find . -maxdepth 1 -type f ! -path "./dist/*" -delete
 
 # Create a new image based on the "bff-node" project
-FROM node
+FROM node:18
 
 # Set the working directory in the container
 WORKDIR /app
