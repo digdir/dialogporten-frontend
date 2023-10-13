@@ -134,10 +134,6 @@ module containerApp 'containerApp/create.bicep' = {
                 value: appInsights.outputs.connectionString
             }
             {
-                name: 'BICEP_TEST_ENV_VARIABLE'
-                value: 'This is a test'
-            }
-            {
                 name: 'AZURE_APPCONFIG_URI'
                 value: appConfiguration.outputs.endpoint
             }
