@@ -88,17 +88,17 @@ module copySecret 'keyvault/copySecrets.bicep' = {
     }
 }
 
-module appsettings 'containerApp/upsertAppsettings.bicep' = {
-    scope: resourceGroup
-    name: 'appsettings'
-    params: {
-        containerAppName: containerApp.outputs.name
-        settings: {
-            APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
-            AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
-        }
-    }
-}
+// module appsettings 'containerApp/upsertAppsettings.bicep' = {
+//     scope: resourceGroup
+//     name: 'appsettings'
+//     params: {
+//         containerAppName: containerApp.outputs.name
+//         settings: {
+//             APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
+//             AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
+//         }
+//     }
+// }
 
 module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
     scope: resourceGroup
