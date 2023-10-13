@@ -141,6 +141,10 @@ module containerApp 'containerApp/create.bicep' = {
                 name: 'DEPLOY_TIMESTAMP'
                 value: deployTimestamp
             }
+            {
+                name: 'APPCONFIG_CONNECTION_STRING'
+                value: appConfiguration.outputs.connectionString
+            }
         ]
     }
 

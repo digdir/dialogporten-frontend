@@ -30,7 +30,10 @@ function printEnvVars() {
 }
 async function testAppConf() {
   try {
-    const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
+    console.log('************* APP CONFIG *************');
+    console.log('************* Connection string: ', process.env.APPCONFIG_CONNECTION_STRING);');
+    const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
+    // const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
     // await DBConnection.sync();
     const result = await client.listConfigurationSettings();
     const result2 = await client.getConfigurationSetting({
@@ -72,6 +75,7 @@ void start();
 
 // Env variables:
 // {
+//   "AZURE_APPCONFIG_URI": "https://dp-fe-dev-appconfiguration.azconfig.io",
 //   "CONTAINER_APP_HOSTNAME": "dp-fe-dev-containerapp--0v1r5bt.gentleground-23fcbdca.norwayeast.azurecontainerapps.io",
 //   "npm_package_devDependencies_ts_node": "^10.9.1",
 //   "npm_package_devDependencies__types_node": "^20.6.2",
@@ -129,7 +133,6 @@ void start();
 //   "npm_config_version_git_message": "v%s",
 //   "npm_lifecycle_event": "start",
 //   "npm_package_version": "0.0.1",
-//   "AZURE_APPCONFIG_URI": "https://dp-fe-dev-appconfiguration.azconfig.io",
 //   "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"start\"],\"original\":[\"start\"]}",
 //   "npm_package_devDependencies_tslib": "^2.6.2",
 //   "npm_package_scripts_build": "tsc",
