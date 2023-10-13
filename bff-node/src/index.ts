@@ -6,9 +6,8 @@ import bodyParser from 'body-parser';
 // import { DBConnection } from './config/database';
 import { routes } from './routes';
 import path from 'path';
-import { AppConfigurationClient } from '@azure/app-configuration';
 import { DefaultAzureCredential } from '@azure/identity';
-const process = require('process');
+import { AppConfigurationClient } from '@azure/app-configuration';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -24,28 +23,27 @@ app.use(bodyParser.json());
 app.use('/api/v1', routes);
 
 function printEnvVars() {
-  console.log('************* ENVIRONMENT *************');
+  console.log('_________ ENVIRONMENT START _________');
   console.log('ENV_TEST: ', process.env.ENV_TEST);
   console.log('ALL: ', process.env);
   console.log('process.env.BICEP_TEST_ENV_VARIABLE: ', process.env.BICEP_TEST_ENV_VARIABLE);
+  console.log('_________ ENVIRONMENT END _________');
 }
+
 async function testAppConf() {
   try {
     // const credential = await new DefaultAzureCredential();
-    const credential = new DefaultAzureCredential();
+    // const credential = new DefaultAzureCredential();
     // Get the access token from the DefaultAzureCredential object
-    const accessToken = await credential.getToken('https://management.azure.com');
+    // const accessToken = await credential.getToken('https://management.azure.com');
 
     // Convert the AccessToken object to a string
-    const connectionString = accessToken.toString();
+    const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
-    console.log('************* APP CONFIG *************');
-    console.log(
-      '************* Connection string: ' + connectionString,
-      process.env.APPCONFIG_CONNECTION_STRING
-    );
+    console.log('_________ testAppConf Start _________');
+    console.log('_________ Connection string: ' + connectionString);
     // Create a new AppConfigurationClient object using the connection string
-    const client = new AppConfigurationClient(connectionString);
+    const client = new AppConfigurationClient(connectionString!);
     // const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
     // const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
     // await DBConnection.sync();
@@ -59,6 +57,7 @@ async function testAppConf() {
     console.log('Configurations: ', result);
     console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
     console.log('Infrastructure:DialogDbConnectionString: ', result3);
+    console.log('_________ testAppConf End _________');
   } catch (error) {
     console.log('testAppConf failed: ', error);
   }
