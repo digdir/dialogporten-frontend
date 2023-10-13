@@ -6,7 +6,10 @@ param(
 	[string]$subscriptionId,
 
 	[Parameter(Mandatory)]
-	[string]$imageUrl
+	[string]$imageUrl,
+
+	[Parameter(Mandatory)]
+	[string]$deployTimestamp
 )
 Import-module "$PSScriptRoot/powershell/jsonMerge.ps1" -Force
 Import-module "$PSScriptRoot/powershell/pwdGenerator.ps1" -Force
@@ -28,9 +31,6 @@ AddMemberPath $paramsJson "parameters.secrets.value" @{
 	dialogportenPgAdminPassword = (GeneratePassword -length 30).Password
 }
 AddMemberPath $paramsJson "parameters.imageUrl.value" $imageUrl
-
-$timeNow = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-AddMemberPath $paramsJson "parameters.deploytime.value" $timeNow
 
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
