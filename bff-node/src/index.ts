@@ -23,11 +23,11 @@ app.use(bodyParser.json());
 app.use('/api/v1', routes);
 
 function printEnvVars() {
-  console.log('_________ENVIRONMENT START _________');
+  console.log('_ ________ENVIRONMENT START _________');
   console.log('ENV_TEST: ', process.env.ENV_TEST);
   console.log('ALL: ', process.env);
   console.log('process.env.BICEP_TEST_ENV_VARIABLE: ', process.env.BICEP_TEST_ENV_VARIABLE);
-  console.log('_________ENVIRONMENT END _________');
+  console.log('_ ________ENVIRONMENT END _________');
 }
 
 async function testAppConf() {
@@ -35,8 +35,9 @@ async function testAppConf() {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
     const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
-    console.log('_________testAppConf Start _________');
-    console.log('_________Connection string: ' + connectionString);
+    console.log('_ ________testAppConf Start _________');
+    console.log('_ ________Connection endpoint: ' + endpoint);
+    console.log('_ ________Connection string: ' + connectionString);
     // Create a new AppConfigurationClient object using the connection string
     // const client = new AppConfigurationClient(connectionString!);
 
@@ -56,7 +57,7 @@ async function testAppConf() {
     console.log('Configurations: ', result);
     console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
     console.log('Infrastructure:DialogDbConnectionString: ', result3);
-    console.log('_________testAppConf End _________');
+    console.log('_ ________testAppConf End _________');
   } catch (error) {
     console.log('testAppConf failed: ', error);
   }
