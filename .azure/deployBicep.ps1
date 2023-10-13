@@ -29,6 +29,9 @@ AddMemberPath $paramsJson "parameters.secrets.value" @{
 }
 AddMemberPath $paramsJson "parameters.imageUrl.value" $imageUrl
 
+$timeNow = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+AddMemberPath $paramsJson "parameters.deploytime.value" $timeNow
+
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
 

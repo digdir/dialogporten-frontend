@@ -4,6 +4,7 @@ param environment string
 param location string
 param keyVault object
 param imageUrl string
+param deployTimestamp string
 var namePrefix = 'dp-${environment}'
 @secure()
 param secrets object
@@ -141,8 +142,8 @@ module containerApp 'containerApp/create.bicep' = {
                 value: appConfiguration.outputs.endpoint
             }
             {
-                name: 'ENV_VARIABLE_1'
-                value: '--from=env'
+                name: 'DEPLOY_TIMESTAMP'
+                value: deployTimestamp
             }
         ]
     }

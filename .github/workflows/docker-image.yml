@@ -136,10 +136,12 @@ jobs:
         id: bicep
         shell: pwsh
         run: >
+          $currentTimestamp = Get-Date -Format "yyyyMMddHHmmss"
           .azure/deployBicep.ps1 
           -environment fe-dev
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          -deployTimestamp $currentTimestamp
 
       # - name: Get postgre connectionstring
       #   id: postgreConnectionString
