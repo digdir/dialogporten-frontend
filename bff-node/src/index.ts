@@ -28,13 +28,7 @@ function printEnvVars() {
   console.log('ALL: ', process.env);
   console.log('process.env.BICEP_TEST_ENV_VARIABLE: ', process.env.BICEP_TEST_ENV_VARIABLE);
 }
-
-// Call the function every 5 seconds
-// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
-
-// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
-const start = async (): Promise<void> => {
+async function testAppConf() {
   try {
     const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
     // await DBConnection.sync();
@@ -48,7 +42,18 @@ const start = async (): Promise<void> => {
     console.log('Configurations: ', result);
     console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
     console.log('Infrastructure:DialogDbConnectionString: ', result3);
+  } catch (error) {
+    console.log('testAppConf failed: ', error);
+  }
+}
 
+// Call the function every 5 seconds
+// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
+
+// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+const start = async (): Promise<void> => {
+  try {
     console.log('FIRST STARTUP');
     printEnvVars();
     console.log('FIVE SECONDS LATER');
@@ -56,6 +61,7 @@ const start = async (): Promise<void> => {
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });
+    testAppConf();
   } catch (error) {
     console.error(error);
     process.exit(1);
