@@ -31,7 +31,7 @@ function printEnvVars() {
 async function testAppConf() {
   try {
     console.log('************* APP CONFIG *************');
-    console.log('************* Connection string: ', process.env.APPCONFIG_CONNECTION_STRING);');
+    console.log('************* Connection string: ', process.env.APPCONFIG_CONNECTION_STRING);
     const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
     // const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
     // await DBConnection.sync();
