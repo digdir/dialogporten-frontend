@@ -140,7 +140,7 @@ jobs:
           -environment fe-dev
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          -deployTimestamp Get-Date -Format "yyyyMMddHHmmss"
+          -deployTimestamp (Get-Date -Format "yyyyMMddHHmmss")
 
       # - name: Get postgre connectionstring
       #   id: postgreConnectionString
