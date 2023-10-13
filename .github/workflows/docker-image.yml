@@ -125,6 +125,10 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
+      - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
       - name: 'Get resource group with PowerShell action'
         uses: azure/powershell@v1
         with:
@@ -141,6 +145,7 @@ jobs:
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           -deployTimestamp ${{ github.event.repository.updated_at}}
+          # -deployTimestamp ${{ env.date }}
 
       # - name: Get postgre connectionstring
       #   id: postgreConnectionString
