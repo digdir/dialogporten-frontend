@@ -41,8 +41,7 @@ async function testAppConf() {
 
     console.log('************* APP CONFIG *************');
     console.log(
-      '************* Connection string: ',
-      connectionString,
+      '************* Connection string: ' + connectionString,
       process.env.APPCONFIG_CONNECTION_STRING
     );
     // Create a new AppConfigurationClient object using the connection string
