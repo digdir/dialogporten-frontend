@@ -23,30 +23,29 @@ app.use(bodyParser.json());
 app.use('/api/v1', routes);
 
 function printEnvVars() {
-  console.log('_________ ENVIRONMENT START _________');
+  console.log('_________ENVIRONMENT START _________');
   console.log('ENV_TEST: ', process.env.ENV_TEST);
   console.log('ALL: ', process.env);
   console.log('process.env.BICEP_TEST_ENV_VARIABLE: ', process.env.BICEP_TEST_ENV_VARIABLE);
-  console.log('_________ ENVIRONMENT END _________');
+  console.log('_________ENVIRONMENT END _________');
 }
 
 async function testAppConf() {
   try {
-    // const credential = await new DefaultAzureCredential();
-    // const credential = new DefaultAzureCredential();
-    // Get the access token from the DefaultAzureCredential object
-    // const accessToken = await credential.getToken('https://management.azure.com');
-
-    // Convert the AccessToken object to a string
+    const endpoint = process.env.AZURE_APPCONFIG_URI!;
     const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
-    console.log('_________ testAppConf Start _________');
-    console.log('_________ Connection string: ' + connectionString);
+    console.log('_________testAppConf Start _________');
+    console.log('_________Connection string: ' + connectionString);
     // Create a new AppConfigurationClient object using the connection string
-    const client = new AppConfigurationClient(connectionString!);
-    // const client = new AppConfigurationClient(process.env.APPCONFIG_CONNECTION_STRING!);
-    // const client = new AppConfigurationClient(process.env.AZURE_APPCONFIG_URI!);
-    // await DBConnection.sync();
+    // const client = new AppConfigurationClient(connectionString!);
+
+    const credential = new DefaultAzureCredential();
+    const client = new AppConfigurationClient(
+      endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
+      credential
+    );
+
     const result = await client.listConfigurationSettings();
     const result2 = await client.getConfigurationSetting({
       key: 'AppConfig_Add_DialogDbConnectionString',
@@ -57,7 +56,7 @@ async function testAppConf() {
     console.log('Configurations: ', result);
     console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
     console.log('Infrastructure:DialogDbConnectionString: ', result3);
-    console.log('_________ testAppConf End _________');
+    console.log('_________testAppConf End _________');
   } catch (error) {
     console.log('testAppConf failed: ', error);
   }
@@ -72,12 +71,10 @@ const start = async (): Promise<void> => {
   try {
     console.log('FIRST STARTUP');
     printEnvVars();
-    console.log('FIVE SECONDS LATER');
-    setTimeout(printEnvVars, 5000);
+    testAppConf();
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });
-    testAppConf();
   } catch (error) {
     console.error(error);
     process.exit(1);
