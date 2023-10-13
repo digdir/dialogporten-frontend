@@ -131,9 +131,6 @@ jobs:
           inlineScript: |
             Get-AzResourceGroup
           azPSVersion: 'latest'
-      - name: Get Current Time
-        id: time
-        run: echo "::set-output name=current_time::$(date +%s)"
 
       - name: Deploy infrastructure
         id: bicep
@@ -143,7 +140,7 @@ jobs:
           -environment fe-dev
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          -deployTimestamp ${{ steps.time.outputs.current_time }}
+          -deployTimestamp ${{ github.event.repository.updated_at}}
 
       # - name: Get postgre connectionstring
       #   id: postgreConnectionString
