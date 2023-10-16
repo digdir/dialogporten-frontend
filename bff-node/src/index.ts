@@ -8,7 +8,7 @@ import { routes } from './routes';
 import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
-import { setup } from 'applicationinsights';
+import { setup, DistributedTracingModes } from 'applicationinsights';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -23,11 +23,15 @@ console.log(
   process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
 );
 setup()
-  .setAutoCollectConsole(true)
-  .setAutoCollectExceptions(true)
+  .setAutoDependencyCorrelation(true)
   .setAutoCollectRequests(true)
+  .setAutoCollectPerformance(true, true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectDependencies(true)
+  .setAutoCollectConsole(true)
+  .setUseDiskRetryCaching(true)
   .setSendLiveMetrics(false)
-  .enableWebInstrumentation(true)
+  .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
   .start();
 console.log('_ ________Done setting up App Insights _________');
 
