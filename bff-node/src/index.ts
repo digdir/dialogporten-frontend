@@ -8,12 +8,18 @@ import { routes } from './routes';
 import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
+import appInsights from 'applicationinsights';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 const app: Express = express();
 const port = process.env.PORT || 80;
+
+// Setup Application Insights:
+console.log('_ ________Setting upp App Insights _________');
+appInsights.setup().enableWebInstrumentation(true).start();
+console.log('_ ________Done setting up App Insights _________');
 
 app.use(express.static(DIST_DIR));
 app.get('/', (req, res) => {

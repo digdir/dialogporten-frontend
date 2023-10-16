@@ -89,9 +89,9 @@ $deploymentOutputs = @( `
 		--template-file "$($PSScriptRoot)/main.bicep" `
 		--parameters $formatedParamsJson `
 		--query properties.outputs `
-		--debug `
-		--verbose `
-		#--confirm-with-what-if
+		# --debug `
+		# --verbose `
+	#--confirm-with-what-if
 	| ConvertFrom-Json `
 )
 Write-Host ("********** deploymentOutputs $deploymentOutputs **********")
