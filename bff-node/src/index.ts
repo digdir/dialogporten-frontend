@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 // import swaggerUi from 'swagger-ui-express';
 // import swaggerFile from './swagger_output.json';
-// import './config/env';
+import './config/env';
 // import { DBConnection } from './config/database';
 import { routes } from './routes';
 import path from 'path';
@@ -33,11 +33,12 @@ function printEnvVars() {
 async function testAppConf() {
   try {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
-    const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
+    // const endpoint = 'https://dp-fe-dev-appconfiguration.azconfig.io';
+    // const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
     console.log('_ ________testAppConf Start _________');
     console.log('_ ________Connection endpoint: ' + endpoint);
-    console.log('_ ________Connection string: ' + connectionString);
+    // console.log('_ ________Connection string: ' + connectionString);
     // Create a new AppConfigurationClient object using the connection string
     // const client = new AppConfigurationClient(connectionString!);
 
@@ -46,18 +47,24 @@ async function testAppConf() {
       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
       credential
     );
-
-    const result = await client.listConfigurationSettings();
-    const result2 = await client.getConfigurationSetting({
-      key: 'AppConfig_Add_DialogDbConnectionString',
+    // const client = new AppConfigurationClient(connectionString!);
+    let retrievedSetting = await client.getConfigurationSetting({
+      key: 'test',
+      // key: 'Infrastructure:DialogDbConnectionString',
     });
-    const result3 = await client.getConfigurationSetting({
-      key: 'Infrastructure:DialogDbConnectionString',
-    });
-    console.log('Configurations: ', result);
-    console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
-    console.log('Infrastructure:DialogDbConnectionString: ', result3);
-    console.log('_ ________testAppConf End _________');
+    console.log('Trying to print retrievedSetting:');
+    console.log(retrievedSetting);
+    // const result = await client.listConfigurationSettings();
+    // const result2 = await client.getConfigurationSetting({
+    //   key: 'AppConfig_Add_DialogDbConnectionString',
+    // });
+    // const result3 = await client.getConfigurationSetting({
+    //   key: 'Infrastructure:DialogDbConnectionString',
+    // });
+    // console.log('Configurations: ', result);
+    // console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
+    // console.log('Infrastructure:DialogDbConnectionString: ', result3);
+    // console.log('_ ________testAppConf End _________');
   } catch (error) {
     console.log('testAppConf failed: ', error);
   }
