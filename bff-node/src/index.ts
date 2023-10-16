@@ -75,6 +75,7 @@ async function testAppConf() {
     // console.log('_ ________testAppConf End _________');
   } catch (error) {
     console.log('testAppConf failed: ', error);
+    process.exit(1);
   }
 }
 
@@ -85,7 +86,7 @@ async function testAppConf() {
 
 const start = async (): Promise<void> => {
   try {
-    console.log('FIRST STARTUP');
+    console.log('_ STARTUP');
     printEnvVars();
     testAppConf();
     app.listen(port, () => {

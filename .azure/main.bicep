@@ -61,19 +61,19 @@ resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
     scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
 }
 
-// Create resources with dependencies to other resources
-module postgresql 'postgreSql/create.bicep' = {
-    scope: resourceGroup
-    name: 'postgresql'
-    params: {
-        namePrefix: namePrefix
-        location: location
-        keyVaultName: keyVaultModule.outputs.name
-        srcKeyVault: keyVault.source
-        srcSecretName: 'dialogportenPgAdminPassword${environment}'
-        administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
-    }
-}
+// // Create resources with dependencies to other resources
+// module postgresql 'postgreSql/create.bicep' = {
+//     scope: resourceGroup
+//     name: 'postgresql'
+//     params: {
+//         namePrefix: namePrefix
+//         location: location
+//         keyVaultName: keyVaultModule.outputs.name
+//         srcKeyVault: keyVault.source
+//         srcSecretName: 'dialogportenPgAdminPassword${environment}'
+//         administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
+//     }
+// }
 
 module copySecret 'keyvault/copySecrets.bicep' = {
     scope: resourceGroup
@@ -106,7 +106,7 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
     params: {
         configStoreName: appConfiguration.outputs.name
         key: 'Infrastructure:DialogDbConnectionString'
-        value: postgresql.outputs.adoConnectionStringSecretUri
+        value: 'postgres Secret her' //postgresql.outputs.adoConnectionStringSecretUri
         keyValueType: 'keyVaultReference'
     }
 }
@@ -140,10 +140,6 @@ module containerApp 'containerApp/create.bicep' = {
             {
                 name: 'DEPLOY_TIMESTAMP'
                 value: deployTimestamp
-            }
-            {
-                name: 'APPCONFIG_CONNECTION_STRING'
-                value: appConfiguration.outputs.connectionString
             }
         ]
     }
