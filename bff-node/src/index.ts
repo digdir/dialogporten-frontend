@@ -8,7 +8,7 @@ import { routes } from './routes';
 import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
-import appInsights from 'applicationinsights';
+import { setup } from 'applicationinsights';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -18,7 +18,11 @@ const port = process.env.PORT || 80;
 
 // Setup Application Insights:
 console.log('_ ________Setting upp App Insights _________');
-appInsights.setup().enableWebInstrumentation(true).start();
+console.log(
+  '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
+  process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
+);
+setup().enableWebInstrumentation(true).start();
 console.log('_ ________Done setting up App Insights _________');
 
 app.use(express.static(DIST_DIR));
@@ -93,7 +97,7 @@ async function testAppConf() {
 const start = async (): Promise<void> => {
   try {
     console.log('_ STARTUP');
-    printEnvVars();
+    // printEnvVars();
     testAppConf();
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
