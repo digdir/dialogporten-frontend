@@ -22,7 +22,13 @@ console.log(
   '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
   process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
 );
-setup().enableWebInstrumentation(true).start();
+setup()
+  .setAutoCollectConsole(true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectRequests(true)
+  .setSendLiveMetrics(false)
+  .enableWebInstrumentation(true)
+  .start();
 console.log('_ ________Done setting up App Insights _________');
 
 app.use(express.static(DIST_DIR));
