@@ -31,28 +31,36 @@ function printEnvVars() {
 }
 
 async function testAppConf() {
+  const d = new Date();
   try {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
     // const endpoint = 'https://dp-fe-dev-appconfiguration.azconfig.io';
     // const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
     console.log('_ ________testAppConf Start _________');
+    console.log('_ Time now: ', d);
     console.log('_ ________Connection endpoint: ' + endpoint);
     // console.log('_ ________Connection string: ' + connectionString);
     // Create a new AppConfigurationClient object using the connection string
     // const client = new AppConfigurationClient(connectionString!);
 
     const credential = new DefaultAzureCredential();
+    console.log('credential', credential);
     const client = new AppConfigurationClient(
       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
       credential
     );
     // const client = new AppConfigurationClient(connectionString!);
-    let retrievedSetting = await client.getConfigurationSetting({
+    let test = await client.getConfigurationSetting({
       key: 'test',
       // key: 'Infrastructure:DialogDbConnectionString',
     });
-    console.log('Trying to print retrievedSetting:');
+    let retrievedSetting = await client.getConfigurationSetting({
+      key: 'Infrastructure:DialogDbConnectionString',
+    });
+    console.log('Trying to print test:');
+    console.log(test);
+    console.log('Trying to print Infrastructure:DialogDbConnectionString:');
     console.log(retrievedSetting);
     // const result = await client.listConfigurationSettings();
     // const result2 = await client.getConfigurationSetting({
