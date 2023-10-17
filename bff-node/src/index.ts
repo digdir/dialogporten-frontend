@@ -9,6 +9,8 @@ import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
+import { SecretClient } from '@azure/keyvault-secrets';
+import { KeyClient } from '@azure/keyvault-keys';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -83,6 +85,13 @@ async function testAppConf() {
     console.log(test);
     console.log('Trying to print Infrastructure:DialogDbConnectionString:');
     console.log(retrievedSetting);
+
+    console.log('_ _____ TESTING KEY VAULT:');
+
+    const vaultUri = process.env.KV_URI!;
+    const kvClient = new KeyClient(vaultUri, credential);
+    const mySecret = kvClient.getKey('dialogportenPgAdminPasswordcli-fe-dev');
+    console.log('_ MySecret dialogportenPgAdminPasswordcli-fe-dev: ', mySecret);
     // const result = await client.listConfigurationSettings();
     // const result2 = await client.getConfigurationSetting({
     //   key: 'AppConfig_Add_DialogDbConnectionString',

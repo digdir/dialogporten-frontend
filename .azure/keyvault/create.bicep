@@ -3,13 +3,13 @@ param location string
 param adminObjectIds array = []
 
 var adminAccessPolicies = [for admin in adminObjectIds: {
-    objectId: admin
-    tenantId: subscription().tenantId
-    permissions: {
-        keys: [ 'all' ]
-        secrets: [ 'all' ]
-        certificates: [ 'all' ]
-    }
+	objectId: admin
+	tenantId: subscription().tenantId
+	permissions: {
+		keys: [ 'all' ]
+		secrets: [ 'all' ]
+		certificates: [ 'all' ]
+	}
 }]
 
 var keyvaultName = take('${namePrefix}-kv-${uniqueString(resourceGroup().id)}', 24)
@@ -31,3 +31,4 @@ resource keyvault 'Microsoft.KeyVault/vaults@2022-11-01' = {
 }
 
 output name string = keyvault.name
+output vaultUri string = keyvault.properties.vaultUri
