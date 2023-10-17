@@ -15,18 +15,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
     location: location
 }
 
-// Create resources without dependencies to other resources
-// module website 'website/create.bicep' = {
-//     scope: resourceGroup
-//     name: 'website'
-//     params: {
-//         namePrefix: namePrefix
-//         location: location
-//     }
-// }
-
-// Create resources without dependencies to other resources
-
 module keyVaultModule 'keyvault/create.bicep' = {
     scope: resourceGroup
     name: 'keyVault'
@@ -61,19 +49,19 @@ resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
     scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
 }
 
-// // Create resources with dependencies to other resources
-// module postgresql 'postgreSql/create.bicep' = {
-//     scope: resourceGroup
-//     name: 'postgresql'
-//     params: {
-//         namePrefix: namePrefix
-//         location: location
-//         keyVaultName: keyVaultModule.outputs.name
-//         srcKeyVault: keyVault.source
-//         srcSecretName: 'dialogportenPgAdminPassword${environment}'
-//         administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
-//     }
-// }
+// Create resources with dependencies to other resources
+module postgresql 'postgreSql/create.bicep' = {
+    scope: resourceGroup
+    name: 'postgresql'
+    params: {
+        namePrefix: namePrefix
+        location: location
+        keyVaultName: keyVaultModule.outputs.name
+        srcKeyVault: keyVault.source
+        srcSecretName: 'dialogportenPgAdminPassword${environment}'
+        administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
+    }
+}
 
 module copySecret 'keyvault/copySecrets.bicep' = {
     scope: resourceGroup
@@ -106,7 +94,7 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
     params: {
         configStoreName: appConfiguration.outputs.name
         key: 'Infrastructure:DialogDbConnectionString'
-        value: 'postgres Secret her' //postgresql.outputs.adoConnectionStringSecretUri
+        value: postgresql.outputs.adoConnectionStringSecretUri
         keyValueType: 'keyVaultReference'
     }
 }
@@ -160,8 +148,7 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
 }
 
 output resourceGroupName string = resourceGroup.name
-// output postgreServerName string = postgresql.outputs.serverName
-// output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
+output postgreServerName string = postgresql.outputs.serverName
+output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
 // output websiteName string = website.outputs.name
-output containerAppName string = 'containerApp.outputs.name'
-// output containerAppName string = containerApp.outputs.name
+output containerAppName string = containerApp.outputs.name
