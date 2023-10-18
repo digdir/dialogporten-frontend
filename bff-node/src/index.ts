@@ -112,7 +112,7 @@ export async function testKeyVault() {
           specificSecret
         );
         return {
-          latestSecret: JSON.stringify(latestSecret),
+          latestSecret,
           vaultName,
           url,
           secretName,

@@ -10,7 +10,7 @@ const get = async (req: Request<any, any, HelloWorldDto>, res: Response): Promis
     id: 1,
     message: `Hello ${name || 'Mr. Anonymous'}, deploy time: ${process.env?.DEPLOY_TIMESTAMP}`,
     process: process.env,
-    testKeyVault: testKeyVault(),
+    testKeyVault: await testKeyVault(),
   });
 };
 
