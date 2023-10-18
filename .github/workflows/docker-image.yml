@@ -154,9 +154,9 @@ jobs:
       #     .azure/powershell/fetchKeyvaultSecret.ps1
       #     -secretId ${{ steps.bicep.outputs.psqlConnectionStringSecretUri }}
 
-      - name: Fetch runners public IP
-        id: ip
-        uses: haythem/public-ip@v1.3
+      # - name: Fetch runners public IP
+      #   id: ip
+      #   uses: haythem/public-ip@v1.3
 
       # - name: Open postgre firewall for migrations
       #   run: >

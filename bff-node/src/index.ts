@@ -111,7 +111,12 @@ export async function testKeyVault() {
           `_ The secret ${secretName} at the version ${latestSecret.properties.version!}: `,
           specificSecret
         );
-        return { latestSecret };
+        return {
+          latestSecret: JSON.stringify(latestSecret),
+          vaultName,
+          url,
+          secretName,
+        };
       } catch (error) {
         console.error('_ Vault error: ', error);
         return { error };
