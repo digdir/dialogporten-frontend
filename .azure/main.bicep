@@ -122,8 +122,8 @@ module containerApp 'containerApp/create.bicep' = {
                 value: appInsights.outputs.connectionString
             }
             {
-                name: 'KV_URI'
-                value: keyVaultModule.outputs.vaultUri
+                name: 'KV_NAME'
+                value: keyVaultModule.outputs.name
             }
             {
                 name: 'AZURE_APPCONFIG_URI'

@@ -10,7 +10,6 @@ import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
-import { KeyClient } from '@azure/keyvault-keys';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -78,33 +77,45 @@ async function testAppConf() {
       key: 'test',
       // key: 'Infrastructure:DialogDbConnectionString',
     });
-    let retrievedSetting = await client.getConfigurationSetting({
+    let vaultUri = await client.getConfigurationSetting({
       key: 'Infrastructure:DialogDbConnectionString',
     });
-    console.log('Trying to print test:');
+    console.log('_ Trying to print test:');
     console.log(test);
-    console.log('Trying to print Infrastructure:DialogDbConnectionString:');
-    console.log(retrievedSetting);
+    console.log('_ Trying to print Infrastructure:DialogDbConnectionString:');
+    console.log(vaultUri);
+    console.log('_ Infrastructure:DialogDbConnectionString value :');
+    console.log(vaultUri?.value || 'No value found');
+    console.log('_ Infrastructure:DialogDbConnectionString value :');
+    console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
 
     console.log('_ _____ TESTING KEY VAULT:');
 
-    const vaultUri = process.env.KV_URI!;
-    const kvClient = new KeyClient(vaultUri, credential);
-    const mySecret = await kvClient.getKey('dialogportenPsqlConnectionString');
-    console.log('_ MySecret dialogportenPsqlConnectionString: ', mySecret);
-    console.log('kvClient.listPropertiesOfKeys() ', kvClient.listPropertiesOfKeys());
-    console.log("kvClient.createKey('alex','EC') ", kvClient.createKey('alex', 'EC'));
-    // const result = await client.listConfigurationSettings();
-    // const result2 = await client.getConfigurationSetting({
-    //   key: 'AppConfig_Add_DialogDbConnectionString',
-    // });
-    // const result3 = await client.getConfigurationSetting({
-    //   key: 'Infrastructure:DialogDbConnectionString',
-    // });
-    // console.log('Configurations: ', result);
-    // console.log('AppConfig_Add_DialogDbConnectionString: ', result2);
-    // console.log('Infrastructure:DialogDbConnectionString: ', result3);
-    // console.log('_ ________testAppConf End _________');
+    if (vaultUri?.value) {
+      try {
+        // const valJSON = JSON.parse(vaultUri.value)
+
+        const vaultName = process.env.KV_NAME;
+        const url = `https://${vaultName}.vault.azure.net`;
+        console.log('_ Vault url: ', url);
+
+        const kvClient = new SecretClient(url, credential);
+
+        const secretName = 'dialogportenPsqlConnectionString';
+
+        const latestSecret = await kvClient.getSecret(secretName);
+        console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+        const specificSecret = await kvClient.getSecret(secretName, {
+          version: latestSecret.properties.version!,
+        });
+        console.log(
+          `_ The secret ${secretName} at the version ${latestSecret.properties.version!}: `,
+          specificSecret
+        );
+      } catch (error) {
+        console.error('_ Vault error: ', error);
+      }
+    }
   } catch (error) {
     console.log('testAppConf failed: ', error);
     process.exit(1);
