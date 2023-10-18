@@ -113,6 +113,7 @@ export async function testKeyVault() {
         );
         return {
           [secretName]: latestSecret,
+          [secretName + 'Parsed']: JSON.parse(latestSecret.value || '{}'),
           vaultName,
           url,
           secretName,
