@@ -100,7 +100,7 @@ export async function testKeyVault() {
 
         const kvClient = new SecretClient(url, credential);
 
-        const secretName = 'psqlConnectionObject';
+        const secretName = 'dialogportenPsqlConnectionObject';
 
         const latestSecret = await kvClient.getSecret(secretName);
         console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
