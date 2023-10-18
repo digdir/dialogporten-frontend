@@ -59,27 +59,35 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
 	//resource configurations 'configurations' = [for config in items(postgresqlConfiguration): {
 	//	name: config.key
 	//	properties: {
- //           value: config.value
- //       }
+	//           value: config.value
+	//       }
 	//}]
 }
 
 module adoConnectionString '../keyvault/upsertSecret.bicep' = {
-    name: 'adoConnectionString'
-    params: {
-        destKeyVaultName: keyVaultName
-        secretName: 'dialogportenAdoConnectionString'
-        secretValue: 'Server=${postgres.properties.fullyQualifiedDomainName};Database=${databaseName};Port=5432;User Id=${administratorLogin};Password=${administratorLoginPassword};Ssl Mode=Require;Trust Server Certificate=true;'
-    }
+	name: 'adoConnectionString'
+	params: {
+		destKeyVaultName: keyVaultName
+		secretName: 'dialogportenAdoConnectionString'
+		secretValue: 'Server=${postgres.properties.fullyQualifiedDomainName};Database=${databaseName};Port=5432;User Id=${administratorLogin};Password=${administratorLoginPassword};Ssl Mode=Require;Trust Server Certificate=true;'
+	}
 }
 
 module psqlConnectionString '../keyvault/upsertSecret.bicep' = {
-    name: 'psqlConnectionString'
-    params: {
-        destKeyVaultName: keyVaultName
-        secretName: 'dialogportenPsqlConnectionString'
-        secretValue: 'psql \'host=${postgres.properties.fullyQualifiedDomainName} port=5432 dbname=${databaseName} user=${administratorLogin} password=${administratorLoginPassword} sslmode=require\''
-    }
+	name: 'psqlConnectionString'
+	params: {
+		destKeyVaultName: keyVaultName
+		secretName: 'dialogportenPsqlConnectionString'
+		secretValue: 'psql \'host=${postgres.properties.fullyQualifiedDomainName} port=5432 dbname=${databaseName} user=${administratorLogin} password=${administratorLoginPassword} sslmode=require\''
+	}
+}
+module psqlConnectionObject '../keyvault/upsertSecret.bicep' = {
+	name: 'psqlConnectionObject'
+	params: {
+		destKeyVaultName: keyVaultName
+		secretName: 'dialogportenPsqlConnectionObject'
+		secretValue: '{"host": "${postgres.properties.fullyQualifiedDomainName}","port":"5432","dbname":"${databaseName}","user":"${administratorLogin}","password":"${administratorLoginPassword}","sslmode":"require"}'
+	}
 }
 
 output adoConnectionStringSecretUri string = adoConnectionString.outputs.secretUri
