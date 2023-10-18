@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { HelloWorldDto } from '../Dtos';
+import { testKeyVault } from '..';
 const process = require('process');
 
 // Placeholder code for this template
@@ -9,6 +10,7 @@ const get = async (req: Request<any, any, HelloWorldDto>, res: Response): Promis
     id: 1,
     message: `Hello ${name || 'Mr. Anonymous'}, deploy time: ${process.env?.DEPLOY_TIMESTAMP}`,
     process: process.env,
+    testKeyVault: testKeyVault(),
   });
 };
 

@@ -16,6 +16,7 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 const app: Express = express();
 const port = process.env.PORT || 80;
+const credential = new DefaultAzureCredential();
 
 // Setup Application Insights:
 console.log('_ ________Setting upp App Insights _________');
@@ -56,17 +57,11 @@ async function testAppConf() {
   const d = new Date();
   try {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
-    // const endpoint = 'https://dp-fe-dev-appconfiguration.azconfig.io';
-    // const connectionString = process.env.APPCONFIG_CONNECTION_STRING;
 
     console.log('_ ________testAppConf Start _________');
     console.log('_ Time now: ', d);
     console.log('_ ________Connection endpoint: ' + endpoint);
-    // console.log('_ ________Connection string: ' + connectionString);
-    // Create a new AppConfigurationClient object using the connection string
-    // const client = new AppConfigurationClient(connectionString!);
 
-    const credential = new DefaultAzureCredential();
     console.log('credential', credential);
     const client = new AppConfigurationClient(
       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
@@ -86,16 +81,20 @@ async function testAppConf() {
     console.log(vaultUri);
     console.log('_ Infrastructure:DialogDbConnectionString value :');
     console.log(vaultUri?.value || 'No value found');
-    console.log('_ Infrastructure:DialogDbConnectionString value :');
     console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
-
+  } catch (error) {
+    console.log('testAppConf failed: ', error);
+    process.exit(1);
+  }
+}
+export async function testKeyVault() {
+  const d = new Date();
+  try {
     console.log('_ _____ TESTING KEY VAULT:');
+    const vaultName = process.env.KV_NAME;
 
-    if (vaultUri?.value) {
+    if (vaultName) {
       try {
-        // const valJSON = JSON.parse(vaultUri.value)
-
-        const vaultName = process.env.KV_NAME;
         const url = `https://${vaultName}.vault.azure.net`;
         console.log('_ Vault url: ', url);
 
@@ -112,8 +111,10 @@ async function testAppConf() {
           `_ The secret ${secretName} at the version ${latestSecret.properties.version!}: `,
           specificSecret
         );
+        return { latestSecret };
       } catch (error) {
         console.error('_ Vault error: ', error);
+        return { error };
       }
     }
   } catch (error) {
