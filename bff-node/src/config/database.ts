@@ -9,8 +9,9 @@ const password = process.env.DATABASE_PASSWORD ?? 'root';
 const host = process.env.DATABASE_HOST ?? 'localhost';
 const dialect = (process.env.DATABASE_DIALECT ?? 'mysql') as SupportedDBDialect;
 
-export const DBConnection = new Sequelize(database, username, password, {
+const DBConnection = new Sequelize(database, username, password, {
   host,
   dialect,
-  models: [HelloWorld],
 });
+
+export default DBConnection;

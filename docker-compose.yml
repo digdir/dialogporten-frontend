@@ -1,5 +1,19 @@
 version: '3.8'
 services:
+  postgresdb:
+    image: postgres
+    hostname: postgresdb-myday
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: database_development
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    expose:
+      - "5430"
+    ports:
+      - "5430:5432"
+  
   react-app:
     build:
       context: ./client
@@ -15,7 +29,10 @@ services:
       - NODE_ENV=development
     depends_on:
     - node-server  # Ensure the backend is up before starting the React app
+
   node-server:
+    depends_on:
+      - postgresdb
     build:
       context: ./bff-node
       dockerfile: Dockerfile
