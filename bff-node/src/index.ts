@@ -101,8 +101,8 @@ export async function testKeyVault() {
 
         const kvClient = new SecretClient(url, credential);
 
-        const secretName = process.env.PSQL_CONNECTION_OBJ_NAME;
-        if (!secretName) return { error: 'No PSQL_CONNECTION_OBJ_NAME found' };
+        const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+        if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
         const latestSecret = await kvClient.getSecret(secretName);
         console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
         const specificSecret = await kvClient.getSecret(secretName, {
@@ -175,22 +175,29 @@ const start = async (): Promise<void> => {
   try {
     console.log('_ STARTUP');
     // printEnvVars();
-    testAppConf();
+    // testAppConf();
     let postgresSettingsObject;
     let i = 0;
 
     do {
-      console.log('_ In do-while, iteration number: ', i);
+      console.log(
+        '_ In do-while, iteration number: ',
+        i,
+        ' postgresSettingsObject: ',
+        postgresSettingsObject
+      );
       try {
         postgresSettingsObject = await getPsqlSettingsSecret();
-      } catch (error) {}
+      } catch (error) {
+        console.error('_ DOWHILE ERROR ', error);
+      }
       await waitNSeconds(5);
       i++;
-    } while (!postgresSettingsObject);
+    } while (!postgresSettingsObject?.host);
 
-    const { host, password, dbname, port, sslmode, user } = postgresSettingsObject;
+    const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
     console.log(
-      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${port}, sslmode: ${sslmode}, `
+      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
     );
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
