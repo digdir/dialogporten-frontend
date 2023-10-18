@@ -88,16 +88,17 @@ module copySecret 'keyvault/copySecrets.bicep' = {
 //     }
 // }
 
-module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'AppConfig_Add_DialogDbConnectionString'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'Infrastructure:DialogDbConnectionString'
-        value: postgresql.outputs.adoConnectionStringSecretUri
-        keyValueType: 'keyVaultReference'
-    }
-}
+// REMOVED BECAUSE THIS IS NOT NEEDED IN NODE:
+// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+//     scope: resourceGroup
+//     name: 'AppConfig_Add_DialogDbConnectionString'
+//     params: {
+//         configStoreName: appConfiguration.outputs.name
+//         key: 'Infrastructure:DialogDbConnectionString'
+//         value: postgresql.outputs.adoConnectionStringSecretUri
+//         keyValueType: 'keyVaultReference'
+//     }
+// }
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
@@ -126,6 +127,10 @@ module containerApp 'containerApp/create.bicep' = {
                 value: keyVaultModule.outputs.name
             }
             {
+                name: 'PSQL_CONNECTION_OBJ_NAME'
+                value: postgresql.outputs.psqlConnectionObjectSecretName
+            }
+            {
                 name: 'AZURE_APPCONFIG_URI'
                 value: appConfiguration.outputs.endpoint
             }
@@ -149,6 +154,4 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
-output psqlConnectionStringSecretUri string = postgresql.outputs.psqlConnectionStringSecretUri
-// output websiteName string = website.outputs.name
 output containerAppName string = containerApp.outputs.name

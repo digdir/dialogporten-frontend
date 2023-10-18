@@ -100,8 +100,8 @@ export async function testKeyVault() {
 
         const kvClient = new SecretClient(url, credential);
 
-        const secretName = 'dialogportenPsqlConnectionObject';
-
+        const secretName = process.env.PSQL_CONNECTION_OBJ_NAME;
+        if (!secretName) return { error: 'No PSQL_CONNECTION_OBJ_NAME found' };
         const latestSecret = await kvClient.getSecret(secretName);
         console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
         const specificSecret = await kvClient.getSecret(secretName, {
@@ -128,6 +128,33 @@ export async function testKeyVault() {
     process.exit(1);
   }
 }
+async function getPsqlSettingsSecret() {
+  try {
+    console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+    const vaultName = process.env.KV_NAME;
+
+    if (vaultName) {
+      try {
+        const url = `https://${vaultName}.vault.azure.net`;
+        const kvClient = new SecretClient(url, credential);
+
+        const secretName = process.env.PSQL_CONNECTION_OBJ_NAME;
+        if (!secretName) return { error: 'No PSQL_CONNECTION_OBJ_NAME found' };
+
+        const latestSecret = await kvClient.getSecret(secretName);
+        console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+
+        return JSON.parse(latestSecret.value || '{}');
+      } catch (error) {
+        console.error('_ Vault error: ', error);
+        return { error };
+      }
+    }
+  } catch (error) {
+    console.log('_ getPsqlSettingsSecret failed: ', error);
+    process.exit(1);
+  }
+}
 
 // Call the function every 5 seconds
 // setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
@@ -139,6 +166,11 @@ const start = async (): Promise<void> => {
     console.log('_ STARTUP');
     // printEnvVars();
     testAppConf();
+    const postgresSettingsObject = await getPsqlSettingsSecret();
+    const { host, password, dbname, port, sslmode, user } = postgresSettingsObject;
+    console.log(
+      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${port}, sslmode: ${sslmode}, `
+    );
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });
