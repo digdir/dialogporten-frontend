@@ -137,6 +137,7 @@ async function getPsqlSettingsSecret() {
 
     if (vaultName) {
       try {
+        const credential = await new DefaultAzureCredential();
         const url = `https://${vaultName}.vault.azure.net`;
         const kvClient = new SecretClient(url, credential);
 
