@@ -90,8 +90,8 @@ async function testAppConf() {
 
     const vaultUri = process.env.KV_URI!;
     const kvClient = new KeyClient(vaultUri, credential);
-    const mySecret = await kvClient.getKey('dialogportenPgAdminPasswordfe-dev');
-    console.log('_ MySecret dialogportenPgAdminPasswordfe-dev-fe-dev: ', mySecret);
+    const mySecret = await kvClient.getKey('dialogportenPsqlConnectionString');
+    console.log('_ MySecret dialogportenPsqlConnectionString: ', mySecret);
     console.log('kvClient.listPropertiesOfKeys() ', kvClient.listPropertiesOfKeys());
     console.log("kvClient.createKey('alex','EC') ", kvClient.createKey('alex', 'EC'));
     // const result = await client.listConfigurationSettings();
