@@ -17,25 +17,25 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html');
 const app: Express = express();
 const port = process.env.PORT || 80;
 
-// Setup Application Insights:
-console.log('_ ________Setting upp App Insights _________');
-console.log(
-  '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
-  process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
-);
-setup()
-  .setAutoDependencyCorrelation(true)
-  .setAutoCollectRequests(true)
-  .setAutoCollectPerformance(true, true)
-  .setAutoCollectExceptions(true)
-  .setAutoCollectDependencies(true)
-  .setAutoCollectConsole(true)
-  .setUseDiskRetryCaching(true)
-  .setSendLiveMetrics(false)
-  .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
-  .start();
+// // Setup Application Insights:
+// console.log('_ ________Setting upp App Insights _________');
+// console.log(
+//   '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
+//   process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
+// );
+// setup()
+//   .setAutoDependencyCorrelation(true)
+//   .setAutoCollectRequests(true)
+//   .setAutoCollectPerformance(true, true)
+//   .setAutoCollectExceptions(true)
+//   .setAutoCollectDependencies(true)
+//   .setAutoCollectConsole(true)
+//   .setUseDiskRetryCaching(true)
+//   .setSendLiveMetrics(false)
+//   .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+//   .start();
 
-console.log('_ ________Done setting up App Insights _________');
+// console.log('_ ________Done setting up App Insights _________');
 
 app.use(express.static(DIST_DIR));
 app.get('/', (req, res) => {
@@ -191,7 +191,7 @@ const start = async (): Promise<void> => {
       } catch (error) {
         console.error('_ DOWHILE ERROR ', error);
       }
-      await waitNSeconds(5);
+      await waitNSeconds(0.5);
       i++;
     } while (!postgresSettingsObject?.host);
 
