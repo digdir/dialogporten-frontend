@@ -16,7 +16,6 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 const app: Express = express();
 const port = process.env.PORT || 80;
-const credential = new DefaultAzureCredential();
 
 // Setup Application Insights:
 console.log('_ ________Setting upp App Insights _________');
@@ -57,12 +56,12 @@ async function testAppConf() {
   const d = new Date();
   try {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
+    const credential = await new DefaultAzureCredential();
 
     console.log('_ ________testAppConf Start _________');
     console.log('_ Time now: ', d);
     console.log('_ ________Connection endpoint: ' + endpoint);
 
-    console.log('credential', credential);
     const client = new AppConfigurationClient(
       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
       credential
@@ -87,11 +86,13 @@ async function testAppConf() {
     process.exit(1);
   }
 }
+
 export async function testKeyVault() {
   const d = new Date();
   try {
     console.log('_ _____ TESTING KEY VAULT:');
     const vaultName = process.env.KV_NAME;
+    const credential = await new DefaultAzureCredential();
 
     if (vaultName) {
       try {
@@ -128,6 +129,7 @@ export async function testKeyVault() {
     process.exit(1);
   }
 }
+
 async function getPsqlSettingsSecret() {
   try {
     console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
