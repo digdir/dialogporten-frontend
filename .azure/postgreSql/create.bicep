@@ -44,14 +44,16 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
 		}
 	}
 }
+
+var psqlSecretName = '${namePrefix}-psqlConnectionJSON'
 module psqlConnectionObject '../keyvault/upsertSecret.bicep' = {
-	name: 'psqlConnectionObject'
+	name: psqlSecretName
 	params: {
 		destKeyVaultName: keyVaultName
-		secretName: 'dialogportenPsqlConnectionObject'
+		secretName: psqlSecretName
 		secretValue: '{"host": "${postgres.properties.fullyQualifiedDomainName}","port":"5432","dbname":"${databaseName}","user":"${administratorLogin}","password":"${administratorLoginPassword}","sslmode":"require"}'
 	}
 }
 
 output serverName string = postgres.name
-output psqlConnectionObjectSecretName string = psqlConnectionObject.name
+output psqlConnectionJSONSecretName string = psqlSecretName

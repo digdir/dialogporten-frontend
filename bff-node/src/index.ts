@@ -56,7 +56,7 @@ async function testAppConf() {
   const d = new Date();
   try {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
-    const credential = await new DefaultAzureCredential();
+    const credential = new DefaultAzureCredential();
 
     console.log('_ ________testAppConf Start _________');
     console.log('_ Time now: ', d);
@@ -92,7 +92,7 @@ export async function testKeyVault() {
   try {
     console.log('_ _____ TESTING KEY VAULT:');
     const vaultName = process.env.KV_NAME;
-    const credential = await new DefaultAzureCredential();
+    const credential = new DefaultAzureCredential();
 
     if (vaultName) {
       try {
@@ -137,12 +137,12 @@ async function getPsqlSettingsSecret() {
 
     if (vaultName) {
       try {
-        const credential = await new DefaultAzureCredential();
+        const credential = new DefaultAzureCredential();
         const url = `https://${vaultName}.vault.azure.net`;
         const kvClient = new SecretClient(url, credential);
 
-        const secretName = process.env.PSQL_CONNECTION_OBJ_NAME;
-        if (!secretName) return { error: 'No PSQL_CONNECTION_OBJ_NAME found' };
+        const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+        if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
 
         const latestSecret = await kvClient.getSecret(secretName);
         console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
@@ -163,13 +163,31 @@ async function getPsqlSettingsSecret() {
 // setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
 
 // app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+function waitNSeconds(n: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000 * n);
+  });
+}
 
 const start = async (): Promise<void> => {
   try {
     console.log('_ STARTUP');
     // printEnvVars();
     testAppConf();
-    const postgresSettingsObject = await getPsqlSettingsSecret();
+    let postgresSettingsObject;
+    let i = 0;
+
+    do {
+      console.log('_ In do-while, iteration number: ', i);
+      try {
+        postgresSettingsObject = await getPsqlSettingsSecret();
+      } catch (error) {}
+      await waitNSeconds(5);
+      i++;
+    } while (!postgresSettingsObject);
+
     const { host, password, dbname, port, sslmode, user } = postgresSettingsObject;
     console.log(
       `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${port}, sslmode: ${sslmode}, `

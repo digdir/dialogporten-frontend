@@ -5,7 +5,7 @@ param location string
 param keyVault object
 param imageUrl string
 param deployTimestamp string
-var namePrefix = 'dp-${environment}'
+var namePrefix = 'dp-fe-${environment}'
 @secure()
 param secrets object
 
@@ -127,8 +127,8 @@ module containerApp 'containerApp/create.bicep' = {
                 value: keyVaultModule.outputs.name
             }
             {
-                name: 'PSQL_CONNECTION_OBJ_NAME'
-                value: postgresql.outputs.psqlConnectionObjectSecretName
+                name: 'PSQL_CONNECTION_JSON_NAME'
+                value: postgresql.outputs.psqlConnectionJSONSecretName
             }
             {
                 name: 'AZURE_APPCONFIG_URI'
