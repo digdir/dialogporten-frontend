@@ -38,7 +38,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 			containers: [
 				{
 					name: '${namePrefix}-ghcr-docker-image'
-					image: '${baseImageUrl}node-bff:${gitSha}'
+					image: '${baseImageUrl}-node-bff:${gitSha}'
 					// image: imageUrl
 					env: envVariables
 					resources: {

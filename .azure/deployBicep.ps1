@@ -9,7 +9,7 @@ param(
 	[string]$imageUrl,
 
 	[Parameter(Mandatory)]
-	[string]$deployTimestamp
+	[string]$deployTimestamp,
 
 	[Parameter(Mandatory)]
 	[string]$gitSha
