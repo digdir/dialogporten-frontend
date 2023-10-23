@@ -20,25 +20,20 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html');
 const app: Express = express();
 const port = process.env.PORT || 80;
 
-// Setup Application Insights:
-console.log('_ ________Setting upp App Insights _________');
-console.log(
-  '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
-  process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
-);
-setup()
-  .setAutoDependencyCorrelation(true)
-  .setAutoCollectRequests(true)
-  .setAutoCollectPerformance(true, true)
-  .setAutoCollectExceptions(true)
-  .setAutoCollectDependencies(true)
-  .setAutoCollectConsole(true)
-  .setUseDiskRetryCaching(true)
-  .setSendLiveMetrics(false)
-  .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
-  .start();
-
-console.log('_ ________Done setting up App Insights _________');
+const initAppInsights = async () => {
+  // Setup Application Insights:
+  setup()
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true, true)
+    .setUseDiskRetryCaching(true)
+    .setSendLiveMetrics(false)
+    .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+    .start();
+};
 
 app.use(express.static(DIST_DIR));
 app.get('/', (req, res) => {
@@ -47,13 +42,149 @@ app.get('/', (req, res) => {
 app.use(bodyParser.json());
 app.use('/api/v1', routes);
 
-function printEnvVars() {
-  console.log('_ ________ENVIRONMENT START _________');
-  console.log('ENV_TEST: ', process.env.ENV_TEST);
-  console.log('ALL: ', process.env);
-  console.log('process.env.BICEP_TEST_ENV_VARIABLE: ', process.env.BICEP_TEST_ENV_VARIABLE);
-  console.log('_ ________ENVIRONMENT END _________');
+export async function getPsqlSettingsSecret(debug = false) {
+  try {
+    debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+    const vaultName = process.env.KV_NAME;
+
+    if (vaultName) {
+      try {
+        const credential = new DefaultAzureCredential();
+        const url = `https://${vaultName}.vault.azure.net`;
+        const kvClient = new SecretClient(url, credential);
+
+        const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+        if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
+
+        const latestSecret = await kvClient.getSecret(secretName);
+        debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+        const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
+        const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+        debug &&
+          console.log(
+            `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+          );
+        process.env.DB_HOST = host;
+        process.env.DB_PORT = dbport;
+        process.env.DB_USER = user;
+        process.env.DB_PASSWORD = password;
+        process.env.DB_NAME = dbname;
+        process.env.DB_SSLMODE = sslmode;
+
+        return postgresSettingsObject;
+      } catch (error) {
+        console.error('_getPsqlSettingsSecret: Vault error ');
+        return { error };
+      }
+    }
+  } catch (error) {
+    console.log('_ getPsqlSettingsSecret failed: ', error);
+    process.exit(1);
+  }
 }
+
+// Call the function every 5 seconds
+// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
+
+// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+function waitNSeconds(n: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000 * n);
+  });
+}
+
+const start = async (): Promise<void> => {
+  await dataSource
+    .initialize()
+    .then(async () => {
+      console.log('_ Starting initAppInsights()');
+      await initAppInsights();
+      console.log('_ Finished initAppInsights()');
+
+      // console.log('Inserting a new family into the database...');
+      // const family = new Family();
+      // family.name = 'Midteide';
+      // await dataSource.manager.save(family);
+      // console.log('saved: ', { family });
+      // console.log('Trying to fetch it again:');
+      // const familyFetched = await dataSource.manager.find(Family);
+
+      // const familyRepository = dataSource.getRepository(Family);
+      // const allfamily = await familyRepository.find();
+      // console.log('allfamily from the db: ', allfamily);
+
+      // const firstPhoto = await familyRepository.findOneBy({
+      //   id: 1,
+      // });
+      // console.log('First photo from the db: ', firstPhoto);
+
+      const personRepository = dataSource.getRepository(Person);
+
+      // const person = new Person();
+      // person.family = family;
+      // person.age = 25;
+      // person.name = 'Alexander';
+      // await personRepository.save(person);
+      // console.log('Saved a new person with id: ' + person.id);
+
+      console.log('Loading users from the database...');
+      // const users = await personRepository.find();
+      const users = await personRepository.find({
+        relations: {
+          family: true,
+        },
+      });
+      console.log('Loaded persons: ', users);
+    })
+    // .then(() => start())
+    .catch((error) => console.log(error));
+  console.log('_ DB Setup done, entering main try/catch');
+  try {
+    // printEnvVars();
+    // testAppConf();
+    let postgresSettingsObject;
+    let i = 0;
+
+    do {
+      console.log(
+        '_ In do-while, iteration number: ',
+        i
+        // ' postgresSettingsObject: ',
+        // postgresSettingsObject
+      );
+      try {
+        postgresSettingsObject = await getPsqlSettingsSecret();
+      } catch (error) {
+        console.error('_ DOWHILE ERROR on iteration no.: ', i);
+      }
+      await waitNSeconds(1);
+      i++;
+    } while (!postgresSettingsObject?.host);
+    console.log('_ ***** Key vault set up finished on iteration no.: ', i);
+
+    const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+    console.log(
+      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+    );
+    process.env.DB_HOST = host;
+    process.env.DB_PORT = dbport;
+    process.env.DB_USER = user;
+    process.env.DB_PASSWORD = password;
+    process.env.DB_NAME = dbname;
+    process.env.DB_SSLMODE = sslmode;
+
+    app.listen(port, () => {
+      console.log(`⚡️[server]: Server is running on PORT: ${port}`);
+    });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+void start();
 
 async function testAppConf() {
   const d = new Date();
@@ -100,14 +231,14 @@ export async function testKeyVault() {
     if (vaultName) {
       try {
         const url = `https://${vaultName}.vault.azure.net`;
-        console.log('_ Vault url: ', url);
+        // console.log('_ Vault url: ', url);
 
         const kvClient = new SecretClient(url, credential);
 
         const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
         if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
         const latestSecret = await kvClient.getSecret(secretName);
-        console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+        // console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
         const specificSecret = await kvClient.getSecret(secretName, {
           version: latestSecret.properties.version!,
         });
@@ -132,145 +263,6 @@ export async function testKeyVault() {
     process.exit(1);
   }
 }
-
-export async function getPsqlSettingsSecret() {
-  try {
-    console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
-    const vaultName = process.env.KV_NAME;
-
-    if (vaultName) {
-      try {
-        const credential = new DefaultAzureCredential();
-        const url = `https://${vaultName}.vault.azure.net`;
-        const kvClient = new SecretClient(url, credential);
-
-        const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
-        if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
-
-        const latestSecret = await kvClient.getSecret(secretName);
-        console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
-        const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
-        const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-        console.log(
-          `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-        );
-        process.env.DB_HOST = host;
-        process.env.DB_PORT = dbport;
-        process.env.DB_USER = user;
-        process.env.DB_PASSWORD = password;
-        process.env.DB_NAME = dbname;
-        process.env.DB_SSLMODE = sslmode;
-
-        return postgresSettingsObject;
-      } catch (error) {
-        console.error('_ Vault error: ', error);
-        return { error };
-      }
-    }
-  } catch (error) {
-    console.log('_ getPsqlSettingsSecret failed: ', error);
-    process.exit(1);
-  }
-}
-
-// Call the function every 5 seconds
-// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
-
-// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-function waitNSeconds(n: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, 1000 * n);
-  });
-}
-
-const start = async (): Promise<void> => {
-  await dataSource
-    .initialize()
-    .then(async () => {
-      // console.log('Inserting a new family into the database...');
-      // const family = new Family();
-      // family.name = 'Midteide';
-      // await dataSource.manager.save(family);
-      // console.log('saved: ', { family });
-      // console.log('Trying to fetch it again:');
-      // const familyFetched = await dataSource.manager.find(Family);
-
-      // const familyRepository = dataSource.getRepository(Family);
-      // const allfamily = await familyRepository.find();
-      // console.log('allfamily from the db: ', allfamily);
-
-      // const firstPhoto = await familyRepository.findOneBy({
-      //   id: 1,
-      // });
-      // console.log('First photo from the db: ', firstPhoto);
-
-      const personRepository = dataSource.getRepository(Person);
-
-      // const person = new Person();
-      // person.family = family;
-      // person.age = 25;
-      // person.name = 'Alexander';
-      // await personRepository.save(person);
-      // console.log('Saved a new person with id: ' + person.id);
-
-      console.log('Loading users from the database...');
-      // const users = await personRepository.find();
-      const users = await personRepository.find({
-        relations: {
-          family: true,
-        },
-      });
-      console.log('Loaded persons: ', users);
-    })
-    // .then(() => start())
-    .catch((error) => console.log(error));
-  console.log('_ DB Setup done, enterin main try/catch');
-  try {
-    console.log('_ STARTUP');
-    // printEnvVars();
-    // testAppConf();
-    let postgresSettingsObject;
-    let i = 0;
-
-    do {
-      console.log(
-        '_ In do-while, iteration number: ',
-        i,
-        ' postgresSettingsObject: ',
-        postgresSettingsObject
-      );
-      try {
-        postgresSettingsObject = await getPsqlSettingsSecret();
-      } catch (error) {
-        console.error('_ DOWHILE ERROR ', error);
-      }
-      await waitNSeconds(0.5);
-      i++;
-    } while (!postgresSettingsObject?.host);
-
-    const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-    console.log(
-      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-    );
-    process.env.DB_HOST = host;
-    process.env.DB_PORT = dbport;
-    process.env.DB_USER = user;
-    process.env.DB_PASSWORD = password;
-    process.env.DB_NAME = dbname;
-    process.env.DB_SSLMODE = sslmode;
-
-    app.listen(port, () => {
-      console.log(`⚡️[server]: Server is running on PORT: ${port}`);
-    });
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-};
-
-void start();
 
 // Env variables:
 // {

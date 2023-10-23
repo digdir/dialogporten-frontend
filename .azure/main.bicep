@@ -132,7 +132,7 @@ module containerApp 'containerApp/create.bicep' = {
                 value: keyVaultModule.outputs.name
             }
             {
-                name: 'PSQL_CONNECTION_JSON_NAME'
+                name: 'PSQL_CONNECTION_JSON_NAME' // MÅ BYTTES UT, DETTE SKAL HENTES FRA APP CONFIG
                 value: postgresql.outputs.psqlConnectionJSONSecretName
             }
             {
