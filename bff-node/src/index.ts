@@ -10,9 +10,9 @@ import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
-import { Person } from './entities/Person';
-import { Family } from './entities/Family';
 import { DataSource } from 'typeorm';
+import { Person } from 'entities/Person';
+import { Family } from 'entities/Family';
 console.log('_ ****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
@@ -118,10 +118,41 @@ const getPGDetails = async () => {
   });
 };
 
+// ******************************
+// ************ MAIN ************
+// ******************************
+
 const start = async (): Promise<void> => {
   console.log('_ Starting getPgDetails');
   const pgDetails = await getPGDetails();
   console.log('_ pgDetails:', pgDetails);
+  console.log('_ dataSource settings:', {
+    type: 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432'),
+    username: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || 'my_db',
+    entities: [Person, Family],
+    // entities: ['entities/**/*.{js,ts}'],
+    synchronize: true,
+    // logging: true,
+    // entities: ['entities/*.ts'],
+    // migrations: ['migrations/*{.ts,.js}'],
+    // migrationsRun: true,
+    // migrations: ['./migrations/*.{js,ts}'],
+    // migrations: ['./migrations/*.ts'],
+    // entities: ['dist/entities/*.ts'],
+    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+    // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+    logging: true,
+    logger: 'file',
+    // cli: {
+    //   migrationsDir: 'src/migrations',
+    // },
+    // migrations: ['dist/migrations/*.ts'],
+    // dropSchema: true,
+  });
 
   console.log('_ Starting dataSource.initialize()');
   const dataSource = new DataSource({
