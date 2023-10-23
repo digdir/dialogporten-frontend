@@ -1,5 +1,5 @@
 # Use a Node.js base image
-FROM node
+FROM node:18
 
 # Set working directory
 WORKDIR /app

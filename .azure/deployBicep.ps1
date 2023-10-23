@@ -85,7 +85,7 @@ $deploymentOutputs = @( `
 		az deployment sub create `
 		--subscription $subscriptionId `
 		--location $paramsJson.parameters.location.value `
-		--name "GithubActionsDeploy-$environment" `
+		--name "GithubActionsDeploy-fe-$environment" `
 		--template-file "$($PSScriptRoot)/main.bicep" `
 		--parameters $formatedParamsJson `
 		--query properties.outputs `

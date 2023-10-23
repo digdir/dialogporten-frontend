@@ -2,7 +2,7 @@ version: '3.8'
 services:
   postgresdb:
     image: postgres
-    hostname: postgresdb-myday
+    hostname: postgresdb-dp-fe
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: mysecretpassword
@@ -33,6 +33,13 @@ services:
   node-server:
     depends_on:
       - postgresdb
+    environment:
+      - PORT=3001
+      - DB_HOST=postgresdb-dp-fe
+      - DB_USER=postgres
+      - DB_PORT=5432
+      - DB_PASSWORD=mysecretpassword
+      - DB_NAME=database_development
     build:
       context: ./bff-node
       dockerfile: Dockerfile

@@ -6,9 +6,7 @@ param envVariables array = []
 resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
 	name: '${namePrefix}-containerappenv'
 	location: location
-	properties: {
-
-	}
+	properties: {}
 }
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
@@ -24,6 +22,17 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 			}
 		}
 		template: {
+			initContainers: [
+				{
+					name: '${namePrefix}-ghcr-docker-image-init'
+					image: imageUrl // Bruke C# container 
+					env: envVariables
+					resources: {
+						cpu: 1
+						memory: '2.0Gi'
+					}
+				}
+			]
 			containers: [
 				{
 					name: '${namePrefix}-ghcr-docker-image'

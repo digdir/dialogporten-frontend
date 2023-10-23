@@ -10,6 +10,9 @@ import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
+import { dataSource } from './data-source';
+import { Person } from './entities/Person';
+import { Family } from './entities/Family';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -17,25 +20,25 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html');
 const app: Express = express();
 const port = process.env.PORT || 80;
 
-// // Setup Application Insights:
-// console.log('_ ________Setting upp App Insights _________');
-// console.log(
-//   '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
-//   process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
-// );
-// setup()
-//   .setAutoDependencyCorrelation(true)
-//   .setAutoCollectRequests(true)
-//   .setAutoCollectPerformance(true, true)
-//   .setAutoCollectExceptions(true)
-//   .setAutoCollectDependencies(true)
-//   .setAutoCollectConsole(true)
-//   .setUseDiskRetryCaching(true)
-//   .setSendLiveMetrics(false)
-//   .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
-//   .start();
+// Setup Application Insights:
+console.log('_ ________Setting upp App Insights _________');
+console.log(
+  '_ APPLICATIONINSIGHTS_CONNECTION_STRING: ',
+  process.env.APPLICATIONINSIGHTS_CONNECTION_STRING
+);
+setup()
+  .setAutoDependencyCorrelation(true)
+  .setAutoCollectRequests(true)
+  .setAutoCollectPerformance(true, true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectDependencies(true)
+  .setAutoCollectConsole(true)
+  .setUseDiskRetryCaching(true)
+  .setSendLiveMetrics(false)
+  .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+  .start();
 
-// console.log('_ ________Done setting up App Insights _________');
+console.log('_ ________Done setting up App Insights _________');
 
 app.use(express.static(DIST_DIR));
 app.get('/', (req, res) => {
@@ -130,7 +133,7 @@ export async function testKeyVault() {
   }
 }
 
-async function getPsqlSettingsSecret() {
+export async function getPsqlSettingsSecret() {
   try {
     console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
     const vaultName = process.env.KV_NAME;
@@ -146,8 +149,19 @@ async function getPsqlSettingsSecret() {
 
         const latestSecret = await kvClient.getSecret(secretName);
         console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+        const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
+        const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+        console.log(
+          `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+        );
+        process.env.DB_HOST = host;
+        process.env.DB_PORT = dbport;
+        process.env.DB_USER = user;
+        process.env.DB_PASSWORD = password;
+        process.env.DB_NAME = dbname;
+        process.env.DB_SSLMODE = sslmode;
 
-        return JSON.parse(latestSecret.value || '{}');
+        return postgresSettingsObject;
       } catch (error) {
         console.error('_ Vault error: ', error);
         return { error };
@@ -172,6 +186,47 @@ function waitNSeconds(n: number): Promise<void> {
 }
 
 const start = async (): Promise<void> => {
+  await dataSource
+    .initialize()
+    .then(async () => {
+      // console.log('Inserting a new family into the database...');
+      // const family = new Family();
+      // family.name = 'Midteide';
+      // await dataSource.manager.save(family);
+      // console.log('saved: ', { family });
+      // console.log('Trying to fetch it again:');
+      // const familyFetched = await dataSource.manager.find(Family);
+
+      // const familyRepository = dataSource.getRepository(Family);
+      // const allfamily = await familyRepository.find();
+      // console.log('allfamily from the db: ', allfamily);
+
+      // const firstPhoto = await familyRepository.findOneBy({
+      //   id: 1,
+      // });
+      // console.log('First photo from the db: ', firstPhoto);
+
+      const personRepository = dataSource.getRepository(Person);
+
+      // const person = new Person();
+      // person.family = family;
+      // person.age = 25;
+      // person.name = 'Alexander';
+      // await personRepository.save(person);
+      // console.log('Saved a new person with id: ' + person.id);
+
+      console.log('Loading users from the database...');
+      // const users = await personRepository.find();
+      const users = await personRepository.find({
+        relations: {
+          family: true,
+        },
+      });
+      console.log('Loaded persons: ', users);
+    })
+    // .then(() => start())
+    .catch((error) => console.log(error));
+  console.log('_ DB Setup done, enterin main try/catch');
   try {
     console.log('_ STARTUP');
     // printEnvVars();
@@ -199,6 +254,13 @@ const start = async (): Promise<void> => {
     console.log(
       `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
     );
+    process.env.DB_HOST = host;
+    process.env.DB_PORT = dbport;
+    process.env.DB_USER = user;
+    process.env.DB_PASSWORD = password;
+    process.env.DB_NAME = dbname;
+    process.env.DB_SSLMODE = sslmode;
+
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });

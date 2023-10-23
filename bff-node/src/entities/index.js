@@ -42,30 +42,30 @@
 
 // module.exports = db;
 
-import { Sequelize } from 'sequelize-typescript';
-import PersonModel from './Person.model';
-import FamilyModel from './Family.model';
+// import { Sequelize } from 'sequelize-typescript';
+// import PersonModel from './person';
+// import FamilyModel from './family';
 
-const database = process.env.DATABASE_NAME ?? '';
-const username = process.env.DATABASE_USERNAME ?? 'root';
-const password = process.env.DATABASE_PASSWORD ?? 'root';
-const host = process.env.DATABASE_HOST ?? 'localhost';
-const dialect = process.env.DATABASE_DIALECT ?? 'mysql';
+// const database = process.env.DATABASE_NAME ?? '';
+// const username = process.env.DATABASE_USERNAME ?? 'root';
+// const password = process.env.DATABASE_PASSWORD ?? 'root';
+// const host = process.env.DATABASE_HOST ?? 'localhost';
+// const dialect = process.env.DATABASE_DIALECT ?? 'mysql';
 
-const sequelize = new Sequelize(database, username, password, {
-  host,
-  dialect,
-});
+// const sequelize = new Sequelize(database, username, password, {
+//   host,
+//   dialect,
+// });
 
-const db = {};
+// const db = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
+// db.sequelize = sequelize;
 
-db.family = FamilyModel(sequelize, Sequelize);
-db.person = PersonModel(sequelize, Sequelize);
+// db.family = FamilyModel(sequelize, Sequelize);
+// db.person = PersonModel(sequelize, Sequelize);
 
-db.family.hasMany(db.person, { onDelete: 'CASCADE' });
-db.person.belongsTo(db.family);
+// db.family.hasMany(db.person, { onDelete: 'CASCADE' });
+// db.person.belongsTo(db.family);
 
-export default db;
+// export default db;
