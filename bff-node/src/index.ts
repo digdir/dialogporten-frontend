@@ -151,21 +151,25 @@ const start = async (): Promise<void> => {
     // migrations: ['dist/migrations/*.ts'],
     // dropSchema: true,
   });
+  try {
+    console.log('_ DB Setup done, entering main try/catch');
+    console.log('_ Starting initAppInsights()');
+    await initAppInsights();
+    console.log('_ Finished initAppInsights()');
+    const personRepository = dataSource.getRepository(Person);
 
-  console.log('_ DB Setup done, entering main try/catch');
-  console.log('_ Starting initAppInsights()');
-  await initAppInsights();
-  console.log('_ Finished initAppInsights()');
-  const personRepository = dataSource.getRepository(Person);
+    console.log('_ Loading users from the database...');
+    // const users = await personRepository.find();
+    const users = await personRepository.find({
+      relations: {
+        family: true,
+      },
+    });
+    console.log('_ Loaded persons: ', users);
+  } catch (error) {
+    console.log('_ Loaded error: ', error);
+  }
 
-  console.log('_ Loading users from the database...');
-  // const users = await personRepository.find();
-  const users = await personRepository.find({
-    relations: {
-      family: true,
-    },
-  });
-  console.log('_ Loaded persons: ', users);
   try {
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
