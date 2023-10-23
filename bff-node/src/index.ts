@@ -101,19 +101,21 @@ function waitNSeconds(n: number): Promise<void> {
 }
 
 const getPGDetails = async () => {
-  let postgresSettingsObject;
-  let i = 0;
-
-  do {
-    try {
-      postgresSettingsObject = await getPsqlSettingsSecret();
-    } catch (error) {
-      console.error('_ DOWHILE ERROR on iteration no.: ', i);
-    }
-    await waitNSeconds(2);
-    i++;
-  } while (!postgresSettingsObject);
-  console.log('_ ***** Key vault set up finished on iteration no.: ', i);
+  return new Promise(async (resolve, reject) => {
+    let postgresSettingsObject;
+    let i = 0;
+    do {
+      try {
+        postgresSettingsObject = await getPsqlSettingsSecret();
+      } catch (error) {
+        console.error('_ DOWHILE ERROR on iteration no.: ', i);
+      }
+      await waitNSeconds(2);
+      i++;
+    } while (!postgresSettingsObject);
+    console.log('_ ***** Key vault set up finished on iteration no.: ', i);
+    resolve(postgresSettingsObject);
+  });
 };
 
 const start = async (): Promise<void> => {
