@@ -11,8 +11,8 @@ import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
 import { DataSource } from 'typeorm';
-import { Person } from 'entities/Person';
-import { Family } from 'entities/Family';
+import { Person } from './entities/Person';
+import { Family } from './entities/Family';
 console.log('_ ****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
@@ -82,11 +82,11 @@ export async function getPsqlSettingsSecret(debug = false) {
           resolve(postgresSettingsObject);
         } else reject({ error: '_ Invalid postgresSettingsObject found' });
       } catch (error) {
-        console.error('_getPsqlSettingsSecret: Vault error ', error);
+        console.error('_getPsqlSettingsSecret: Vault error ');
         reject({ error });
       }
     } catch (error) {
-      console.log('_ getPsqlSettingsSecret failed: ', error);
+      console.log('_ getPsqlSettingsSecret failed: ');
       process.exit(1);
     }
   });
