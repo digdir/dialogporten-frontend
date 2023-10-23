@@ -10,12 +10,16 @@ param(
 
 	[Parameter(Mandatory)]
 	[string]$deployTimestamp
+
+	[Parameter(Mandatory)]
+	[string]$gitSha
 )
 Import-module "$PSScriptRoot/powershell/jsonMerge.ps1" -Force
 Import-module "$PSScriptRoot/powershell/pwdGenerator.ps1" -Force
 
 # Merge main.parameters.json and optional main.parameters.$environment.json
 $paramsJson = JsonMergeFromPath "$PSScriptRoot/main.parameters.json" "$PSScriptRoot/main.parameters.$environment.json"
+Write-Host "GitSha: $gitSha"
 
 # Add keyvault keys to parameters.keyVault.value.source.keys
 AddMemberPath $paramsJson "parameters.keyVault.value.source.keys" @( `
@@ -25,6 +29,10 @@ AddMemberPath $paramsJson "parameters.keyVault.value.source.keys" @( `
 		--query "[].name" `
 		--output tsv `
 )
+
+# Add gitSha to parameters
+AddMemberPath $paramsJson "parameters.gitSha.value" $gitSha
+
 
 # Add auto generated secrets to parameters
 AddMemberPath $paramsJson "parameters.secrets.value" @{
