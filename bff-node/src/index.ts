@@ -10,9 +10,10 @@ import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
 import { setup, DistributedTracingModes } from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
-import { dataSource } from './data-source';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
+import { DataSource } from 'typeorm';
+console.log('_ ****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -41,47 +42,6 @@ app.get('/', (req, res) => {
 });
 app.use(bodyParser.json());
 app.use('/api/v1', routes);
-
-// export async function getPsqlSettingsSecret(debug = false) {
-//   try {
-//     debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
-//     const vaultName = process.env.KV_NAME;
-
-//     if (vaultName) {
-//       try {
-//         const credential = new DefaultAzureCredential();
-//         const url = `https://${vaultName}.vault.azure.net`;
-//         const kvClient = new SecretClient(url, credential);
-
-//         const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
-//         if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
-
-//         const latestSecret = await kvClient.getSecret(secretName);
-//         debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
-//         const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
-//         const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-//         debug &&
-//           console.log(
-//             `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-//           );
-//         process.env.DB_HOST = host;
-//         process.env.DB_PORT = dbport;
-//         process.env.DB_USER = user;
-//         process.env.DB_PASSWORD = password;
-//         process.env.DB_NAME = dbname;
-//         process.env.DB_SSLMODE = sslmode;
-
-//         return postgresSettingsObject;
-//       } catch (error) {
-//         console.error('_getPsqlSettingsSecret: Vault error ');
-//         return { error };
-//       }
-//     }
-//   } catch (error) {
-//     console.log('_ getPsqlSettingsSecret failed: ', error);
-//     process.exit(1);
-//   }
-// }
 
 export async function getPsqlSettingsSecret(debug = false) {
   return new Promise(async (resolve, reject) => {
@@ -154,38 +114,56 @@ const getPGDetails = async () => {
     i++;
   } while (!postgresSettingsObject);
   console.log('_ ***** Key vault set up finished on iteration no.: ', i);
-
-  // const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-  // console.log(
-  //   `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-  // );
-  // process.env.DB_HOST = host;
-  // process.env.DB_PORT = dbport;
-  // process.env.DB_USER = user;
-  // process.env.DB_PASSWORD = password;
-  // process.env.DB_NAME = dbname;
-  // process.env.DB_SSLMODE = sslmode;
 };
 
 const start = async (): Promise<void> => {
-  console.log('Starting getPgDetails');
-  await getPGDetails();
-  console.log('Starting dataSource.initialize()');
-  await dataSource.initialize();
+  console.log('_ Starting getPgDetails');
+  const pgDetails = await getPGDetails();
+  console.log('_ pgDetails:', pgDetails);
+
+  console.log('_ Starting dataSource.initialize()');
+  const dataSource = new DataSource({
+    type: 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432'),
+    username: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || 'my_db',
+    entities: [Person, Family],
+    // entities: ['entities/**/*.{js,ts}'],
+    synchronize: true,
+    // logging: true,
+    // entities: ['entities/*.ts'],
+    // migrations: ['migrations/*{.ts,.js}'],
+    // migrationsRun: true,
+    // migrations: ['./migrations/*.{js,ts}'],
+    // migrations: ['./migrations/*.ts'],
+    // entities: ['dist/entities/*.ts'],
+    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+    // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+    logging: true,
+    logger: 'file',
+    // cli: {
+    //   migrationsDir: 'src/migrations',
+    // },
+    // migrations: ['dist/migrations/*.ts'],
+    // dropSchema: true,
+  });
+
   console.log('_ DB Setup done, entering main try/catch');
   console.log('_ Starting initAppInsights()');
   await initAppInsights();
   console.log('_ Finished initAppInsights()');
   const personRepository = dataSource.getRepository(Person);
 
-  console.log('Loading users from the database...');
+  console.log('_ Loading users from the database...');
   // const users = await personRepository.find();
   const users = await personRepository.find({
     relations: {
       family: true,
     },
   });
-  console.log('Loaded persons: ', users);
+  console.log('_ Loaded persons: ', users);
   try {
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
@@ -228,7 +206,7 @@ async function testAppConf() {
     console.log(vaultUri?.value || 'No value found');
     console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
   } catch (error) {
-    console.log('testAppConf failed: ', error);
+    console.log('_ testAppConf failed: ', error);
     process.exit(1);
   }
 }
@@ -271,7 +249,7 @@ export async function testKeyVault() {
       }
     }
   } catch (error) {
-    console.log('testAppConf failed: ', error);
+    console.log('_ testAppConf failed: ', error);
     process.exit(1);
   }
 }
