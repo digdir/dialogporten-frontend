@@ -1,8 +1,10 @@
 {
    "compilerOptions": {
       "outDir": "./dist",
-      "target": "es2017",
-      "module": "node16",
+      "baseUrl": "./src",
+      "target": "es2020",
+      "module": "commonjs",
+      "moduleResolution": "node",
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
       "experimentalDecorators": true,
