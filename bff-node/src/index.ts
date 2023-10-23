@@ -42,45 +42,94 @@ app.get('/', (req, res) => {
 app.use(bodyParser.json());
 app.use('/api/v1', routes);
 
-export async function getPsqlSettingsSecret(debug = false) {
-  try {
-    debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
-    const vaultName = process.env.KV_NAME;
+// export async function getPsqlSettingsSecret(debug = false) {
+//   try {
+//     debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+//     const vaultName = process.env.KV_NAME;
 
-    if (vaultName) {
+//     if (vaultName) {
+//       try {
+//         const credential = new DefaultAzureCredential();
+//         const url = `https://${vaultName}.vault.azure.net`;
+//         const kvClient = new SecretClient(url, credential);
+
+//         const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+//         if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
+
+//         const latestSecret = await kvClient.getSecret(secretName);
+//         debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+//         const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
+//         const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+//         debug &&
+//           console.log(
+//             `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+//           );
+//         process.env.DB_HOST = host;
+//         process.env.DB_PORT = dbport;
+//         process.env.DB_USER = user;
+//         process.env.DB_PASSWORD = password;
+//         process.env.DB_NAME = dbname;
+//         process.env.DB_SSLMODE = sslmode;
+
+//         return postgresSettingsObject;
+//       } catch (error) {
+//         console.error('_getPsqlSettingsSecret: Vault error ');
+//         return { error };
+//       }
+//     }
+//   } catch (error) {
+//     console.log('_ getPsqlSettingsSecret failed: ', error);
+//     process.exit(1);
+//   }
+// }
+
+export async function getPsqlSettingsSecret(debug = false) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+      const vaultName = process.env.KV_NAME;
+
+      if (!vaultName) {
+        return reject({ error: 'No KV_NAME found' });
+      }
+
       try {
         const credential = new DefaultAzureCredential();
         const url = `https://${vaultName}.vault.azure.net`;
         const kvClient = new SecretClient(url, credential);
 
         const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
-        if (!secretName) return { error: 'No PSQL_CONNECTION_JSON_NAME found' };
+        if (!secretName) {
+          return reject({ error: 'No PSQL_CONNECTION_JSON_NAME found' });
+        }
 
         const latestSecret = await kvClient.getSecret(secretName);
-        debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
-        const postgresSettingsObject = JSON.parse(latestSecret.value || '{}');
-        const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-        debug &&
-          console.log(
-            `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-          );
-        process.env.DB_HOST = host;
-        process.env.DB_PORT = dbport;
-        process.env.DB_USER = user;
-        process.env.DB_PASSWORD = password;
-        process.env.DB_NAME = dbname;
-        process.env.DB_SSLMODE = sslmode;
+        if (latestSecret.value) {
+          debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+          const postgresSettingsObject = JSON.parse(latestSecret.value);
+          const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+          debug &&
+            console.log(
+              `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+            );
+          process.env.DB_HOST = host;
+          process.env.DB_PORT = dbport;
+          process.env.DB_USER = user;
+          process.env.DB_PASSWORD = password;
+          process.env.DB_NAME = dbname;
+          process.env.DB_SSLMODE = sslmode;
 
-        return postgresSettingsObject;
+          resolve(postgresSettingsObject);
+        } else reject({ error: '_ Invalid postgresSettingsObject found' });
       } catch (error) {
-        console.error('_getPsqlSettingsSecret: Vault error ');
-        return { error };
+        console.error('_getPsqlSettingsSecret: Vault error ', error);
+        reject({ error });
       }
+    } catch (error) {
+      console.log('_ getPsqlSettingsSecret failed: ', error);
+      process.exit(1);
     }
-  } catch (error) {
-    console.log('_ getPsqlSettingsSecret failed: ', error);
-    process.exit(1);
-  }
+  });
 }
 
 function waitNSeconds(n: number): Promise<void> {
@@ -103,23 +152,25 @@ const getPGDetails = async () => {
     }
     await waitNSeconds(2);
     i++;
-  } while (!postgresSettingsObject?.host);
+  } while (!postgresSettingsObject);
   console.log('_ ***** Key vault set up finished on iteration no.: ', i);
 
-  const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-  console.log(
-    `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-  );
-  process.env.DB_HOST = host;
-  process.env.DB_PORT = dbport;
-  process.env.DB_USER = user;
-  process.env.DB_PASSWORD = password;
-  process.env.DB_NAME = dbname;
-  process.env.DB_SSLMODE = sslmode;
+  // const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+  // console.log(
+  //   `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+  // );
+  // process.env.DB_HOST = host;
+  // process.env.DB_PORT = dbport;
+  // process.env.DB_USER = user;
+  // process.env.DB_PASSWORD = password;
+  // process.env.DB_NAME = dbname;
+  // process.env.DB_SSLMODE = sslmode;
 };
 
 const start = async (): Promise<void> => {
+  console.log('Starting getPgDetails');
   await getPGDetails();
+  console.log('Starting dataSource.initialize()');
   await dataSource.initialize();
   console.log('_ DB Setup done, entering main try/catch');
   console.log('_ Starting initAppInsights()');
