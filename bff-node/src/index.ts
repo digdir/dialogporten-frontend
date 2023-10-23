@@ -83,10 +83,6 @@ export async function getPsqlSettingsSecret(debug = false) {
   }
 }
 
-// Call the function every 5 seconds
-// setInterval(printEnvVars, 5000); // 5000 milliseconds = 5 seconds
-
-// app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 function waitNSeconds(n: number): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -95,86 +91,51 @@ function waitNSeconds(n: number): Promise<void> {
   });
 }
 
+const getPGDetails = async () => {
+  let postgresSettingsObject;
+  let i = 0;
+
+  do {
+    try {
+      postgresSettingsObject = await getPsqlSettingsSecret();
+    } catch (error) {
+      console.error('_ DOWHILE ERROR on iteration no.: ', i);
+    }
+    await waitNSeconds(2);
+    i++;
+  } while (!postgresSettingsObject?.host);
+  console.log('_ ***** Key vault set up finished on iteration no.: ', i);
+
+  const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+  console.log(
+    `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+  );
+  process.env.DB_HOST = host;
+  process.env.DB_PORT = dbport;
+  process.env.DB_USER = user;
+  process.env.DB_PASSWORD = password;
+  process.env.DB_NAME = dbname;
+  process.env.DB_SSLMODE = sslmode;
+};
+
 const start = async (): Promise<void> => {
-  await dataSource
-    .initialize()
-    .then(async () => {
-      console.log('_ Starting initAppInsights()');
-      await initAppInsights();
-      console.log('_ Finished initAppInsights()');
-
-      // console.log('Inserting a new family into the database...');
-      // const family = new Family();
-      // family.name = 'Midteide';
-      // await dataSource.manager.save(family);
-      // console.log('saved: ', { family });
-      // console.log('Trying to fetch it again:');
-      // const familyFetched = await dataSource.manager.find(Family);
-
-      // const familyRepository = dataSource.getRepository(Family);
-      // const allfamily = await familyRepository.find();
-      // console.log('allfamily from the db: ', allfamily);
-
-      // const firstPhoto = await familyRepository.findOneBy({
-      //   id: 1,
-      // });
-      // console.log('First photo from the db: ', firstPhoto);
-
-      const personRepository = dataSource.getRepository(Person);
-
-      // const person = new Person();
-      // person.family = family;
-      // person.age = 25;
-      // person.name = 'Alexander';
-      // await personRepository.save(person);
-      // console.log('Saved a new person with id: ' + person.id);
-
-      console.log('Loading users from the database...');
-      // const users = await personRepository.find();
-      const users = await personRepository.find({
-        relations: {
-          family: true,
-        },
-      });
-      console.log('Loaded persons: ', users);
-    })
-    // .then(() => start())
-    .catch((error) => console.log(error));
+  await getPGDetails();
+  await dataSource.initialize();
   console.log('_ DB Setup done, entering main try/catch');
+  console.log('_ Starting initAppInsights()');
+  await initAppInsights();
+  console.log('_ Finished initAppInsights()');
+  const personRepository = dataSource.getRepository(Person);
+
+  console.log('Loading users from the database...');
+  // const users = await personRepository.find();
+  const users = await personRepository.find({
+    relations: {
+      family: true,
+    },
+  });
+  console.log('Loaded persons: ', users);
   try {
-    // printEnvVars();
-    // testAppConf();
-    let postgresSettingsObject;
-    let i = 0;
-
-    do {
-      console.log(
-        '_ In do-while, iteration number: ',
-        i
-        // ' postgresSettingsObject: ',
-        // postgresSettingsObject
-      );
-      try {
-        postgresSettingsObject = await getPsqlSettingsSecret();
-      } catch (error) {
-        console.error('_ DOWHILE ERROR on iteration no.: ', i);
-      }
-      await waitNSeconds(1);
-      i++;
-    } while (!postgresSettingsObject?.host);
-    console.log('_ ***** Key vault set up finished on iteration no.: ', i);
-
-    const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-    console.log(
-      `_ Would connect to Postgres: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-    );
-    process.env.DB_HOST = host;
-    process.env.DB_PORT = dbport;
-    process.env.DB_USER = user;
-    process.env.DB_PASSWORD = password;
-    process.env.DB_NAME = dbname;
-    process.env.DB_SSLMODE = sslmode;
-
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });

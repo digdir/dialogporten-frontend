@@ -143,6 +143,10 @@ module containerApp 'containerApp/create.bicep' = {
                 name: 'DEPLOY_TIMESTAMP'
                 value: deployTimestamp
             }
+            {
+                name: 'PSQL_CONNECTION_JSON'
+                value: postgresql.outputs.psqlConnectionJSON
+            }
         ]
     }
 
