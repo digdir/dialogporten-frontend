@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}node-bff:${{ github.sha }}
 
   # deploy-at21:
   #   runs-on: ubuntu-latest
@@ -143,6 +143,7 @@ jobs:
         run: >
           .azure/deployBicep.ps1 
           -environment test
+          -gitSha ${{github.sha}} 
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           -deployTimestamp ${{ github.event.repository.updated_at}}

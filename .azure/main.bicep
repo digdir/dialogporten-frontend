@@ -5,9 +5,12 @@ param location string
 param keyVault object
 param imageUrl string
 param deployTimestamp string
+param gitSha string
 var namePrefix = 'dp-fe-${environment}'
 @secure()
 param secrets object
+
+var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend'
 
 // Create resource groups
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -116,6 +119,8 @@ module containerApp 'containerApp/create.bicep' = {
     params: {
         namePrefix: namePrefix
         location: location
+        baseImageUrl: baseImageUrl
+        gitSha: gitSha
         imageUrl: imageUrl
         envVariables: [
             {

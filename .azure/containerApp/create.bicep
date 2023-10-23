@@ -1,6 +1,8 @@
 param location string
 param namePrefix string
 param imageUrl string
+param gitSha string
+param baseImageUrl string
 param envVariables array = []
 
 resource env 'Microsoft.App/managedEnvironments@2022-03-01' = {
@@ -22,21 +24,22 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 			}
 		}
 		template: {
-			initContainers: [
-				{
-					name: '${namePrefix}-ghcr-docker-image-init'
-					image: imageUrl // Bruke C# container 
-					env: envVariables
-					resources: {
-						cpu: 1
-						memory: '2.0Gi'
-					}
-				}
-			]
+			// initContainers: [
+			// 	{
+			// 		name: '${namePrefix}-ghcr-docker-image-init'
+			// 		image: imageUrl // Bruke C# container 
+			// 		env: envVariables
+			// 		resources: {
+			// 			cpu: 1
+			// 			memory: '2.0Gi'
+			// 		}
+			// 	}
+			// ]
 			containers: [
 				{
 					name: '${namePrefix}-ghcr-docker-image'
-					image: imageUrl
+					image: '${baseImageUrl}node-bff:${gitSha}'
+					// image: imageUrl
 					env: envVariables
 					resources: {
 						cpu: 1
