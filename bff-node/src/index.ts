@@ -15,7 +15,6 @@ import { DataSource } from 'typeorm';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 console.log('_ ****** VERY BEGINNING OF CODE');
-import { connectionOptions } from './data-source';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -25,7 +24,8 @@ const port = process.env.PORT || 80;
 
 const initAppInsights = async () => {
   // Setup Application Insights:
-  setup()
+  return new Promise(async (resolve, reject) => {
+     setup()
     .setAutoDependencyCorrelation(true)
     .setAutoCollectRequests(true)
     .setAutoCollectPerformance(true, true)
@@ -36,6 +36,9 @@ const initAppInsights = async () => {
     .setSendLiveMetrics(false)
     .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
     .start();
+    await waitNSeconds(5)
+    resolve("Done")
+  }
 };
 
 app.use(express.static(DIST_DIR));
@@ -134,11 +137,12 @@ const start = async (): Promise<void> => {
   if (process.env.DEV_ENV === 'dev') console.log('Found DEV');
   else console.log('Found NOT DEV');
   console.log("process.env.DEV_ENV === 'dev': ", process.env.DEV_ENV);
+
   if (process.env.DEV_ENV !== 'dev')
     try {
       console.log('_ Starting initAppInsights()');
-      await initAppInsights();
-      console.log('_ Finished initAppInsights()');
+      const appInsightResult = await initAppInsights();
+      console.log('_ Finished initAppInsights() with result: ', appInsightResult);
     } catch (error) {
       console.log('Error setting up appInsights: ', error);
     }
@@ -150,6 +154,8 @@ const start = async (): Promise<void> => {
 
   console.log('_ Starting dataSource.initialize()');
   // await dataSource.initialize();
+  const { connectionOptions }  = await import('./data-source')
+
   const dataSource = await new DataSource(connectionOptions).initialize();
 
   process.env.DEV_ENV === 'dev' && console.log('_ dataSource initialized! ');
