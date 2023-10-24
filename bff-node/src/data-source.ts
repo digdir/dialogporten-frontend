@@ -7,7 +7,7 @@ import { Family } from './entities/Family';
 import { getPsqlSettingsSecret } from '.';
 
 console.log(
-  `_ Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
+  `_ DATASOURCE FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
 );
 
 // export const dataSource = new DataSource({
@@ -37,7 +37,7 @@ console.log(
 //   // migrations: ['dist/migrations/*.ts'],
 //   // dropSchema: true,
 // });
-let connectionOptions: DataSourceOptions = {
+export let connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
@@ -50,6 +50,28 @@ let connectionOptions: DataSourceOptions = {
   migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
 };
 
+export const getConnectionOptions: any = (postgresSettingsObject: any) => {
+  const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+  return {
+    type: 'postgres',
+    host: host || 'localhost',
+    port: parseInt(dbport || '5432'),
+    username: user || 'postgres',
+    password: password || 'password',
+    database: dbname || 'my_db',
+    synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
+    logging: true,
+    entities: ['src/entities/*{.ts,.js}'], // where our entities reside
+    migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+  };
+};
+
+console.log('_ dataSource connectionOptions:', connectionOptions);
+
 export default new DataSource({
   ...connectionOptions,
 });
+export const getDataSource = (postgresSettingsObject: any) =>
+  new DataSource({
+    ...getConnectionOptions(postgresSettingsObject),
+  });

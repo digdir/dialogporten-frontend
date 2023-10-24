@@ -15,7 +15,7 @@ import { DataSource } from 'typeorm';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 console.log('_ ****** VERY BEGINNING OF CODE');
-import dataSource from './data-source';
+import { connectionOptions } from './data-source';
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
@@ -134,76 +134,31 @@ const start = async (): Promise<void> => {
   if (process.env.DEV_ENV === 'dev') console.log('Found DEV');
   else console.log('Found NOT DEV');
   console.log("process.env.DEV_ENV === 'dev': ", process.env.DEV_ENV);
+  if (process.env.DEV_ENV !== 'dev')
+    try {
+      console.log('_ Starting initAppInsights()');
+      await initAppInsights();
+      console.log('_ Finished initAppInsights()');
+    } catch (error) {
+      console.log('Error setting up appInsights: ', error);
+    }
 
   process.env.DEV_ENV !== 'dev' && console.log('_ Starting getPgDetails');
   let pgDetails;
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
   process.env.DEV_ENV !== 'dev' && console.log('_ pgDetails:', pgDetails);
-  process.env.DEV_ENV !== 'dev' &&
-    console.log('_ dataSource settings:', {
-      type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
-      username: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_NAME || 'my_db',
-      entities: [Person, Family],
-      // entities: ['entities/**/*.{js,ts}'],
-      synchronize: true,
-      // logging: true,
-      // entities: ['entities/*.ts'],
-      // migrations: ['migrations/*{.ts,.js}'],
-      // migrationsRun: true,
-      // migrations: ['./migrations/*.{js,ts}'],
-      // migrations: ['./migrations/*.ts'],
-      // entities: ['dist/entities/*.ts'],
-      migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-      // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
-      logging: true,
-      logger: 'file',
-      // cli: {
-      //   migrationsDir: 'src/migrations',
-      // },
-      // migrations: ['dist/migrations/*.ts'],
-      // dropSchema: true,
-    });
 
   console.log('_ Starting dataSource.initialize()');
-  await dataSource.initialize();
-  // const dataSource = await new DataSource({
-  //   type: 'postgres',
-  //   host: process.env.DB_HOST || 'localhost',
-  //   port: parseInt(process.env.DB_PORT || '5432'),
-  //   username: process.env.DB_USER || 'postgres',
-  //   password: process.env.DB_PASSWORD || 'password',
-  //   database: process.env.DB_NAME || 'my_db',
-  //   entities: [Person, Family],
-  //   // entities: ['entities/**/*.{js,ts}'],
-  //   synchronize: false,
-  //   // logging: true,
-  //   // entities: ['entities/*.ts'],
-  //   // migrations: ['migrations/*{.ts,.js}'],
-  //   // migrationsRun: true,
-  //   // migrations: ['./migrations/*.{js,ts}'],
-  //   // migrations: ['./migrations/*.ts'],
-  //   // entities: ['dist/entities/*.ts'],
-  //   migrations: ['./migrations/*.ts'], // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
-  //   logging: true,
-  //   logger: 'file',
-  //   // cli: {
-  //   //   migrationsDir: 'src/migrations',
-  //   // },
-  //   // migrations: ['dist/migrations/*.ts'],
-  //   // dropSchema: true,
-  // }).initialize();
+  // await dataSource.initialize();
+  const dataSource = await new DataSource(connectionOptions).initialize();
 
   process.env.DEV_ENV === 'dev' && console.log('_ dataSource initialized! ');
   if (process.env.DEV_ENV !== 'dev')
     try {
       console.log('_ DB Setup done, entering main try/catch');
-      console.log('_ Starting initAppInsights()');
-      await initAppInsights();
-      console.log('_ Finished initAppInsights()');
+      // console.log('_ Starting initAppInsights()');
+      // await initAppInsights();
+      // console.log('_ Finished initAppInsights()');
       const personRepository = dataSource.getRepository(Person);
 
       console.log('_ Loading users from the database...');
