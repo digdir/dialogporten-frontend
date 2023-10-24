@@ -48,6 +48,11 @@ export let connectionOptions: DataSourceOptions = {
   logging: true,
   entities: ['src/entities/*{.ts,.js}'], // where our entities reside
   migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 };
 
 export const getConnectionOptions: any = (postgresSettingsObject: any) => {
@@ -63,6 +68,11 @@ export const getConnectionOptions: any = (postgresSettingsObject: any) => {
     logging: true,
     entities: ['src/entities/*{.ts,.js}'], // where our entities reside
     migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   };
 };
 

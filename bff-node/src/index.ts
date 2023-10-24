@@ -9,7 +9,8 @@ import { routes } from './routes';
 import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
-import { setup, DistributedTracingModes } from 'applicationinsights';
+// import { setup, DistributedTracingModes , defaultClient} from 'applicationinsights';
+import * as appInsights from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
 import { DataSource } from 'typeorm';
 import { Person } from './entities/Person';
@@ -23,9 +24,11 @@ const app: Express = express();
 const port = process.env.PORT || 80;
 
 const initAppInsights = async () => {
+  appInsights;
   // Setup Application Insights:
   return new Promise(async (resolve, reject) => {
-    setup()
+    appInsights
+      .setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
       .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
       .setAutoCollectPerformance(true, true)
@@ -34,9 +37,15 @@ const initAppInsights = async () => {
       .setAutoCollectConsole(true, true)
       .setUseDiskRetryCaching(true)
       .setSendLiveMetrics(false)
-      .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+      .setInternalLogging(true, true)
+      .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
       .start();
     await waitNSeconds(5);
+    if (appInsights.defaultClient) {
+      console.log('AppInsights is initialized properly.');
+    } else {
+      console.log('AppInsights is not initialized properly.');
+    }
     resolve('Done');
   });
 };
