@@ -11,7 +11,7 @@ import { AppConfigurationClient } from '@azure/app-configuration';
 // import { setup, DistributedTracingModes , defaultClient} from 'applicationinsights';
 import * as appInsights from 'applicationinsights';
 import { SecretClient } from '@azure/keyvault-secrets';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 console.log('_ ****** VERY BEGINNING OF CODE');
@@ -46,8 +46,9 @@ const initAppInsights = async () => {
   });
 };
 
-// export let dataSource: DataSource;
-
+export let mainDataSource: DataSource;
+export let PersonRepository: Repository<Person> | undefined = undefined;
+export let FamilyRepository: Repository<Family> | undefined = undefined;
 // let postgresSettingsObject;
 // let i = 0;
 // do {
@@ -212,8 +213,8 @@ const start = async (): Promise<void> => {
   const dataSource = await new DataSource(connectionOptions).initialize();
 
   process.env.DEV_ENV === 'dev' && console.log('_ dataSource initialized! ');
-  const PersonRepository = dataSource.getRepository(Person);
-  const FamilyRepository = dataSource.getRepository(Family);
+  PersonRepository = dataSource.getRepository(Person);
+  FamilyRepository = dataSource.getRepository(Family);
   const family = new Family();
   family.name = 'Etternavnsen';
   await FamilyRepository.save(family);
