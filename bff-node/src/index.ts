@@ -37,14 +37,14 @@ const initAppInsights = async () => {
       .setAutoCollectConsole(true, true)
       .setUseDiskRetryCaching(true)
       .setSendLiveMetrics(false)
-      .setInternalLogging(true, true)
+      // .setInternalLogging(true, true)
       .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
       .start();
     await waitNSeconds(5);
     if (appInsights.defaultClient) {
-      console.log('AppInsights is initialized properly.');
+      console.log('_ AppInsights is initialized properly.');
     } else {
-      console.log('AppInsights is not initialized properly.');
+      console.log('_ AppInsights is not initialized properly.');
     }
     resolve('Done');
   });
@@ -162,12 +162,24 @@ const start = async (): Promise<void> => {
   process.env.DEV_ENV !== 'dev' && console.log('_ pgDetails:', pgDetails);
 
   console.log('_ Starting dataSource.initialize()');
-  // await dataSource.initialize();
   const { connectionOptions } = await import('./data-source');
 
   const dataSource = await new DataSource(connectionOptions).initialize();
 
   process.env.DEV_ENV === 'dev' && console.log('_ dataSource initialized! ');
+  const PersonRepository = dataSource.getRepository(Person);
+  const FamilyRepository = dataSource.getRepository(Family);
+  const family = new Family();
+  family.name = 'Etternavnsen';
+  await FamilyRepository.save(family);
+  const user = new Person();
+  const d = new Date();
+  user.name = 'Altinn Bruker';
+  user.favoriteMovie = d.toLocaleString();
+  user.age = 25;
+  user.family = family;
+  await PersonRepository.save(user);
+
   if (process.env.DEV_ENV !== 'dev')
     try {
       console.log('_ DB Setup done, entering main try/catch');

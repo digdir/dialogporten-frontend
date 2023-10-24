@@ -2,9 +2,6 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import './config/env';
-import { Person } from './entities/Person';
-import { Family } from './entities/Family';
-import { getPsqlSettingsSecret } from '.';
 
 console.log(
   `_ DATASOURCE FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
@@ -48,11 +45,13 @@ export let connectionOptions: DataSourceOptions = {
   logging: true,
   entities: ['src/entities/*{.ts,.js}'], // where our entities reside
   migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
+  ...(process.env.DEV_ENV !== 'dev' && {
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
-  },
+  }),
 };
 
 export const getConnectionOptions: any = (postgresSettingsObject: any) => {

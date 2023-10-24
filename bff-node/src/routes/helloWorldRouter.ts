@@ -6,6 +6,7 @@ import { helloWorld } from '../controllers/helloWorld';
 const helloWorldRouter = express.Router();
 
 helloWorldRouter.get('/test', helloWorld.get);
+helloWorldRouter.get('/test2', helloWorld.test);
 // helloWorldRouter.post(
 //   "/create",
 //   validateModel(helloWorldDTOSchema),

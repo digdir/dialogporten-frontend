@@ -11,3 +11,9 @@ export const useTestQuery = (name?: string): UseQueryResult<TestResult | null, A
     })
   );
 };
+export const getTest2 = () => {
+  const requestUrl = '/api/v1/test2';
+  axios.get(requestUrl, { headers: {} }).then((response) => {
+    return response.data;
+  });
+};
