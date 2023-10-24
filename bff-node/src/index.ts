@@ -25,20 +25,20 @@ const port = process.env.PORT || 80;
 const initAppInsights = async () => {
   // Setup Application Insights:
   return new Promise(async (resolve, reject) => {
-     setup()
-    .setAutoDependencyCorrelation(true)
-    .setAutoCollectRequests(true)
-    .setAutoCollectPerformance(true, true)
-    .setAutoCollectExceptions(true)
-    .setAutoCollectDependencies(true)
-    .setAutoCollectConsole(true, true)
-    .setUseDiskRetryCaching(true)
-    .setSendLiveMetrics(false)
-    .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
-    .start();
-    await waitNSeconds(5)
-    resolve("Done")
-  }
+    setup()
+      .setAutoDependencyCorrelation(true)
+      .setAutoCollectRequests(true)
+      .setAutoCollectPerformance(true, true)
+      .setAutoCollectExceptions(true)
+      .setAutoCollectDependencies(true)
+      .setAutoCollectConsole(true, true)
+      .setUseDiskRetryCaching(true)
+      .setSendLiveMetrics(false)
+      .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+      .start();
+    await waitNSeconds(5);
+    resolve('Done');
+  });
 };
 
 app.use(express.static(DIST_DIR));
@@ -154,7 +154,7 @@ const start = async (): Promise<void> => {
 
   console.log('_ Starting dataSource.initialize()');
   // await dataSource.initialize();
-  const { connectionOptions }  = await import('./data-source')
+  const { connectionOptions } = await import('./data-source');
 
   const dataSource = await new DataSource(connectionOptions).initialize();
 
