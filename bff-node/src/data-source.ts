@@ -1,5 +1,6 @@
 // import 'reflect-metadata';
-import { DataSource } from 'typeorm';
+import 'reflect-metadata';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import './config/env';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
@@ -9,30 +10,46 @@ console.log(
   `_ Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
 );
 
-export const dataSource = new DataSource({
+// export const dataSource = new DataSource({
+//   type: 'postgres',
+//   host: process.env.DB_HOST || 'localhost',
+//   port: parseInt(process.env.DB_PORT || '5432'),
+//   username: process.env.DB_USER || 'postgres',
+//   password: process.env.DB_PASSWORD || 'password',
+//   database: process.env.DB_NAME || 'my_db',
+//   entities: [Person, Family],
+//   // entities: ['entities/**/*.{js,ts}'],
+//   synchronize: true,
+//   // logging: true,
+//   // entities: ['entities/*.ts'],
+//   // migrations: ['migrations/*{.ts,.js}'],
+//   // migrationsRun: true,
+//   // migrations: ['./migrations/*.{js,ts}'],
+//   // migrations: ['./migrations/*.ts'],
+//   // entities: ['dist/entities/*.ts'],
+//   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+//   // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+//   logging: true,
+//   logger: 'file',
+//   // cli: {
+//   //   migrationsDir: 'src/migrations',
+//   // },
+//   // migrations: ['dist/migrations/*.ts'],
+//   // dropSchema: true,
+// });
+let connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'my_db',
-  entities: [Person, Family],
-  // entities: ['entities/**/*.{js,ts}'],
-  synchronize: true,
-  // logging: true,
-  // entities: ['entities/*.ts'],
-  // migrations: ['migrations/*{.ts,.js}'],
-  // migrationsRun: true,
-  // migrations: ['./migrations/*.{js,ts}'],
-  // migrations: ['./migrations/*.ts'],
-  // entities: ['dist/entities/*.ts'],
-  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-  // entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+  synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
   logging: true,
-  logger: 'file',
-  // cli: {
-  //   migrationsDir: 'src/migrations',
-  // },
-  // migrations: ['dist/migrations/*.ts'],
-  // dropSchema: true,
+  entities: ['src/entities/*{.ts,.js}'], // where our entities reside
+  migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+};
+
+export default new DataSource({
+  ...connectionOptions,
 });

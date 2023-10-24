@@ -1,6 +1,5 @@
 param location string
 param namePrefix string
-param imageUrl string
 param gitSha string
 param baseImageUrl string
 param envVariables array = []

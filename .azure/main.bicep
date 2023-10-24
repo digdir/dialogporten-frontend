@@ -121,7 +121,6 @@ module containerApp 'containerApp/create.bicep' = {
         location: location
         baseImageUrl: baseImageUrl
         gitSha: gitSha
-        imageUrl: imageUrl
         envVariables: [
             {
                 name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
@@ -146,6 +145,10 @@ module containerApp 'containerApp/create.bicep' = {
             {
                 name: 'PSQL_CONNECTION_JSON'
                 value: postgresql.outputs.psqlConnectionJSON
+            }
+            {
+                name: 'DEV_ENV'
+                value: 'test'
             }
         ]
     }
