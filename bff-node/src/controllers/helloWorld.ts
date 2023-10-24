@@ -18,6 +18,7 @@ const get = async (req: Request<any, any, HelloWorldDto>, res: Response): Promis
 // Placeholder code for this template
 const test = async (req: Request<any, any, HelloWorldDto>, res: Response): Promise<void> => {
   const { name } = req.headers;
+  // const dataSource = await new DataSource(connectionOptions).initialize();
   const PersonRepository = dataSource.getRepository(Person);
   const user = new Person();
   const d = new Date();

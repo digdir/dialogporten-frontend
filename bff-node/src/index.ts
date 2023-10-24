@@ -5,7 +5,6 @@ import 'reflect-metadata';
 // import swaggerFile from './swagger_output.json';
 import './config/env';
 // import { DBConnection } from './config/database';
-import { routes } from './routes';
 import path from 'path';
 import { DefaultAzureCredential } from '@azure/identity';
 import { AppConfigurationClient } from '@azure/app-configuration';
@@ -19,9 +18,6 @@ console.log('_ ****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
-
-const app: Express = express();
-const port = process.env.PORT || 80;
 
 const initAppInsights = async () => {
   appInsights;
@@ -50,12 +46,61 @@ const initAppInsights = async () => {
   });
 };
 
-app.use(express.static(DIST_DIR));
-app.get('/', (req, res) => {
-  res.sendFile(HTML_FILE);
-});
-app.use(bodyParser.json());
-app.use('/api/v1', routes);
+// export let dataSource: DataSource;
+
+// let postgresSettingsObject;
+// let i = 0;
+// do {
+//   try {
+//     const vaultName = process.env.KV_NAME;
+
+//     if (!vaultName) {
+//       throw new Error('No KV_NAME found');
+//     }
+
+//     try {
+//       const credential = new DefaultAzureCredential();
+//       const url = `https://${vaultName}.vault.azure.net`;
+//       const kvClient = new SecretClient(url, credential);
+
+//       const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+//       if (!secretName) {
+//         throw new Error('No PSQL_CONNECTION_JSON_NAME found');
+//       }
+
+//       const latestSecret = await kvClient.getSecret(secretName);
+//       if (latestSecret.value) {
+//         const postgresSettingsObject = JSON.parse(latestSecret.value);
+//         const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+//         console.log(
+//           `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+//         );
+//         process.env.DB_HOST = host;
+//         process.env.DB_PORT = dbport;
+//         process.env.DB_USER = user;
+//         process.env.DB_PASSWORD = password;
+//         process.env.DB_NAME = dbname;
+//         process.env.DB_SSLMODE = sslmode;
+
+//         resolve(postgresSettingsObject);
+//       } else reject({ error: '_ Invalid postgresSettingsObject found' });
+//     } catch (error) {
+//       console.error('_getPsqlSettingsSecret: Vault error ');
+//       reject({ error });
+//     }
+//   } catch (error) {
+//     // console.error('_ DOWHILE ERROR on iteration no.: ', i);
+//   }
+//   await waitNSeconds(2);
+//   i++;
+// } while (!postgresSettingsObject);
+// console.log(
+//   '_ ***** Key vault set up finished on iteration no.: ',
+//   i,
+//   ' time taken: ',
+//   i * 2,
+//   ' seconds'
+// );
 
 export async function getPsqlSettingsSecret(debug = false) {
   return new Promise(async (resolve, reject) => {
@@ -201,6 +246,17 @@ const start = async (): Promise<void> => {
     }
 
   try {
+    const { routes } = await import('./routes');
+
+    const app: Express = express();
+    const port = process.env.PORT || 80;
+
+    app.use(express.static(DIST_DIR));
+    app.get('/', (req, res) => {
+      res.sendFile(HTML_FILE);
+    });
+    app.use(bodyParser.json());
+    app.use('/api/v1', routes);
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running on PORT: ${port}`);
     });
