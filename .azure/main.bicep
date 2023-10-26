@@ -215,22 +215,48 @@ module containerApp 'containerApp/create.bicep' = {
 
 }
 
-module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
+module customContainerAppRole 'customRoles/create.bicep' = {
     scope: resourceGroup
-    name: 'appConfigReaderAccessPolicy'
+    name: 'customContainerAppRole'
     params: {
-        appConfigurationName: appConfiguration.outputs.name
-        principalIds: [ containerApp.outputs.identityPrincipalId ]
+        assignableScope: resourceGroup.id
     }
 }
-module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
+
+module assignContainerAppJobRoles 'customRoles/assign.bicep' = {
     scope: resourceGroup
-    name: 'appConfigWriterAccessPolicy'
+    name: 'assignContainerAppJobRoles'
     params: {
-        appConfigurationName: appConfiguration.outputs.name
+        roleDefinitionId: customContainerAppRole.outputs.containerJobRoleId
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }
+
+module assignConfigReaderRole 'customRoles/assign.bicep' = {
+    scope: resourceGroup
+    name: 'assignConfigReaderRole'
+    params: {
+        roleDefinitionId: customContainerAppRole.outputs.appConfigReaderRoleId
+        principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
+    }
+}
+
+// module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfigReaderAccessPolicy'
+//     params: {
+//         appConfigurationName: appConfiguration.outputs.name
+//         principalIds: [ containerApp.outputs.identityPrincipalId ]
+//     }
+// }
+// module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfigWriterAccessPolicy'
+//     params: {
+//         appConfigurationName: appConfiguration.outputs.name
+//         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
+//     }
+// }
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
