@@ -16,7 +16,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Frontend Test to ${{ inputs.environment }}
+    name: Deploy Frontend to ${{ inputs.environment }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     permissions:

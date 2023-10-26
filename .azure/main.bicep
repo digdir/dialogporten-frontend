@@ -235,3 +235,4 @@ module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
 output containerAppName string = containerApp.outputs.name
+output migrationJobName string = migrationJob.outputs.bundleName
