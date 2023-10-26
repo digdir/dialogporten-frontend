@@ -201,14 +201,15 @@ const checkMigrationComplete = async () => {
       } catch (error) {
         console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i);
       }
-      await waitNSeconds(2);
+      await waitNSeconds(10);
       i++;
     } while (!isSuccess);
+
     console.log(
       '_ ***** checkMigrationComplete finished on iteration no.: ',
       i,
       ' time taken: ',
-      i * 2,
+      i * 10,
       ' seconds'
     );
   });

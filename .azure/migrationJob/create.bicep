@@ -42,3 +42,4 @@ resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
 
 output principalId string = migrationJob.identity.principalId
 output bundleName string = uniqueBundleName
+output name string = migrationJob.name
