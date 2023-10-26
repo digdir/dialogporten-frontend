@@ -8,8 +8,8 @@ param(
 	# [Parameter(Mandatory)]
 	# [string]$imageUrl,
 
-	[Parameter(Mandatory)]
-	[string]$deployTimestamp,
+	# [Parameter(Mandatory)]
+	# [string]$deployTimestamp,
 
 	[Parameter(Mandatory)]
 	[string]$gitSha
@@ -38,8 +38,8 @@ AddMemberPath $paramsJson "parameters.gitSha.value" $gitSha
 AddMemberPath $paramsJson "parameters.secrets.value" @{
 	dialogportenPgAdminPassword = (GeneratePassword -length 30).Password
 }
-AddMemberPath $paramsJson "parameters.imageUrl.value" $imageUrl
-AddMemberPath $paramsJson "parameters.deployTimestamp.value" $deployTimestamp
+# AddMemberPath $paramsJson "parameters.imageUrl.value" $imageUrl
+# AddMemberPath $paramsJson "parameters.deployTimestamp.value" $deployTimestamp
 
 # Add environment to parameters
 AddMemberPath $paramsJson "parameters.environment.value" $environment
@@ -59,7 +59,7 @@ $formatedParamsJsonForLocalCLI = $paramsJson `
 
 $formatedParamsJson = $formatedParamsJsonForGHA
 
-if ( $environment -match 'cli-fe-dev') {
+if ( $environment -match 'cli-test') {
 	Write-Host ("********** FOUND LOCAL CLI DEPLOYMENT")
 	$formatedParamsJson = $formatedParamsJsonForLocalCLI
 }

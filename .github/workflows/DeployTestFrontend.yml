@@ -52,8 +52,6 @@ jobs:
           -environment test
           -gitSha ${{github.sha}} 
           -subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          -imageUrl ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          -deployTimestamp ${{ github.event.repository.updated_at}}
 
       - name: Logout from azure
         if: ${{failure() || success()}}

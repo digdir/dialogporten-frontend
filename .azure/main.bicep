@@ -3,8 +3,8 @@ targetScope = 'subscription'
 param environment string
 param location string
 param keyVault object
-param imageUrl string
-param deployTimestamp string
+// param imageUrl string
+// param deployTimestamp string
 param gitSha string
 var namePrefix = 'dp-fe-${environment}'
 @secure()
@@ -105,10 +105,6 @@ module migrationJob 'migrationJob/create.bicep' = {
                 value: appConfiguration.outputs.endpoint
             }
             {
-                name: 'DEPLOY_TIMESTAMP'
-                value: deployTimestamp
-            }
-            {
                 name: 'PSQL_CONNECTION_JSON'
                 value: postgresql.outputs.psqlConnectionJSON
             }
@@ -124,17 +120,17 @@ module migrationJob 'migrationJob/create.bicep' = {
     }
 }
 
-module appsettings 'containerApp/upsertAppsettings.bicep' = {
-    scope: resourceGroup
-    name: 'appsettings'
-    params: {
-        containerAppName: containerApp.outputs.name
-        settings: {
-            APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
-            AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
-        }
-    }
-}
+// module appsettings 'containerApp/upsertAppsettings.bicep' = {
+//     scope: resourceGroup
+//     name: 'appsettings'
+//     params: {
+//         containerAppName: containerApp.outputs.name
+//         settings: {
+//             APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
+//             AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
+//         }
+//     }
+// }
 // module migrationsettings 'containerApp/upsertAppsettings.bicep' = {
 //     scope: resourceGroup
 //     name: 'migrationsettings'
@@ -204,10 +200,6 @@ module containerApp 'containerApp/create.bicep' = {
             {
                 name: 'AZURE_APPCONFIG_URI'
                 value: appConfiguration.outputs.endpoint
-            }
-            {
-                name: 'DEPLOY_TIMESTAMP'
-                value: deployTimestamp
             }
             {
                 name: 'PSQL_CONNECTION_JSON'
