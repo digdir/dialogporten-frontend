@@ -118,7 +118,7 @@ module migrationJob 'migrationJob/create.bicep' = {
             }
             {
                 name: 'IS_MIGRATION_JOB'
-                value: true
+                value: 'true'
             }
         ]
     }
@@ -208,7 +208,7 @@ module containerApp 'containerApp/create.bicep' = {
             }
             {
                 name: 'IS_MIGRATION_JOB'
-                value: false
+                value: 'false'
             }
         ]
     }
