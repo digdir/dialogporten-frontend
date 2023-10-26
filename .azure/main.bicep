@@ -223,14 +223,14 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
         principalIds: [ containerApp.outputs.identityPrincipalId ]
     }
 }
-module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
-    scope: resourceGroup
-    name: 'appConfigWriterAccessPolicy'
-    params: {
-        appConfigurationName: appConfiguration.outputs.name
-        principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
-    }
-}
+// module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfigWriterAccessPolicy'
+//     params: {
+//         appConfigurationName: appConfiguration.outputs.name
+//         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
+//     }
+// }
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
