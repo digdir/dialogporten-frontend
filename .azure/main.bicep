@@ -79,6 +79,51 @@ module copySecret 'keyvault/copySecrets.bicep' = {
     }
 }
 
+module migrationJob 'migrationJob/create.bicep' = {
+    scope: resourceGroup
+    name: 'migrationJob'
+    params: {
+        namePrefix: namePrefix
+        location: location
+        baseImageUrl: baseImageUrl
+        gitSha: gitSha
+        envVariables: [
+            {
+                name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+                value: appInsights.outputs.connectionString
+            }
+            {
+                name: 'KV_NAME'
+                value: keyVaultModule.outputs.name
+            }
+            {
+                name: 'PSQL_CONNECTION_JSON_NAME' // MÅ BYTTES UT, DETTE SKAL HENTES FRA APP CONFIG
+                value: postgresql.outputs.psqlConnectionJSONSecretName
+            }
+            {
+                name: 'AZURE_APPCONFIG_URI'
+                value: appConfiguration.outputs.endpoint
+            }
+            {
+                name: 'DEPLOY_TIMESTAMP'
+                value: deployTimestamp
+            }
+            {
+                name: 'PSQL_CONNECTION_JSON'
+                value: postgresql.outputs.psqlConnectionJSON
+            }
+            {
+                name: 'DEV_ENV'
+                value: 'test'
+            }
+            {
+                name: 'IS_MIGRATION_JOB'
+                value: true
+            }
+        ]
+    }
+}
+
 // module appsettings 'containerApp/upsertAppsettings.bicep' = {
 //     scope: resourceGroup
 //     name: 'appsettings'
@@ -102,6 +147,17 @@ module copySecret 'keyvault/copySecrets.bicep' = {
 //         keyValueType: 'keyVaultReference'
 //     }
 // }
+
+module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+    scope: resourceGroup
+    name: 'MigrationCompleted'
+    params: {
+        configStoreName: appConfiguration.outputs.name
+        key: 'Infrastructure:MigrationCompleted'
+        value: 'false'
+        keyValueType: 'custom'
+    }
+}
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
@@ -150,6 +206,10 @@ module containerApp 'containerApp/create.bicep' = {
                 name: 'DEV_ENV'
                 value: 'test'
             }
+            {
+                name: 'IS_MIGRATION_JOB'
+                value: false
+            }
         ]
     }
 
@@ -161,6 +221,14 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
     params: {
         appConfigurationName: appConfiguration.outputs.name
         principalIds: [ containerApp.outputs.identityPrincipalId ]
+    }
+}
+module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
+    scope: resourceGroup
+    name: 'appConfigWriterAccessPolicy'
+    params: {
+        appConfigurationName: appConfiguration.outputs.name
+        principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }
 

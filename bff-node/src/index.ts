@@ -184,6 +184,59 @@ const getPGDetails = async () => {
   });
 };
 
+const checkMigrationComplete = async () => {
+  return new Promise(async (resolve, reject) => {
+    let isSuccess;
+    let i = 0;
+    do {
+      try {
+        const migrationCompletedStatus = await getAppConfigValue(
+          'Infrastructure:MigrationCompleted'
+        );
+        if (migrationCompletedStatus) isSuccess = true;
+        if (migrationCompletedStatus === 'true') {
+          console.log('_ checkMigrationComplete is resolving true');
+          resolve(true);
+        }
+      } catch (error) {
+        console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i);
+      }
+      await waitNSeconds(2);
+      i++;
+    } while (!isSuccess);
+    console.log(
+      '_ ***** checkMigrationComplete finished on iteration no.: ',
+      i,
+      ' time taken: ',
+      i * 2,
+      ' seconds'
+    );
+  });
+};
+
+const doMigration = async () => {
+  try {
+    console.log('_ doMigration: Starting initAppInsights()');
+    const appInsightResult = await initAppInsights();
+    console.log('_ Finished initAppInsights() with result: ', appInsightResult);
+  } catch (error) {
+    console.log('Error setting up appInsights: ', error);
+  }
+  const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
+
+  console.log('_ doMigration: migrationStatus: ', migrationStatus);
+  console.log('_ Now trying to set migrationStatus to true');
+  const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
+
+  console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
+  process.exit(0);
+};
+
+if (process.env.IS_MIGRATION_JOB === 'true') {
+  console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
+  doMigration();
+}
+
 // ******************************
 // ************ MAIN ************
 // ******************************
@@ -202,6 +255,9 @@ const start = async (): Promise<void> => {
       console.log('Error setting up appInsights: ', error);
     }
 
+  const migrationCompleteStatus = await checkMigrationComplete();
+  console.log('_ migrationCompleteStatus: ', migrationCompleteStatus);
+  console.log('_ Migration completed, continueing...');
   process.env.DEV_ENV !== 'dev' && console.log('_ Starting getPgDetails');
   let pgDetails;
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
@@ -302,6 +358,84 @@ async function testAppConf() {
     console.log('_ testAppConf failed: ', error);
     process.exit(1);
   }
+}
+async function getAppConfigValue(key: string) {
+  return new Promise(async (resolve, reject) => {
+    let i = 0;
+    const d = new Date();
+    let isSuccess = false;
+    try {
+      do {
+        const endpoint = process.env.AZURE_APPCONFIG_URI!;
+        const credential = new DefaultAzureCredential();
+
+        console.log('_ ******* getAppConfigValue Start, iteration number: ', i);
+        console.log('_ Time now: ', d);
+        console.log('_ ________Connection endpoint: ' + endpoint);
+
+        const client = new AppConfigurationClient(
+          endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
+          credential
+        );
+        // const client = new AppConfigurationClient(connectionString!);
+        // let test = await client.getConfigurationSetting({
+        //   key: 'test',
+        //   // key: 'Infrastructure:DialogDbConnectionString',
+        // });
+        let configValue = await client.getConfigurationSetting({
+          key,
+        });
+        // console.log('_ Trying to print test:');
+        // console.log(test);
+        console.log('_ Trying to print key: ', key);
+        // console.log(vaultUri);
+        console.log('_ ', key, ' value :', configValue?.value || 'No value found');
+        // console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
+        if (configValue?.value) isSuccess = true;
+        resolve(configValue?.value);
+        await waitNSeconds(2);
+      } while (!isSuccess);
+    } catch (error) {
+      console.log('_ getAppConfigValue failed: ', error);
+      process.exit(1);
+    }
+  });
+}
+
+async function setAppConfigValue(key: string, value: string) {
+  return new Promise(async (resolve, reject) => {
+    let i = 0;
+    const d = new Date();
+    let isSuccess = false;
+    try {
+      do {
+        const endpoint = process.env.AZURE_APPCONFIG_URI!;
+        const credential = new DefaultAzureCredential();
+
+        console.log('_ ******* setAppConfigValue Start, iteration number: ', i);
+        console.log('_ Time now: ', d);
+        console.log('_ ________Connection endpoint: ' + endpoint);
+
+        const client = new AppConfigurationClient(
+          endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
+          credential
+        );
+        console.log('_ Trying to set key: ', key, ' to value: ', value);
+        const newSetting = await client.setConfigurationSetting({
+          key,
+          value,
+        });
+        console.log('_ Created config, response: ', newSetting);
+        // console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
+        if (newSetting) isSuccess = true;
+        await waitNSeconds(2);
+      } while (!isSuccess);
+    } catch (error) {
+      console.log('_ setAppConfigValue failed: ', error);
+      process.exit(1);
+    }
+    resolve(true);
+  });
 }
 
 export async function testKeyVault() {

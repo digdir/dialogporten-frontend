@@ -42,7 +42,7 @@ jobs:
         run: yarn lint
 
   test:
-    name: 'Testing'
+    name: 'Running Unit Tests'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checking Out Code'
@@ -58,7 +58,7 @@ jobs:
         run: yarn test
 
   build:
-    name: 'Building'
+    name: 'Building Static Files'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checking Out Code'
