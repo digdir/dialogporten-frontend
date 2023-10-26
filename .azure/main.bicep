@@ -257,6 +257,7 @@ module assignConfigReaderRole 'customRoles/assign.bicep' = {
 //         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
 //     }
 // }
+//
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
