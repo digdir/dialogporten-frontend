@@ -12,33 +12,78 @@ resource migrationEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   properties: {}
 }
 
+//   resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
+//   name: uniqueBundleName
+//   location: location
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+//   properties: {
+//     configuration: {
+//       manualTriggerConfig: {
+//         parallelism: 1
+//         replicaCompletionCount: 1
+//       }
+//       replicaRetryLimit: 1
+//       replicaTimeout: 30
+//       triggerType: 'Manual'
+//     }
+//     environmentId: migrationEnv.id
+//     template: {
+//       containers: [
+//         {
+//           env: envVariables
+//           image: '${baseImageUrl}-node-bff:${gitSha}'
+//           name: 'migration-bundle'
+//         }
+//       ]
+//     }
+//   }
+// }
+
 resource migrationJob 'Microsoft.App/containerApps@2023-05-01' = {
-  // resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
   name: uniqueBundleName
   location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
   properties: {
+    managedEnvironmentId: migrationEnv.id
     configuration: {
-      manualTriggerConfig: {
-        parallelism: 1
-        replicaCompletionCount: 1
+      activeRevisionsMode: 'Single'
+      ingress: {
+        external: true
+        targetPort: 80
       }
-      replicaRetryLimit: 1
-      replicaTimeout: 30
-      triggerType: 'Manual'
     }
-    environmentId: migrationEnv.id
     template: {
+      // initContainers: [
+      // 	{
+      // 		name: '${namePrefix}-ghcr-docker-image-init'
+      // 		image: imageUrl // Bruke C# container 
+      // 		env: envVariables
+      // 		resources: {
+      // 			cpu: 1
+      // 			memory: '2.0Gi'
+      // 		}
+      // 	}
+      // ]
       containers: [
         {
-          env: envVariables
+          name: '${namePrefix}-ghcr-docker-image'
           image: '${baseImageUrl}-node-bff:${gitSha}'
-          name: 'migration-bundle'
+          env: envVariables
+          resources: {
+            cpu: 1
+            memory: '2.0Gi'
+          }
         }
       ]
+      scale: {
+        minReplicas: 1
+        maxReplicas: 10
+      }
     }
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 
