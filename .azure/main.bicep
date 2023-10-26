@@ -135,17 +135,17 @@ module appsettings 'containerApp/upsertAppsettings.bicep' = {
         }
     }
 }
-module migrationsettings 'containerApp/upsertAppsettings.bicep' = {
-    scope: resourceGroup
-    name: 'migrationsettings'
-    params: {
-        containerAppName: migrationJob.outputs.name
-        settings: {
-            APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
-            AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
-        }
-    }
-}
+// module migrationsettings 'containerApp/upsertAppsettings.bicep' = {
+//     scope: resourceGroup
+//     name: 'migrationsettings'
+//     params: {
+//         containerAppName: migrationJob.outputs.name
+//         settings: {
+//             APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.outputs.connectionString
+//             AZURE_APPCONFIG_URI: appConfiguration.outputs.endpoint
+//         }
+//     }
+// }
 
 // REMOVED BECAUSE THIS IS NOT NEEDED IN NODE:
 // module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {

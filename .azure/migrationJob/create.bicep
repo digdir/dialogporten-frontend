@@ -11,7 +11,9 @@ resource migrationEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   location: location
   properties: {}
 }
-resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
+
+resource migrationJob 'Microsoft.App/containerApps@2023-05-01' = {
+  // resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
   name: uniqueBundleName
   location: location
   identity: {

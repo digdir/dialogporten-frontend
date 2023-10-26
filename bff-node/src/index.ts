@@ -201,7 +201,6 @@ const checkMigrationComplete = async () => {
       } catch (error) {
         console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i);
       }
-      await waitNSeconds(10);
       i++;
     } while (!isSuccess);
 
@@ -256,8 +255,17 @@ const start = async (): Promise<void> => {
       console.log('Error setting up appInsights: ', error);
     }
 
-  const migrationCompleteStatus = await checkMigrationComplete();
-  console.log('_ migrationCompleteStatus: ', migrationCompleteStatus);
+  let migrationCheckSuccess = false;
+  do {
+    try {
+      const migrationCompleteStatus = await checkMigrationComplete();
+      console.log('_ migrationCompleteStatus: ', migrationCompleteStatus);
+      if (migrationCompleteStatus) migrationCheckSuccess = true;
+    } catch (error) {
+      console.log('_ checkMigrationComplete failed, retrying in 10 seconds...', error);
+    }
+    await waitNSeconds(10);
+  } while (!migrationCheckSuccess);
   console.log('_ Migration completed, continueing...');
   process.env.DEV_ENV !== 'dev' && console.log('_ Starting getPgDetails');
   let pgDetails;
