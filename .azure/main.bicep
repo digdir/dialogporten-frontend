@@ -215,7 +215,7 @@ module containerApp 'containerApp/create.bicep' = {
 
 }
 
-module customContainerAppRole 'customRoles/create.bicep' = {
+module customContainerAppRoleFE 'customRoles/create.bicep' = {
     scope: resourceGroup
     name: 'customContainerAppRoleFE'
     params: {
@@ -227,7 +227,7 @@ module assignContainerAppJobRoles 'customRoles/assign.bicep' = {
     scope: resourceGroup
     name: 'assignContainerAppJobRolesFE'
     params: {
-        roleDefinitionId: customContainerAppRole.outputs.containerJobRoleId
+        roleDefinitionId: customContainerAppRoleFE.outputs.containerJobRoleId
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }
@@ -236,7 +236,7 @@ module assignConfigReaderRole 'customRoles/assign.bicep' = {
     scope: resourceGroup
     name: 'assignConfigReaderRoleFE'
     params: {
-        roleDefinitionId: customContainerAppRole.outputs.appConfigReaderRoleId
+        roleDefinitionId: customContainerAppRoleFE.outputs.appConfigReaderRoleId
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }
