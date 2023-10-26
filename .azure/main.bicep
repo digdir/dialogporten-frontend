@@ -30,7 +30,7 @@ module keyVaultModule 'keyvault/create.bicep' = {
 
 module appConfiguration 'appConfiguration/create.bicep' = {
     scope: resourceGroup
-    name: 'appConfigurationFE'
+    name: 'appConfiguration'
     params: {
         namePrefix: namePrefix
         location: location
