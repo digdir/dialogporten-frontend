@@ -159,16 +159,16 @@ module appsettings 'containerApp/upsertAppsettings.bicep' = {
 //     }
 // }
 
-module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'MigrationCompleted'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'Infrastructure:MigrationCompleted'
-        value: 'false'
-        keyValueType: 'custom'
-    }
-}
+// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+//     scope: resourceGroup
+//     name: 'AppConfig_Add_MigrationStatus'
+//     params: {
+//         configStoreName: appConfiguration.outputs.name
+//         key: 'Infrastructure:MigrationCompleted'
+//         value: 'false'
+//         keyValueType: 'custom'
+//     }
+// }
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
@@ -226,9 +226,9 @@ module containerApp 'containerApp/create.bicep' = {
 
 }
 
-module customContainerAppRoleFE 'customRoles/create.bicep' = {
+module customContainerAppRole 'customRoles/create.bicep' = {
     scope: resourceGroup
-    name: 'customContainerAppRoleFE'
+    name: 'customContainerAppRole'
     params: {
         assignableScope: resourceGroup.id
     }
@@ -236,18 +236,18 @@ module customContainerAppRoleFE 'customRoles/create.bicep' = {
 
 module assignContainerAppJobRoles 'customRoles/assign.bicep' = {
     scope: resourceGroup
-    name: 'assignContainerAppJobRolesFE'
+    name: 'assignContainerAppJobRoles'
     params: {
-        roleDefinitionId: customContainerAppRoleFE.outputs.containerJobRoleId
+        roleDefinitionId: customContainerAppRole.outputs.containerJobRoleId
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }
 
 module assignConfigReaderRole 'customRoles/assign.bicep' = {
     scope: resourceGroup
-    name: 'assignConfigReaderRoleFE'
+    name: 'assignConfigReaderRole'
     params: {
-        roleDefinitionId: customContainerAppRoleFE.outputs.appConfigReaderRoleId
+        roleDefinitionId: customContainerAppRole.outputs.appConfigReaderRoleId
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
     }
 }

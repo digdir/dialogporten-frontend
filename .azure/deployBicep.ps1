@@ -5,8 +5,8 @@ param(
 	[Parameter(Mandatory)]
 	[string]$subscriptionId,
 
-	[Parameter(Mandatory)]
-	[string]$imageUrl,
+	# [Parameter(Mandatory)]
+	# [string]$imageUrl,
 
 	[Parameter(Mandatory)]
 	[string]$deployTimestamp,
