@@ -10,7 +10,7 @@ var containerJobRole = guid(subscription().id, string(actions))
 resource containerJobRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: containerJobRole
   properties: {
-    roleName: 'Custom Container App Job Role'
+    roleName: 'Custom Container App Job Role FE'
     description: 'Read rights for container apps jobs/executions'
     type: 'customRole'
     permissions: [
@@ -37,7 +37,7 @@ var appConfigReaderRole = guid(subscription().id, string(dataActions))
 resource appConfigReaderRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: appConfigReaderRole
   properties: {
-    roleName: 'Custom App Config Reader Role'
+    roleName: 'Custom App Config Reader Role FE'
     description: 'Read rights for container apps jobs/executions'
     type: 'customRole'
     permissions: [
