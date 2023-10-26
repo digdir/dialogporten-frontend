@@ -37,8 +37,8 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 			containers: [
 				{
 					name: '${namePrefix}-ghcr-docker-image'
-					image: 'ghcr.io/digdir/dialogporten-frontend-node-bff:53f8fe4a2402df23a2cdabb8a9caec725a5f8f7c'
-					// image: '${baseImageUrl}-node-bff:${gitSha}'
+					// image: 'ghcr.io/digdir/dialogporten-frontend-node-bff:53f8fe4a2402df23a2cdabb8a9caec725a5f8f7c'
+					image: '${baseImageUrl}-node-bff:${gitSha}'
 					env: envVariables
 					resources: {
 						cpu: 1

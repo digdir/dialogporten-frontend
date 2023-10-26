@@ -131,6 +131,7 @@ module migrationJob 'migrationJob/create.bicep' = {
 //         }
 //     }
 // }
+
 // module migrationsettings 'containerApp/upsertAppsettings.bicep' = {
 //     scope: resourceGroup
 //     name: 'migrationsettings'
@@ -244,14 +245,14 @@ module assignConfigReaderRole 'customRoles/assign.bicep' = {
     }
 }
 
-// module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
-//     scope: resourceGroup
-//     name: 'appConfigReaderAccessPolicy'
-//     params: {
-//         appConfigurationName: appConfiguration.outputs.name
-//         principalIds: [ containerApp.outputs.identityPrincipalId ]
-//     }
-// }
+module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
+    scope: resourceGroup
+    name: 'appConfigReaderAccessPolicy'
+    params: {
+        appConfigurationName: appConfiguration.outputs.name
+        principalIds: [ containerApp.outputs.identityPrincipalId ]
+    }
+}
 // module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
 //     scope: resourceGroup
 //     name: 'appConfigWriterAccessPolicy'
@@ -260,7 +261,6 @@ module assignConfigReaderRole 'customRoles/assign.bicep' = {
 //         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId ]
 //     }
 // }
-//
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
