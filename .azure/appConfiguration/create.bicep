@@ -19,6 +19,15 @@ resource appConfig 'Microsoft.AppConfiguration/configurationStores@2022-05-01' =
 	}
 }
 
+resource appConfigKey 'Microsoft.AppConfiguration/configurationStores/configurationKeyValue@2020-07-01-preview' = {
+	parent: appConfig
+	name: 'Infrastructure:MigrationCompleted'
+	properties: {
+		contentType: 'text'
+		value: 'false'
+	}
+}
+
 // Output the connection string
 output endpoint string = appConfig.properties.endpoint
 output name string = appConfig.name

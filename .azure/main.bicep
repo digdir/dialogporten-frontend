@@ -160,16 +160,33 @@ module migrationJob 'migrationJob/create.bicep' = {
 //     }
 // }
 
-module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'AppConfig_Add_MigrationStatus'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'Infrastructure:MigrationCompleted'
-        value: 'false'
-        keyValueType: 'custom'
-    }
-}
+// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+//     scope: resourceGroup
+//     name: 'AppConfig_Add_MigrationStatus'
+//     params: {
+//         configStoreName: appConfiguration.outputs.name
+//         key: 'Infrastructure:MigrationCompleted'
+//         value: 'false'
+//         keyValueType: 'custom'
+//     }
+// }
+
+// resource AppConfig_Add_MigrationStatus 'Microsoft.AppConfiguration/configurationStores@2020-07-01-preview' = {
+//     name: 'yourAppConfigName'
+//     location: 'East US'
+//     properties: {
+//       connectionString: 'Endpoint=https://yourappconfig.azconfig.io;Id=yourId;Secret=yourSecret'
+//     }
+//   }
+
+// resource appConfigKey 'Microsoft.AppConfiguration/configurationStores/configurationKeyValue@2020-07-01-preview' = {
+//     parent: appConfiguration.outputs.name
+//     name: 'yourKey'
+//     properties: {
+//       contentType: 'text',
+//       value: 'false'
+//     }
+//   }
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
@@ -261,15 +278,15 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
         principalIds: [ containerApp.outputs.identityPrincipalId ]
     }
 }
-module resetMigrationStatus 'appConfiguration/resetMigrationStatus.bicep' = {
-    scope: resourceGroup
-    name: 'resetMigrationStatus'
-    params: {
-        appConfigurationName: appConfiguration.outputs.name
-        key: 'Infrastructure:MigrationCompleted'
-        value: 'false'
-    }
-}
+// module resetMigrationStatus 'appConfiguration/resetMigrationStatus.bicep' = {
+//     scope: resourceGroup
+//     name: 'resetMigrationStatus'
+//     params: {
+//         appConfigurationName: appConfiguration.outputs.name
+//         key: 'Infrastructure:MigrationCompleted'
+//         value: 'false'
+//     }
+// }
 // module appConfigWriterAccessPolicy 'appConfiguration/addWriterRoles.bicep' = {
 //     scope: resourceGroup
 //     name: 'appConfigWriterAccessPolicy'
