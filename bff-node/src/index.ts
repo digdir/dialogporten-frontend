@@ -287,9 +287,9 @@ const doMigration = async () => {
 
     try {
       if (process.env.AZURE_APPCONFIG_URI) {
-        console.log('_ Now trying to set migrationStatus to true');
-        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-        console.log('_ result: ', result);
+        console.log('_ WOULD Now trying to set migrationStatus to true');
+        // const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
+        // console.log('_ result: ', result);
       }
     } catch (error) {
       console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
