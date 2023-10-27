@@ -278,16 +278,6 @@ const doMigration = async () => {
   }
 };
 
-if (process.env.IS_MIGRATION_JOB === 'true') {
-  console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
-  doMigration();
-}
-console.log(
-  '_ ************* process.env.IS_MIGRATION_JOB: ',
-  process.env.IS_MIGRATION_JOB,
-  process.env.IS_MIGRATION_JOB === 'true' ? 'true' : 'false'
-);
-
 // ******************************
 // ************ MAIN ************
 // ******************************
@@ -382,8 +372,6 @@ const start = async (): Promise<void> => {
     process.exit(1);
   }
 };
-
-void start();
 
 async function testAppConf() {
   const d = new Date();
@@ -530,6 +518,11 @@ export async function testKeyVault() {
     process.exit(1);
   }
 }
+
+if (process.env.IS_MIGRATION_JOB === 'true') {
+  console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
+  doMigration();
+} else void start();
 
 // Env variables:
 // {

@@ -24,6 +24,7 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts",
+    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.local.ts",
     "typeorm:migrate": "npm run typeorm migration:generate -- -n",
     "migration:create": "node src/scripts/migration-create.js",
     "typeorm:run": "npm run typeorm migration:run",
