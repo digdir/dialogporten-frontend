@@ -49,6 +49,24 @@ services:
     working_dir: /app/
     ports:
       - "3001:3001"  # Map container port to host port
+
+  migration-job:
+    depends_on:
+      - postgresdb
+    environment:
+      - DB_HOST=postgresdb-dp-fe
+      - DB_USER=postgres
+      - DB_PORT=5432
+      - DB_PASSWORD=mysecretpassword
+      - DB_NAME=database_development
+      - IS_MIGRATION_JOB=true
+    build:
+      context: ./bff-node
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./bff-node:/app/   # Map the host app directory to the container's /app
+    working_dir: /app/
   
 networks:
   default:

@@ -156,16 +156,16 @@ module migrationJob 'migrationJob/create.bicep' = {
 //     }
 // }
 
-// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-//     scope: resourceGroup
-//     name: 'AppConfig_Add_MigrationStatus'
-//     params: {
-//         configStoreName: appConfiguration.outputs.name
-//         key: 'Infrastructure:MigrationCompleted'
-//         value: 'false'
-//         keyValueType: 'custom'
-//     }
-// }
+module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+    scope: resourceGroup
+    name: 'AppConfig_Add_MigrationStatus'
+    params: {
+        configStoreName: appConfiguration.outputs.name
+        key: 'Infrastructure:MigrationCompleted'
+        value: 'false'
+        keyValueType: 'custom'
+    }
+}
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup

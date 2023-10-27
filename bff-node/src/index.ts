@@ -20,9 +20,10 @@ const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 const initAppInsights = async () => {
-  appInsights;
   // Setup Application Insights:
   return new Promise(async (resolve, reject) => {
+    if (!process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+      reject("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
     appInsights
       .setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
       .setAutoDependencyCorrelation(true)
@@ -199,9 +200,10 @@ const checkMigrationComplete = async () => {
           resolve(true);
         }
       } catch (error) {
-        console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i);
+        console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i, error);
       }
       i++;
+      await waitNSeconds(10);
     } while (!isSuccess);
 
     console.log(
@@ -215,19 +217,34 @@ const checkMigrationComplete = async () => {
 };
 
 const doMigration = async () => {
-  try {
-    console.log('_ doMigration: Starting initAppInsights()');
-    const appInsightResult = await initAppInsights();
-    console.log('_ Finished initAppInsights() with result: ', appInsightResult);
-  } catch (error) {
-    console.log('Error setting up appInsights: ', error);
+  let appInsightResult;
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+    do {
+      try {
+        console.log('_ doMigration: Starting initAppInsights()');
+        const appInsightResult = await initAppInsights();
+      } catch (error) {
+        console.log('Error setting up appInsights: ', error);
+      }
+      await waitNSeconds(5);
+    } while (!appInsightResult);
+
+  console.log('_ Finished initAppInsights() with result: ', appInsightResult);
+
+  let migrationStatusFetched = false;
+  if (process.env.AZURE_APPCONFIG_URI)
+    do {
+      const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
+      if (migrationStatus) {
+        migrationStatusFetched = true;
+        console.log('_ doMigration: migrationStatus: ', migrationStatus);
+      }
+    } while (!migrationStatusFetched);
+  if (process.env.AZURE_APPCONFIG_URI) {
+    console.log('_ Now trying to set migrationStatus to true');
+    const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
+    console.log('_ result: ', result);
   }
-  const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
-
-  console.log('_ doMigration: migrationStatus: ', migrationStatus);
-  console.log('_ Now trying to set migrationStatus to true');
-  const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-
   console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
   process.exit(0);
 };
@@ -236,6 +253,11 @@ if (process.env.IS_MIGRATION_JOB === 'true') {
   console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
   doMigration();
 }
+console.log(
+  '_ ************* process.env.IS_MIGRATION_JOB: ',
+  process.env.IS_MIGRATION_JOB,
+  process.env.IS_MIGRATION_JOB === 'true' ? 'true' : 'false'
+);
 
 // ******************************
 // ************ MAIN ************
@@ -368,17 +390,15 @@ async function testAppConf() {
     process.exit(1);
   }
 }
+
 async function getAppConfigValue(key: string) {
   return new Promise(async (resolve, reject) => {
-    let i = 0;
     const d = new Date();
-    let isSuccess = false;
     try {
-      do {
-        const endpoint = process.env.AZURE_APPCONFIG_URI!;
+      if (process.env.AZURE_APPCONFIG_URI) {
+        const endpoint = process.env.AZURE_APPCONFIG_URI;
         const credential = new DefaultAzureCredential();
 
-        console.log('_ ******* getAppConfigValue Start, iteration number: ', i);
         console.log('_ Time now: ', d);
         console.log('_ ________Connection endpoint: ' + endpoint);
 
@@ -386,28 +406,20 @@ async function getAppConfigValue(key: string) {
           endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
           credential
         );
-        // const client = new AppConfigurationClient(connectionString!);
-        // let test = await client.getConfigurationSetting({
-        //   key: 'test',
-        //   // key: 'Infrastructure:DialogDbConnectionString',
-        // });
         let configValue = await client.getConfigurationSetting({
           key,
         });
-        // console.log('_ Trying to print test:');
-        // console.log(test);
         console.log('_ Trying to print key: ', key);
-        // console.log(vaultUri);
         console.log('_ ', key, ' value :', configValue?.value || 'No value found');
-        // console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
-        if (configValue?.value) isSuccess = true;
         resolve(configValue?.value);
-        await waitNSeconds(2);
-      } while (!isSuccess);
+      } else {
+        // reject('_ No AZURE_APPCONFIG_URI found');
+        console.log('_ No AZURE_APPCONFIG_URI found');
+      }
     } catch (error) {
       console.log('_ getAppConfigValue failed: ', error);
-      process.exit(1);
     }
+    await waitNSeconds(5);
   });
 }
 
