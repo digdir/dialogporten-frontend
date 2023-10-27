@@ -232,21 +232,50 @@ const doMigration = async () => {
   console.log('_ Finished initAppInsights() with result: ', appInsightResult);
 
   let migrationStatusFetched = false;
+  let migrationStatusValue;
   if (process.env.AZURE_APPCONFIG_URI)
     do {
       const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
       if (migrationStatus) {
         migrationStatusFetched = true;
+        migrationStatusValue = migrationStatus;
         console.log('_ doMigration: migrationStatus: ', migrationStatus);
+        if (migrationStatus === 'true') {
+          console.log('_ doMigration: migrationStatus is already completed, exiting process');
+          process.exit(0);
+        }
       }
     } while (!migrationStatusFetched);
-  if (process.env.AZURE_APPCONFIG_URI) {
-    console.log('_ Now trying to set migrationStatus to true');
-    const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-    console.log('_ result: ', result);
+
+  if (migrationStatusValue === 'false') {
+    console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
+    try {
+      const { exec } = await import('child_process');
+      await new Promise((resolve, reject) => {
+        const migrate = exec('yarn typeorm:run', (err) =>
+          err ? reject(err) : resolve('Migration completed successfully')
+        );
+
+        // Forward stdout+stderr to this process
+        migrate?.stdout?.pipe(process.stdout);
+        migrate?.stdout?.pipe(process.stderr);
+      });
+    } catch (error) {
+      console.error('_ doMigration: Migration run failed: ', error);
+    }
+
+    try {
+      if (process.env.AZURE_APPCONFIG_URI) {
+        console.log('_ Now trying to set migrationStatus to true');
+        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
+        console.log('_ result: ', result);
+      }
+    } catch (error) {
+      console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
+    }
+    console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
+    process.exit(0);
   }
-  console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
-  process.exit(0);
 };
 
 if (process.env.IS_MIGRATION_JOB === 'true') {
