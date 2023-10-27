@@ -217,37 +217,58 @@ const checkMigrationComplete = async () => {
 };
 
 const doMigration = async () => {
-  let appInsightResult;
+  let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
     do {
       try {
         console.log('_ doMigration: Starting initAppInsights()');
         const appInsightResult = await initAppInsights();
+        if (appInsightResult === 'Done') appInsightSetupComplete = true;
       } catch (error) {
         console.log('Error setting up appInsights: ', error);
       }
       await waitNSeconds(5);
-    } while (!appInsightResult);
-
-  console.log('_ Finished initAppInsights() with result: ', appInsightResult);
+    } while (!appInsightSetupComplete);
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
   if (process.env.AZURE_APPCONFIG_URI)
     do {
-      const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
-      if (migrationStatus) {
-        migrationStatusFetched = true;
-        migrationStatusValue = migrationStatus;
-        console.log('_ doMigration: migrationStatus: ', migrationStatus);
-        if (migrationStatus === 'true') {
-          console.log('_ doMigration: migrationStatus is already completed, exiting process');
-          process.exit(0);
+      // const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
+      try {
+        if (process.env.AZURE_APPCONFIG_URI) {
+          const endpoint = process.env.AZURE_APPCONFIG_URI;
+          const credential = new DefaultAzureCredential();
+
+          // console.log('_ Time now: ', d);
+          // console.log('_ ________Connection endpoint: ' + endpoint);
+          const key = 'Infrastructure:MigrationCompleted';
+          const client = new AppConfigurationClient(
+            endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
+            credential
+          );
+          let configValue = await client.getConfigurationSetting({
+            key,
+          });
+          console.log('_ Trying to print key: ', key);
+          console.log('_ ', key, ' value :', configValue?.value || 'No value found');
+          if (configValue?.value) {
+            migrationStatusValue = configValue?.value;
+            migrationStatusFetched = true;
+          }
+        } else {
+          console.log('_ No AZURE_APPCONFIG_URI found');
         }
+      } catch (error) {
+        console.log('_ getAppConfigValue failed: ', error);
       }
+      await waitNSeconds(5);
     } while (!migrationStatusFetched);
 
-  if (migrationStatusValue === 'false') {
+  if (migrationStatusValue === 'true') {
+    console.log('_ doMigration: migrationStatus is already completed, exiting process');
+    process.exit(0);
+  } else if (migrationStatusValue === 'false') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
     try {
       const { exec } = await import('child_process');
@@ -273,8 +294,14 @@ const doMigration = async () => {
     } catch (error) {
       console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
     }
-    console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
     process.exit(0);
+  } else {
+    console.log(
+      "Something must have gone wrong fetching migrationStatusValue, it's: ",
+      migrationStatusValue
+    );
+    console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
+    process.exit(1);
   }
 };
 
