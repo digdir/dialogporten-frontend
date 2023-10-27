@@ -294,7 +294,18 @@ const doMigration = async () => {
     } catch (error) {
       console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
     }
-    process.exit(0);
+    try {
+      if (process.env.AZURE_APPCONFIG_URI) {
+        console.log('_ Now trying to set migrationStatus with SHA to true');
+        const result = await setAppConfigValue(
+          'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
+          'true'
+        );
+        console.log('_ result: ', result);
+      }
+    } catch (error) {
+      console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
+    }
   } else {
     console.log(
       "Something must have gone wrong fetching migrationStatusValue, it's: ",

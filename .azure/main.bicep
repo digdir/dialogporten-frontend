@@ -105,6 +105,10 @@ module migrationJob 'migrationJob/create.bicep' = {
                 value: appConfiguration.outputs.endpoint
             }
             {
+                name: 'GIT_SHA'
+                value: gitSha
+            }
+            {
                 name: 'PSQL_CONNECTION_JSON'
                 value: postgresql.outputs.psqlConnectionJSON
             }
@@ -193,6 +197,10 @@ module containerApp 'containerApp/create.bicep' = {
             {
                 name: 'KV_NAME'
                 value: keyVaultModule.outputs.name
+            }
+            {
+                name: 'GIT_SHA'
+                value: gitSha
             }
             {
                 name: 'PSQL_CONNECTION_JSON_NAME' // MÅ BYTTES UT, DETTE SKAL HENTES FRA APP CONFIG
