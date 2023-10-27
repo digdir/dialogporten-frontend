@@ -265,10 +265,10 @@ const doMigration = async () => {
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
 
-  if (migrationStatusValue === 'true') {
+  if (migrationStatusValue === 'done') {
     console.log('_ doMigration: migrationStatus is already completed, exiting process');
     process.exit(0);
-  } else if (migrationStatusValue === 'false') {
+  } else if (migrationStatusValue === 'not_started') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
     try {
       const { exec } = await import('child_process');
@@ -288,8 +288,8 @@ const doMigration = async () => {
     try {
       if (process.env.AZURE_APPCONFIG_URI) {
         console.log('_ WOULD Now trying to set migrationStatus to true');
-        // const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-        // console.log('_ result: ', result);
+        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'done');
+        console.log('_ result: ', result);
       }
     } catch (error) {
       console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
@@ -299,7 +299,7 @@ const doMigration = async () => {
         console.log('_ Now trying to set migrationStatus with SHA to true');
         const result = await setAppConfigValue(
           'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
-          'true'
+          'done'
         );
         console.log('_ result: ', result);
       }
