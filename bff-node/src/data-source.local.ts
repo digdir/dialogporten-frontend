@@ -35,11 +35,11 @@ console.log(
 //   // dropSchema: true,
 // });
 
-process.env.DB_HOST = 'localhost';
-process.env.DB_USER = 'postgres';
-process.env.DB_PORT = '5430';
-process.env.DB_PASSWORD = 'mysecretpassword';
-process.env.DB_NAME = 'dialogporten';
+// process.env.DB_HOST = 'localhost';
+// process.env.DB_USER = 'postgres';
+// process.env.DB_PORT = '5430';
+// process.env.DB_PASSWORD = 'mysecretpassword';
+// process.env.DB_NAME = 'dialogporten';
 export let connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',

@@ -223,6 +223,7 @@ const checkMigrationComplete = async () => {
 };
 
 const doMigration = async () => {
+  console.log('_ ************* MIGRATION doMigration *************');
   let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
@@ -285,6 +286,19 @@ const doMigration = async () => {
     console.log(
       `_ doMigration: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
     );
+
+    const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
+    process.env.DB_HOST = pgJson?.host;
+    process.env.DB_USER = pgJson?.user;
+    process.env.DB_PORT = pgJson?.dbport;
+    process.env.DB_PASSWORD = pgJson?.password;
+    process.env.DB_NAME = pgJson?.dbname;
+    console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
+    console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
+    console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
+    console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
+    console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
+
     try {
       const { exec } = await import('child_process');
       await new Promise((resolve, reject) => {
@@ -378,7 +392,7 @@ const start = async (): Promise<void> => {
     }
     await waitNSeconds(10);
   } while (!migrationCheckSuccess);
-  console.log('_ Migration completed, continueing...');
+  console.log('_ Migration completed, continuing...');
   process.env.DEV_ENV !== 'dev' && console.log('_ Starting getPgDetails');
   let pgDetails;
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
