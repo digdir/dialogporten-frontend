@@ -110,7 +110,7 @@ export let FamilyRepository: Repository<Family> | undefined = undefined;
 //   ' seconds'
 // );
 
-export async function getPsqlSettingsSecret(debug = false) {
+export async function getPsqlSettingsSecret(debug = true) {
   return new Promise(async (resolve, reject) => {
     try {
       debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
@@ -271,7 +271,7 @@ const doMigration = async () => {
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
-
+  let migrationSuccessfull = false;
   if (migrationStatusValue === 'true') {
     console.log('_ doMigration: migrationStatus is already completed, exiting process');
     process.exit(0);
@@ -287,32 +287,36 @@ const doMigration = async () => {
         // Forward stdout+stderr to this process
         migrate?.stdout?.pipe(process.stdout);
         migrate?.stdout?.pipe(process.stderr);
+        migrationSuccessfull = true;
       });
     } catch (error) {
       console.error('_ doMigration: Migration run failed: ', error);
+      migrationSuccessfull = false;
     }
-    console.log('Migration success');
-    try {
-      if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-        console.log('_ WOULD Now trying to set migrationStatus to true');
-        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-        console.log('_ result: ', result);
+    if (migrationSuccessfull) {
+      console.log('Migration successful, setting migrationStatus to true');
+      try {
+        if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
+          console.log('_ WOULD Now trying to set migrationStatus to true');
+          const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
+          console.log('_ result: ', result);
+        }
+      } catch (error) {
+        console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
       }
-    } catch (error) {
-      console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
-    }
-    try {
-      if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-        console.log('_ Now trying to set migrationStatus with SHA to true');
-        const result = await setAppConfigValue(
-          'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
-          'true'
-        );
-        console.log('_ result: ', result);
+      try {
+        if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
+          console.log('_ Now trying to set migrationStatus with SHA to true');
+          const result = await setAppConfigValue(
+            'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
+            'true'
+          );
+          console.log('_ result: ', result);
+        }
+      } catch (error) {
+        console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
       }
-    } catch (error) {
-      console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
-    }
+    } else console.log('Migration no successfull, not setting migrationStatus to true');
   } else {
     console.log(
       "Something must have gone wrong fetching migrationStatusValue, it's: ",

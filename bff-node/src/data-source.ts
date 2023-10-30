@@ -1,7 +1,6 @@
 // import 'reflect-metadata';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import './config/env';
 
 console.log(
   `_ DATASOURCE FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
