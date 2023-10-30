@@ -14,6 +14,8 @@ import { SecretClient } from '@azure/keyvault-secrets';
 import { DataSource, Repository } from 'typeorm';
 import { Person } from './entities/Person';
 import { Family } from './entities/Family';
+import util from 'util';
+
 console.log('_ ****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
@@ -149,7 +151,7 @@ export async function getPsqlSettingsSecret(debug = true) {
           resolve(postgresSettingsObject);
         } else reject({ error: '_ Invalid postgresSettingsObject found' });
       } catch (error) {
-        console.error('_getPsqlSettingsSecret: Vault error ');
+        console.error('_getPsqlSettingsSecret: Vault error ', error);
         reject({ error });
       }
     } catch (error) {
@@ -224,6 +226,8 @@ const checkMigrationComplete = async () => {
 
 const doMigration = async () => {
   console.log('_ ************* MIGRATION doMigration *************');
+
+  // ************ INIT APP INSIGHTS ************
   let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
@@ -244,6 +248,9 @@ const doMigration = async () => {
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
+
+  // ************ READ APP CONFIG ************
+
   if (process.env.AZURE_APPCONFIG_URI && !isLocal)
     do {
       // const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
@@ -277,6 +284,9 @@ const doMigration = async () => {
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
+
+  // ************ RUN MIGRATION ************
+
   let migrationsuccessful = false;
   if (migrationStatusValue === 'true') {
     console.log('_ doMigration: migrationStatus is already completed, exiting process');
@@ -286,45 +296,61 @@ const doMigration = async () => {
     console.log(
       `_ doMigration: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
     );
-
-    const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
-    process.env.DB_HOST = pgJson?.host;
-    process.env.DB_USER = pgJson?.user;
-    process.env.DB_PORT = pgJson?.dbport;
-    process.env.DB_PASSWORD = pgJson?.password;
-    process.env.DB_NAME = pgJson?.dbname;
-    console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
-    console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
-    console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
-    console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
-    console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
+    try {
+      const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
+      process.env.DB_HOST = pgJson?.host;
+      process.env.DB_USER = pgJson?.user;
+      process.env.DB_PORT = pgJson?.dbport;
+      process.env.DB_PASSWORD = pgJson?.password;
+      process.env.DB_NAME = pgJson?.dbname;
+      console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
+      console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
+      console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
+      console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
+      console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
+    } catch (error) {
+      console.log("trycatch error: Couldn't parse process.env.PSQL_CONNECTION_JSON!", error);
+    }
 
     try {
       const { exec } = await import('child_process');
-      await new Promise((resolve, reject) => {
-        const migrate = exec('yarn typeorm:run', (err) =>
-          err ? reject(err) : resolve('Migration completed successfuly')
-        );
-        migrate?.stdout?.on('data', (data) => {
-          console.log(`stdout: ${data}`);
-        });
 
-        migrate?.stdout?.on('data', (data) => {
-          console.error(`stderr: ${data}`);
-        });
+      try {
+        const execAsync = util.promisify(exec);
+        const { stdout, stderr } = await execAsync('yarn typeorm:run');
+        console.log('Command output:');
+        console.log('stdout:', stdout);
+        console.error('stderr:', stderr);
+        console.log('Migration completed successfully');
+        migrationsuccessful = true;
+      } catch (error) {
+        console.error('Error running the command:', error);
+      }
 
-        migrate.on('close', (code) => {
-          if (code === 0) {
-            console.log('_ Migration: Migration completed successfuly');
-            migrationsuccessful = true;
-          } else {
-            console.error(`Migration: Migration failed with code ${code}`);
-          }
-        });
-        // Forward stdout+stderr to this process
-        // migrate?.stdout?.pipe(process.stdout);
-        // migrate?.stdout?.pipe(process.stderr);
-      });
+      // await new Promise((resolve, reject) => {
+      //   const migrate = exec('yarn typeorm:run', (err) =>
+      //     err ? reject(err) : resolve('Migration completed successfuly')
+      //   );
+      //   migrate?.stdout?.on('data', (data) => {
+      //     console.log(`stdout: ${data}`);
+      //   });
+
+      //   migrate?.stdout?.on('data', (data) => {
+      //     console.error(`stderr: ${data}`);
+      //   });
+
+      //   migrate.on('close', (code) => {
+      //     if (code === 0) {
+      //       console.log('_ Migration: Migration completed successfuly');
+      //       migrationsuccessful = true;
+      //     } else {
+      //       console.error(`Migration: Migration failed with code ${code}`);
+      //     }
+      //   });
+      // Forward stdout+stderr to this process
+      // migrate?.stdout?.pipe(process.stdout);
+      // migrate?.stdout?.pipe(process.stderr);
+      // });
     } catch (error) {
       console.error('_ doMigration: Migration run failed: ', error);
       migrationsuccessful = false;
