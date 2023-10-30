@@ -277,16 +277,33 @@ const doMigration = async () => {
     process.exit(0);
   } else if (migrationStatusValue === 'false') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
+    console.log(
+      `_ doMigration: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
+    );
     try {
       const { exec } = await import('child_process');
       await new Promise((resolve, reject) => {
         const migrate = exec('yarn typeorm:run', (err) =>
           err ? reject(err) : resolve('Migration completed successfully')
         );
+        migrate?.stdout?.on('data', (data) => {
+          console.log(`stdout: ${data}`);
+        });
 
+        migrate?.stdout?.on('data', (data) => {
+          console.error(`stderr: ${data}`);
+        });
+
+        migrate.on('close', (code) => {
+          if (code === 0) {
+            console.log('Migration completed successfully');
+          } else {
+            console.error(`Migration failed with code ${code}`);
+          }
+        });
         // Forward stdout+stderr to this process
-        migrate?.stdout?.pipe(process.stdout);
-        migrate?.stdout?.pipe(process.stderr);
+        // migrate?.stdout?.pipe(process.stdout);
+        // migrate?.stdout?.pipe(process.stderr);
         migrationSuccessfull = true;
       });
     } catch (error) {
