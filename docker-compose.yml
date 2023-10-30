@@ -39,7 +39,8 @@ services:
       - DB_USER=postgres
       - DB_PORT=5432
       - DB_PASSWORD=mysecretpassword
-      - DB_NAME=database_development
+      - DB_NAME=dialogporten
+      - IS_LOCAL=true
     build:
       context: ./bff-node
       dockerfile: Dockerfile
@@ -58,8 +59,9 @@ services:
       - DB_USER=postgres
       - DB_PORT=5432
       - DB_PASSWORD=mysecretpassword
-      - DB_NAME=database_development
+      - DB_NAME=dialogporten
       - IS_MIGRATION_JOB=true
+      - IS_LOCAL=true
     build:
       context: ./bff-node
       dockerfile: Dockerfile

@@ -19,6 +19,12 @@ console.log('_ ****** VERY BEGINNING OF CODE');
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
+console.log('_ isLocal: ', process.env.IS_LOCAL);
+const isLocal = process.env.IS_LOCAL === 'true';
+
+if (isLocal) console.log('_ ****** FOUND LOCAL');
+else console.log("Didn't find local:", process.env.IS_LOCAL);
+
 const initAppInsights = async () => {
   // Setup Application Insights:
   return new Promise(async (resolve, reject) => {
@@ -218,7 +224,7 @@ const checkMigrationComplete = async () => {
 
 const doMigration = async () => {
   let appInsightSetupComplete = false;
-  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
       try {
         console.log('_ doMigration: Starting initAppInsights()');
@@ -232,7 +238,7 @@ const doMigration = async () => {
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
-  if (process.env.AZURE_APPCONFIG_URI)
+  if (process.env.AZURE_APPCONFIG_URI && !isLocal)
     do {
       // const migrationStatus = await getAppConfigValue('Infrastructure:MigrationCompleted');
       try {
@@ -264,11 +270,12 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
+  if (isLocal) migrationStatusValue = 'false';
 
-  if (migrationStatusValue === 'done') {
+  if (migrationStatusValue === 'true') {
     console.log('_ doMigration: migrationStatus is already completed, exiting process');
     process.exit(0);
-  } else if (migrationStatusValue === 'not_started') {
+  } else if (migrationStatusValue === 'false') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
     try {
       const { exec } = await import('child_process');
@@ -284,22 +291,22 @@ const doMigration = async () => {
     } catch (error) {
       console.error('_ doMigration: Migration run failed: ', error);
     }
-
+    console.log('Migration success');
     try {
-      if (process.env.AZURE_APPCONFIG_URI) {
+      if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
         console.log('_ WOULD Now trying to set migrationStatus to true');
-        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'done');
+        const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
         console.log('_ result: ', result);
       }
     } catch (error) {
       console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
     }
     try {
-      if (process.env.AZURE_APPCONFIG_URI) {
+      if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
         console.log('_ Now trying to set migrationStatus with SHA to true');
         const result = await setAppConfigValue(
           'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
-          'done'
+          'true'
         );
         console.log('_ result: ', result);
       }
@@ -508,7 +515,7 @@ async function setAppConfigValue(key: string, value: string) {
       } while (!isSuccess);
     } catch (error) {
       console.log('_ setAppConfigValue failed: ', error);
-      process.exit(1);
+      process.exit(0);
     }
     resolve(true);
   });
@@ -553,14 +560,15 @@ export async function testKeyVault() {
     }
   } catch (error) {
     console.log('_ testAppConf failed: ', error);
-    process.exit(1);
+    process.exit(0);
   }
 }
 
 if (process.env.IS_MIGRATION_JOB === 'true') {
   console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
   doMigration();
-} else void start();
+} else if (isLocal) process.exit(0);
+else void start();
 
 // Env variables:
 // {

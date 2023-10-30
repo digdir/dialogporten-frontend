@@ -5,7 +5,7 @@ var actions = [
   'microsoft.app/jobs/executions/read'
 ]
 
-var containerJobRole = guid(subscription().id, string(actions))
+var containerJobRole = guid(subscription().id, string(actions), '-fe')
 
 resource containerJobRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: containerJobRole
@@ -32,7 +32,7 @@ var dataActions = [
   'Microsoft.AppConfiguration/configurationStores/*/write'
 ]
 
-var appConfigReaderRole = guid(subscription().id, string(dataActions))
+var appConfigReaderRole = guid(subscription().id, string(dataActions), '-fe')
 
 resource appConfigReaderRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: appConfigReaderRole
