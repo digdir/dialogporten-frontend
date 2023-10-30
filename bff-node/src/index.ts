@@ -242,7 +242,7 @@ const doMigration = async () => {
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
 
-  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
+  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
   // let pgDetails;
   // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
   // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
@@ -303,7 +303,7 @@ const doMigration = async () => {
       const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
       process.env.DB_HOST = pgJson?.host;
       process.env.DB_USER = pgJson?.user;
-      process.env.DB_PORT = pgJson?.dbport;
+      process.env.DB_PORT = pgJson?.port;
       process.env.DB_PASSWORD = pgJson?.password;
       process.env.DB_NAME = pgJson?.dbname;
       console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);

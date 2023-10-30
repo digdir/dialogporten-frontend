@@ -84,3 +84,26 @@ export default new DataSource({
 //   new DataSource({
 //     ...getConnectionOptions(postgresSettingsObject),
 //   });
+stdout: $ npm run typeorm migration:run
+
+> bff-node@0.0.1 typeorm
+> ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts migration:run
+
+_ DATASOURCE FILE: Dirname: /app/src data-source.ts: Would connect to Postgres: host: dp-fe-test-postgres.postgres.database.azure.com, user: dialogportenPgAdmin, password: T9S+V1capB1gkcN0xKV+HiZCah9r~u, dbname: dialogporten, port: undefined, 
+_ dataSource connectionOptions: {
+  type: 'postgres',
+  host: 'dp-fe-test-postgres.postgres.database.azure.com',
+  port: NaN,
+  username: 'dialogportenPgAdmin',
+  password: 'T9S+V1capB1gkcN0xKV+HiZCah9r~u',
+  database: 'dialogporten',
+  logging: true,
+  entities: [ 'src/entities/*{.ts,.js}' ],
+  migrations: [ 'src/migrations/*{.ts,.js}' ],
+  extra: { ssl: { rejectUnauthorized: false } }
+}
+query: SELECT * FROM current_schema()
+query: SELECT version();
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+query: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+No migrations are pending
