@@ -238,9 +238,9 @@ const doMigration = async () => {
     } while (!appInsightSetupComplete);
 
   process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
-  let pgDetails;
-  if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
+  // let pgDetails;
+  // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
+  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
