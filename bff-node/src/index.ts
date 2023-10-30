@@ -226,6 +226,7 @@ const checkMigrationComplete = async () => {
 
 const doMigration = async () => {
   console.log('_ ************* MIGRATION doMigration *************');
+  console.log('_ ************* Printing ENV VARS *************', process.env);
 
   // ************ INIT APP INSIGHTS ************
   let appInsightSetupComplete = false;
@@ -249,6 +250,7 @@ const doMigration = async () => {
   let migrationStatusFetched = false;
   let migrationStatusValue;
 
+  console.log('Migration: ************ READ APP CONFIG ************');
   // ************ READ APP CONFIG ************
 
   if (process.env.AZURE_APPCONFIG_URI && !isLocal)
@@ -286,6 +288,7 @@ const doMigration = async () => {
   if (isLocal) migrationStatusValue = 'false';
 
   // ************ RUN MIGRATION ************
+  console.log('Migration: ************ RUN MIGRATION ************');
 
   let migrationsuccessful = false;
   if (migrationStatusValue === 'true') {
