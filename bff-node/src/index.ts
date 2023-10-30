@@ -231,10 +231,15 @@ const doMigration = async () => {
         const appInsightResult = await initAppInsights();
         if (appInsightResult === 'Done') appInsightSetupComplete = true;
       } catch (error) {
-        console.log('Error setting up appInsights: ', error);
+        console.log('Migration: Error setting up appInsights: ', error);
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
+
+  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
+  let pgDetails;
+  if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
+  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
@@ -256,22 +261,22 @@ const doMigration = async () => {
           let configValue = await client.getConfigurationSetting({
             key,
           });
-          console.log('_ Trying to print key: ', key);
-          console.log('_ ', key, ' value :', configValue?.value || 'No value found');
+          console.log('_ Migration: Trying to print key: ', key);
+          console.log('_ Migration: ', key, ' value :', configValue?.value || 'No value found');
           if (configValue?.value) {
             migrationStatusValue = configValue?.value;
             migrationStatusFetched = true;
           }
         } else {
-          console.log('_ No AZURE_APPCONFIG_URI found');
+          console.log('_ Migration: No AZURE_APPCONFIG_URI found');
         }
       } catch (error) {
-        console.log('_ getAppConfigValue failed: ', error);
+        console.log('_ Migration: getAppConfigValue failed: ', error);
       }
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
-  let migrationSuccessfull = false;
+  let migrationsuccessful = false;
   if (migrationStatusValue === 'true') {
     console.log('_ doMigration: migrationStatus is already completed, exiting process');
     process.exit(0);
@@ -284,7 +289,7 @@ const doMigration = async () => {
       const { exec } = await import('child_process');
       await new Promise((resolve, reject) => {
         const migrate = exec('yarn typeorm:run', (err) =>
-          err ? reject(err) : resolve('Migration completed successfully')
+          err ? reject(err) : resolve('Migration completed successfuly')
         );
         migrate?.stdout?.on('data', (data) => {
           console.log(`stdout: ${data}`);
@@ -296,10 +301,10 @@ const doMigration = async () => {
 
         migrate.on('close', (code) => {
           if (code === 0) {
-            console.log('Migration completed successfully');
-            migrationSuccessfull = true;
+            console.log('_ Migration: Migration completed successfuly');
+            migrationsuccessful = true;
           } else {
-            console.error(`Migration failed with code ${code}`);
+            console.error(`Migration: Migration failed with code ${code}`);
           }
         });
         // Forward stdout+stderr to this process
@@ -308,35 +313,35 @@ const doMigration = async () => {
       });
     } catch (error) {
       console.error('_ doMigration: Migration run failed: ', error);
-      migrationSuccessfull = false;
+      migrationsuccessful = false;
     }
-    if (migrationSuccessfull) {
+    if (migrationsuccessful) {
       console.log('Migration successful, setting migrationStatus to true');
       try {
         if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-          console.log('_ WOULD Now trying to set migrationStatus to true');
+          console.log('_ Migration: WOULD Now trying to set migrationStatus to true');
           const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-          console.log('_ result: ', result);
+          console.log('_ Migration: result: ', result);
         }
       } catch (error) {
         console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
       }
       try {
         if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-          console.log('_ Now trying to set migrationStatus with SHA to true');
+          console.log('_ Migration: Now trying to set migrationStatus with SHA to true');
           const result = await setAppConfigValue(
             'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
             'true'
           );
-          console.log('_ result: ', result);
+          console.log('_ Migration: result: ', result);
         }
       } catch (error) {
         console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
       }
-    } else console.log('Migration no successfull, not setting migrationStatus to true');
+    } else console.log('Migration not successful, not setting migrationStatus to true');
   } else {
     console.log(
-      "Something must have gone wrong fetching migrationStatusValue, it's: ",
+      "Migration: Something must have gone wrong fetching migrationStatusValue, it's: ",
       migrationStatusValue
     );
     console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
