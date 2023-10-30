@@ -297,6 +297,7 @@ const doMigration = async () => {
         migrate.on('close', (code) => {
           if (code === 0) {
             console.log('Migration completed successfully');
+            migrationSuccessfull = true;
           } else {
             console.error(`Migration failed with code ${code}`);
           }
@@ -304,7 +305,6 @@ const doMigration = async () => {
         // Forward stdout+stderr to this process
         // migrate?.stdout?.pipe(process.stdout);
         // migrate?.stdout?.pipe(process.stderr);
-        migrationSuccessfull = true;
       });
     } catch (error) {
       console.error('_ doMigration: Migration run failed: ', error);
