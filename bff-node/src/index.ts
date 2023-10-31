@@ -224,8 +224,48 @@ const checkMigrationComplete = async () => {
   });
 };
 
+const execMigration = async () => {
+  const { exec } = await import('child_process');
+  const execAsync = util.promisify(exec);
+
+  // try {
+  //   const { stdout, stderr } = await execAsync('yarn typeorm:run');
+  //   console.log('Command output:');
+  //   console.log('stdout:', stdout);
+  //   console.error('stderr:', stderr);
+  //   console.log('Migration completed successfully');
+  // } catch (error) {
+  //   console.error('Error running the command:', error);
+  // }
+
+  try {
+    const { stdout, stderr } = await execAsync('yarn typeorm migration:run');
+
+    if (stdout) {
+      console.log('Standard Output:');
+      console.log(stdout);
+    }
+
+    if (stderr) {
+      console.error('Standard Error:');
+      console.error(stderr);
+    }
+
+    if (stdout || stderr) {
+      console.error('Migration failed');
+      return false;
+    } else {
+      console.log('Migration completed successfully');
+      return true;
+    }
+  } catch (error) {
+    console.error('Error running the command:', error);
+    return false;
+  }
+};
+
 const doMigration = async () => {
-  console.log('_ ************* MIGRATION doMigration *************');
+  console.log('_ ************* MIGRATION doMigration v 1 *************');
   console.log('_ ************* Printing ENV VARS *************', process.env);
 
   // ************ INIT APP INSIGHTS ************
@@ -296,9 +336,7 @@ const doMigration = async () => {
     process.exit(0);
   } else if (migrationStatusValue === 'false') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
-    console.log(
-      `_ doMigration: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
-    );
+
     try {
       const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
       process.env.DB_HOST = pgJson?.host;
@@ -316,19 +354,7 @@ const doMigration = async () => {
     }
 
     try {
-      const { exec } = await import('child_process');
-
-      try {
-        const execAsync = util.promisify(exec);
-        const { stdout, stderr } = await execAsync('yarn typeorm:run');
-        console.log('Command output:');
-        console.log('stdout:', stdout);
-        console.error('stderr:', stderr);
-        console.log('Migration completed successfully');
-        migrationsuccessful = true;
-      } catch (error) {
-        console.error('Error running the command:', error);
-      }
+      migrationsuccessful = await execMigration();
 
       // await new Promise((resolve, reject) => {
       //   const migrate = exec('yarn typeorm:run', (err) =>
