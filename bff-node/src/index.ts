@@ -177,7 +177,7 @@ const getPGDetails = async () => {
       try {
         postgresSettingsObject = await getPsqlSettingsSecret();
       } catch (error) {
-        // console.error('_ DOWHILE ERROR on iteration no.: ', i);
+        console.error('_ DOWHILE ERROR on iteration no.: ', i, ' error: ', error);
       }
       await waitNSeconds(2);
       i++;
@@ -283,9 +283,9 @@ const doMigration = async () => {
     } while (!appInsightSetupComplete);
 
   // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
-  // let pgDetails;
-  // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
+  let pgDetails;
+  if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
+  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
