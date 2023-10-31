@@ -57,5 +57,6 @@ module psqlConnectionObject '../keyvault/upsertSecret.bicep' = {
 }
 
 output serverName string = postgres.name
+output psqlConnectionJSONSecretUri string = psqlConnectionObject.outputs.secretUri
 output psqlConnectionJSONSecretName string = psqlSecretName
 output psqlConnectionJSON string = secretValue

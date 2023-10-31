@@ -265,9 +265,6 @@ const execMigration = async () => {
 };
 
 const doMigration = async () => {
-  console.log('_ ************* MIGRATION doMigration v 1 *************');
-  console.log('_ ************* Printing ENV VARS *************', process.env);
-
   // ************ INIT APP INSIGHTS ************
   let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
@@ -281,6 +278,8 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
+  console.log('_ ************* MIGRATION doMigration v 1 *************');
+  console.log('_ ************* Printing ENV VARS *************', process.env);
 
   // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
   let pgDetails;

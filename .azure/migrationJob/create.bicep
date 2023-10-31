@@ -2,6 +2,7 @@ param location string
 param namePrefix string
 param gitSha string
 param baseImageUrl string
+param psqlConnectionJSONSecretUri string
 param envVariables array = []
 
 var uniqueBundleName = take('migration-bundle-${gitSha}', 32)
@@ -48,6 +49,13 @@ resource migrationJob 'Microsoft.App/containerApps@2023-05-01' = {
   properties: {
     managedEnvironmentId: migrationEnv.id
     configuration: {
+      secrets: [
+        {
+          keyVaultUrl: psqlConnectionJSONSecretUri
+          name: 'adoconnectionstringsecreturi'
+          identity: 'System'
+        }
+      ]
       activeRevisionsMode: 'Single'
       ingress: {
         external: true

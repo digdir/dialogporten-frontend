@@ -87,7 +87,12 @@ module migrationJob 'migrationJob/create.bicep' = {
         location: location
         baseImageUrl: baseImageUrl
         gitSha: gitSha
+        psqlConnectionJSONSecretUri: postgresql.outputs.psqlConnectionJSONSecretUri
         envVariables: [
+            {
+                name: 'Infrastructure__DialogDbConnectionString'
+                secretRef: 'adoconnectionstringsecreturi'
+            }
             {
                 name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
                 value: appInsights.outputs.connectionString
@@ -149,16 +154,16 @@ module migrationJob 'migrationJob/create.bicep' = {
 // }
 
 // REMOVED BECAUSE THIS IS NOT NEEDED IN NODE:
-// module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
-//     scope: resourceGroup
-//     name: 'AppConfig_Add_DialogDbConnectionString'
-//     params: {
-//         configStoreName: appConfiguration.outputs.name
-//         key: 'Infrastructure:DialogDbConnectionString'
-//         value: postgresql.outputs.adoConnectionStringSecretUri
-//         keyValueType: 'keyVaultReference'
-//     }
-// }
+module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+    scope: resourceGroup
+    name: 'AppConfig_Add_DialogDbConnectionString'
+    params: {
+        configStoreName: appConfiguration.outputs.name
+        key: 'Infrastructure:DialogDbConnectionString'
+        value: postgresql.outputs.psqlConnectionJSONSecretUri
+        keyValueType: 'keyVaultReference'
+    }
+}
 
 // module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
 //     scope: resourceGroup
@@ -203,10 +208,15 @@ module containerApp 'containerApp/create.bicep' = {
     name: 'containerApp'
     params: {
         namePrefix: namePrefix
+        psqlConnectionJSONSecretUri: postgresql.outputs.psqlConnectionJSONSecretUri
         location: location
         baseImageUrl: baseImageUrl
         gitSha: gitSha
         envVariables: [
+            {
+                name: 'Infrastructure__DialogDbConnectionString'
+                secretRef: 'adoconnectionstringsecreturi'
+            }
             {
                 name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
                 value: appInsights.outputs.connectionString
