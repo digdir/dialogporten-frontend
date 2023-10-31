@@ -87,7 +87,7 @@ module migrationJob 'migrationJob/create.bicep' = {
         location: location
         baseImageUrl: baseImageUrl
         gitSha: gitSha
-        psqlConnectionJSONSecretUri: postgresql.outputs.psqlConnectionJSONSecretUri
+        psqlConnectionJSON: postgresql.outputs.psqlConnectionJSON
         envVariables: [
             {
                 name: 'Infrastructure__DialogDbConnectionString'
@@ -164,6 +164,16 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
         keyValueType: 'keyVaultReference'
     }
 }
+module appConfigConfigurationsDebug 'appConfiguration/upsertKeyValue.bicep' = {
+    scope: resourceGroup
+    name: 'appConfigConfigurationsDebug'
+    params: {
+        configStoreName: appConfiguration.outputs.name
+        key: 'Infrastructure:psqlConnectionJSON'
+        value: postgresql.outputs.psqlConnectionJSON
+        keyValueType: 'custom'
+    }
+}
 
 // module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
 //     scope: resourceGroup
@@ -208,7 +218,7 @@ module containerApp 'containerApp/create.bicep' = {
     name: 'containerApp'
     params: {
         namePrefix: namePrefix
-        psqlConnectionJSONSecretUri: postgresql.outputs.psqlConnectionJSONSecretUri
+        psqlConnectionJSON: postgresql.outputs.psqlConnectionJSON
         location: location
         baseImageUrl: baseImageUrl
         gitSha: gitSha

@@ -1,7 +1,7 @@
 param location string
 param namePrefix string
 param gitSha string
-param psqlConnectionJSONSecretUri string
+param psqlConnectionJSON string
 
 param baseImageUrl string
 param envVariables array = []
@@ -20,9 +20,9 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 		configuration: {
 			secrets: [
 				{
-					keyVaultUrl: psqlConnectionJSONSecretUri
+					value: psqlConnectionJSON
 					name: 'adoconnectionstringsecreturi'
-					identity: 'System'
+					// identity: 'System'
 				}
 			]
 			activeRevisionsMode: 'Single'
