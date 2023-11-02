@@ -16,16 +16,17 @@ import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 import util from 'util';
 
-console.log('_ ****** VERY BEGINNING OF CODE');
+console.log('****** VERY BEGINNING OF CODE');
 
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-console.log('_ isLocal: ', process.env.IS_LOCAL);
+console.log('isLocal: ', process.env.IS_LOCAL);
 const isLocal = process.env.IS_LOCAL === 'true';
 
-if (isLocal) console.log('_ ****** FOUND LOCAL');
+if (isLocal) console.log('****** FOUND LOCAL');
 else console.log("Didn't find local:", process.env.IS_LOCAL);
+const debug = false;
 
 const initAppInsights = async () => {
   // Setup Application Insights:
@@ -47,9 +48,9 @@ const initAppInsights = async () => {
       .start();
     await waitNSeconds(5);
     if (appInsights.defaultClient) {
-      console.log('_ AppInsights is initialized properly.');
+      debug && console.log('AppInsights is initialized properly.');
     } else {
-      console.log('_ AppInsights is not initialized properly.');
+      debug && console.log('AppInsights is not initialized properly.');
     }
     resolve('Done');
   });
@@ -93,29 +94,29 @@ export let FamilyRepository: Repository<Family> | undefined = undefined;
 //         process.env.DB_SSLMODE = sslmode;
 
 //         resolve(postgresSettingsObject);
-//       } else reject({ error: '_ Invalid postgresSettingsObject found' });
+//       } else reject({ error: 'Invalid postgresSettingsObject found' });
 //     } catch (error) {
 //       console.error('_getPsqlSettingsSecret: Vault error ');
 //       reject({ error });
 //     }
 //   } catch (error) {
-//     // console.error('_ DOWHILE ERROR on iteration no.: ', i);
+//     // console.error('DOWHILE ERROR on iteration no.: ', i);
 //   }
 //   await waitNSeconds(2);
 //   i++;
 // } while (!postgresSettingsObject);
 // console.log(
-//   '_ ***** Key vault set up finished on iteration no.: ',
+//   '***** Key vault set up finished on iteration no.: ',
 //   i,
 //   ' time taken: ',
 //   i * 2,
 //   ' seconds'
 // );
 
-export async function getPsqlSettingsSecret(debug = true) {
+export async function getPsqlSettingsSecret() {
   return new Promise(async (resolve, reject) => {
     try {
-      debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+      debug && console.log('_____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
       const vaultName = process.env.KV_NAME;
 
       if (!vaultName) {
@@ -126,15 +127,15 @@ export async function getPsqlSettingsSecret(debug = true) {
       if (pgJson?.host) resolve(pgJson);
       else reject({ error: 'No pgJson found' });
     } catch (error) {
-      console.log('_ getPsqlSettingsSecret failed: ');
+      debug && console.log('getPsqlSettingsSecret failed: ');
       process.exit(1);
     }
   });
 }
-export async function getPsqlSettingsSecretOld(debug = true) {
+export async function getPsqlSettingsSecretOld() {
   return new Promise(async (resolve, reject) => {
     try {
-      debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+      debug && console.log('_____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
       const vaultName = process.env.KV_NAME;
 
       if (!vaultName) {
@@ -160,22 +161,22 @@ export async function getPsqlSettingsSecretOld(debug = true) {
             console.log(
               `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
             );
-          process.env.DB_HOST = host;
-          process.env.DB_PORT = dbport;
-          process.env.DB_USER = user;
-          process.env.DB_PASSWORD = password;
-          process.env.DB_NAME = dbname;
-          process.env.DB_SSLMODE = sslmode;
-          console.log('_ getPsqlSettingsSecret SUCESS!!!!!!!! ');
+            debug && process.env.DB_HOST = host;
+            debug && process.env.DB_PORT = dbport;
+            debug && process.env.DB_USER = user;
+            debug && process.env.DB_PASSWORD = password;
+            debug && process.env.DB_NAME = dbname;
+            debug && process.env.DB_SSLMODE = sslmode;
+            debug && console.log('getPsqlSettingsSecret SUCESS!!!!!!!! ');
 
           resolve(postgresSettingsObject);
-        } else reject({ error: '_ Invalid postgresSettingsObject found' });
+        } else reject({ error: 'Invalid postgresSettingsObject found' });
       } catch (error) {
-        console.error('_getPsqlSettingsSecret: Vault error ', error);
+        debug && console.error('_getPsqlSettingsSecret: Vault error ', error);
         reject({ error });
       }
     } catch (error) {
-      console.log('_ getPsqlSettingsSecret failed: ');
+      debug && console.log('getPsqlSettingsSecret failed: ');
       process.exit(1);
     }
   });
@@ -197,13 +198,13 @@ const getPGDetails = async () => {
       try {
         postgresSettingsObject = await getPsqlSettingsSecret();
       } catch (error) {
-        console.error('_ DOWHILE ERROR on iteration no.: ', i, ' error: ', error);
+        console.error('DOWHILE ERROR on iteration no.: ', i, ' error: ', error);
       }
       await waitNSeconds(2);
       i++;
     } while (!postgresSettingsObject);
-    console.log(
-      '_ ***** Key vault set up finished on iteration no.: ',
+    debug &&  console.log(
+      '***** Key vault set up finished on iteration no.: ',
       i,
       ' time taken: ',
       i * 2,
@@ -224,18 +225,18 @@ const checkMigrationComplete = async () => {
         );
         if (migrationCompletedStatus) isSuccess = true;
         if (migrationCompletedStatus === 'true') {
-          console.log('_ checkMigrationComplete is resolving true');
+          debug && console.log('checkMigrationComplete is resolving true');
           resolve(true);
         }
       } catch (error) {
-        console.error('_ checkMigrationComplete DOWHILE ERROR on iteration no.: ', i, error);
+        debug && console.error('checkMigrationComplete DOWHILE ERROR on iteration no.: ', i, error);
       }
       i++;
       await waitNSeconds(10);
     } while (!isSuccess);
 
-    console.log(
-      '_ ***** checkMigrationComplete finished on iteration no.: ',
+    debug && console.log(
+      '***** checkMigrationComplete finished on iteration no.: ',
       i,
       ' time taken: ',
       i * 10,
@@ -289,44 +290,44 @@ const doMigration = async () => {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
       try {
-        console.log('_ doMigration: Starting initAppInsights()');
+        debug && console.log('doMigration: Starting initAppInsights()');
         const appInsightResult = await initAppInsights();
         if (appInsightResult === 'Done') appInsightSetupComplete = true;
       } catch (error) {
-        console.log('Migration: Error setting up appInsights: ', error);
+        debug && console.log('Migration: Error setting up appInsights: ', error);
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
-  console.log('_ ************* MIGRATION doMigration v 1 *************');
-  console.log('_ ************* Printing ENV VARS *************', process.env);
+  console.log('************* MIGRATION doMigration v 1.1 *************');
+  debug && console.log('************* Printing ENV VARS *************', process.env);
 
   let pgJson;
   if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
     do {
       try {
-        console.log('_ doMigration: Starting dbConnectionStringOK()');
+        debug && console.log('doMigration: Starting dbConnectionStringOK()');
         pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
       } catch (error) {
-        console.log('Migration: Error reading dbConnectionStringOK: ', error);
+        debug && console.log('Migration: Error reading dbConnectionStringOK: ', error);
       }
       await waitNSeconds(5);
     } while (!pgJson?.host);
-  console.log('_ doMigration: pgJson: SUCESS!!!!:', pgJson);
+    debug && console.log('doMigration: pgJson: SUCESS!!!!:', pgJson);
 
-  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
+  // process.env.DEV_ENV !== 'dev' && console.log('Migration: Starting getPgDetails');
   // let pgDetails;
   // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
+  // process.env.DEV_ENV !== 'dev' && console.log('Migration: pgDetails:', pgDetails);
 
   // const vaultName = process.env.KV_NAME;
   // console.log(
-  //   '_ ************* Infrastructure__DialogDbConnectionString test *************',
+  //   '************* Infrastructure__DialogDbConnectionString test *************',
   //   process.env.Infrastructure__DialogDbConnectionString
   // );
-  // console.log('_ ************* adoconnectionstringsecreturi test *************');
+  // console.log('************* adoconnectionstringsecreturi test *************');
 
   // if (vaultName) {
-  //   console.log('_ ************* adoconnectionstringsecreturi test inside IF *************');
+  //   console.log('************* adoconnectionstringsecreturi test inside IF *************');
   //   const credential = new DefaultAzureCredential();
   //   const url = `https://${vaultName}.vault.azure.net`;
   //   const kvClient = new SecretClient(url, credential);
@@ -343,7 +344,7 @@ const doMigration = async () => {
   let migrationStatusFetched = false;
   let migrationStatusValue;
 
-  console.log('Migration: ************ READ APP CONFIG ************');
+  debug && console.log('Migration: ************ READ APP CONFIG ************');
   // ************ READ APP CONFIG ************
 
   if (process.env.AZURE_APPCONFIG_URI && !isLocal)
@@ -354,8 +355,8 @@ const doMigration = async () => {
           const endpoint = process.env.AZURE_APPCONFIG_URI;
           const credential = new DefaultAzureCredential();
 
-          // console.log('_ Time now: ', d);
-          // console.log('_ ________Connection endpoint: ' + endpoint);
+          // console.log('Time now: ', d);
+          // console.log('________Connection endpoint: ' + endpoint);
           const key = 'Infrastructure:MigrationCompleted';
           const client = new AppConfigurationClient(
             endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
@@ -364,42 +365,42 @@ const doMigration = async () => {
           let configValue = await client.getConfigurationSetting({
             key,
           });
-          console.log('_ Migration: Trying to print key: ', key);
-          console.log('_ Migration: ', key, ' value :', configValue?.value || 'No value found');
+          debug && console.log('Migration: Trying to print key: ', key);
+          debug && console.log('Migration: ', key, ' value :', configValue?.value || 'No value found');
           if (configValue?.value) {
             migrationStatusValue = configValue?.value;
             migrationStatusFetched = true;
           }
         } else {
-          console.log('_ Migration: No AZURE_APPCONFIG_URI found');
+          console.log('Migration: No AZURE_APPCONFIG_URI found');
         }
       } catch (error) {
-        console.log('_ Migration: getAppConfigValue failed: ', error);
+        console.log('Migration: getAppConfigValue failed: ', error);
       }
       await waitNSeconds(5);
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
 
   // ************ RUN MIGRATION ************
-  console.log('Migration: ************ RUN MIGRATION ************');
+  debug && console.log('Migration: ************ RUN MIGRATION ************');
 
   let migrationsuccessful = false;
   if (migrationStatusValue === 'true') {
-    console.log('_ doMigration: migrationStatus is already completed, exiting process');
+    console.log('MIGRATION: Already completed migration. Exiting process.');
     process.exit(0);
   } else if (migrationStatusValue === 'false') {
-    console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
+      console.log('MIGRATION: Migration is needed, starting migration:');
 
     process.env.DB_HOST = pgJson?.host;
     process.env.DB_USER = pgJson?.user;
     process.env.DB_PORT = pgJson?.port;
     process.env.DB_PASSWORD = pgJson?.password;
     process.env.DB_NAME = pgJson?.dbname;
-    console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
-    console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
-    console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
-    console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
-    console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
+    debug && console.log('doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
+    debug && console.log('doMigration: process.env.DB_USER: ', process.env.DB_USER);
+    debug && console.log('doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
+    debug && console.log('doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
+    debug && console.log('doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
 
     try {
       migrationsuccessful = await execMigration();
@@ -418,7 +419,7 @@ const doMigration = async () => {
 
       //   migrate.on('close', (code) => {
       //     if (code === 0) {
-      //       console.log('_ Migration: Migration completed successfuly');
+      //       console.log('Migration: Migration completed successfuly');
       //       migrationsuccessful = true;
       //     } else {
       //       console.error(`Migration: Migration failed with code ${code}`);
@@ -429,7 +430,7 @@ const doMigration = async () => {
       // migrate?.stdout?.pipe(process.stderr);
       // });
     } catch (error) {
-      console.error('_ doMigration: Migration run failed: ', error);
+      console.error('doMigration: Migration run failed: ', error);
       migrationsuccessful = false;
     }
 
@@ -437,36 +438,20 @@ const doMigration = async () => {
       console.log('Migration successful, setting migrationStatus to true');
       try {
         if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-          console.log('_ Migration: WOULD Now trying to set migrationStatus to true');
+          debug && console.log('Migration: WOULD Now trying to set migrationStatus to true');
           const result = await setAppConfigValue('Infrastructure:MigrationCompleted', 'true');
-          console.log('_ Migration: result: ', result);
+          debug && console.log('Migration: result: ', result);
         }
       } catch (error) {
-        console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
+        console.error('doMigration: Migration setAppConfigValue failed: ', error);
       }
-      try {
-        if (process.env.AZURE_APPCONFIG_URI && !isLocal) {
-          console.log('_ Migration: Now trying to set migrationStatus with SHA to true');
-          const result = await setAppConfigValue(
-            'Infrastructure:MigrationCompleted' + process.env.GIT_SHA,
-            'true'
-          );
-          console.log('_ Migration: result: ', result);
-        }
-      } catch (error) {
-        console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
-      }
-    } else
-      console.log(
-        'Migration not successful, not setting migrationStatus to true: migrationsuccessful: ',
-        migrationsuccessful
-      );
+      
   } else {
     console.log(
       "Migration: Something must have gone wrong fetching migrationStatusValue, it's: ",
       migrationStatusValue
     );
-    console.log('_ ************* MIGRATION FINISHED, EXITING PROCESS *************');
+    console.log('************* MIGRATION FINISHED, EXITING PROCESS *************');
     process.exit(1);
   }
 };
@@ -476,42 +461,37 @@ const doMigration = async () => {
 // ******************************
 
 const start = async (): Promise<void> => {
-  if (process.env.DEV_ENV === 'dev') console.log('Found DEV');
-  else console.log('Found NOT DEV');
-  console.log("process.env.DEV_ENV === 'dev': ", process.env.DEV_ENV);
-
+ 
   if (process.env.DEV_ENV !== 'dev')
     try {
-      console.log('_ Starting initAppInsights()');
+      debug && console.log('BFF: Starting initAppInsights()');
       const appInsightResult = await initAppInsights();
-      console.log('_ Finished initAppInsights() with result: ', appInsightResult);
+      debug && console.log('BFF: Finished initAppInsights() with result: ', appInsightResult);
     } catch (error) {
-      console.log('Error setting up appInsights: ', error);
+      console.log('BFF: Error setting up appInsights: ', error);
     }
+    console.log('BFF: ************* NODE BFF v 1.1 STARTING *************');
 
   let migrationCheckSuccess = false;
   do {
     try {
       const migrationCompleteStatus = await checkMigrationComplete();
-      console.log('_ migrationCompleteStatus: ', migrationCompleteStatus);
+      debug && console.log('BFF: migrationCompleteStatus: ', migrationCompleteStatus);
       if (migrationCompleteStatus) migrationCheckSuccess = true;
     } catch (error) {
-      console.log('_ checkMigrationComplete failed, retrying in 10 seconds...', error);
+      console.log('BFF: checkMigrationComplete failed, retrying in 10 seconds...', error);
     }
     await waitNSeconds(10);
   } while (!migrationCheckSuccess);
-  console.log('_ Migration completed, continuing...');
-  process.env.DEV_ENV !== 'dev' && console.log('_ Starting getPgDetails');
+console.log('BFF: Checked AppConfig and found Migration completed.');
   let pgDetails;
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  process.env.DEV_ENV !== 'dev' && console.log('_ pgDetails:', pgDetails);
-
-  console.log('_ Starting dataSource.initialize()');
+ 
+  debug && console.log('BFF: Starting dataSource.initialize()');
   const { connectionOptions } = await import('./data-source');
 
   const dataSource = await new DataSource(connectionOptions).initialize();
 
-  process.env.DEV_ENV === 'dev' && console.log('_ dataSource initialized! ');
   PersonRepository = dataSource.getRepository(Person);
   FamilyRepository = dataSource.getRepository(Family);
   const family = new Family();
@@ -525,24 +505,24 @@ const start = async (): Promise<void> => {
   user.family = family;
   await PersonRepository.save(user);
 
-  if (process.env.DEV_ENV !== 'dev')
+  if (debug && process.env.DEV_ENV !== 'dev')
     try {
-      console.log('_ DB Setup done, entering main try/catch');
-      // console.log('_ Starting initAppInsights()');
+      console.log('BFF: DB Setup done, entering main try/catch');
+      // console.log('Starting initAppInsights()');
       // await initAppInsights();
-      // console.log('_ Finished initAppInsights()');
+      // console.log('Finished initAppInsights()');
       const personRepository = dataSource.getRepository(Person);
 
-      console.log('_ Loading users from the database...');
+      console.log('BFF: Loading users from the database...');
       // const users = await personRepository.find();
       const users = await personRepository.find({
         relations: {
           family: true,
         },
       });
-      console.log('_ Loaded persons: ', users);
+      console.log('BFF: Loaded persons: ', users);
     } catch (error) {
-      console.log('_ Loaded error: ', error);
+      console.log('BFF: Loaded error: ', error);
     }
 
   try {
@@ -558,7 +538,7 @@ const start = async (): Promise<void> => {
     app.use(bodyParser.json());
     app.use('/api/v1', routes);
     app.listen(port, () => {
-      console.log(`⚡️[server]: Server is running on PORT: ${port}`);
+      console.log(`BFF: ⚡️[server]: Server is running on PORT: ${port}`);
     });
   } catch (error) {
     console.error(error);
@@ -572,9 +552,9 @@ async function testAppConf() {
     const endpoint = process.env.AZURE_APPCONFIG_URI!;
     const credential = new DefaultAzureCredential();
 
-    console.log('_ ________testAppConf Start _________');
-    console.log('_ Time now: ', d);
-    console.log('_ ________Connection endpoint: ' + endpoint);
+    console.log('________testAppConf Start _________');
+    console.log('Time now: ', d);
+    console.log('________Connection endpoint: ' + endpoint);
 
     const client = new AppConfigurationClient(
       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
@@ -588,15 +568,15 @@ async function testAppConf() {
     let vaultUri = await client.getConfigurationSetting({
       key: 'Infrastructure:DialogDbConnectionString',
     });
-    console.log('_ Trying to print test:');
+    console.log('Trying to print test:');
     console.log(test);
-    console.log('_ Trying to print Infrastructure:DialogDbConnectionString:');
+    console.log('Trying to print Infrastructure:DialogDbConnectionString:');
     console.log(vaultUri);
-    console.log('_ Infrastructure:DialogDbConnectionString value :');
+    console.log('Infrastructure:DialogDbConnectionString value :');
     console.log(vaultUri?.value || 'No value found');
-    console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
+    console.log('typeof vaultUri?.value: ', typeof vaultUri?.value);
   } catch (error) {
-    console.log('_ testAppConf failed: ', error);
+    console.log('testAppConf failed: ', error);
     process.exit(1);
   }
 }
@@ -609,8 +589,8 @@ async function getAppConfigValue(key: string) {
         const endpoint = process.env.AZURE_APPCONFIG_URI;
         const credential = new DefaultAzureCredential();
 
-        console.log('_ Time now: ', d);
-        console.log('_ ________Connection endpoint: ' + endpoint);
+        console.log('Time now: ', d);
+        console.log('________Connection endpoint: ' + endpoint);
 
         const client = new AppConfigurationClient(
           endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
@@ -619,15 +599,15 @@ async function getAppConfigValue(key: string) {
         let configValue = await client.getConfigurationSetting({
           key,
         });
-        console.log('_ Trying to print key: ', key);
-        console.log('_ ', key, ' value :', configValue?.value || 'No value found');
+        console.log('Trying to print key: ', key);
+        console.log('', key, ' value :', configValue?.value || 'No value found');
         resolve(configValue?.value);
       } else {
-        // reject('_ No AZURE_APPCONFIG_URI found');
-        console.log('_ No AZURE_APPCONFIG_URI found');
+        // reject('No AZURE_APPCONFIG_URI found');
+        console.log('No AZURE_APPCONFIG_URI found');
       }
     } catch (error) {
-      console.log('_ getAppConfigValue failed: ', error);
+      console.log('getAppConfigValue failed: ', error);
     }
     await waitNSeconds(5);
   });
@@ -643,26 +623,26 @@ async function setAppConfigValue(key: string, value: string) {
         const endpoint = process.env.AZURE_APPCONFIG_URI!;
         const credential = new DefaultAzureCredential();
 
-        console.log('_ ******* setAppConfigValue Start, iteration number: ', i);
-        console.log('_ Time now: ', d);
-        console.log('_ ________Connection endpoint: ' + endpoint);
+        console.log('******* setAppConfigValue Start, iteration number: ', i);
+        console.log('Time now: ', d);
+        console.log('________Connection endpoint: ' + endpoint);
 
         const client = new AppConfigurationClient(
           endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
           credential
         );
-        console.log('_ Trying to set key: ', key, ' to value: ', value);
+        console.log('Trying to set key: ', key, ' to value: ', value);
         const newSetting = await client.setConfigurationSetting({
           key,
           value,
         });
-        console.log('_ Created config, response: ', newSetting);
-        // console.log('_ typeof vaultUri?.value: ', typeof vaultUri?.value);
+        console.log('Created config, response: ', newSetting);
+        // console.log('typeof vaultUri?.value: ', typeof vaultUri?.value);
         if (newSetting) isSuccess = true;
         await waitNSeconds(2);
       } while (!isSuccess);
     } catch (error) {
-      console.log('_ setAppConfigValue failed: ', error);
+      console.log('setAppConfigValue failed: ', error);
       process.exit(0);
     }
     resolve(true);
@@ -672,14 +652,14 @@ async function setAppConfigValue(key: string, value: string) {
 export async function testKeyVault() {
   const d = new Date();
   try {
-    console.log('_ _____ TESTING KEY VAULT:');
+    console.log('_____ TESTING KEY VAULT:');
     const vaultName = process.env.KV_NAME;
     const credential = new DefaultAzureCredential();
 
     if (vaultName) {
       try {
         const url = `https://${vaultName}.vault.azure.net`;
-        // console.log('_ Vault url: ', url);
+        // console.log('Vault url: ', url);
 
         const kvClient = new SecretClient(url, credential);
 
@@ -702,12 +682,12 @@ export async function testKeyVault() {
           secretName,
         };
       } catch (error) {
-        console.error('_ Vault error: ', error);
+        console.error('Vault error: ', error);
         return { error };
       }
     }
   } catch (error) {
-    console.log('_ testAppConf failed: ', error);
+    console.log('testAppConf failed: ', error);
     process.exit(0);
   }
 }
