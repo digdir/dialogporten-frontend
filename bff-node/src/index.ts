@@ -263,7 +263,9 @@ const execMigration = async () => {
   // }
 
   try {
-    const { stdout, stderr } = await execAsync('echo $pwd && yarn typeorm migration:run');
+    const { stdout, stderr } = await execAsync(
+      'yarn typeorm migration:run -- -d src/data-source.ts'
+    );
 
     if (stdout) {
       console.log('Standard Output:', stdout);
@@ -301,7 +303,7 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
-  console.log('************* MIGRATION doMigration v 1.2 *************');
+  console.log('************* MIGRATION doMigration v 1.3 *************');
   debug && console.log('************* Printing ENV VARS *************', process.env);
 
   let pgJson;
@@ -479,7 +481,7 @@ const start = async (): Promise<void> => {
     } catch (error) {
       console.log('BFF: Error setting up appInsights: ', error);
     }
-  console.log('BFF: ************* NODE BFF v 1.2 STARTING *************');
+  console.log('BFF: ************* NODE BFF v 1.3 STARTING *************');
   let nMigrationChecks = 0;
   let migrationCheckSuccess = false;
   do {

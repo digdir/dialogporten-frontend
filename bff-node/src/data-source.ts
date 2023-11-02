@@ -44,7 +44,8 @@ export let connectionOptions: DataSourceOptions = {
   // synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
   logging: true,
   entities: ['src/entities/*{.ts,.js}'], // where our entities reside
-  migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+  // migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+  migrations: [__dirname + '/migrations/**/*.ts'],
   // ...(process.env.DEV_ENV !== 'dev' && {
   //   extra: {
   //     ssl: {
