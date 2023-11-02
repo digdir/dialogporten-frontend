@@ -107,7 +107,8 @@ Write-Host ("********** deploymentOutputs $deploymentOutputs **********")
 $resourceGroup = $deploymentOutputs.resourceGroupName.value
 $migrationJobName = $deploymentOutputs.migrationJobName.value
 
-# az containerapp job start -n $migrationJobName -g $resourceGroup
+Write-Host ("********** Starting Migration Job **********")
+az containerapp job start -n $migrationJobName -g $resourceGroup
 
 Write-Host ("********** Starting foreach **********")
 
