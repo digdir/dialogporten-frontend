@@ -262,16 +262,15 @@ const execMigration = async () => {
     const { stdout, stderr } = await execAsync('yarn typeorm migration:run');
 
     if (stdout) {
-      console.log('Standard Output:');
-      console.log(stdout);
+      console.log('Standard Output:', stdout);
     }
 
     if (stderr) {
-      console.error('Standard Error:');
-      console.error(stderr);
+      console.error('Standard Error:', stderr);
     }
 
-    if (stdout || stderr) {
+    if (stderr) {
+      // if (stdout || stderr) {
       console.error('Migration failed');
       return false;
     } else {
@@ -457,7 +456,11 @@ const doMigration = async () => {
       } catch (error) {
         console.error('_ doMigration: Migration setAppConfigValue failed: ', error);
       }
-    } else console.log('Migration not successful, not setting migrationStatus to true');
+    } else
+      console.log(
+        'Migration not successful, not setting migrationStatus to true: migrationsuccessful: ',
+        migrationsuccessful
+      );
   } else {
     console.log(
       "Migration: Something must have gone wrong fetching migrationStatusValue, it's: ",
