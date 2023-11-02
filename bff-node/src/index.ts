@@ -286,6 +286,22 @@ const doMigration = async () => {
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
   process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
+  const vaultName = process.env.KV_NAME;
+
+  if (vaultName) {
+    const credential = new DefaultAzureCredential();
+    const url = `https://${vaultName}.vault.azure.net`;
+    const kvClient = new SecretClient(url, credential);
+    kvClient
+      .getSecret('adoconnectionstringsecreturi')
+      .then((data) => {
+        console.log('adoconnectionstringsecreturi secret value: ', data.value);
+      })
+      .catch((error) => {
+        console.log("getSecret('adoconnectionstringsecreturi')", error);
+      });
+  }
+
   let migrationStatusFetched = false;
   let migrationStatusValue;
 

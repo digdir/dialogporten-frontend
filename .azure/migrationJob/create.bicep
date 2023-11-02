@@ -58,10 +58,10 @@ resource migrationJob 'Microsoft.App/containerApps@2023-05-01' = {
         }
       ]
       activeRevisionsMode: 'Single'
-      ingress: {
-        external: true
-        targetPort: 80
-      }
+      // ingress: {
+      //   external: true
+      //   targetPort: 80
+      // }
     }
     template: {
       // initContainers: [
