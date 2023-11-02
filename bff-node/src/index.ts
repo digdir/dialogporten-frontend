@@ -132,55 +132,55 @@ export async function getPsqlSettingsSecret() {
     }
   });
 }
-export async function getPsqlSettingsSecretOld() {
-  return new Promise(async (resolve, reject) => {
-    try {
-      debug && console.log('_____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
-      const vaultName = process.env.KV_NAME;
+// export async function getPsqlSettingsSecretOld() {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       debug && console.log('_____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+//       const vaultName = process.env.KV_NAME;
 
-      if (!vaultName) {
-        return reject({ error: 'No KV_NAME found' });
-      }
+//       if (!vaultName) {
+//         return reject({ error: 'No KV_NAME found' });
+//       }
 
-      try {
-        const credential = new DefaultAzureCredential();
-        const url = `https://${vaultName}.vault.azure.net`;
-        const kvClient = new SecretClient(url, credential);
+//       try {
+//         const credential = new DefaultAzureCredential();
+//         const url = `https://${vaultName}.vault.azure.net`;
+//         const kvClient = new SecretClient(url, credential);
 
-        const secretName = process.env.Infrastructure__DialogDbConnectionString;
-        if (!secretName) {
-          return reject({ error: 'No Infrastructure__DialogDbConnectionString found' });
-        }
+//         const secretName = process.env.Infrastructure__DialogDbConnectionString;
+//         if (!secretName) {
+//           return reject({ error: 'No Infrastructure__DialogDbConnectionString found' });
+//         }
 
-        const latestSecret = await kvClient.getSecret(secretName);
-        if (latestSecret.value) {
-          debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
-          const postgresSettingsObject = JSON.parse(latestSecret.value);
-          const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-          debug &&
-            console.log(
-              `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
-            );
-            debug && process.env.DB_HOST = host;
-            debug && process.env.DB_PORT = dbport;
-            debug && process.env.DB_USER = user;
-            debug && process.env.DB_PASSWORD = password;
-            debug && process.env.DB_NAME = dbname;
-            debug && process.env.DB_SSLMODE = sslmode;
-            debug && console.log('getPsqlSettingsSecret SUCESS!!!!!!!! ');
+//         const latestSecret = await kvClient.getSecret(secretName);
+//         if (latestSecret.value) {
+//           debug && console.log(`_ Latest version of the secret ${secretName}: `, latestSecret);
+//           const postgresSettingsObject = JSON.parse(latestSecret.value);
+//           const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
+//           debug &&
+//             console.log(
+//               `_ Saving values to env: host: ${host}, user: ${user}, password: ${password}, dbname: ${dbname}, port: ${dbport}, sslmode: ${sslmode}, `
+//             );
+//              process.env.DB_HOST = host;
+//             process.env.DB_PORT = dbport;
+//              process.env.DB_USER = user;
+//              process.env.DB_PASSWORD = password;
+//              process.env.DB_NAME = dbname;
+//              process.env.DB_SSLMODE = sslmode;
+//             debug && console.log('getPsqlSettingsSecret SUCESS!!!!!!!! ');
 
-          resolve(postgresSettingsObject);
-        } else reject({ error: 'Invalid postgresSettingsObject found' });
-      } catch (error) {
-        debug && console.error('_getPsqlSettingsSecret: Vault error ', error);
-        reject({ error });
-      }
-    } catch (error) {
-      debug && console.log('getPsqlSettingsSecret failed: ');
-      process.exit(1);
-    }
-  });
-}
+//           resolve(postgresSettingsObject);
+//         } else reject({ error: 'Invalid postgresSettingsObject found' });
+//       } catch (error) {
+//         debug && console.error('_getPsqlSettingsSecret: Vault error ', error);
+//         reject({ error });
+//       }
+//     } catch (error) {
+//       debug && console.log('getPsqlSettingsSecret failed: ');
+//       process.exit(1);
+//     }
+//   });
+// }
 
 function waitNSeconds(n: number): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -203,13 +203,14 @@ const getPGDetails = async () => {
       await waitNSeconds(2);
       i++;
     } while (!postgresSettingsObject);
-    debug &&  console.log(
-      '***** Key vault set up finished on iteration no.: ',
-      i,
-      ' time taken: ',
-      i * 2,
-      ' seconds'
-    );
+    debug &&
+      console.log(
+        '***** Key vault set up finished on iteration no.: ',
+        i,
+        ' time taken: ',
+        i * 2,
+        ' seconds'
+      );
     resolve(postgresSettingsObject);
   });
 };
@@ -235,13 +236,14 @@ const checkMigrationComplete = async () => {
       await waitNSeconds(10);
     } while (!isSuccess);
 
-    debug && console.log(
-      '***** checkMigrationComplete finished on iteration no.: ',
-      i,
-      ' time taken: ',
-      i * 10,
-      ' seconds'
-    );
+    debug &&
+      console.log(
+        '***** checkMigrationComplete finished on iteration no.: ',
+        i,
+        ' time taken: ',
+        i * 10,
+        ' seconds'
+      );
   });
 };
 
@@ -312,7 +314,7 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!pgJson?.host);
-    debug && console.log('doMigration: pgJson: SUCESS!!!!:', pgJson);
+  debug && console.log('doMigration: pgJson: SUCESS!!!!:', pgJson);
 
   // process.env.DEV_ENV !== 'dev' && console.log('Migration: Starting getPgDetails');
   // let pgDetails;
@@ -366,7 +368,8 @@ const doMigration = async () => {
             key,
           });
           debug && console.log('Migration: Trying to print key: ', key);
-          debug && console.log('Migration: ', key, ' value :', configValue?.value || 'No value found');
+          debug &&
+            console.log('Migration: ', key, ' value :', configValue?.value || 'No value found');
           if (configValue?.value) {
             migrationStatusValue = configValue?.value;
             migrationStatusFetched = true;
@@ -389,7 +392,7 @@ const doMigration = async () => {
     console.log('MIGRATION: Already completed migration. Exiting process.');
     process.exit(0);
   } else if (migrationStatusValue === 'false') {
-      console.log('MIGRATION: Migration is needed, starting migration:');
+    console.log('MIGRATION: Migration is needed, starting migration:');
 
     process.env.DB_HOST = pgJson?.host;
     process.env.DB_USER = pgJson?.user;
@@ -445,7 +448,11 @@ const doMigration = async () => {
       } catch (error) {
         console.error('doMigration: Migration setAppConfigValue failed: ', error);
       }
-      
+    } else
+      console.log(
+        'Migration not successful, not setting migrationStatus to true: migrationsuccessful: ',
+        migrationsuccessful
+      );
   } else {
     console.log(
       "Migration: Something must have gone wrong fetching migrationStatusValue, it's: ",
@@ -461,7 +468,6 @@ const doMigration = async () => {
 // ******************************
 
 const start = async (): Promise<void> => {
- 
   if (process.env.DEV_ENV !== 'dev')
     try {
       debug && console.log('BFF: Starting initAppInsights()');
@@ -470,7 +476,7 @@ const start = async (): Promise<void> => {
     } catch (error) {
       console.log('BFF: Error setting up appInsights: ', error);
     }
-    console.log('BFF: ************* NODE BFF v 1.1 STARTING *************');
+  console.log('BFF: ************* NODE BFF v 1.1 STARTING *************');
 
   let migrationCheckSuccess = false;
   do {
@@ -483,10 +489,10 @@ const start = async (): Promise<void> => {
     }
     await waitNSeconds(10);
   } while (!migrationCheckSuccess);
-console.log('BFF: Checked AppConfig and found Migration completed.');
+  console.log('BFF: Checked AppConfig and found Migration completed.');
   let pgDetails;
   if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
- 
+
   debug && console.log('BFF: Starting dataSource.initialize()');
   const { connectionOptions } = await import('./data-source');
 
@@ -546,40 +552,40 @@ console.log('BFF: Checked AppConfig and found Migration completed.');
   }
 };
 
-async function testAppConf() {
-  const d = new Date();
-  try {
-    const endpoint = process.env.AZURE_APPCONFIG_URI!;
-    const credential = new DefaultAzureCredential();
+// async function testAppConf() {
+//   const d = new Date();
+//   try {
+//     const endpoint = process.env.AZURE_APPCONFIG_URI!;
+//     const credential = new DefaultAzureCredential();
 
-    console.log('________testAppConf Start _________');
-    console.log('Time now: ', d);
-    console.log('________Connection endpoint: ' + endpoint);
+//     console.log('________testAppConf Start _________');
+//     console.log('Time now: ', d);
+//     console.log('________Connection endpoint: ' + endpoint);
 
-    const client = new AppConfigurationClient(
-      endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
-      credential
-    );
-    // const client = new AppConfigurationClient(connectionString!);
-    let test = await client.getConfigurationSetting({
-      key: 'test',
-      // key: 'Infrastructure:DialogDbConnectionString',
-    });
-    let vaultUri = await client.getConfigurationSetting({
-      key: 'Infrastructure:DialogDbConnectionString',
-    });
-    console.log('Trying to print test:');
-    console.log(test);
-    console.log('Trying to print Infrastructure:DialogDbConnectionString:');
-    console.log(vaultUri);
-    console.log('Infrastructure:DialogDbConnectionString value :');
-    console.log(vaultUri?.value || 'No value found');
-    console.log('typeof vaultUri?.value: ', typeof vaultUri?.value);
-  } catch (error) {
-    console.log('testAppConf failed: ', error);
-    process.exit(1);
-  }
-}
+//     const client = new AppConfigurationClient(
+//       endpoint, // ex: <https://<your appconfig resource>.azconfig.io>
+//       credential
+//     );
+//     // const client = new AppConfigurationClient(connectionString!);
+//     let test = await client.getConfigurationSetting({
+//       key: 'test',
+//       // key: 'Infrastructure:DialogDbConnectionString',
+//     });
+//     let vaultUri = await client.getConfigurationSetting({
+//       key: 'Infrastructure:DialogDbConnectionString',
+//     });
+//     console.log('Trying to print test:');
+//     console.log(test);
+//     console.log('Trying to print Infrastructure:DialogDbConnectionString:');
+//     console.log(vaultUri);
+//     console.log('Infrastructure:DialogDbConnectionString value :');
+//     console.log(vaultUri?.value || 'No value found');
+//     console.log('typeof vaultUri?.value: ', typeof vaultUri?.value);
+//   } catch (error) {
+//     console.log('testAppConf failed: ', error);
+//     process.exit(1);
+//   }
+// }
 
 async function getAppConfigValue(key: string) {
   return new Promise(async (resolve, reject) => {
