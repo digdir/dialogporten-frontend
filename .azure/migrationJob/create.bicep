@@ -108,8 +108,8 @@ resource migrationEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
 // }
 
 resource migrationJob 'Microsoft.App/containerApps@2023-05-01' = {
-  name: uniqueBundleName /// ENDRES TILBAKE!!!!!!!!!!!!!!!!!!
-  // name: 'migration-bundle-debugging'
+  // name: uniqueBundleName /// ENDRES TILBAKE!!!!!!!!!!!!!!!!!!
+  name: 'migration-bundle-debugging'
   location: location
   properties: {
     managedEnvironmentId: migrationEnv.id
