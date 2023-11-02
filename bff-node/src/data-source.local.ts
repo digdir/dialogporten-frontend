@@ -4,7 +4,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import './config/env';
 
 console.log(
-  `_ DATASOURCE FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
+  `_ DATASOURCE LOCAL FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
 );
 
 // export const dataSource = new DataSource({
@@ -43,10 +43,10 @@ console.log(
 export let connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
+  port: parseInt(process.env.DB_PORT || '5430'),
   username: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_NAME || 'my_db',
+  password: process.env.DB_PASSWORD || 'mysecretpassword',
+  database: process.env.DB_NAME || 'dialogporten',
   // synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
   logging: true,
   entities: ['src/entities/*{.ts,.js}'], // where our entities reside

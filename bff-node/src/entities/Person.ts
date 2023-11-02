@@ -23,8 +23,8 @@ export class Person {
   @Column()
   age: number;
 
-  // @Column({ nullable: true })
-  // newColumn: number;
+  @Column({ nullable: true })
+  newColumn: number;
 
   @CreateDateColumn()
   created_at: Date;
