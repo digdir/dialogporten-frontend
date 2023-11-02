@@ -121,15 +121,34 @@ export async function getPsqlSettingsSecret(debug = true) {
       if (!vaultName) {
         return reject({ error: 'No KV_NAME found' });
       }
+      const pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
+
+      if (pgJson?.host) resolve(pgJson);
+      else reject({ error: 'No pgJson found' });
+    } catch (error) {
+      console.log('_ getPsqlSettingsSecret failed: ');
+      process.exit(1);
+    }
+  });
+}
+export async function getPsqlSettingsSecretOld(debug = true) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      debug && console.log('_ _____ GETTING POSTGRES SETTINGS FROM KEY VAULT:');
+      const vaultName = process.env.KV_NAME;
+
+      if (!vaultName) {
+        return reject({ error: 'No KV_NAME found' });
+      }
 
       try {
         const credential = new DefaultAzureCredential();
         const url = `https://${vaultName}.vault.azure.net`;
         const kvClient = new SecretClient(url, credential);
 
-        const secretName = process.env.PSQL_CONNECTION_JSON_NAME;
+        const secretName = process.env.Infrastructure__DialogDbConnectionString;
         if (!secretName) {
-          return reject({ error: 'No PSQL_CONNECTION_JSON_NAME found' });
+          return reject({ error: 'No Infrastructure__DialogDbConnectionString found' });
         }
 
         const latestSecret = await kvClient.getSecret(secretName);
@@ -282,32 +301,45 @@ const doMigration = async () => {
   console.log('_ ************* MIGRATION doMigration v 1 *************');
   console.log('_ ************* Printing ENV VARS *************', process.env);
 
+  let pgJson;
+  if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
+    do {
+      try {
+        console.log('_ doMigration: Starting dbConnectionStringOK()');
+        pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
+      } catch (error) {
+        console.log('Migration: Error reading dbConnectionStringOK: ', error);
+      }
+      await waitNSeconds(5);
+    } while (!pgJson?.host);
+  console.log('_ doMigration: pgJson: SUCESS!!!!:', pgJson);
+
   // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: Starting getPgDetails');
-  let pgDetails;
-  if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
+  // let pgDetails;
+  // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
+  // process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
-  const vaultName = process.env.KV_NAME;
-  console.log(
-    '_ ************* Infrastructure__DialogDbConnectionString test *************',
-    process.env.Infrastructure__DialogDbConnectionString
-  );
-  console.log('_ ************* adoconnectionstringsecreturi test *************');
+  // const vaultName = process.env.KV_NAME;
+  // console.log(
+  //   '_ ************* Infrastructure__DialogDbConnectionString test *************',
+  //   process.env.Infrastructure__DialogDbConnectionString
+  // );
+  // console.log('_ ************* adoconnectionstringsecreturi test *************');
 
-  if (vaultName) {
-    console.log('_ ************* adoconnectionstringsecreturi test inside IF *************');
-    const credential = new DefaultAzureCredential();
-    const url = `https://${vaultName}.vault.azure.net`;
-    const kvClient = new SecretClient(url, credential);
-    kvClient
-      .getSecret('adoconnectionstringsecreturi')
-      .then((data) => {
-        console.log('adoconnectionstringsecreturi secret value: ', data.value);
-      })
-      .catch((error) => {
-        console.log("getSecret('adoconnectionstringsecreturi')", error);
-      });
-  }
+  // if (vaultName) {
+  //   console.log('_ ************* adoconnectionstringsecreturi test inside IF *************');
+  //   const credential = new DefaultAzureCredential();
+  //   const url = `https://${vaultName}.vault.azure.net`;
+  //   const kvClient = new SecretClient(url, credential);
+  //   kvClient
+  //     .getSecret('adoconnectionstringsecreturi')
+  //     .then((data) => {
+  //       console.log('adoconnectionstringsecreturi secret value: ', data.value);
+  //     })
+  //     .catch((error) => {
+  //       console.log("getSecret('adoconnectionstringsecreturi')", error);
+  //     });
+  // }
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
@@ -359,21 +391,16 @@ const doMigration = async () => {
   } else if (migrationStatusValue === 'false') {
     console.log('_ doMigration: migrationStatus is NOT completed, starting migration:');
 
-    try {
-      const pgJson = JSON.parse(process.env.PSQL_CONNECTION_JSON!);
-      process.env.DB_HOST = pgJson?.host;
-      process.env.DB_USER = pgJson?.user;
-      process.env.DB_PORT = pgJson?.port;
-      process.env.DB_PASSWORD = pgJson?.password;
-      process.env.DB_NAME = pgJson?.dbname;
-      console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
-      console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
-      console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
-      console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
-      console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
-    } catch (error) {
-      console.log("trycatch error: Couldn't parse process.env.PSQL_CONNECTION_JSON!", error);
-    }
+    process.env.DB_HOST = pgJson?.host;
+    process.env.DB_USER = pgJson?.user;
+    process.env.DB_PORT = pgJson?.port;
+    process.env.DB_PASSWORD = pgJson?.password;
+    process.env.DB_NAME = pgJson?.dbname;
+    console.log('_ doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
+    console.log('_ doMigration: process.env.DB_USER: ', process.env.DB_USER);
+    console.log('_ doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
+    console.log('_ doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
+    console.log('_ doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
 
     try {
       migrationsuccessful = await execMigration();
@@ -406,6 +433,7 @@ const doMigration = async () => {
       console.error('_ doMigration: Migration run failed: ', error);
       migrationsuccessful = false;
     }
+
     if (migrationsuccessful) {
       console.log('Migration successful, setting migrationStatus to true');
       try {
