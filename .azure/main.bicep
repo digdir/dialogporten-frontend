@@ -113,10 +113,10 @@ module migrationJob 'migrationJob/create.bicep' = {
                 name: 'GIT_SHA'
                 value: gitSha
             }
-            {
-                name: 'PSQL_CONNECTION_JSON'
-                value: postgresql.outputs.psqlConnectionJSON
-            }
+            // {
+            //     name: 'PSQL_CONNECTION_JSON'
+            //     value: postgresql.outputs.psqlConnectionJSON
+            // }
             {
                 name: 'DEV_ENV'
                 value: 'test'
@@ -247,10 +247,10 @@ module containerApp 'containerApp/create.bicep' = {
                 name: 'AZURE_APPCONFIG_URI'
                 value: appConfiguration.outputs.endpoint
             }
-            {
-                name: 'PSQL_CONNECTION_JSON'
-                value: postgresql.outputs.psqlConnectionJSON
-            }
+            // {
+            //     name: 'PSQL_CONNECTION_JSON'
+            //     value: postgresql.outputs.psqlConnectionJSON
+            // }
             {
                 name: 'DEV_ENV'
                 value: 'test'

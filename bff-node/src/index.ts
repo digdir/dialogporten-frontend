@@ -147,6 +147,7 @@ export async function getPsqlSettingsSecret(debug = true) {
           process.env.DB_PASSWORD = password;
           process.env.DB_NAME = dbname;
           process.env.DB_SSLMODE = sslmode;
+          console.log('_ getPsqlSettingsSecret SUCESS!!!!!!!! ');
 
           resolve(postgresSettingsObject);
         } else reject({ error: '_ Invalid postgresSettingsObject found' });
@@ -287,8 +288,14 @@ const doMigration = async () => {
   process.env.DEV_ENV !== 'dev' && console.log('_ Migration: pgDetails:', pgDetails);
 
   const vaultName = process.env.KV_NAME;
+  console.log(
+    '_ ************* Infrastructure__DialogDbConnectionString test *************',
+    process.env.Infrastructure__DialogDbConnectionString
+  );
+  console.log('_ ************* adoconnectionstringsecreturi test *************');
 
   if (vaultName) {
+    console.log('_ ************* adoconnectionstringsecreturi test inside IF *************');
     const credential = new DefaultAzureCredential();
     const url = `https://${vaultName}.vault.azure.net`;
     const kvClient = new SecretClient(url, credential);
