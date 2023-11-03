@@ -35,6 +35,9 @@ export class Person {
   @Column({ nullable: true })
   finalColumn: number;
 
+  @Column({ nullable: true })
+  migrationAsJobColumn: number;
+
   @CreateDateColumn()
   created_at: Date;
 
