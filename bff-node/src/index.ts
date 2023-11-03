@@ -16,7 +16,7 @@ import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 import util from 'util';
 import { SlowBuffer } from 'buffer';
-const bffVersion = '1.4';
+const bffVersion = '1.5';
 
 console.log('****** VERY BEGINNING OF CODE');
 
