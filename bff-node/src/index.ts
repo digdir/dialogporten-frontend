@@ -16,7 +16,7 @@ import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 import util from 'util';
 import { SlowBuffer } from 'buffer';
-const bffVersion = '1.5';
+const bffVersion = '1.6';
 
 console.log('****** VERY BEGINNING OF CODE');
 
@@ -299,55 +299,7 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
-  console.log('************* MIGRATION doMigration v ', bffVersion, ' *************');
   debug && console.log('************* Printing ENV VARS *************', process.env);
-
-  let pgJson;
-  if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
-    do {
-      try {
-        debug && console.log('BFF: Starting dbConnectionStringOK()');
-        pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
-      } catch (error) {
-        debug && console.log('BFF: Error reading dbConnectionStringOK: ', error);
-      }
-      await waitNSeconds(5);
-    } while (!pgJson?.host);
-  process.env.DB_HOST = pgJson?.host;
-  process.env.DB_USER = pgJson?.user;
-  process.env.DB_PORT = pgJson?.port;
-  process.env.DB_PASSWORD = pgJson?.password;
-  process.env.DB_NAME = pgJson?.dbname;
-
-  debug && console.log('BFF: pgJson: SUCESS!!!!:', pgJson);
-  console.log('BFF: Connecting to DB with credentials:', pgJson);
-
-  // process.env.DEV_ENV !== 'dev' && console.log('Migration: Starting getPgDetails');
-  // let pgDetails;
-  // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
-  // process.env.DEV_ENV !== 'dev' && console.log('Migration: pgDetails:', pgDetails);
-
-  // const vaultName = process.env.KV_NAME;
-  // console.log(
-  //   '************* Infrastructure__DialogDbConnectionString test *************',
-  //   process.env.Infrastructure__DialogDbConnectionString
-  // );
-  // console.log('************* adoconnectionstringsecreturi test *************');
-
-  // if (vaultName) {
-  //   console.log('************* adoconnectionstringsecreturi test inside IF *************');
-  //   const credential = new DefaultAzureCredential();
-  //   const url = `https://${vaultName}.vault.azure.net`;
-  //   const kvClient = new SecretClient(url, credential);
-  //   kvClient
-  //     .getSecret('adoconnectionstringsecreturi')
-  //     .then((data) => {
-  //       console.log('adoconnectionstringsecreturi secret value: ', data.value);
-  //     })
-  //     .catch((error) => {
-  //       console.log("getSecret('adoconnectionstringsecreturi')", error);
-  //     });
-  // }
 
   let migrationStatusFetched = false;
   let migrationStatusValue;
@@ -390,6 +342,42 @@ const doMigration = async () => {
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
 
+  migrationStatusValue &&
+    console.log(
+      '************* MIGRATION doMigration v ',
+      bffVersion,
+      ' migrationStatus: ',
+      migrationStatusValue,
+      ' *************'
+    );
+
+  // process.env.DEV_ENV !== 'dev' && console.log('Migration: Starting getPgDetails');
+  // let pgDetails;
+  // if (process.env.DEV_ENV !== 'dev') pgDetails = await getPGDetails();
+  // process.env.DEV_ENV !== 'dev' && console.log('Migration: pgDetails:', pgDetails);
+
+  // const vaultName = process.env.KV_NAME;
+  // console.log(
+  //   '************* Infrastructure__DialogDbConnectionString test *************',
+  //   process.env.Infrastructure__DialogDbConnectionString
+  // );
+  // console.log('************* adoconnectionstringsecreturi test *************');
+
+  // if (vaultName) {
+  //   console.log('************* adoconnectionstringsecreturi test inside IF *************');
+  //   const credential = new DefaultAzureCredential();
+  //   const url = `https://${vaultName}.vault.azure.net`;
+  //   const kvClient = new SecretClient(url, credential);
+  //   kvClient
+  //     .getSecret('adoconnectionstringsecreturi')
+  //     .then((data) => {
+  //       console.log('adoconnectionstringsecreturi secret value: ', data.value);
+  //     })
+  //     .catch((error) => {
+  //       console.log("getSecret('adoconnectionstringsecreturi')", error);
+  //     });
+  // }
+
   // ************ RUN MIGRATION ************
   debug && console.log('Migration: ************ RUN MIGRATION ************');
 
@@ -407,6 +395,26 @@ const doMigration = async () => {
     debug && console.log('doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
 
     try {
+      let pgJson;
+      if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
+        do {
+          try {
+            debug && console.log('BFF: Starting dbConnectionStringOK()');
+            pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
+          } catch (error) {
+            debug && console.log('BFF: Error reading dbConnectionStringOK: ', error);
+          }
+          await waitNSeconds(1);
+        } while (!pgJson?.host);
+      process.env.DB_HOST = pgJson?.host;
+      process.env.DB_USER = pgJson?.user;
+      process.env.DB_PORT = pgJson?.port;
+      process.env.DB_PASSWORD = pgJson?.password;
+      process.env.DB_NAME = pgJson?.dbname;
+
+      debug && console.log('BFF: pgJson: SUCESS!!!!:', pgJson);
+      console.log('BFF: Connecting to DB with credentials:', pgJson);
+
       migrationsuccessful = await execMigration();
 
       // await new Promise((resolve, reject) => {

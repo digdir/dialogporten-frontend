@@ -32,6 +32,9 @@ export class Person {
   @Column({ nullable: true })
   yetAnotherColumn: number;
 
+  @Column({ nullable: true })
+  finalColumn: number;
+
   @CreateDateColumn()
   created_at: Date;
 
