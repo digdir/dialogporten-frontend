@@ -287,7 +287,6 @@ const execMigration = async () => {
 
 const doMigration = async () => {
   // ************ INIT APP INSIGHTS ************
-  const debug = true;
   let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
@@ -389,12 +388,6 @@ const doMigration = async () => {
   } else if (migrationStatusValue === 'false') {
     console.log('MIGRATION: Migration is needed, starting migration:');
 
-    debug && console.log('doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
-    debug && console.log('doMigration: process.env.DB_USER: ', process.env.DB_USER);
-    debug && console.log('doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
-    debug && console.log('doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
-    debug && console.log('doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
-
     try {
       let pgJson;
       if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
@@ -412,6 +405,11 @@ const doMigration = async () => {
       process.env.DB_PORT = pgJson?.port;
       process.env.DB_PASSWORD = pgJson?.password;
       process.env.DB_NAME = pgJson?.dbname;
+      debug && console.log('doMigration: process.env.DB_HOST: ', process.env.DB_HOST);
+      debug && console.log('doMigration: process.env.DB_USER: ', process.env.DB_USER);
+      debug && console.log('doMigration: process.env.DB_PORT: ', process.env.DB_PORT);
+      debug && console.log('doMigration: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
+      debug && console.log('doMigration: process.env.DB_NAME: ', process.env.DB_NAME);
 
       debug && console.log('BFF: pgJson: SUCESS!!!!:', pgJson);
       console.log('BFF: Connecting to DB with credentials:', pgJson);

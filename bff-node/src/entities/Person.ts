@@ -41,6 +41,9 @@ export class Person {
   @Column({ nullable: true })
   confirmAllIsWorking: number;
 
+  @Column({ nullable: true })
+  finalTest: number;
+
   @CreateDateColumn()
   created_at: Date;
 
