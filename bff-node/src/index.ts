@@ -48,7 +48,7 @@ const initAppInsights = async () => {
       // .setInternalLogging(true, true)
       .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
       .start();
-    await waitNSeconds(5);
+    await waitNSeconds(1);
     if (appInsights.defaultClient) {
       debug && console.log('AppInsights is initialized properly.');
     } else {
@@ -298,7 +298,7 @@ const doMigration = async () => {
       } catch (error) {
         debug && console.log('Migration: Error setting up appInsights: ', error);
       }
-      await waitNSeconds(5);
+      await waitNSeconds(1);
     } while (!appInsightSetupComplete);
   debug && console.log('************* Printing ENV VARS *************', process.env);
 
@@ -339,7 +339,7 @@ const doMigration = async () => {
       } catch (error) {
         console.log('Migration: getAppConfigValue failed: ', error);
       }
-      await waitNSeconds(5);
+      await waitNSeconds(1);
     } while (!migrationStatusFetched);
   if (isLocal) migrationStatusValue = 'false';
 
@@ -513,7 +513,7 @@ const start = async (): Promise<void> => {
       } catch (error) {
         debug && console.log('Migration: Error reading dbConnectionStringOK: ', error);
       }
-      await waitNSeconds(5);
+      await waitNSeconds(1);
     } while (!pgJson?.host);
   process.env.DB_HOST = pgJson?.host;
   process.env.DB_USER = pgJson?.user;
@@ -643,7 +643,7 @@ async function getAppConfigValue(key: string) {
     } catch (error) {
       console.log('getAppConfigValue failed: ', error);
     }
-    await waitNSeconds(5);
+    await waitNSeconds(1);
   });
 }
 

@@ -50,8 +50,8 @@ resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
         parallelism: 1
         replicaCompletionCount: 1
       }
-      replicaRetryLimit: 1
-      replicaTimeout: 30
+      replicaRetryLimit: 5
+      replicaTimeout: 60
       triggerType: 'Manual'
     }
     environmentId: migrationEnv.id
