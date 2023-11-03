@@ -26,6 +26,9 @@ export class Person {
   @Column({ nullable: true })
   newColumn: number;
 
+  @Column({ nullable: true })
+  anotherColumn: number;
+
   @CreateDateColumn()
   created_at: Date;
 

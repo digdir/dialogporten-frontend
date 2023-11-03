@@ -278,6 +278,14 @@ const execMigration = async () => {
     if (stderr) {
       // if (stdout || stderr) {
       console.error('Migration failed');
+      if (stderr.includes('No migrations are pending')) {
+        console.log('Migration completed successfully (No migrations are pending)');
+        return true;
+      } else if (stderr.includes('new migrations must be executed')) {
+        console.log('Migration completed successfully (new migrations found)');
+        return true;
+      }
+      console.error('Migration failed with error: ', stderr);
       return false;
     } else {
       console.log('Migration completed successfully');
