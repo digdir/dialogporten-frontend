@@ -287,6 +287,7 @@ const execMigration = async () => {
 
 const doMigration = async () => {
   // ************ INIT APP INSIGHTS ************
+  const debug = true;
   let appInsightSetupComplete = false;
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
     do {
