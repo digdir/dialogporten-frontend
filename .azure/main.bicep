@@ -298,6 +298,7 @@ module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
         principalIds: [ containerApp.outputs.identityPrincipalId ]
     }
 }
+
 // module resetMigrationStatus 'appConfiguration/resetMigrationStatus.bicep' = {
 //     scope: resourceGroup
 //     name: 'resetMigrationStatus'

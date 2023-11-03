@@ -7,10 +7,29 @@ param envVariables array = []
 
 var uniqueBundleName = take('migration-bundle-${gitSha}', 32)
 
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: '${namePrefix}-analytics-ws'
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+  }
+}
+
 resource migrationEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: '${namePrefix}-migrations-cae'
   location: location
-  properties: {}
+  properties: {
+    appLogsConfiguration: {
+      destination: 'log-analytics'
+      logAnalyticsConfiguration: {
+        customerId: logAnalyticsWorkspace.properties.customerId
+        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
+      }
+    }
+
+  }
 }
 
 resource migrationJob 'Microsoft.App/jobs@2023-05-01' = {
