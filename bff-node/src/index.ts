@@ -16,6 +16,7 @@ import { Person } from './entities/Person';
 import { Family } from './entities/Family';
 import util from 'util';
 import { SlowBuffer } from 'buffer';
+const bffVersion = '1.4';
 
 console.log('****** VERY BEGINNING OF CODE');
 
@@ -263,34 +264,21 @@ const execMigration = async () => {
   // }
 
   try {
-    const { stdout, stderr } = await execAsync(
-      'yarn typeorm migration:run -- -d src/data-source.ts'
-    );
-
+    const { stdout, stderr } = await execAsync('yarn typeorm migration:run -d src/data-source.ts');
+    if (stderr) {
+      console.error('BFF: Standard Error:', stderr);
+    }
     if (stdout) {
-      console.log('Standard Output:', stdout);
-    }
-
-    if (stderr) {
-      console.error('Standard Error:', stderr);
-    }
-
-    if (stderr) {
-      // if (stdout || stderr) {
-      console.error('Migration failed');
-      if (stderr.includes('No migrations are pending')) {
-        console.log('Migration completed successfully (No migrations are pending)');
+      if (stdout.includes('No migrations are pending')) {
+        console.log('BFF: Migration completed successfully (No migrations are pending)');
         return true;
-      } else if (stderr.includes('new migrations must be executed')) {
-        console.log('Migration completed successfully (new migrations found)');
+      } else if (stdout.includes('new migrations must be executed')) {
+        console.log('BFF: Migration completed successfully (new migrations found)');
         return true;
       }
-      console.error('Migration failed with error: ', stderr);
-      return false;
-    } else {
-      console.log('Migration completed successfully');
-      return true;
+      console.log('BFF: Standard Output:', stdout);
     }
+    return false;
   } catch (error) {
     console.error('Error running the command:', error);
     return false;
@@ -311,7 +299,7 @@ const doMigration = async () => {
       }
       await waitNSeconds(5);
     } while (!appInsightSetupComplete);
-  console.log('************* MIGRATION doMigration v 1.3 *************');
+  console.log('************* MIGRATION doMigration v ', bffVersion, ' *************');
   debug && console.log('************* Printing ENV VARS *************', process.env);
 
   let pgJson;
@@ -489,7 +477,7 @@ const start = async (): Promise<void> => {
     } catch (error) {
       console.log('BFF: Error setting up appInsights: ', error);
     }
-  console.log('BFF: ************* NODE BFF v 1.3 STARTING *************');
+  console.log('BFF: ************* NODE BFF v ', bffVersion, ' STARTING *************');
   let nMigrationChecks = 0;
   let migrationCheckSuccess = false;
   do {
