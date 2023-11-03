@@ -38,6 +38,9 @@ export class Person {
   @Column({ nullable: true })
   migrationAsJobColumn: number;
 
+  @Column({ nullable: true })
+  confirmAllIsWorking: number;
+
   @CreateDateColumn()
   created_at: Date;
 
