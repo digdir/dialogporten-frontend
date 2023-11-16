@@ -1,0 +1,48 @@
+{
+  "ignorePatterns": ["yarn/**", "yarn.lock", "*.css", "*.bicep","*.ps1"],
+  "extends": [
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["jsx-a11y", "react", "react-hooks", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "react/destructuring-assignment": "off",
+    "react/prop-types": "error",
+    "react/require-default-props": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-key": "error",
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "prefer-const": "error",
+    "object-curly-spacing": ["error", "always"],
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-explicit-any": "error"
+  },
+
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }],
+        "no-use-before-define": "off",
+        "no-shadow": "off",
+        "react/function-component-definition": "off",
+        "@typescript-eslint/no-shadow": ["error"]
+      }
+    },
+    {
+      "files": ["*.test.ts", "*.test.tsx"],
+      "extends": ["plugin:testing-library/react"],
+      "rules": {
+        "testing-library/no-unnecessary-act": "error"
+      }
+    }
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

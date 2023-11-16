@@ -1,0 +1,27 @@
+name: WorkflowTest
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    #paths: [ src/**, tests/**, .github/workflows/** ]
+
+jobs:
+  BuildAndRunTests:
+    uses: ./.github/workflows/BuildAndRunTestsFrontend.yml
+    secrets: inherit
+    with:
+      environment: test
+
+  BuildContainersAndPublishToGHCR:
+    needs: [BuildAndRunTests]
+    uses: ./.github/workflows/PublishTestFrontend.yml
+    with:
+      publishArtifacts: true
+
+  DeployToAzureTestEnv:
+    needs: [BuildContainersAndPublishToGHCR]
+    uses: ./.github/workflows/DeployTestFrontend.yml
+    secrets: inherit
+    with:
+      environment: test
