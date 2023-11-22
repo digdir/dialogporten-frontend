@@ -139,16 +139,16 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
         keyValueType: 'keyVaultReference'
     }
 }
-module appConfigConfigurationsDebug 'appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'appConfigConfigurationsDebug'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'Infrastructure:psqlConnectionJSON'
-        value: postgresql.outputs.psqlConnectionJSON
-        keyValueType: 'custom'
-    }
-}
+// module appConfigConfigurationsDebug 'appConfiguration/upsertKeyValue.bicep' = {
+//     scope: resourceGroup
+//     name: 'appConfigConfigurationsDebug'
+//     params: {
+//         configStoreName: appConfiguration.outputs.name
+//         key: 'Infrastructure:psqlConnectionJSON'
+//         value: postgresql.outputs.psqlConnectionJSON
+//         keyValueType: 'custom'
+//     }
+// }
 
 module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
