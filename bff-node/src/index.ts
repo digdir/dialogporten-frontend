@@ -8,10 +8,10 @@ import path from 'path';
 import { DataSource, Repository } from 'typeorm';
 import { StartUp } from './entities/StartUp';
 import { startLivenessProbe, startReadinessProbe } from './routes/HealthProbes';
-import { initAppInsights, waitNSeconds } from './util/InitializaitonUtils';
+import { initAppInsights } from './util/InitializaitonUtils';
 import { runMigrationApp } from './util/Migration';
 
-export const bffVersion = 'v4.8';
+export const bffVersion = 'v5.0';
 export const isLocal = process.env.IS_LOCAL === 'true';
 export const app: Express = express();
 export const probes: Express = express();
@@ -21,13 +21,8 @@ export let mainDataSource: DataSource;
 export let StartUpRepository: Repository<StartUp> | undefined = undefined;
 console.log(bffVersion, ': ', '****** VERY BEGINNING OF CODE');
 const startTimeStamp = new Date().getTime();
-
 const DIST_DIR = path.join(__dirname, 'public');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
-
-// ******************************
-// ************ MAIN ************
-// ******************************
 
 const start = async (): Promise<void> => {
   console.log(bffVersion, ': ', 'BFF: ************* NODE BFF STARTING *************');

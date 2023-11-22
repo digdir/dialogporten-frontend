@@ -7,12 +7,15 @@ async function getMostRecentStartUp() {
   const mostRecentStartUp = await StartUpRepository?.createQueryBuilder('startup')
     .orderBy('startup.created_at', 'DESC')
     .getOne();
+  const mostRecentStartUp2 = await StartUpRepository?.createQueryBuilder('startup')
+    .orderBy('startup.created_at', 'DESC')
+    .getMany();
 
   return mostRecentStartUp;
 }
 
 // Placeholder code for this template
-const get = async (req: Request<any, any, HelloWorldDto>, res: Response): Promise<void> => {
+const get = async (req: Request, res: Response): Promise<void> => {
   const mostRecentStartUp = await getMostRecentStartUp();
   console.log('mostRecentStartUp', mostRecentStartUp);
   res.send({
