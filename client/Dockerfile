@@ -1,5 +1,5 @@
 # Use a Node.js base image
-FROM node:18
+FROM node:19
 
 # Set working directory
 WORKDIR /react
