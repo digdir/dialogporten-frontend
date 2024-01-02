@@ -1,19 +1,20 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import './config/env';
 
 console.log(
-  `_ DATASOURCE FILE: Dirname: ${__dirname} data-source.ts: Would connect to Postgres: host: ${process.env.DB_HOST}, user: ${process.env.DB_USER}, password: ${process.env.DB_PASSWORD}, dbname: ${process.env.DB_NAME}, port: ${process.env.DB_PORT}, `
+  'REMINDER: In datasource file, synchronize needs to be changed to false for production'
 );
 
 export let connectionOptions: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_NAME || 'my_db',
-  // synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
-  logging: true,
+  host: process.env.DB_HOST !== 'undefined' ? process.env.DB_HOST : 'postgresdb-dp-fe',
+  port: 5432,
+  username: process.env.DB_USER !== 'undefined' ? process.env.DB_USER : 'postgres',
+  password: process.env.DB_PASSWORD !== 'undefined' ? process.env.DB_PASSWORD : 'mysecretpassword',
+  database: process.env.DB_NAME !== 'undefined' ? process.env.DB_NAME : 'dialogporten',
+  synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
+  logging: false,
   entities: ['src/entities/*{.ts,.js}'], // where our entities reside
   // migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
   migrations: [__dirname + '/migrations/**/*.ts'],
@@ -26,33 +27,7 @@ export let connectionOptions: DataSourceOptions = {
   }),
 };
 
-// export const getConnectionOptions: any = (postgresSettingsObject: any) => {
-//   const { host, password, dbname, port: dbport, sslmode, user } = postgresSettingsObject;
-//   return {
-//     type: 'postgres',
-//     host: host || 'localhost',
-//     port: parseInt(dbport || '5432'),
-//     username: user || 'postgres',
-//     password: password || 'password',
-//     database: dbname || 'my_db',
-//     synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
-//     logging: true,
-//     entities: ['src/entities/*{.ts,.js}'], // where our entities reside
-//     migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
-//     extra: {
-//       ssl: {
-//         rejectUnauthorized: false,
-//       },
-//     },
-//   };
-// };
-
-console.log('_ dataSource connectionOptions:', connectionOptions);
-
+console.log({ ...connectionOptions });
 export default new DataSource({
   ...connectionOptions,
 });
-// export const getDataSource = (postgresSettingsObject: any) =>
-//   new DataSource({
-//     ...getConnectionOptions(postgresSettingsObject),
-//   });

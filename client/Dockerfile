@@ -20,7 +20,7 @@ COPY . .
 RUN yarn run build
 
 # Expose the port React app runs on (default: 3000)
-EXPOSE 3000
+EXPOSE 80
 
 # Command to start the React app
 CMD [ "yarn", "docker" ]

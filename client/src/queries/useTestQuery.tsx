@@ -4,7 +4,7 @@ import { QueryKey } from '../types/QueryKey';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 
 export const useTestQuery = (name?: string): UseQueryResult<TestResult | null, AltinnError> => {
-  const requestUrl = '/api/v1/test';
+  const requestUrl = '/auth/protected';
 
   return useQuery<TestResult | null, AltinnError>({
     queryKey: [QueryKey.TestQuery],

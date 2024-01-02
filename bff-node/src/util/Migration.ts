@@ -1,12 +1,11 @@
 import 'reflect-metadata';
 import '../config/env';
 import util from 'util';
-import { bffVersion, isLocal } from '..';
-import { initAppInsights, waitNSeconds } from './InitializaitonUtils';
+import { bffVersion } from '..';
+import { initAppInsights } from './ApplicationInsightsInit';
+import { waitNSeconds } from './waitNSeconds';
 
 let migrationsuccessful = false;
-
-const debug = false;
 
 const execMigration = async () => {
   const { exec } = await import('child_process');
@@ -37,35 +36,28 @@ const execMigration = async () => {
 export const runMigrationApp = async () => {
   // ************ INIT APP INSIGHTS ************
   let appInsightSetupComplete = false;
-  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING && !isLocal)
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
     do {
       try {
-        debug && console.log(bffVersion, ': ', 'runMigrationApp: Starting initAppInsights()');
         const appInsightResult = await initAppInsights();
         if (appInsightResult === 'Done') appInsightSetupComplete = true;
       } catch (error) {
-        debug && console.log(bffVersion, ': ', 'Migration: Error setting up appInsights: ', error);
+        console.error(bffVersion, ': ', 'Migration: Error setting up appInsights: ', error);
       }
       await waitNSeconds(1);
     } while (!appInsightSetupComplete);
-  debug &&
-    console.log(bffVersion, ': ', '************* Printing ENV VARS *************', process.env);
 
   // ************ RUN MIGRATION ************
-  debug && console.log(bffVersion, ': ', 'Migration: ************ RUN MIGRATION ************');
-
   console.log(bffVersion, ': ', 'MIGRATION: Starting migration:');
 
   try {
     let pgJson;
-    if (process.env.Infrastructure__DialogDbConnectionString && !isLocal)
+    if (process.env.Infrastructure__DialogDbConnectionString)
       do {
         try {
-          debug && console.log(bffVersion, ': ', 'BFF: Starting dbConnectionStringOK()');
           pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
         } catch (error) {
-          debug &&
-            console.log(bffVersion, ': ', 'BFF: Error reading dbConnectionStringOK: ', error);
+          console.error(bffVersion, ': ', 'BFF: Error reading dbConnectionStringOK: ', error);
         }
         await waitNSeconds(1);
       } while (!pgJson?.host);
@@ -74,16 +66,6 @@ export const runMigrationApp = async () => {
     process.env.DB_PORT = pgJson?.port;
     process.env.DB_PASSWORD = pgJson?.password;
     process.env.DB_NAME = pgJson?.dbname;
-    // debug && console.log(bffVersion, ': ', 'runMigrationApp: process.env.DB_HOST: ', process.env.DB_HOST);
-    // debug && console.log(bffVersion, ': ', 'runMigrationApp: process.env.DB_USER: ', process.env.DB_USER);
-    // debug && console.log(bffVersion, ': ', 'runMigrationApp: process.env.DB_PORT: ', process.env.DB_PORT);
-    // debug &&
-    //   console.log(bffVersion, ': ', 'runMigrationApp: process.env.DB_PASSWORD: ', process.env.DB_PASSWORD);
-    debug &&
-      console.log(bffVersion, ': ', 'runMigrationApp: process.env.DB_NAME: ', process.env.DB_NAME);
-
-    debug && console.log(bffVersion, ': ', 'BFF: pgJson: SUCESS!!!!:', pgJson);
-    debug && console.log(bffVersion, ': ', 'BFF: Connecting to DB with credentials:', pgJson);
 
     migrationsuccessful = await execMigration();
   } catch (error) {

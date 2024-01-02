@@ -5,11 +5,21 @@ module.exports = {
   mode: 'docker',
   devServer: {
     ...devConfig.devServer,
-
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
-        router: () => 'http://node-server:3001',
+        target: 'http://node-server:3000',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' },
+        secure: false,
+      },
+      '/auth': {
+        target: 'http://node-server:3000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/test': {
+        target: 'http://node-server:3000',
+        changeOrigin: true,
         secure: false,
       },
     },
