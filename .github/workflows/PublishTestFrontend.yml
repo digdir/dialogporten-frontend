@@ -39,7 +39,7 @@ jobs:
         shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
 
       - name: Upload .azure directory as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: ${{ github.workspace }}/artifacts
