@@ -1,4 +1,10 @@
 {
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "turbo": "1.11.3",
+    "@biomejs/biome": "^1.5.3"
+  },
 	"engines": {
 		"node": ">=20.0"
 	}
