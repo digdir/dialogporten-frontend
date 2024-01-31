@@ -12,3 +12,7 @@ Typesript and CSS modules.
 1. yarn
 2. yarn dev
 ````
+
+### Mock
+
+Uses [msw](https://mswjs.io/) as API mocking library.
