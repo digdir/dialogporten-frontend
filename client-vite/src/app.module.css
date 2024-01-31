@@ -1,6 +1,8 @@
+@import '@digdir/design-system-tokens/brand/digdir/tokens.css';
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'cv05' 1 !important; /* Enable lowercase l with tail */
   font-weight: 400;
   color-scheme: light dark;
   background-color: #242424;
