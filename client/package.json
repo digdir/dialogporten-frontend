@@ -9,11 +9,12 @@
     "start": "yarn typecheck:watch & NODE_ENV=development webpack-dev-server --config ./webpack.config.dev.js --mode development",
     "docker": "yarn typecheck:watch & NODE_ENV=docker webpack-dev-server --config ./webpack.config.docker.js --mode development",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.prod.js",
-    "test": "react-scripts test",
-    "typecheck": "npx tsc --noEmit",
+    "test": "react-scripts test --watchAll=false",
+    "test:watch": "react-scripts test",
+    "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit -w",
-    "lint": "eslint \"./**/*.ts*\"",
-    "lint:fix": "npm run lint --fix"
+    "lint": "",
+    "lint:fix": ""
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",

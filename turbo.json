@@ -1,3 +1,21 @@
 {
-	"$schema": "https://turbo.build/schema.json"
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"cache": false
+		},
+		"test": {
+			"outputs": [],
+			"cache": false
+		},
+		"lint": {
+			"outputs": [],
+			"cache": false
+		},
+		"typecheck": {
+			"outputs": [],
+			"cache": false
+		}
+
+	}
 }
