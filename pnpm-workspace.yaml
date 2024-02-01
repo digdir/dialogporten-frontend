@@ -3,3 +3,4 @@ packages:
   - "client/"
   - "client-vite/"
   - "bff-node/"
+  - "storybook/"
