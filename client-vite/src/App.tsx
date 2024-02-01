@@ -1,22 +1,15 @@
-import { useEffect, useState } from 'react';
-import appStyles from './app.module.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { HelloWorld } from './components/HelloWorld/HelloWorld.tsx';
+import styles from './app.module.css'
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetch('/user')
-      .then((resp) => resp.json())
-      .then((user) => setUsername(user.name))
-      .finally(() => setIsLoading(false));
-
-  }, []);
-
-  return (<section className={appStyles.app} data-testid="app">
-    {isLoading ? <p>Is loading</p> : <h1>Hello, {username}!</h1>}
-  </section>);
+  return (<QueryClientProvider client={queryClient}>
+    <section data-testid="app" className={styles.app}>
+      <HelloWorld />
+    </section>
+  </QueryClientProvider>);
 }
 
 export default App;
