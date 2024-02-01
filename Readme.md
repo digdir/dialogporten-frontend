@@ -6,4 +6,4 @@
 
 - Install Docker. We recommend to use OrbStack if you're using Mac or Windows for development, on Linux you can install Docker directly.
 
-
+- Install pnpm. On macOS you can do that with `brew install pnpm`.
