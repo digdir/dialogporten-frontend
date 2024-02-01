@@ -4,8 +4,6 @@
   font-family: 'Inter', sans-serif;
   font-feature-settings: 'cv05' 1 !important; /* Enable lowercase l with tail */
   font-weight: 400;
-  color-scheme: light dark;
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -17,8 +15,5 @@
   width: 100%;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
-  background: gold;
-  color: #1a1a1a;
 }
 
