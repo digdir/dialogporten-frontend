@@ -5,8 +5,9 @@ const path = require('path');
 module.exports = {
   entry: path.resolve(__dirname, 'src/', 'index.tsx'),
   output: {
+    publicPath: 'http://localhost:80/', // Use your development server's URL
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: 'index.js',
   },
 
   resolve: {

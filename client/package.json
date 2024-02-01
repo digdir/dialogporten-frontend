@@ -34,7 +34,6 @@
     "@swc/core": "^1.3.84",
     "@types/css-modules": "1.0.4",
     "@types/jest": "29.5.7",
-    "@types/lodash-es": "4.17.10",
     "@types/react": "18.2.34",
     "@types/react-dom": "18.2.14",
     "@types/react-query": "^1.2.9",

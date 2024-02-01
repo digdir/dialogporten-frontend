@@ -17,7 +17,7 @@ RUN yarn install
 COPY . .
 
 # Expose the port your Node.js server runs on (default: 5000)
-EXPOSE 3001
+EXPOSE 3000
 
 # Command to start the Node.js server
 CMD [ "yarn", "dev" ]

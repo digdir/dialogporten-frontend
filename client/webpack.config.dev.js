@@ -31,16 +31,16 @@ module.exports = {
     hot: true,
     static: path.join(__dirname, '/src/public'),
     allowedHosts: 'all',
-    port: 3000,
+    port: 80,
     historyApiFallback: true,
     open: true,
 
     proxy: {
       '/api': {
         target: {
-          host: 'localhost', // REPLACE WITH ACTUAL DEV API URL
+          host: 'node-server', // REPLACE WITH ACTUAL DEV API URL
           protocol: 'http:',
-          port: 3005, // REPLACE WITH ACTUAL DEV API URL
+          port: 3000, // REPLACE WITH ACTUAL DEV API URL
         },
         secure: false,
       },

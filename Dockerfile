@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./client/package*.json ./client/yarn.lock ./
 
 # Install client dependencies
-RUN yarn install --production=false
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy the rest of the client application code to the container
 COPY ./client ./
@@ -30,7 +30,7 @@ COPY --from=frontend /app/dist ./src/public
 COPY ./bff-node/package*.json ./bff-node/yarn.lock ./
 
 # Install "bff-node" project dependencies (assuming you have a package.json file in "bff-node" folder)
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 COPY ./bff-node ./
 EXPOSE 80
