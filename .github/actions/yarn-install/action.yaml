@@ -8,25 +8,12 @@ runs:
       with:
         node-version: 20
 
-    - name: 'Getting yarn cache directory path'
-      id: yarn-cache-dir-path
-      working-directory: ./client
-      run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-      shell: bash
+		- uses: pnpm/action-setup@v2
+			with:
+				version: 8
+				run_install: |
+					- recursive: true
+						args: [--frozen-lockfile, --strict-peer-dependencies]
 
-    - uses: actions/cache@v3
-      id: yarn-cache
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
-
-    - name: 'Installing Dependencies'
-      working-directory: ./client
-      run: yarn install --immutable --inline-builds
-      shell: bash
-      env:
-        YARN_ENABLE_GLOBAL_CACHE: 'false'
-        YARN_NM_MODE: 'hardlinks-local'
-        HUSKY: '0'
+		- name: Install dependencies
+			run: pnpm install
