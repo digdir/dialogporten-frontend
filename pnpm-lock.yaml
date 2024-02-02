@@ -15,7 +15,7 @@ importers:
         specifier: 1.12.2
         version: 1.12.2
 
-  bff-node:
+  packages/bff:
     dependencies:
       '@azure/app-configuration':
         specifier: ^1.4.1
@@ -139,7 +139,7 @@ importers:
         specifier: 4.5.2
         version: 4.5.2
 
-  client:
+  packages/bff-frontend-poc:
     dependencies:
       '@tanstack/react-query':
         specifier: ^5.8.4
@@ -269,7 +269,7 @@ importers:
         specifier: ^4.15.1
         version: 4.15.1(webpack-cli@5.1.4)(webpack@5.90.0)
 
-  client-vite:
+  packages/frontend-design-poc:
     dependencies:
       '@digdir/design-system-react':
         specifier: ^0.47.0
@@ -321,7 +321,7 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2(jsdom@24.0.0)
 
-  storybook:
+  packages/storybook:
     dependencies:
       react:
         specifier: ^18.2.0
@@ -507,7 +507,7 @@ packages:
       '@azure/abort-controller': 1.1.0
       '@azure/core-auth': 1.5.0
       '@azure/core-tracing': 1.0.1
-      '@azure/core-util': 1.2.0
+      '@azure/core-util': 1.6.1
       '@azure/logger': 1.0.4
       form-data: 4.0.0
       http-proxy-agent: 5.0.0
