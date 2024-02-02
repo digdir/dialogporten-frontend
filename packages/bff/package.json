@@ -1,5 +1,5 @@
 {
-  "name": "bff-node",
+  "name": "bff",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
