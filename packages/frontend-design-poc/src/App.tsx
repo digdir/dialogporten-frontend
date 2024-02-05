@@ -1,15 +1,20 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { HelloWorld } from './components/HelloWorld/HelloWorld.tsx';
-import styles from './app.module.css'
-
-const queryClient = new QueryClient();
+import { Route, Routes } from "react-router-dom";
+import { HelloWorld } from "./components/HelloWorld";
+import { PageNotFound } from "./pages/PageNotFound";
+import { PageLayout } from "./pages/PageLayout";
+import styles from "./app.module.css";
 
 function App() {
-  return (<QueryClientProvider client={queryClient}>
-    <section data-testid="app" className={styles.app}>
-      <HelloWorld />
-    </section>
-  </QueryClientProvider>);
+  return (
+    <div className={styles.app} role="main">
+      <Routes>
+        <Route element={<PageLayout />}>
+          <Route path="/" element={<HelloWorld />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
