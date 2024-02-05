@@ -1,11 +1,16 @@
-import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
-import App from './App.tsx';
+import { beforeAll, describe, expect, it } from "vitest";
+import { customRender } from "../utils/test-utils.tsx";
+import App from "./App.tsx";
+import { server } from "./mocks/node.ts";
 
-describe('App Smoke Test', () => {
-  it('renders without crashing', () => {
-    const { getByTestId } = render(<App />);
-    const appElement = getByTestId('app');
+describe("App Smoke Test", async () => {
+  beforeAll(async () => {
+    server.listen();
+  });
+
+  it("renders without crashing", () => {
+    const { getByRole } = customRender(<App />);
+    const appElement = getByRole("main");
     expect(appElement).toBeTruthy();
   });
 });
