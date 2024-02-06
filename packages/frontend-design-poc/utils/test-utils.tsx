@@ -3,6 +3,8 @@ import { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { render, RenderOptions } from "@testing-library/react";
 
+import "../src/i18n/";
+
 interface IExtendedRenderOptions extends RenderOptions {
   initialEntries?: string[];
 }
