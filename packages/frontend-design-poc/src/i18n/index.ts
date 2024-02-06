@@ -16,4 +16,4 @@ const i18nInitConfig = {
   },
 };
 
-await i18n.use(ICU).use(initReactI18next).init(i18nInitConfig);
+i18n.use(ICU).use(initReactI18next).init(i18nInitConfig);
