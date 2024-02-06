@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
+import "./i18n/";
+
+import App from "./App.tsx";
 
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
