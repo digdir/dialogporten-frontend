@@ -1,0 +1,4 @@
+.inboxItem {
+    display: flex;
+    flex-direction: column;
+}
