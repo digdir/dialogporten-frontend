@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import { SealIcon, StarIcon } from "@navikt/aksel-icons";
 
 import { InboxItems } from "../../../../frontend-design-poc/src/components/InboxItems";
@@ -12,8 +12,6 @@ const meta = {
 } satisfies Meta<typeof InboxItems>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
-
 const SimpleExampleWithState = () => {
   const [isCheckedFirst, setIsCheckedFirst] = useState(false);
   const [isCheckedSecond, setIsCheckedSecond] = useState(false);
@@ -67,4 +65,6 @@ const SimpleExampleWithState = () => {
   );
 };
 
-export const simpleDesktopExample : Story = () => <SimpleExampleWithState />;
+export const simpleDesktopExample: () => JSX.Element = () => (
+  <SimpleExampleWithState />
+);
