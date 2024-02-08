@@ -1,13 +1,4 @@
-:root {
-    font-family: 'Inter', sans-serif;
-    font-feature-settings: 'cv05'1 !important;
-    /* Enable lowercase l with tail */
-    font-weight: 400;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+
 .app {
     width: 100%;
     margin: 0 auto;

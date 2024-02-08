@@ -277,6 +277,12 @@ importers:
       '@digdir/design-system-tokens':
         specifier: ^0.12.0
         version: 0.12.0
+      '@navikt/aksel-icons':
+        specifier: ^5.18.0
+        version: 5.18.0
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       i18next:
         specifier: ^23.8.2
         version: 23.8.2
@@ -335,6 +341,15 @@ importers:
 
   packages/storybook:
     dependencies:
+      '@digdir/design-system-react':
+        specifier: ^0.47.0
+        version: 0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+      '@digdir/design-system-tokens':
+        specifier: ^0.12.0
+        version: 0.12.0
+      '@navikt/aksel-icons':
+        specifier: ^5.18.0
+        version: 5.18.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -357,6 +372,9 @@ importers:
       '@storybook/blocks':
         specifier: ^7.6.12
         version: 7.6.12(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/manager-api':
+        specifier: ^7.6.6
+        version: 7.6.12(react-dom@18.2.0)(react@18.2.0)
       '@storybook/react':
         specifier: ^7.6.12
         version: 7.6.12(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -366,6 +384,9 @@ importers:
       '@storybook/test':
         specifier: ^7.6.12
         version: 7.6.12
+      '@storybook/theming':
+        specifier: ^7.6.6
+        version: 7.6.12(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: ^18.2.43
         version: 18.2.51
@@ -2326,7 +2347,7 @@ packages:
       '@altinn/figma-design-tokens': 6.0.1
       '@digdir/design-system-tokens': 0.12.0
       '@floating-ui/react': 0.26.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.17.3
+      '@navikt/aksel-icons': 5.18.0
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
       '@tanstack/react-virtual': 3.0.2(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -3280,8 +3301,8 @@ packages:
       strict-event-emitter: 0.5.1
     dev: true
 
-  /@navikt/aksel-icons@5.17.3:
-    resolution: {integrity: sha512-brmC707F9xx/ZEt8AltobF1/JtkNZwF0cFpKxv0LLfYStuzlU6Q8j8+C40xFwfHu4p9ZNzoBw5IDrbjJqHtpQA==}
+  /@navikt/aksel-icons@5.18.0:
+    resolution: {integrity: sha512-upFPrvJLz0PbgDMqbUa/U2pj8hjUpEE+frw+3KwCvpwC8/N0yfAaK1iqBxfPw5tn8dSJ+M1UJAdDvnMnb9pNBw==}
     dev: false
 
   /@ndelangen/get-tarball@3.0.9:
@@ -7475,6 +7496,10 @@ packages:
 
   /cjs-module-lexer@1.2.3:
     resolution: {integrity: sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==}
+    dev: false
+
+  /classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
     dev: false
 
   /clean-css@5.3.3:

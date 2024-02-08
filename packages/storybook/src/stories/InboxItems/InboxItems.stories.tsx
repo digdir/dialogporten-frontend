@@ -1,50 +1,70 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { SealIcon, StarIcon } from "@navikt/aksel-icons";
 
 import { InboxItems } from "../../../../frontend-design-poc/src/components/InboxItems";
 import { InboxItem } from "../../../../frontend-design-poc/src/components/InboxItem";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/InboxItem",
+  title: "Example/InboxItems",
   component: InboxItems,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: "centered",
-  }, // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ["autodocs"], // More on argTypes: https://storybook.js.org/docs/api/argtypes
+  tags: ["autodocs"],
 } satisfies Meta<typeof InboxItems>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const simpleExample: Story = {
-  args: {
-    children: [
+const SimpleExampleWithState = () => {
+  const [isCheckedFirst, setIsCheckedFirst] = useState(false);
+  const [isCheckedSecond, setIsCheckedSecond] = useState(false);
+  const [isCheckedThird, setIsCheckedThird] = useState(false);
+
+  return (
+    <InboxItems>
       <InboxItem
-        title="Tittel"
+        title="Har du glemt oss?"
         description="Beskrivelse"
-        sender={{
-          label: "Avsender",
-        }}
-        receiver={{
-          label: "Mottaker",
-        }}
+        sender={{ label: "DigDir", icon: <StarIcon /> }}
+        receiver={{ label: "Per Person" }}
         toLabel="til"
-        tags={[{ label: "hello" }, { label: "hallaz" }]}
-      />,
+        tags={[
+          { icon: <StarIcon />, label: "hello" },
+          { icon: <StarIcon />, label: "hallaz" },
+        ]}
+        checkboxValue="value1"
+        isChecked={isCheckedFirst}
+        onCheckedChange={() => setIsCheckedFirst(!isCheckedFirst)}
+      />
       <InboxItem
-        title="Tittel"
-        description="Beskrivelse"
-        sender={{
-          label: "Avsender",
-        }}
-        receiver={{
-          label: "Mottaker",
-        }}
+        title="Aksjeoppgaven for 2022"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin, nisi vitae auctor accumsan, odio ipsum efficitur nulla, eu tempus sem leo et felis. Curabitur vel varius tortor. Proin semper in nisl eget venenatis. Vestibulum egestas urna id sapien iaculis, id consequat ante varius. Vestibulum vel facilisis nulla. Aenean vitae orci est. Nulla at sagittis mauris. Vestibulum nisl nibh, pulvinar non odio quis, fermentum aliquet tortor. Mauris imperdiet ante lacus. Sed pretium, lorem sed ornare vehicula, neque diam dictum massa, et aliquam lectus metus sit amet nunc. Aliquam erat volutpat. Aliquam ac massa mauris"
+        sender={{ label: "DigDir" }}
+        receiver={{ label: "Per Person" }}
         toLabel="til"
-        tags={[{ label: "hello" }, { label: "hallaz" }]}
-      />,
-    ],
-  },
+        tags={[
+          { label: "hello", icon: <StarIcon /> },
+          { label: "halla", icon: <SealIcon /> },
+        ]}
+        checkboxValue="value2"
+        isChecked={isCheckedSecond}
+        onCheckedChange={() => setIsCheckedSecond(!isCheckedSecond)}
+      />
+      <InboxItem
+        title="Aksjeoppgaven for 2021"
+        description="Integer lacinia ornare ex id consequat. Vivamus condimentum ex vitae elit dignissim convallis. Vivamus nec velit lacus. Vestibulum pharetra pharetra nibh vitae auctor."
+        sender={{ label: "DigDir" }}
+        receiver={{ label: "Per Person" }}
+        toLabel="til"
+        tags={[
+          { label: "hello", icon: <StarIcon /> },
+          { label: "hellu", icon: <SealIcon /> },
+        ]}
+        checkboxValue="value2"
+        isChecked={isCheckedThird}
+        onCheckedChange={() => setIsCheckedThird(!isCheckedThird)}
+      />
+    </InboxItems>
+  );
 };
+
+export const simpleDesktopExample : Story = () => <SimpleExampleWithState />;
