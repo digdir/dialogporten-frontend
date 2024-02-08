@@ -26,7 +26,7 @@
     "reflect-metadata": "^0.1.13",
     "swagger-autogen": "^2.23.5",
     "swagger-ui-express": "^5.0.0",
-    "typeorm": "0.3.19",
+    "typeorm": "0.3.20",
     "util": "^0.12.5",
     "zod": "^3.22.2"
   },
