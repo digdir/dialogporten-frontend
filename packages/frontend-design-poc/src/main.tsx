@@ -5,7 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n/";
 
 import App from "./App.tsx";
-
 async function enableMocking() {
   if (import.meta.env.MODE === "development") {
     const { worker } = await import("./mocks/browser");

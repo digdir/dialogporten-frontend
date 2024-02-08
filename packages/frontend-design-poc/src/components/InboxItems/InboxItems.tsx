@@ -1,6 +1,6 @@
 import styles from "./inboxItems.module.css";
 
-interface InboxItemsProps {
+export interface InboxItemsProps {
   children: React.ReactNode;
 }
 

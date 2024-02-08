@@ -1,3 +1,6 @@
+import { Checkbox } from "@digdir/design-system-react";
+import classNames from "classnames";
+
 import styles from "./inboxItem.module.css";
 
 interface Participant {
@@ -12,12 +15,15 @@ interface InboxItemTag {
 }
 
 interface InboxItemProps {
+  checkboxValue: string;
   title: string;
   toLabel: string;
   description: string;
   sender: Participant;
   receiver: Participant;
   tags?: InboxItemTag[];
+  isChecked: boolean;
+  onCheckedChange: (value: boolean) => void;
 }
 
 export const InboxItem = ({
@@ -27,30 +33,51 @@ export const InboxItem = ({
   receiver,
   toLabel,
   tags,
+  isChecked,
+  onCheckedChange,
+  checkboxValue,
 }: InboxItemProps) => {
   return (
-    <div className={styles.inboxItem}>
-      <div>{title}</div>
-      <div>{description}</div>
-      <div className="participants">
-        <div>
-          <div>{sender.icon}</div>
-          <div>{sender.label}</div>
-        </div>
-        <span>{toLabel}</span>
-        <div>
-          <div>{receiver.icon}</div>
-          <div>{receiver.label}</div>
-        </div>
-      </div>
-      <div>
-        {tags?.map((tag) => (
-          <div>
-            {tag.icon}
-            {tag.label}
+    <div
+      className={classNames(styles.inboxItemWrapper, {
+        [styles.active]: isChecked,
+      })}
+      aria-selected={isChecked ? "true" : "false"}
+      tabIndex={0}
+    >
+      <section className={styles.inboxItem}>
+        <header className={styles.header}>
+          <h2 className={styles.title}>{title}</h2>
+          <Checkbox
+            checked={isChecked}
+            value={checkboxValue}
+            onChange={(e) => onCheckedChange(e.target.checked)}
+            size="small"
+          />
+        </header>
+        <div className={styles.participants}>
+          <div className={styles.sender}>
+            {sender.icon && <div className={styles.icon}>{sender.icon}</div>}
+            <span>{sender.label}</span>
           </div>
-        ))}
-      </div>
+          <span>{toLabel}</span>
+          <div className={styles.receiver}>
+            {receiver.icon && (
+              <div className={styles.icon}>{receiver.icon}</div>
+            )}
+            <span>{receiver.label}</span>
+          </div>
+        </div>
+        <p className={styles.description}>{description}</p>
+        <div className={styles.tags}>
+          {tags?.map((tag) => (
+            <div key={tag.label} className={styles.tag}>
+              {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
+              <span> {tag.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
