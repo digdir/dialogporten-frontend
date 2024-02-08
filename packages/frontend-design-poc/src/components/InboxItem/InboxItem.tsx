@@ -21,9 +21,10 @@ interface InboxItemProps {
   description: string;
   sender: Participant;
   receiver: Participant;
-  tags?: InboxItemTag[];
   isChecked: boolean;
   onCheckedChange: (value: boolean) => void;
+  tags?: InboxItemTag[];
+  isUnread?: boolean;
 }
 
 export const InboxItem = ({
@@ -32,15 +33,17 @@ export const InboxItem = ({
   sender,
   receiver,
   toLabel,
-  tags,
+  tags = [],
   isChecked,
   onCheckedChange,
   checkboxValue,
+  isUnread = false,
 }: InboxItemProps) => {
   return (
     <div
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
+        [styles.isUnread]: isUnread,
       })}
       aria-selected={isChecked ? "true" : "false"}
       tabIndex={0}
@@ -70,7 +73,7 @@ export const InboxItem = ({
         </div>
         <p className={styles.description}>{description}</p>
         <div className={styles.tags}>
-          {tags?.map((tag) => (
+          {tags.map((tag) => (
             <div key={tag.label} className={styles.tag}>
               {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
               <span> {tag.label}</span>

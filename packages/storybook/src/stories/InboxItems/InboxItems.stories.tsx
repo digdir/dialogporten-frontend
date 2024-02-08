@@ -21,7 +21,7 @@ const SimpleExampleWithState = () => {
     <InboxItems>
       <InboxItem
         title="Har du glemt oss?"
-        description="Beskrivelse"
+        description="Eksempel på en beskrivelse av en ulest melding"
         sender={{ label: "DigDir", icon: <StarIcon /> }}
         receiver={{ label: "Per Person" }}
         toLabel="til"
@@ -32,6 +32,7 @@ const SimpleExampleWithState = () => {
         checkboxValue="value1"
         isChecked={isCheckedFirst}
         onCheckedChange={() => setIsCheckedFirst(!isCheckedFirst)}
+        isUnread
       />
       <InboxItem
         title="Aksjeoppgaven for 2022"
