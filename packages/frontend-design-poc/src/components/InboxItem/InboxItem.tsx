@@ -3,6 +3,30 @@ import classNames from "classnames";
 
 import styles from "./inboxItem.module.css";
 
+interface Participant {
+  label: string;
+  icon?: JSX.Element;
+}
+
+interface InboxItemTag {
+  label: string;
+  icon?: JSX.Element;
+  className?: string;
+}
+
+interface InboxItemProps {
+  checkboxValue: string;
+  title: string;
+  toLabel: string;
+  description: string;
+  sender: Participant;
+  receiver: Participant;
+  isChecked: boolean;
+  onCheckedChange: (value: boolean) => void;
+  tags?: InboxItemTag[];
+  isUnread?: boolean;
+}
+
 /**
  * Represents an individual inbox item, displaying information such as the title,
  * description, sender, and receiver, along with optional tags. It includes a checkbox
@@ -37,32 +61,6 @@ import styles from "./inboxItem.module.css";
  *   isUnread
  * />
  */
-
-
-interface Participant {
-  label: string;
-  icon?: JSX.Element;
-}
-
-interface InboxItemTag {
-  label: string;
-  icon?: JSX.Element;
-  className?: string;
-}
-
-interface InboxItemProps {
-  checkboxValue: string;
-  title: string;
-  toLabel: string;
-  description: string;
-  sender: Participant;
-  receiver: Participant;
-  isChecked: boolean;
-  onCheckedChange: (value: boolean) => void;
-  tags?: InboxItemTag[];
-  isUnread?: boolean;
-}
-
 export const InboxItem = ({
   title,
   description,

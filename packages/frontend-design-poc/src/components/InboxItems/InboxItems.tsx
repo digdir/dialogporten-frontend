@@ -1,5 +1,9 @@
 import styles from "./inboxItems.module.css";
 
+export interface InboxItemsProps {
+  children: React.ReactNode;
+}
+
 /**
  * A container component for displaying a list of inbox items. It serves as a wrapper
  * for individual `InboxItem` components, ensuring they are styled and organized collectively.
@@ -19,11 +23,6 @@ import styles from "./inboxItems.module.css";
  *   <InboxItem {...inboxItemProps3} />
  * </InboxItems>
  */
-
-
-export interface InboxItemsProps {
-  children: React.ReactNode;
-}
 
 export const InboxItems = ({ children }: InboxItemsProps) => {
   return <div className={styles.inboxItems}>{children}</div>;
