@@ -1,3 +1,5 @@
 {
-  "example.hello": "Hei, {person}"
+  "example.hello": "Hei, {person}",
+  "example.your_inbox": "Din innboks",
+  "word.to": "til"
 }

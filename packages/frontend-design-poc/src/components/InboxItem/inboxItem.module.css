@@ -1,0 +1,81 @@
+.inboxItemWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.10);
+}
+
+.active {
+    outline: 2px solid #00315D;
+    background: #EFF5FD;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.inboxItem {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1.0625em 1.0625em;
+    border-left: 4px solid rgba(0, 0, 0, 0.10);
+}
+
+.isUnread {
+    border-left: 4px solid #118849;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    color: #000;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
+    padding-bottom: 0.375em;
+}
+
+.participants {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.receiver, .sender {
+    display: flex;
+    align-items: center;
+}
+
+.sender {
+    font-weight: 500;
+}
+
+.icon {
+    margin-right: 0.375em;
+    height: 18px;
+    width: 18px;
+    flex-shrink: 0;
+}
+
+.description {
+    color: #000;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+
+.tags {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    margin-right: 1em;
+    font-weight: 400;
+}
+
+
