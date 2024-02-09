@@ -2,8 +2,7 @@ import { useState } from "react";
 import type { Meta } from "@storybook/react";
 import { SealIcon, StarIcon, CalendarIcon } from "@navikt/aksel-icons";
 
-import { InboxItems } from "../../../../frontend-design-poc/src/components/InboxItems";
-import { InboxItem } from "../../../../frontend-design-poc/src/components/InboxItem";
+import { InboxItems, InboxItem } from "../../../../frontend-design-poc/src/components/InboxItem";
 
 const meta = {
   title: "Example/InboxItems",

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PersonIcon, PersonSuitIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
-import { InboxItems } from "../../components/InboxItems";
-import { InboxItem } from "../../components/InboxItem";
+import { InboxItems, InboxItem } from "../../components/InboxItem";
 
 export const Inbox = () => {
   const { t } = useTranslation();
