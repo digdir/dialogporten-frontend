@@ -47,6 +47,10 @@
     align-items: center;
 }
 
+.sender {
+    font-weight: 500;
+}
+
 .icon {
     margin-right: 0.375em;
     height: 18px;
