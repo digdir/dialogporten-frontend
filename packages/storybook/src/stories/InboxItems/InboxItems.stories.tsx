@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta } from "@storybook/react";
-import { SealIcon, StarIcon } from "@navikt/aksel-icons";
+import { SealIcon, StarIcon, CalendarIcon } from "@navikt/aksel-icons";
 
 import { InboxItems } from "../../../../frontend-design-poc/src/components/InboxItems";
 import { InboxItem } from "../../../../frontend-design-poc/src/components/InboxItem";
@@ -26,8 +26,8 @@ const SimpleExampleWithState = () => {
         receiver={{ label: "Per Person" }}
         toLabel="til"
         tags={[
-          { icon: <StarIcon />, label: "hello" },
-          { icon: <StarIcon />, label: "hallaz" },
+          { label: "19.01.2024", icon: <CalendarIcon /> },
+          { label: "Viktig!", icon: <SealIcon /> },
         ]}
         checkboxValue="value1"
         isChecked={isCheckedFirst}
@@ -41,8 +41,8 @@ const SimpleExampleWithState = () => {
         receiver={{ label: "Per Person" }}
         toLabel="til"
         tags={[
-          { label: "hello", icon: <StarIcon /> },
-          { label: "halla", icon: <SealIcon /> },
+          { label: "16.01.2024", icon: <CalendarIcon /> },
+          { label: "Viktig!", icon: <SealIcon /> },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedSecond}
@@ -55,8 +55,8 @@ const SimpleExampleWithState = () => {
         receiver={{ label: "Per Person" }}
         toLabel="til"
         tags={[
-          { label: "hello", icon: <StarIcon /> },
-          { label: "hellu", icon: <SealIcon /> },
+          { label: "12.01.2024", icon: <CalendarIcon /> },
+          { label: "Viktig!", icon: <SealIcon /> },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedThird}
