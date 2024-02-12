@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build": "storybook build",
+    "start:storybook": "storybook dev -p 6006",
+    "build:storybook": "storybook build",
+    "build:docker": "docker build -f ./Dockerfile -t storybook ../..",
+    "run:docker": "docker run -it -p 80:80 storybook"
   },
   "dependencies": {
     "@digdir/design-system-react": "^0.47.0",

@@ -15,7 +15,10 @@
 		"typecheck": {
 			"outputs": [],
 			"cache": false
+		},
+		"build:docker": {
+			"outputs": [],
+			"cache": false
 		}
-
 	}
 }

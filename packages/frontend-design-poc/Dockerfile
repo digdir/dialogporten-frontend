@@ -7,12 +7,12 @@ WORKDIR /app
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm --filter bff-frontend-poc run build
+RUN pnpm --filter frontend-design-poc run build
 
 # ---
 
 FROM nginx:1.25-alpine
-COPY --from=build /app/packages/bff-frontend-poc/dist/ /usr/share/nginx/html/
+COPY --from=build /app/packages/frontend-design-poc/dist/ /usr/share/nginx/html/
 
 EXPOSE 80
 

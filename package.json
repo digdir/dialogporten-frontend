@@ -1,6 +1,5 @@
 {
   "private": true,
-  "scripts": {},
   "devDependencies": {
     "turbo": "1.12.2",
     "@biomejs/biome": "1.5.3"

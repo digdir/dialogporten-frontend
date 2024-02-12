@@ -43,7 +43,9 @@
     "typeorm:revert": "npm run typeorm migration:revert",
     "dev2": "nodemon --watch 'src/**/*.ts' --exec 'tsc && node dist/app.js'",
     "dev3": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon --watch 'src/**/*.ts'\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon --watch 'src/**/*.ts'\"",
+    "build:docker": "docker build -f ./Dockerfile -t bff ../..",
+    "run:docker": "docker run -it -p 80:80 bff"
   },
   "devDependencies": {
     "@azure/keyvault-secrets": "^4.7.0",
