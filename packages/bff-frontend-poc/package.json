@@ -14,7 +14,9 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit -w",
     "lint": "",
-    "lint:fix": ""
+    "lint:fix": "",
+    "build:docker": "docker build -f ./Dockerfile -t bff-frontend-poc ../..",
+    "run:docker": "docker run -it -p 80:80 bff-frontend-poc"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",

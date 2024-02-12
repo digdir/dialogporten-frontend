@@ -7,13 +7,14 @@ WORKDIR /app
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm --filter bff-frontend-poc run build
+RUN pnpm --filter storybook run build
 
 # ---
 
 FROM nginx:1.25-alpine
-COPY --from=build /app/packages/bff-frontend-poc/dist/ /usr/share/nginx/html/
+COPY --from=build /app/packages/storybook/storybook-static/ /usr/share/nginx/html/
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
