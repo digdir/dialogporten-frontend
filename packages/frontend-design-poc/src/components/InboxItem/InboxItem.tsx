@@ -1,4 +1,5 @@
 import { Checkbox } from "@digdir/design-system-react";
+import { Link } from "react-router-dom";
 import classNames from "classnames";
 
 import styles from "./inboxItem.module.css";
@@ -21,10 +22,11 @@ interface InboxItemProps {
   description: string;
   sender: Participant;
   receiver: Participant;
-  isChecked: boolean;
-  onCheckedChange: (value: boolean) => void;
+  isChecked?: boolean;
+  onCheckedChange?: (value: boolean) => void;
   tags?: InboxItemTag[];
   isUnread?: boolean;
+  linkTo?: string;
 }
 
 /**
@@ -45,6 +47,7 @@ interface InboxItemProps {
  * @param {function(boolean): void} props.onCheckedChange - Callback function triggered when the checkbox value changes.
  * @param {InboxItemTag[]} [props.tags=[]] - Optional array of tags associated with the inbox item, each with a label, optional icon, and optional className.
  * @param {boolean} [props.isUnread=false] - Whether the inbox item should be styled to indicate it is unread.
+ * @param {string} [props.linkTo=undefined] - When provided a href it renders a link as title for navigation.
  * @returns {JSX.Element} The InboxItem component.
  *
  * @example
@@ -68,13 +71,14 @@ export const InboxItem = ({
   receiver,
   toLabel,
   tags = [],
-  isChecked,
+  isChecked = false,
   onCheckedChange,
   checkboxValue,
   isUnread = false,
-}: InboxItemProps) => {
+  linkTo,
+}: InboxItemProps): JSX.Element => {
   return (
-    <div
+    <li
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
         [styles.isUnread]: isUnread,
@@ -84,25 +88,27 @@ export const InboxItem = ({
     >
       <section className={styles.inboxItem}>
         <header className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
-          <Checkbox
-            checked={isChecked}
-            value={checkboxValue}
-            onChange={(e) => onCheckedChange(e.target.checked)}
-            size="small"
-          />
+          <h2 className={styles.title}>
+            {linkTo ? <Link to={linkTo}>{title}</Link> : title}
+          </h2>
+          {onCheckedChange && (
+            <Checkbox
+              checked={isChecked}
+              value={checkboxValue}
+              onChange={(e) => onCheckedChange?.(e.target.checked)}
+              size="small"
+            />
+          )}
         </header>
         <div className={styles.participants}>
           <div className={styles.sender}>
-            {sender.icon && <div className={styles.icon}>{sender.icon}</div>}
-            <span>{sender.label}</span>
+            {sender?.icon && <div className={styles.icon}>{sender.icon}</div>}
+            <span>{sender?.label}</span>
           </div>
           <span>{toLabel}</span>
           <div className={styles.receiver}>
-            {receiver.icon && (
-              <div className={styles.icon}>{receiver.icon}</div>
-            )}
-            <span>{receiver.label}</span>
+            {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
+            <span>{receiver?.label}</span>
           </div>
         </div>
         <p className={styles.description}>{description}</p>
@@ -115,6 +121,6 @@ export const InboxItem = ({
           ))}
         </div>
       </section>
-    </div>
+    </li>
   );
 };

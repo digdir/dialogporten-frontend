@@ -9,7 +9,7 @@ export const Inbox = () => {
   const [isChecked2, setIsChecked2] = useState<boolean>(false);
 
   return (
-    <article>
+    <section>
       <h1>{t('example.your_inbox')}</h1>
       <InboxItems>
         <InboxItem
@@ -27,6 +27,7 @@ export const Inbox = () => {
             { label: "hello", icon: <StarIcon /> },
             { label: "hallaz", icon: <SealIcon /> },
           ]}
+          linkTo="/inbox/1"
         />
         <InboxItem
           checkboxValue="test2"
@@ -43,8 +44,9 @@ export const Inbox = () => {
             { label: "hello", icon: <StarIcon /> },
             { label: "hallaz", icon: <SealIcon /> },
           ]}
+          linkTo="/inbox/2"
         />
       </InboxItems>
-    </article>
+    </section>
   );
 };
