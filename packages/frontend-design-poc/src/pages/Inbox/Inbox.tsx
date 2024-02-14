@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PersonIcon, PersonSuitIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
-import { InboxItems } from "../../components/InboxItems";
-import { InboxItem } from "../../components/InboxItem";
+import { InboxItems, InboxItem } from "../../components/InboxItem";
 
 export const Inbox = () => {
   const { t } = useTranslation();
@@ -10,7 +9,7 @@ export const Inbox = () => {
   const [isChecked2, setIsChecked2] = useState<boolean>(false);
 
   return (
-    <article>
+    <section>
       <h1>{t('example.your_inbox')}</h1>
       <InboxItems>
         <InboxItem
@@ -28,6 +27,7 @@ export const Inbox = () => {
             { label: "hello", icon: <StarIcon /> },
             { label: "hallaz", icon: <SealIcon /> },
           ]}
+          linkTo="/inbox/1"
         />
         <InboxItem
           checkboxValue="test2"
@@ -44,8 +44,9 @@ export const Inbox = () => {
             { label: "hello", icon: <StarIcon /> },
             { label: "hallaz", icon: <SealIcon /> },
           ]}
+          linkTo="/inbox/2"
         />
       </InboxItems>
-    </article>
+    </section>
   );
 };

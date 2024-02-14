@@ -1,0 +1,127 @@
+.inboxItemDetail {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1.0625em 1.0625em;
+}
+
+.descriptionContainer {
+    padding: 0 1.0625em 1.0625em;
+    border-left: 4px solid rgba(0, 0, 0, 0.10);
+    margin-top: 1rem;
+}
+
+.header {
+    display: flex;
+    font-size: 1.5rem;
+    align-items: center;
+}
+
+.title {
+    color: #000;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+
+.icon {
+    margin-right: 0.375em;
+    height: 18px;
+    width: 18px;
+    flex-shrink: 0;
+}
+
+.participants {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.receiver, .sender {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.sender {
+    font-weight: 500;
+}
+
+.description {
+    color: #000;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.icon {
+    margin-right: 0.5em;
+    height: 36px;
+    width: 36px;
+    flex-shrink: 0;
+    > svg {
+        min-width: 100%;
+        min-height: 100%;
+    }
+}
+
+.tags {
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    margin-right: 1em;
+    font-weight: 400;
+}
+
+.tagIcon {
+    margin-right: 0.5em;
+    height: 20px;
+    width: 20px;
+    flex-shrink: 0;
+    > svg {
+        min-width: 100%;
+        min-height: 100%;
+    }
+}
+
+.attachments {
+    width: 100%;
+    padding: 1.5em;
+    background: #E6EFF8;
+    margin: 1.5em 0;
+
+    > ul {
+        list-style: none;
+        padding: 0;
+        margin: 1.5em;
+    }
+}
+
+.attachmentItem {
+    list-style-type: none;
+    margin: 0;
+    line-height: 2;
+
+    > a {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.attachmentItemIcon {
+    height: 24px;
+    width: 24px;
+    margin-right: 1em;
+}
+
+.attachmentTitle {
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+}

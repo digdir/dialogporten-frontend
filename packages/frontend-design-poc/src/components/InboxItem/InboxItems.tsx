@@ -25,5 +25,5 @@ export interface InboxItemsProps {
  */
 
 export const InboxItems = ({ children }: InboxItemsProps) => {
-  return <div className={styles.inboxItems}>{children}</div>;
+  return <ul className={styles.inboxItems}>{children}</ul>;
 };
