@@ -1,3 +1,4 @@
 .itemInboxPage {
     display: flex;
+    flex-direction: column;
 }

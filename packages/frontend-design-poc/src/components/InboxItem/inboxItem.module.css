@@ -8,6 +8,15 @@
     list-style-type: none;
 }
 
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.hoverable:hover {
+    outline: 2px solid #000;
+}
+
 .active {
     outline: 2px solid #00315D;
     background: #EFF5FD;

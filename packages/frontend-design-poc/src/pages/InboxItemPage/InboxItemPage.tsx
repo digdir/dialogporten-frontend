@@ -6,8 +6,9 @@ import {
 } from "@navikt/aksel-icons";
 import { InboxItemDetail } from "../../components/InboxItem";
 import { useTranslation } from "react-i18next";
+import { BackButton } from "../../components/BackButton";
 
-// This could e.g. be the output of a react-markdown conversion
+// This could e.g. be the output of a react-markdown conversion and contain basic HTML elements
 const ExampleDescription = () => {
   return (
     <section>
@@ -39,13 +40,16 @@ export const InboxItemPage = () => {
   const { t } = useTranslation();
   const docs = [
     {
-      label: "Viktig dokument.pdf",
+      label: "Betalingspåminnelse.pdf",
       href: "/path/to/important/doc",
     },
     { label: "Retningslinjer for straff.pdf", href: "/path/to/some/doc" },
   ];
   return (
     <section className={styles.itemInboxPage}>
+      <nav>
+        <BackButton pathTo="/inbox/" />
+      </nav>
       <InboxItemDetail
         checkboxValue="test"
         title="Viktig melding"

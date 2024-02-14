@@ -2,5 +2,6 @@
   "example.hello": "Hei, {person}",
   "example.your_inbox": "Din innboks",
   "inbox.attachment.count": "{count, plural, =0 {Ingen vedlegg} one {# vedlegg} other {# vedlegg}}",
+  "word.back": "Tilbake",
   "word.to": "til"
 }

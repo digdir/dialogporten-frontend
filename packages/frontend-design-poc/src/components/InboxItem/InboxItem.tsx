@@ -29,6 +29,19 @@ interface InboxItemProps {
   linkTo?: string;
 }
 
+export const OptionalLinkContent = ({
+  children,
+  linkTo,
+}: {
+  children: React.ReactNode;
+  linkTo: string | undefined;
+}) => {
+  if (linkTo) {
+    return <Link to={linkTo} className={styles.link}>{children}</Link>;
+  }
+  return children;
+};
+
 /**
  * Represents an individual inbox item, displaying information such as the title,
  * description, sender, and receiver, along with optional tags. It includes a checkbox
@@ -82,45 +95,55 @@ export const InboxItem = ({
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
         [styles.isUnread]: isUnread,
+        [styles.hoverable]: linkTo
       })}
       aria-selected={isChecked ? "true" : "false"}
       tabIndex={0}
     >
-      <section className={styles.inboxItem}>
-        <header className={styles.header}>
-          <h2 className={styles.title}>
-            {linkTo ? <Link to={linkTo}>{title}</Link> : title}
-          </h2>
-          {onCheckedChange && (
-            <Checkbox
-              checked={isChecked}
-              value={checkboxValue}
-              onChange={(e) => onCheckedChange?.(e.target.checked)}
-              size="small"
-            />
-          )}
-        </header>
-        <div className={styles.participants}>
-          <div className={styles.sender}>
-            {sender?.icon && <div className={styles.icon}>{sender.icon}</div>}
-            <span>{sender?.label}</span>
-          </div>
-          <span>{toLabel}</span>
-          <div className={styles.receiver}>
-            {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
-            <span>{receiver?.label}</span>
-          </div>
-        </div>
-        <p className={styles.description}>{description}</p>
-        <div className={styles.tags}>
-          {tags.map((tag) => (
-            <div key={tag.label} className={styles.tag}>
-              {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
-              <span> {tag.label}</span>
+      <OptionalLinkContent linkTo={linkTo}>
+        <section className={styles.inboxItem}>
+          <header className={styles.header}>
+            <h2 className={styles.title}>{title}</h2>
+            {onCheckedChange && (
+              <Checkbox
+                checked={isChecked}
+                value={checkboxValue}
+                onClick={(e) => {
+                  if (e.currentTarget === e.target) {
+                    e.stopPropagation();
+                  }
+                }}
+                onChange={(e) => {
+                  onCheckedChange?.(e.target.checked);
+                }}
+                size="small"
+              />
+            )}
+          </header>
+          <div className={styles.participants}>
+            <div className={styles.sender}>
+              {sender?.icon && <div className={styles.icon}>{sender.icon}</div>}
+              <span>{sender?.label}</span>
             </div>
-          ))}
-        </div>
-      </section>
+            <span>{toLabel}</span>
+            <div className={styles.receiver}>
+              {receiver?.icon && (
+                <div className={styles.icon}>{receiver.icon}</div>
+              )}
+              <span>{receiver?.label}</span>
+            </div>
+          </div>
+          <p className={styles.description}>{description}</p>
+          <div className={styles.tags}>
+            {tags.map((tag) => (
+              <div key={tag.label} className={styles.tag}>
+                {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
+                <span> {tag.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </OptionalLinkContent>
     </li>
   );
 };
