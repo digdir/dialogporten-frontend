@@ -1,1 +1,1 @@
-export { Header, type HeaderProps } from './Header.tsx'
+export { Header } from './Header.tsx'

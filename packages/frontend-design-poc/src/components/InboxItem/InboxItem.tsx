@@ -15,7 +15,7 @@ interface InboxItemTag {
   className?: string;
 }
 
-export interface InboxItemProps {
+interface InboxItemProps {
   checkboxValue: string;
   title: string;
   toLabel: string;

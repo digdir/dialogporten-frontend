@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import styles from "./backButton.module.css";
 
-export interface BackButtonProps {
+interface BackButtonProps {
   pathTo: string;
 }
 
