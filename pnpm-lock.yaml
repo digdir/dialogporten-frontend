@@ -350,6 +350,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
+      frontend-design-poc:
+        specifier: workspace:*
+        version: link:../frontend-design-poc
       react:
         specifier: ^18.2.0
         version: 18.2.0

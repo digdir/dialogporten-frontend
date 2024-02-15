@@ -1,8 +1,7 @@
 import { useState } from "react";
 import type { Meta } from "@storybook/react";
 import { SealIcon, StarIcon, CalendarIcon } from "@navikt/aksel-icons";
-
-import { InboxItems, InboxItem } from "../../../../frontend-design-poc/src/components/InboxItem";
+import { InboxItems, InboxItem } from "frontend-design-poc";
 
 const meta = {
   title: "Example/InboxItems",
