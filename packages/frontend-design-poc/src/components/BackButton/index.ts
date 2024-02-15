@@ -1,1 +1,1 @@
-export { BackButton } from './BackButton.tsx'
+export { BackButton, type BackButtonProps } from './BackButton.tsx'

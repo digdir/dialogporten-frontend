@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 
 import styles from "./backButton.module.css";
 
-export function BackButton({ pathTo }: { pathTo: string }) {
+export interface BackButtonProps {
+  pathTo: string;
+}
+
+export function BackButton({ pathTo }: BackButtonProps) {
   const { t } = useTranslation();
   return (
     <Link to={pathTo} rel="noreferrer" className={styles.backLink}>
