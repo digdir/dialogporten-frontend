@@ -1,3 +1,3 @@
-export { InboxItem } from "./InboxItem.tsx";
-export { InboxItems } from "./InboxItems.tsx";
-export { InboxItemDetail } from './InboxItemDetail.tsx'
+export * from "./InboxItem.tsx";
+export * from "./InboxItems.tsx";
+export * from './InboxItemDetail.tsx'
