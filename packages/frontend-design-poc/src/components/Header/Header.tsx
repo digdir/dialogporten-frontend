@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Header.module.css';
+import styles from './header.module.css';
 import { Search } from '@digdir/design-system-react';
 import { AltinnLogo } from './AltinnLogo';
 import cx from 'classnames';

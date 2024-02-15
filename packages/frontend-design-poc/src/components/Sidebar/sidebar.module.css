@@ -1,0 +1,18 @@
+.sidebar {
+    width: calc(224px + 2em + 2em);
+    height: 100%;
+    background-color: #0000000D;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25em 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 100px;
+}
+
+.horizontalLine {
+    border: 0;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.25);
+    margin: 0.5em 2em;
+}
