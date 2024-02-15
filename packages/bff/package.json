@@ -1,6 +1,22 @@
 {
   "name": "bff",
   "main": "src/index.ts",
+	"private": true,
+	"scripts": {
+		"start": "ts-node src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeormold": "typeorm-ts-node-commonjs -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts",
+    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.local.ts",
+    "typeorm:migrate": "npm run typeorm migration:generate -- -n",
+    "migration:create": "node src/scripts/migration-create.js",
+    "typeorm:run": "typeorm-ts-node-commonjs migration:run -- -d src/data-source.ts",
+    "typeorm:revert": "npm run typeorm migration:revert",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon --watch 'src/**/*.ts'\"",
+    "build:docker": "docker build -f ./Dockerfile -t bff ../..",
+    "run:docker": "docker run -it -p 80:80 bff"
+  },
   "dependencies": {
     "@azure/app-configuration": "^1.4.1",
     "@azure/identity": "^4.0.0",
@@ -16,7 +32,6 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.6.1",
     "openid-client": "^5.6.1",
     "passport": "^0.6.0",
     "pg": "^8.11.3",
@@ -26,21 +41,6 @@
     "typeorm": "0.3.19",
     "util": "^0.12.5",
     "zod": "^3.22.2"
-  },
-  "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "typeorm": "typeorm-ts-node-commonjs",
-    "typeormold": "typeorm-ts-node-commonjs -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts",
-    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.local.ts",
-    "typeorm:migrate": "npm run typeorm migration:generate -- -n",
-    "migration:create": "node src/scripts/migration-create.js",
-    "typeorm:run": "typeorm-ts-node-commonjs migration:run -- -d src/data-source.ts",
-    "typeorm:revert": "npm run typeorm migration:revert",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon --watch 'src/**/*.ts'\"",
-    "build:docker": "docker build -f ./Dockerfile -t bff ../..",
-    "run:docker": "docker run -it -p 80:80 bff"
   },
   "devDependencies": {
     "@azure/keyvault-secrets": "^4.7.0",
