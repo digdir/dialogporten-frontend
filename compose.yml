@@ -1,0 +1,112 @@
+version: '3.8'
+
+include:
+  - path:
+    - ./oidc-mock/oidc-mock.compose.yml
+
+services:
+  reverse-proxy:
+    image: traefik:v2.3
+    command:
+      # Enables the Web UI
+      - "--api.dashboard=true"
+      # Enabling docker provider
+      - "--providers.docker"
+      # Do not expose containers unless explicitly told so
+      - "--providers.docker.exposedbydefault=false"
+    ports:
+      # Http
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.localhost`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "dave.relativeSubdomain=dashboard"
+      - "dave.icon=simple-icons:traefikproxy"
+
+  dave:
+    image: theknarf/dave
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dave.rule=Host(`localhost`)"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: dialogporten
+
+  pgadmin4:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
+      - "dave.relativeSubdomain=pgadmin4"
+      - "dave.icon=simple-icons:postgresql"
+
+  bff:
+    container_name: bff
+    build:
+      context: .
+      dockerfile: ./packages/bff/Dockerfile
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: mysecretpassword
+      DB_NAME: dialogporten
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bff.rule=Host(`bff.localhost`)"
+      - "dave.relativeSubdomain=bff"
+      - "dave.icon=fa-brands:node"
+    depends_on:
+      - db
+
+  bff-frontend-poc:
+    container_name: bff-frontend-poc
+    build:
+      context: .
+      dockerfile: ./packages/bff-frontend-poc/Dockerfile
+    environment:
+      NODE_ENV: development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bff-frontend-poc.rule=Host(`bff-frontend-poc.localhost`)"
+      - "dave.relativeSubdomain=bff-frontend-poc"
+      - "dave.icon=fluent-mdl2:react-logo"
+    depends_on:
+      - bff
+
+  frontend-design-poc:
+    container_name: frontend-design-poc
+    build:
+      context: .
+      dockerfile: ./packages/frontend-design-poc/Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend-design-poc.rule=Host(`frontend-design-poc.localhost`)"
+      - "dave.relativeSubdomain=frontend-design-poc"
+      - "dave.icon=fluent-mdl2:react-logo"
+
+  storybook:
+    container_name: storybook
+    build:
+      context: .
+      dockerfile: ./packages/storybook/Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storybook.rule=Host(`storybook.localhost`)"
+      - "dave.relativeSubdomain=storybook"
+      - "dave.icon=devicon-plain:storybook"
+
+

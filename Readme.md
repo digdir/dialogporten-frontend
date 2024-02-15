@@ -24,3 +24,9 @@ choco install -y fnm pnpm fzf
 ```
 
 And then installing OrbStack manually
+
+### Docker
+
+```
+docker compose up -d
+```
