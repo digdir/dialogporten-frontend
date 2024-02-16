@@ -13,6 +13,12 @@ build: ## Runs `pnpm turbo build`
 build-docker: ## Runs `pnpm turbo build:docker`
 	pnpm turbo build:docker
 
+compose-up: ## Runs `docker compose up -d`
+	docker compose up -d
+
+compose-down: ## Runs `docker compose down`
+	docker compose down
+
 # ---------------------
 # - Helper functions  -
 # ---------------------

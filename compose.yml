@@ -109,4 +109,15 @@ services:
       - "dave.relativeSubdomain=storybook"
       - "dave.icon=devicon-plain:storybook"
 
+  docs:
+    container_name: docs
+    build:
+      context: .
+      dockerfile: ./packages/docs/Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs.rule=Host(`docs.localhost`)"
+      - "dave.relativeSubdomain=docs"
+      - "dave.icon=simple-icons:docusaurus"
+
 
