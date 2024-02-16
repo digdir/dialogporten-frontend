@@ -8,17 +8,19 @@
 
 - Install pnpm.
 
+- Install fzf.
+
 On macOS using [Homebrew](https://brew.sh/) you can install dependencies by running:
 
 ```bash
-brew install fnm pnpm
+brew install fnm pnpm fzf
 brew install --cask OrbStack
 ```
 
 On Windows using [Chocolatey](https://chocolatey.org/) you can install dependencies by running:
 
 ```bash
-choco install -y fnm pnpm
+choco install -y fnm pnpm fzf
 ```
 
 And then installing OrbStack manually
