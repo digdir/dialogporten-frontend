@@ -14,10 +14,12 @@
     "@digdir/design-system-react": "^0.47.0",
     "@digdir/design-system-tokens": "^0.12.0",
     "@navikt/aksel-icons": "^5.18.0",
+    "frontend-design-poc": "workspace:*",
+    "i18next": "^23.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0",
-    "frontend-design-poc": "workspace:*"
+    "react-i18next": "^14.0.3",
+    "react-router-dom": "^6.16.0"
   },
   "resolutions": {
     "jackspeak": "2.1.1"
@@ -26,7 +28,6 @@
     "@storybook/addon-essentials": "^7.6.12",
     "@storybook/addon-interactions": "^7.6.12",
     "@storybook/addon-links": "^7.6.12",
-    "@storybook/addon-onboarding": "^1.0.11",
     "@storybook/blocks": "^7.6.12",
     "@storybook/manager-api": "^7.6.6",
     "@storybook/react": "^7.6.12",
@@ -38,6 +39,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "storybook": "^7.6.12",
     "storybook-addon-react-router-v6": "^2.0.10",
+    "storybook-react-i18next": "^2.0.10",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }

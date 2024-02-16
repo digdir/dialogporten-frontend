@@ -4,13 +4,18 @@ import { SealIcon, StarIcon, CalendarIcon } from "@navikt/aksel-icons";
 import { InboxItems, InboxItem } from "frontend-design-poc";
 
 const meta = {
-  title: "Example/InboxItems",
+  title: "components/InboxItem/InboxItems",
   component: InboxItems,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      source: { language: 'tsx' },
+    },
+  },
 } satisfies Meta<typeof InboxItems>;
 
 export default meta;
-const SimpleExampleWithState = () => {
+export const SimpleDesktopExample = () => {
   const [isCheckedFirst, setIsCheckedFirst] = useState(false);
   const [isCheckedSecond, setIsCheckedSecond] = useState(false);
   const [isCheckedThird, setIsCheckedThird] = useState(false);
@@ -63,7 +68,3 @@ const SimpleExampleWithState = () => {
     </InboxItems>
   );
 };
-
-export const simpleDesktopExample: () => JSX.Element = () => (
-  <SimpleExampleWithState />
-);
