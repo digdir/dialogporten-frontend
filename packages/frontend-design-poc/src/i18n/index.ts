@@ -1,2 +1,1 @@
-import nbResources from './resources/nb.json'
-export { nbResources }
+export { default as nbResources } from './resources/nb.json';
