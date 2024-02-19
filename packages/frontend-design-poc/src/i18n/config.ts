@@ -1,6 +1,10 @@
+import i18n from "i18next";
+import ICU from "i18next-icu";
+import { initReactI18next } from "react-i18next";
+
 import nb from "./resources/nb.json";
 
-export const i18nInitConfig = {
+const i18nInitConfig = {
   resources: {
     nb: { translation: nb },
   },
@@ -11,3 +15,5 @@ export const i18nInitConfig = {
     escapeValue: false,
   },
 };
+
+i18n.use(ICU).use(initReactI18next).init(i18nInitConfig);
