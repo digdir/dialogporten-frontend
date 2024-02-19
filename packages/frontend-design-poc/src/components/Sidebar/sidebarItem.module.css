@@ -1,0 +1,93 @@
+.sidebarItem {
+    margin: 0.5em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebarItem.isButton {
+    background-color: white;
+    border-radius: 22px;
+    padding-bottom: 4px;
+}
+
+.sidebarItem.isButton.isCompany {
+    border-radius: 4px;
+}
+
+.iconAndText {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.75em;
+    height: 2.75em;
+    border-radius: 50%;
+    color: black;
+    align-items: center;
+}
+
+.icon.isPrimary {
+    background-color: white;
+}
+
+.icon.isInbox {
+    background-color: #118849;
+    color: white;
+}
+
+.isInbox.isCompany {
+    background-color: #008FD6;
+}
+
+.icon.isCompany {
+    border-radius: 4px;
+}
+
+.icon svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.displayText {
+    font-size: 1.25rem;
+}
+
+.counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.05);
+    ;
+    margin-right: 8px;
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1rem;
+}
+
+
+.redCounter {
+    background-color: var(--Action-Important, #E02E49);
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
