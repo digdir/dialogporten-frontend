@@ -7,7 +7,7 @@ export type SidebarItemProps = {
 	label: string;
 	icon: JSX.Element;
 	count?: number;
-	url: string;
+	path: string;
 	isInbox?: boolean;
 	isButton?: boolean;
 	isCompany?: boolean;
@@ -24,7 +24,7 @@ export type SidebarItemProps = {
  * @param {string} props.label - The accessible label for the sidebar item, used by screen readers.
  * @param {JSX.Element} props.icon - The icon to display next to the sidebar item text.
  * @param {number} [props.count] - Optional count to display as a badge, indicating the number of items or notifications.
- * @param {string} props.url - The URL that the sidebar item links to.
+ * @param {string} props.path - The URL that the sidebar item links to.
  * @param {boolean} [props.isInbox=false] - Flag indicating whether the item is an inbox item, which may change styling.
  * @param {boolean} [props.isButton=false] - Flag indicating whether the item should behave as a button, including keyboard interaction.
  * @param {boolean} [props.isCompany=false] - Flag indicating whether the item should use company design or not.
@@ -37,7 +37,7 @@ export type SidebarItemProps = {
  *   label="Gå til innboks"
  *   icon={<InboxFillIcon />}
  *   count={3}
- *   url="/innboks"
+ *   path="/innboks"
  *   isInbox
  * />
  *
@@ -47,7 +47,7 @@ export type SidebarItemProps = {
  *   label="Gå til sendte elementer"
  *   icon={<FileCheckmarkIcon />}
  *   count={5}
- *   url="/sendt"
+ *   path="/sendt"
  * />
  */
 
@@ -56,7 +56,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
 	label,
 	icon,
 	count,
-	url,
+	path,
 	isInbox,
 	isButton,
 	isCompany,
@@ -66,7 +66,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
 		? `${count} uleste ${isInbox ? 'meldinger' : 'elementer'} i ${displayText}`
 		: displayText;
 	return (
-		<a href={url} className={styles.link} aria-label={label}>
+		<a href={path} className={styles.link} aria-label={label}>
 			<div
 				className={cx(styles.sidebarItem, {
 					[styles.isButton]: isButton,

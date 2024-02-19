@@ -4,4 +4,7 @@
 
 .container {
     padding: 1em;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
