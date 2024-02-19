@@ -1,0 +1,22 @@
+.footer {
+    background-color: #E5EBEC;
+    color: #333;
+    font-size: 1rem;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 1.5em 1em 1em;
+}
+
+.content {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.25)
+}
+
+.links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0;
+}
