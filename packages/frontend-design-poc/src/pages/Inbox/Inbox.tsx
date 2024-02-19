@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PersonIcon, PersonSuitIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
 import { InboxItems, InboxItem } from "../../components/InboxItem";
+import { ActionPanel } from '../../components/ActionPanel';
 
 export const Inbox = () => {
   const { t } = useTranslation();
@@ -11,6 +12,7 @@ export const Inbox = () => {
   return (
     <section>
       <h1>{t('example.your_inbox')}</h1>
+      <ActionPanel />
       <InboxItems>
         <InboxItem
           checkboxValue="test"
