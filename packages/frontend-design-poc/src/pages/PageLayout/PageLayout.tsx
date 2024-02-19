@@ -1,7 +1,7 @@
-import { Outlet } from 'react-router-dom';
-import { Header } from '../../components/Header/Header.tsx';
-import styles from './pageLayout.module.css';
-import { Sidebar } from '../../components/index.ts';
+import { Outlet } from "react-router-dom";
+import { Header, Footer, Sidebar } from '../../components';
+
+import styles from "./pageLayout.module.css";
 
 export const PageLayout = () => {
 	return (
@@ -11,6 +11,7 @@ export const PageLayout = () => {
 				<Sidebar />
 				<Outlet />
 			</div>
+      <Footer />
 		</div>
 	);
 };
