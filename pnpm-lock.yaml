@@ -353,6 +353,9 @@ importers:
       i18next:
         specifier: ^23.8.2
         version: 23.8.2
+      i18next-icu:
+        specifier: ^2.3.0
+        version: 2.3.0(intl-messageformat@10.5.11)
       react:
         specifier: ^18.2.0
         version: 18.2.0

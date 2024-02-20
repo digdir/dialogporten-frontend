@@ -5,8 +5,47 @@
     padding: 0.5em 1em;
     flex-shrink: 0;
     border-radius: 20px;
-    border: 2px solid #00315D;
+    border: 1px solid #00315D;
     background: #E6EFF8;
-    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0px 10px 15px -3px rgba(0, 0, 0, 0.10);
-    min-height: 50px;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.10);
+    min-height: 30px;
+}
+
+.actionButtons {
+    display: flex;
+    column-gap: 0.5em;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    .actionButtonLabel, .actionButtonIcon {
+        color: #000;
+    }
+    .actionButtonIcon {
+        height: 1.5em;
+        width: 1.5em;
+        margin-right: 5px;
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.undoButton {
+    display: flex;
+    align-items: center;
+    .undoButtonLabel, .undoButtonIcon {
+        color: #000;
+    }
+    .undoButtonIcon {
+        height: 1.5em;
+        width: 1.5em;
+        margin-left: 5px;
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
 }

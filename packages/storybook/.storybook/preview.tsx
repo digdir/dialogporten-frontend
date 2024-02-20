@@ -3,6 +3,7 @@ import '@digdir/design-system-tokens/brand/altinn/tokens.css';
 import customTheme from './customTheme';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
+import { nbResources } from 'frontend-design-poc';
 
 import './i18next'
 
@@ -10,7 +11,7 @@ const preview: Preview = {
   globals: {
     locale: 'nb',
     locales: {
-      nb: 'Norsk (bokmål)',
+      nb: nbResources,
     },
   },
   decorators: [
