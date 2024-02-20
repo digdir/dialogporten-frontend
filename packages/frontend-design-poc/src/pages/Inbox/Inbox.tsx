@@ -1,16 +1,56 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PersonIcon, PersonSuitIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
-import { InboxItems, InboxItem } from "../../components/InboxItem";
+import {
+  ArrowForwardIcon,
+  ClockDashedIcon,
+  EnvelopeOpenIcon,
+  PersonIcon,
+  PersonSuitIcon,
+  SealIcon,
+  StarIcon,
+  TrashIcon,
+} from "@navikt/aksel-icons";
+import { ActionPanel, InboxItem, InboxItems } from "../../components";
+import styles from "./inbox.module.css";
 
 export const Inbox = () => {
   const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isChecked2, setIsChecked2] = useState<boolean>(false);
+  const selectedItemCount = [isChecked, isChecked2].filter(Boolean).length;
 
   return (
-    <section>
-      <h1>{t('example.your_inbox')}</h1>
+    <section className={styles.inbox}>
+      <h1>{t("example.your_inbox")}</h1>
+      {selectedItemCount > 0 && (
+        <div className={styles.actionPanelWrapper}>
+          <ActionPanel
+            actionButtons={[
+              {
+                label: t("actionPanel.buttons.share"),
+                icon: <ArrowForwardIcon />,
+              },
+              {
+                label: t("actionPanel.buttons.mark_as_read"),
+                icon: <EnvelopeOpenIcon />,
+              },
+              {
+                label: t("actionPanel.buttons.archive"),
+                icon: <ClockDashedIcon />,
+              },
+              {
+                label: t("actionPanel.buttons.delete"),
+                icon: <TrashIcon />,
+              },
+            ]}
+            selectedItemCount={selectedItemCount}
+            onUndoSelection={() => {
+              setIsChecked(false);
+              setIsChecked2(false);
+            }}
+          />
+        </div>
+      )}
       <InboxItems>
         <InboxItem
           checkboxValue="test"

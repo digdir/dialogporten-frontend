@@ -16,5 +16,10 @@
   "footer.nav.about_altinn": "Om Altinn",
   "footer.nav.service_messages": "Driftsmeldinger",
   "footer.nav.privacy_policy": "Personvern",
-  "footer.nav.accessibility": "Tilgjengelighet"
+  "footer.nav.accessibility": "Tilgjengelighet",
+  "actionPanel.buttons.delete": "Slett",
+  "actionPanel.buttons.archive": "Flytt til arkiv",
+  "actionPanel.buttons.mark_as_read": "Markert som lest",
+  "actionPanel.buttons.share": "Del",
+  "actionPanel.chosen": "{count, plural, =0 {Ingen valgt} one {# valgt} other {# valgt}}"
 }

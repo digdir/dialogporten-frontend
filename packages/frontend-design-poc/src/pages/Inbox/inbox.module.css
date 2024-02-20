@@ -1,0 +1,8 @@
+.inbox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.actionPanelWrapper {
+    margin: 2em 0;
+}
