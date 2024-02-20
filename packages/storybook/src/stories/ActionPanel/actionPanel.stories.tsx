@@ -11,7 +11,7 @@ export default {
   title: "Components/ActionPanel",
   component: ActionPanel,
   parameters: {
-    layout: "fullscreen",
+    layout: "fullscreen"
   },
 } as Meta<typeof ActionPanel>;
 
@@ -35,6 +35,6 @@ export const Default: StoryObj<typeof ActionPanel> = {
         icon: <TrashIcon />,
       },
     ],
-    elementsChosen: 3,
+    selectedItemCount: 3,
   },
 };

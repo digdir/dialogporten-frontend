@@ -14,14 +14,30 @@ interface ActionButton {
 
 interface ActionPanelProps {
   actionButtons: ActionButton[];
-  undoSelectOnClick?: () => void;
-  elementsChosen?: number;
+  onUndoSelection?: () => void;
+  selectedItemCount?: number;
 }
 
+/**
+ * Displays an action panel with a set of configurable action buttons and an optional undo button.
+ *
+ * @param {Object} props - The component props.
+ * @param {ActionButton[]} props.actionButtons - An array of action buttons to display. Each button can contain a label, an icon, an onClick handler, and flags for disabled and hidden states.
+ * @param {Function} [props.onUndoSelection] - An optional callback function that is called when the undo button is clicked.
+ * @param {number} [props.selectedItemCount=0] - The number of items currently selected, used to determine if the undo button should be displayed.
+ * @returns {React.ReactElement} The rendered action panel component.
+ *
+ * @example
+ * <ActionPanel
+ *   actionButtons={[{ label: 'Delete', icon: <DeleteIcon />, onClick: handleDelete }]}
+ *   onUndoSelection={handleUndoSelection}
+ *   selectedItemCount={2}
+ * />
+ */
 export function ActionPanel({
   actionButtons,
-  undoSelectOnClick,
-  elementsChosen = 0,
+  onUndoSelection,
+  selectedItemCount = 0,
 }: ActionPanelProps) {
   const { t } = useTranslation();
   return (
@@ -45,16 +61,16 @@ export function ActionPanel({
             );
           })}
       </div>
-      {elementsChosen > 0 && (
+      {selectedItemCount > 0 && (
         <div>
           <Button
             className={styles.undoButton}
-            onClick={undoSelectOnClick}
+            onClick={onUndoSelection}
             variant="tertiary"
             size="small"
           >
             <span className={styles.undoButtonLabel}>
-              {t("actionPanel.chosen", { count: elementsChosen })}
+              {t("actionPanel.chosen", { count: selectedItemCount })}
             </span>
             <span className={styles.undoButtonIcon}>
               <XMarkIcon />
