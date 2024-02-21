@@ -1,12 +1,10 @@
 .sidebar {
     width: calc(224px + 2em + 2em);
-    height: 100%;
-    background-color: #0000000D;
+    background-color: #E5EBEC;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1.25em 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .horizontalLine {

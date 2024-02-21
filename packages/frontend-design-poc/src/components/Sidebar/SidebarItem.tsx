@@ -1,17 +1,18 @@
 import React from 'react';
 import styles from './sidebarItem.module.css';
 import cx from 'classnames';
+import { Link } from 'react-router-dom';
 
 export type SidebarItemProps = {
-	displayText: string;
-	label: string;
-	icon: JSX.Element;
-	count?: number;
-	path: string;
-	isInbox?: boolean;
-	isButton?: boolean;
-	isCompany?: boolean;
-	type?: 'primary' | 'secondary';
+  displayText: string;
+  label: string;
+  icon: JSX.Element;
+  count?: number;
+  path: string;
+  isInbox?: boolean;
+  isButton?: boolean;
+  isCompany?: boolean;
+  type?: 'primary' | 'secondary';
 };
 
 /**
@@ -52,52 +53,52 @@ export type SidebarItemProps = {
  */
 
 export const SidebarItem: React.FC<SidebarItemProps> = ({
-	displayText,
-	label,
-	icon,
-	count,
-	path,
-	isInbox,
-	isButton,
-	isCompany,
-	type = 'primary',
+  displayText,
+  label,
+  icon,
+  count,
+  path,
+  isInbox,
+  isButton,
+  isCompany,
+  type = 'primary',
 }) => {
-	const ariaTextCounter = count
-		? `${count} uleste ${isInbox ? 'meldinger' : 'elementer'} i ${displayText}`
-		: displayText;
-	return (
-		<a href={path} className={styles.link} aria-label={label}>
-			<div
-				className={cx(styles.sidebarItem, {
-					[styles.isButton]: isButton,
-					[styles.isCompany]: isCompany,
-				})}
-			>
-				<div className={styles.iconAndText}>
-					<span
-						className={cx(styles.icon, {
-							[styles.isInbox]: isInbox,
-							[styles.isCompany]: isCompany,
-							[styles.isPrimary]: type === 'primary',
-						})}
-						aria-hidden="true"
-					>
-						{icon}
-					</span>
-					<span className={styles.displayText}>{displayText}</span>
-				</div>
+  const ariaTextCounter = count
+    ? `${count} uleste ${isInbox ? 'meldinger' : 'elementer'} i ${displayText}`
+    : displayText;
+  return (
+    <Link to={path} className={styles.link} aria-label={label}>
+      <div
+        className={cx(styles.sidebarItem, {
+          [styles.isButton]: isButton,
+          [styles.isCompany]: isCompany,
+        })}
+      >
+        <div className={styles.iconAndText}>
+          <span
+            className={cx(styles.icon, {
+              [styles.isInbox]: isInbox,
+              [styles.isCompany]: isCompany,
+              [styles.isPrimary]: type === 'primary',
+            })}
+            aria-hidden="true"
+          >
+            {icon}
+          </span>
+          <span className={styles.displayText}>{displayText}</span>
+        </div>
 
-				{!!count && (
-					<div
-						className={cx(styles.counter, {
-							[styles.redCounter]: isInbox,
-						})}
-						aria-label={ariaTextCounter}
-					>
-						{count}
-					</div>
-				)}
-			</div>
-		</a>
-	);
+        {!!count && (
+          <div
+            className={cx(styles.counter, {
+              [styles.redCounter]: isInbox,
+            })}
+            aria-label={ariaTextCounter}
+          >
+            {count}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
 };

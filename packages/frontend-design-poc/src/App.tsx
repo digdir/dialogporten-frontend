@@ -1,24 +1,24 @@
-import { Route, Routes } from "react-router-dom";
-import { HelloWorld } from "./components/HelloWorld";
-import { PageNotFound } from "./pages/PageNotFound";
-import { PageLayout } from "./pages/PageLayout";
-import { Inbox } from "./pages/Inbox";
-import { InboxItemPage } from "./pages/InboxItemPage";
+import { Route, Routes } from 'react-router-dom';
+import { PageNotFound } from './pages/PageNotFound';
+import { Inbox } from './pages/Inbox';
+import { InboxItemPage } from './pages/InboxItemPage';
+import { Home } from './pages/Home';
 
-import styles from "./app.module.css";
+import styles from './app.module.css';
+import { PageLayout } from './components/PageLayout';
 
 function App() {
   return (
-    <main className={styles.app}>
+    <div className={styles.app}>
       <Routes>
         <Route element={<PageLayout />}>
-          <Route path="/" element={<HelloWorld />} />
+          <Route path="/" element={<Home />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/inbox/:id" element={<InboxItemPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
-    </main>
+    </div>
   );
 }
 
