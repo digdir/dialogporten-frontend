@@ -1,12 +1,8 @@
-import styles from "./inboxItemPage.module.css";
-import {
-  ClockIcon,
-  EyeWithPupilIcon,
-  PersonSuitIcon,
-} from "@navikt/aksel-icons";
-import { InboxItemDetail } from "../../components/InboxItem";
-import { useTranslation } from "react-i18next";
-import { BackButton } from "../../components/BackButton";
+import styles from './inboxItemPage.module.css';
+import { ClockIcon, EyeWithPupilIcon, PersonSuitIcon } from '@navikt/aksel-icons';
+import { InboxItemDetail } from '../../components/InboxItem';
+import { useTranslation } from 'react-i18next';
+import { BackButton } from '../../components/BackButton';
 
 // This could e.g. be the output of a react-markdown conversion and contain basic HTML elements
 const ExampleDescription = () => {
@@ -40,32 +36,32 @@ export const InboxItemPage = () => {
   const { t } = useTranslation();
   const docs = [
     {
-      label: "Betalingspåminnelse.pdf",
-      href: "/path/to/important/doc",
+      label: 'Betalingspåminnelse.pdf',
+      href: '/path/to/important/doc',
     },
-    { label: "Retningslinjer for straff.pdf", href: "/path/to/some/doc" },
+    { label: 'Retningslinjer for straff.pdf', href: '/path/to/some/doc' },
   ];
   return (
-    <section className={styles.itemInboxPage}>
+    <main className={styles.itemInboxPage}>
       <nav>
         <BackButton pathTo="/inbox/" />
       </nav>
       <InboxItemDetail
         checkboxValue="test"
         title="Viktig melding"
-        toLabel={t("word.to")}
+        toLabel={t('word.to')}
         description={<ExampleDescription />}
-        sender={{ label: "Viktig bedrift", icon: <PersonSuitIcon /> }}
-        receiver={{ label: "Bruker Brukerson" }}
+        sender={{ label: 'Viktig bedrift', icon: <PersonSuitIcon /> }}
+        receiver={{ label: 'Bruker Brukerson' }}
         tags={[
-          { label: "12. desember 2023", icon: <ClockIcon /> },
+          { label: '12. desember 2023', icon: <ClockIcon /> },
           {
-            label: "Sett av deg",
+            label: 'Sett av deg',
             icon: <EyeWithPupilIcon />,
           },
         ]}
         attachment={docs}
       />
-    </section>
+    </main>
   );
 };

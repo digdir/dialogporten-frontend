@@ -7,7 +7,9 @@
 		"enabled": true,
 		"lineWidth": 120,
 		"lineEnding": "lf",
-		"ignore": []
+		"ignore": [],
+		"indentStyle": "space",
+    	"indentWidth": 2
 	},
 	"javascript": {
 		"formatter": {

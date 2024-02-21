@@ -2,9 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background: #E5EBEC;
-    /* Må byttes til variabel */
     padding: 24px;
     max-height: 68px;
 }
@@ -31,10 +29,9 @@
     input {
         border-radius: 28px;
         border: 2px solid black;
+        background-color: #E5EBEC;
     }
 }
-
-
 
 .userSection {
     display: flex;
@@ -64,18 +61,15 @@
     text-align: center;
     color: #000;
     text-align: center;
-    font-family: Inter;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
     line-height: 28px;
-    /* 155.556% */
 }
 
 .secondaryName {
     color: #000;
     text-align: center;
-    font-family: Inter;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
