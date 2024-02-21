@@ -369,6 +369,9 @@ importers:
         specifier: ^6.16.0
         version: 6.21.3(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
+      '@storybook/addon-a11y':
+        specifier: ^7.6.17
+        version: 7.6.17
       '@storybook/addon-essentials':
         specifier: ^7.6.12
         version: 7.6.12(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
@@ -405,6 +408,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.0.12)
+      axe-core:
+        specifier: ^4.8.4
+        version: 4.8.4
       storybook:
         specifier: ^7.6.12
         version: 7.6.12
@@ -4238,6 +4244,13 @@ packages:
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
     dev: false
 
+  /@storybook/addon-a11y@7.6.17:
+    resolution: {integrity: sha512-UYHJAKQpJMCu4X4O/325UqozYrkhPn2VyQdwPgC+uiOKZvrtni4uRbpOspeyjC0wXH1tDbY8WZvxwvwQryYkpA==}
+    dependencies:
+      '@storybook/addon-highlight': 7.6.17
+      axe-core: 4.8.4
+    dev: true
+
   /@storybook/addon-actions@7.6.12:
     resolution: {integrity: sha512-vK/H6K+AJ4ZSsCu/+MapYYI/xrynB6JoCOejt//flTigZOhwTWv7WXbmEeqGIIToXy0LA2IUZ1/kCjFXR0lEdQ==}
     dependencies:
@@ -4337,6 +4350,12 @@ packages:
 
   /@storybook/addon-highlight@7.6.12:
     resolution: {integrity: sha512-rWNEyBhwncXEDd9z7l67BLBIPqn0SRI/CJpZvCSF5KLWrVaoSEDF8INavmbikd1JBMcajJ28Ur6NsGj+eJjJiw==}
+    dependencies:
+      '@storybook/global': 5.0.0
+    dev: true
+
+  /@storybook/addon-highlight@7.6.17:
+    resolution: {integrity: sha512-R1yBPUUqGn+60aJakn8q+5Zt34E/gU3n3VmgPdryP0LJUdZ5q1/RZShoVDV+yYQ40htMH6oaCv3OyyPzFAGJ6A==}
     dependencies:
       '@storybook/global': 5.0.0
     dev: true
@@ -6944,6 +6963,11 @@ packages:
   /axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
+
+  /axe-core@4.8.4:
+    resolution: {integrity: sha512-CZLSKisu/bhJ2awW4kJndluz2HLZYIHh5Uy1+ZwDRkJi69811xgIXXfdU9HSLX0Th+ILrHj8qfL/5wzamsFtQg==}
+    engines: {node: '>=4'}
+    dev: true
 
   /axios@1.6.7:
     resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
