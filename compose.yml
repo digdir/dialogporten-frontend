@@ -6,6 +6,7 @@ include:
 
 services:
   reverse-proxy:
+    container_name: reverse-proxy
     image: traefik:v2.3
     command:
       # Enables the Web UI
@@ -59,6 +60,7 @@ services:
     build:
       context: .
       dockerfile: ./packages/bff/Dockerfile
+      target: build
     environment:
       DB_HOST: db
       DB_USER: postgres
@@ -71,12 +73,22 @@ services:
       - "dave.icon=fa-brands:node"
     depends_on:
       - db
+#    develop:
+#      watch:
+#        - action: sync+restart
+#          path: .
+#          target: /app
+#          ignore:
+#            - node_modules/
+#            - .azure/
+#            - .git/
 
   bff-frontend-poc:
     container_name: bff-frontend-poc
     build:
       context: .
       dockerfile: ./packages/bff-frontend-poc/Dockerfile
+      target: build
     environment:
       NODE_ENV: development
     labels:
@@ -86,38 +98,83 @@ services:
       - "dave.icon=fluent-mdl2:react-logo"
     depends_on:
       - bff
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/bff-frontend-poc/
+          target: /app/packages/bff-frontend-poc/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
 
   frontend-design-poc:
     container_name: frontend-design-poc
     build:
       context: .
       dockerfile: ./packages/frontend-design-poc/Dockerfile
+      target: build
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend-design-poc.rule=Host(`frontend-design-poc.localhost`)"
       - "dave.relativeSubdomain=frontend-design-poc"
       - "dave.icon=fluent-mdl2:react-logo"
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/frontend-design-poc/
+          target: /app/packages/frontend-design-poc/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
 
   storybook:
     container_name: storybook
     build:
       context: .
       dockerfile: ./packages/storybook/Dockerfile
+      target: build
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storybook.rule=Host(`storybook.localhost`)"
       - "dave.relativeSubdomain=storybook"
       - "dave.icon=devicon-plain:storybook"
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/storybook/
+          target: /app/packages/storybook/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync
+          path: ./packages/frontend-design-poc/
+          target: /app/packages/frontend-design-poc/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
 
   docs:
     container_name: docs
     build:
       context: .
       dockerfile: ./packages/docs/Dockerfile
+      target: build
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`docs.localhost`)"
       - "dave.relativeSubdomain=docs"
       - "dave.icon=simple-icons:docusaurus"
-
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/docs/
+          target: /app/packages/docs/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
 

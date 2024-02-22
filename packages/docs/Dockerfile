@@ -8,11 +8,11 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-ARG URL="//localhost/"
-ARG BASEURL="/"
-
-
 RUN pnpm --filter docs run build
+
+# For dev
+EXPOSE 80
+CMD ["pnpm", "--filter", "docs", "run", "start", "--port", "80", "--host", "0.0.0.0"]
 
 # ---
 

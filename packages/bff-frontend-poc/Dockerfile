@@ -10,6 +10,8 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter bff-frontend-poc run build
 
+CMD ["pnpm", "--filter", "bff-frontend-poc", "run", "start"]
+
 # ---
 
 FROM nginx:1.25-alpine
