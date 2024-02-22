@@ -9,6 +9,10 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter storybook run build
 
+EXPOSE 80
+
+CMD ["pnpm", "--filter", "storybook", "run", "start:storybook", "--port", "80"]
+
 # ---
 
 FROM nginx:1.25-alpine

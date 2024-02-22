@@ -9,6 +9,11 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter frontend-design-poc run build
 
+# `EXPOSE`, `ENV` and `CMD` in this stage is only used for dev
+EXPOSE 80
+ENV PORT=80
+CMD ["pnpm", "--filter", "frontend-design-poc", "run", "dev", "--host", "0.0.0.0"]
+
 # ---
 
 FROM nginx:1.25-alpine
