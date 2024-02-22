@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:playwright": "playwright test",
+    "install:browsers": "playwright install",
     "test:watch": "vitest watch",
     "build:docker": "docker build -f ./Dockerfile -t frontend-design-poc ../..",
     "run:docker": "docker run -it -p 80:80 frontend-design-poc"
@@ -27,12 +29,15 @@
     "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.2",
     "@testing-library/react": "^14.1.2",
+    "@types/node": "^16.11.10",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "dotenv": "^16.3.1",
     "jsdom": "^24.0.0",
     "msw": "^2.1.5",
     "typescript": "^5.2.2",
