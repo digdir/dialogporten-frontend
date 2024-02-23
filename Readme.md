@@ -2,13 +2,14 @@
 
 ## Developer setup
 
-- Install [fnm](https://github.com/Schniz/fnm) and use that to get the correct version of Node in the project.
+Tool | Description
+-----|------------
+[fnm](https://github.com/Schniz/fnm) | Fnm is used to automatically get the correct version of Node in the project
+Docker | We recommend to use OrbStack if you're using Mac for development, on Linux you can install Docker directly.
+pnpm | Package manager used in this project
+fzf | Fuzzy finder used in some scripts
 
-- Install Docker. We recommend to use OrbStack if you're using Mac or Windows for development, on Linux you can install Docker directly.
-
-- Install pnpm.
-
-- Install fzf.
+### macOS
 
 On macOS using [Homebrew](https://brew.sh/) you can install dependencies by running:
 
@@ -17,16 +18,18 @@ brew install fnm pnpm fzf
 brew install --cask OrbStack
 ```
 
+### Windows
+
 On Windows using [Chocolatey](https://chocolatey.org/) you can install dependencies by running:
 
 ```bash
-choco install -y fnm pnpm fzf
+choco install -y fnm pnpm fzf docker-desktop
 ```
 
-And then installing OrbStack manually
+## Docker
 
-### Docker
+Running Docker in watch mode:
 
-```
-docker compose up -d
+```bash
+make compose-watch
 ```
