@@ -1,0 +1,57 @@
+name: Playwright tests on pr
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'packages/**'
+      - './**'
+      - '.github/workflows/playwright.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - 'biome.json'
+
+  workflow_dispatch:
+
+jobs:
+  playwright-tests:
+    name: 'Playwright Tests'
+    env:
+      PLAYWRIGHT_TEST_BASE_URL: 'http://localhost:5173' # vite default port
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: 'Checking Out Code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 'Installing Dependencies'
+        uses: ./.github/actions/install
+
+      - name: Install Playwright Browsers
+        run: pnpm --filter frontend-design-poc install:browsers
+
+      - name: Run Playwright tests
+        run: pnpm --filter frontend-design-poc test:playwright
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: packages/frontend-design-poc/playwright-report/
+          retention-days: 7
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-screenshots
+          path: packages/frontend-design-poc/test-results
+          retention-days: 3
