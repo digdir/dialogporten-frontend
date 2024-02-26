@@ -3,10 +3,11 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import './config/env';
 
 console.log(
-  'REMINDER: In datasource file, synchronize needs to be changed to false for production'
+  'REMINDER: In datasource file, synchronize needs to be changed to false for production',
+  process.env.DEV_ENV,
 );
 
-export let connectionOptions: DataSourceOptions = {
+export const connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST !== 'undefined' ? process.env.DB_HOST : 'postgresdb-dp-fe',
   port: 5432,

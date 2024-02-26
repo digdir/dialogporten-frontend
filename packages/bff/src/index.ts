@@ -1,4 +1,4 @@
-export const bffVersion = process.env.GIT_SHA || 'v5.2';
+export const bffVersion = process.env.GIT_SHA || 'v6.1.5';
 export const isLocal = process.env.IS_LOCAL === 'true';
 import './config/env';
 
@@ -7,7 +7,6 @@ if (process.env.IS_LOCAL === 'true')
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import 'reflect-metadata';
-import path from 'path';
 import { DataSource, Repository } from 'typeorm';
 import { StartUp } from './entities/StartUp';
 import { startLivenessProbe, startReadinessProbe } from './routes/HealthProbes';
@@ -19,20 +18,16 @@ import { SessionData } from './entities/SessionData';
 import { initPassport } from './config/passport';
 import { sessionMiddleware } from './util/sessionUtils';
 import { initPgEnvVars } from './util/initPgEnvVars';
-import { initAppInsights } from './util/ApplicationInsightsInit';
 import cors from 'cors';
 
 export const app: Express = express();
 export const probes: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 export let mainDataSource: DataSource;
 export let StartUpRepository: Repository<StartUp> | undefined = undefined;
 export let SessionRepository: Repository<SessionData> | undefined = undefined;
 export let ProfileRepository: Repository<Profile> | undefined = undefined;
 const startTimeStamp = new Date();
-const DIST_DIR = path.join(__dirname, 'public');
-const HTML_FILE = path.join(DIST_DIR, 'index.html');
-
 declare module 'express-session' {
   export interface SessionData {
     returnTo?: string;
@@ -44,11 +39,12 @@ declare module 'express-session' {
 const main = async (): Promise<void> => {
   startLivenessProbe(startTimeStamp);
   app.listen(port, () => {
-    console.log(`BFF: ⚡️[server]: Server is running on PORT: ${port}`);
+    console.log(`BFF: ⚡️[server]: Server ${bffVersion} is running on PORT: ${port}`);
   });
 
   // ************ INITIALIZE APPLICATION INSIGHTS ************
   if (!isLocal) {
+    const { initAppInsights } = await import('./util/ApplicationInsightsInit');
     await initAppInsights();
     console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
   }
@@ -88,10 +84,8 @@ const main = async (): Promise<void> => {
 
   try {
     const { routes } = await import('./routes');
-    app.use(express.static(DIST_DIR));
     app.get('/', (req, res) => {
-      isLocal && res.redirect('http://localhost');
-      res.sendFile(HTML_FILE);
+      res.send(`BFF: ⚡️[server]: Server ${bffVersion} is running on PORT: ${port}`);
     });
 
     app.use(bodyParser.json());

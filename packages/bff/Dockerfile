@@ -9,4 +9,4 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 
 EXPOSE 3000
-CMD [ "pnpm", "--filter", "bff", "run", "start" ]
+CMD [ "pnpm", "--filter", "bff", "run", "docker" ]
