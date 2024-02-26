@@ -5,7 +5,7 @@ Kort oppsummer hva denne PR-en inneholder i to-tre setninger maks.
 
 ### Type Bidrag
 - [ ] Feature (ny funksjonalitet)
-. [ ] Hotfix (endringer som er kritiske for nåværende produksjonsversjon)
+- [ ] Hotfix (endringer som er kritiske for nåværende produksjonsversjon)
 - [ ] Fix (bugfix som ikke er kritisk)
 - [ ] Dokumentasjon (endringer eller ny dokumentasjon i Docosaurus)
 - [ ] Stil (formatering, manglende semikolon, etc; ingen kodeendring)
