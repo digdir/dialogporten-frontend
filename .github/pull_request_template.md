@@ -1,16 +1,14 @@
-<!--- Provide a general summary of your changes in the Title above -->
+<!--- Fortell kort hva PR-en din inneholder i to-tre setninger maks. -->
 
-## Description
-<!--- Describe your changes in detail -->
+## Hva er endret?
+<!--- Gi en mer detaljert beskrivelse av hva endringene dine innebærer ved behov, med eventuelle marknader -->
 
-## Related Issue(s)
-- #{issue number}
+### Dokumentasjon / Storybook / testdekning
+<!--- Oppgi om du har lagt til eller oppdatert dokumentasjonen som er relevant for endringene. Enten i Readme eller i Docosauros på `./packages/docs/docs` -->
 
-## Verification
-- [ ] **Your** code builds clean without any errors or warnings
-- [ ] Manual testing done (required)
-- [ ] Relevant automated test added (if you find this hard, leave it and we'll help out)
-- [ ] All tests run green
+- [ ] Dokumentasjon er oppdatert eller ikke relevant / nødvendig.
+- [ ] Ny komponent har en eller flere `stories` i `Storybook`, eller så er ikke dette relevant.
+- [ ] Det er blitt lagt til nye tester / eksiterende tester er blitt utvidet, eller tester er ikke relevant.
 
-## Documentation
-- [ ] User documentation is updated with a separate linked PR in [altinn-studio-docs.](https://github.com/Altinn/altinn-studio-docs) (if applicable)
+### Skjermbilder eller GIFs (valgfritt)
+<!--- Det er alltid nyttig å inkludere skjermbilder eller GIFs for å vise frem endringene visuelt, spesielt for UI-relaterte endringer. -->
