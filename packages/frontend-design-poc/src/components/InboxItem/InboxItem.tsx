@@ -1,8 +1,8 @@
-import { Checkbox } from "@digdir/design-system-react";
-import { Link } from "react-router-dom";
-import classNames from "classnames";
+import { Checkbox } from '@digdir/design-system-react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
-import styles from "./inboxItem.module.css";
+import styles from './inboxItem.module.css';
 
 interface Participant {
   label: string;
@@ -37,7 +37,11 @@ export const OptionalLinkContent = ({
   linkTo: string | undefined;
 }) => {
   if (linkTo) {
-    return <Link to={linkTo} className={styles.link}>{children}</Link>;
+    return (
+      <Link to={linkTo} className={styles.link}>
+        {children}
+      </Link>
+    );
   }
   return children;
 };
@@ -95,10 +99,10 @@ export const InboxItem = ({
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
         [styles.isUnread]: isUnread,
-        [styles.hoverable]: linkTo
+        [styles.hoverable]: linkTo,
       })}
-      aria-selected={isChecked ? "true" : "false"}
-      tabIndex={0}
+      aria-selected={isChecked ? 'true' : 'false'}
+      tabIndex={'' + 0}
     >
       <OptionalLinkContent linkTo={linkTo}>
         <section className={styles.inboxItem}>
@@ -127,9 +131,7 @@ export const InboxItem = ({
             </div>
             <span>{toLabel}</span>
             <div className={styles.receiver}>
-              {receiver?.icon && (
-                <div className={styles.icon}>{receiver.icon}</div>
-              )}
+              {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
               <span>{receiver?.label}</span>
             </div>
           </div>
