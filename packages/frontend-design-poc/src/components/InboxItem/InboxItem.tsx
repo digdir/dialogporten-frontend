@@ -81,7 +81,7 @@ export const OptionalLinkContent = ({
  *   isUnread
  * />
  */
-export const InboxItem = ({
+ea export const InboxItem = ({
   title,
   description,
   sender,
@@ -102,7 +102,6 @@ export const InboxItem = ({
         [styles.hoverable]: linkTo,
       })}
       aria-selected={isChecked ? 'true' : 'false'}
-      tabIndex={'' + 0}
     >
       <OptionalLinkContent linkTo={linkTo}>
         <section className={styles.inboxItem}>
