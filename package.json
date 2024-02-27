@@ -1,14 +1,16 @@
 {
   "private": true,
   "devDependencies": {
-    "turbo": "1.12.2",
-    "@biomejs/biome": "1.5.3"
+    "@biomejs/biome": "1.5.3",
+    "husky": "^9.0.11",
+    "turbo": "1.12.2"
   },
-	"engines": {
-		"node": ">=20.0"
-	},
-	"resolutions": {
-    "jackspeak": "2.1.1"
+  "engines": {
+    "node": ">=20.0"
+  },
+  "scripts": {
+    "pre-commit": "pnpm run --filter \"packages/*\" pre-commit",
+    "prepare": "husky install"
   },
   "packageManager": "pnpm@8.15.1"
 }
