@@ -1,2 +1,4 @@
-# .husky/pre-commit
-pnpm turbo pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm --filter "./packages/**" lint-staged
