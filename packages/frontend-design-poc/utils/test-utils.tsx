@@ -1,9 +1,9 @@
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactElement } from "react";
-import { MemoryRouter } from "react-router-dom";
-import { render, RenderOptions } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactElement } from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import { render, RenderOptions } from '@testing-library/react';
 
-import "../src/i18n/config.ts";
+import '../src/i18n/config.ts';
 
 interface IExtendedRenderOptions extends RenderOptions {
   initialEntries?: string[];
@@ -17,16 +17,11 @@ const queryClient = new QueryClient({
   },
 });
 
-export const customRender = (
-  ui: ReactElement,
-  options?: Omit<IExtendedRenderOptions, "wrapper">,
-) => {
+export const customRender = (ui: ReactElement, options?: Omit<IExtendedRenderOptions, 'wrapper'>) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => {
     return (
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={options?.initialEntries ?? ["/"]}>
-          {children}
-        </MemoryRouter>
+        <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>{children}</MemoryRouter>
       </QueryClientProvider>
     );
   };

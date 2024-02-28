@@ -9,7 +9,6 @@
     "node": ">=20.0"
   },
   "scripts": {
-    "pre-commit": "pnpm run --filter \"packages/*\" pre-commit",
     "prepare": "husky install"
   },
   "packageManager": "pnpm@8.15.1"
