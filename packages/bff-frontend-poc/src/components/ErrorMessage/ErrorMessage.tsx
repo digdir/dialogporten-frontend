@@ -11,7 +11,7 @@ export const ErrorMessage = ({ title, message, children }: ErrorMessageProps): J
     <div className={classes.errorMessage}>
       <h1>{title}</h1>
       <p>{message}</p>
-      <p>Om problemet vedvarer, ta kontakt med oss på brukerservice +47 75 00 60 00.</p>
+      <p>Om problemet vedvarer, ta kontakt med oss på brukerservice +47 75 00 60 00</p>
       {children}
     </div>
   );
