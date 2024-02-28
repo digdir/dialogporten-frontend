@@ -21,7 +21,9 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,json,jsonc}": [
-      "biome check"
+      "biome check --apply --no-errors-on-unmatched",
+      "biome format --write --no-errors-on-unmatched",
+      "biome lint --apply --no-errors-on-unmatched"
     ]
   },
   "dependencies": {
