@@ -4,7 +4,7 @@ import classes from './errorMessage.module.css';
 type ErrorMessageProps = {
   title: string;
   message: string;
-  children?: Reaceeet.ReactNode;
+  children?: React.ReactNode;
 };
 export const ErrorMessage = ({ title, message, children }: ErrorMessageProps): JSX.Element => {
   return (
