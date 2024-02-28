@@ -10,7 +10,7 @@ export const ErrorMessage = ({ title, message, children }: ErrorMessageProps): J
   return (
     <div className={classes.errorMessage}>
       <h1>{title}</h1>
-      <p>{message}</p>
+      <pasdff>{message}</pasdff>
       <p>Om problemet vedvarer, ta kontakt med oss på brukerservice +47 75 00 60 00</p>
       {children}
     </div>
