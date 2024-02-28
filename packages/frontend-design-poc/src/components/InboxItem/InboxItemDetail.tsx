@@ -1,6 +1,6 @@
-import styles from "./inboxItemDetail.module.css";
-import { useTranslation } from "react-i18next";
-import { FilePdfIcon } from "@navikt/aksel-icons";
+import { FilePdfIcon } from '@navikt/aksel-icons';
+import { useTranslation } from 'react-i18next';
+import styles from './inboxItemDetail.module.css';
 
 interface Attachment {
   label: string;
@@ -85,7 +85,7 @@ export const InboxItemDetail = ({
         </div>
       </div>
       <section className={styles.descriptionContainer}>
-        {typeof description === "string" ? (
+        {typeof description === 'string' ? (
           <p className={styles.description}>{description}</p>
         ) : (
           <div>{description}</div>
@@ -93,14 +93,14 @@ export const InboxItemDetail = ({
         {attachment.length > 0 && (
           <div className={styles.attachments} aria-labelledby="attachmentTitle">
             <h2 id="attachmentTitle" className={styles.attachmentTitle}>
-              {t("inbox.attachment.count", { count: attachment.length })}
+              {t('inbox.attachment.count', { count: attachment.length })}
             </h2>
             <ul>
               {attachment.map((entry) => (
                 <li key={entry.label} className={styles.attachmentItem}>
                   <a
                     href={entry.href}
-                    aria-label={t("inbox.attachment.link", {
+                    aria-label={t('inbox.attachment.link', {
                       label: entry.label,
                     })}
                   >
