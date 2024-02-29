@@ -1,0 +1,9 @@
+{
+  "name": "dialogporten-types-generated",
+  "scripts": {
+    "build": "swagger-typescript-api --path dialogporten-v1.json -o generated --modular --clean-output --module-name-first-tag"
+  },
+  "dependencies": {
+    "swagger-typescript-api": "13.0.3"
+  }
+}
