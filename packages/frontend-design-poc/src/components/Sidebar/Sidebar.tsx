@@ -1,6 +1,3 @@
-import React from 'react';
-import styles from './sidebar.module.css';
-import { SidebarItem } from './SidebarItem';
 import {
   CogIcon,
   FileCheckmarkIcon,
@@ -11,7 +8,10 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { SidebarItem } from './';
+import styles from './sidebar.module.css';
 
 export interface SidebarProps {
   children?: React.ReactNode;

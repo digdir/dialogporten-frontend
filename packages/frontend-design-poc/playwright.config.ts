@@ -26,7 +26,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    }
+    },
     /* TODO: Test against mobile viewports and other browser. */
   ],
   webServer: {

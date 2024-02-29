@@ -1,1 +1,1 @@
-export { Inbox } from './Inbox.tsx'
+export { Inbox } from './Inbox.tsx';

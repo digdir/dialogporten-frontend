@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   ArrowForwardIcon,
   ClockDashedIcon,
@@ -10,8 +8,10 @@ import {
   StarIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
-import { InboxItems, InboxItem } from '../../components/InboxItem';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionPanel } from '../../components';
+import { InboxItem, InboxItems } from '../../components/InboxItem';
 import styles from './inbox.module.css';
 
 export const Inbox = () => {

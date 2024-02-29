@@ -1,4 +1,4 @@
-import styles from "./inboxItems.module.css";
+import styles from './inboxItems.module.css';
 
 interface InboxItemsProps {
   children: React.ReactNode;

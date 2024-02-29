@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import { PageNotFound } from './pages/PageNotFound';
+import { Home } from './pages/Home';
 import { Inbox } from './pages/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
-import { Home } from './pages/Home';
+import { PageNotFound } from './pages/PageNotFound';
 
 import styles from './app.module.css';
 import { PageLayout } from './components/PageLayout';
