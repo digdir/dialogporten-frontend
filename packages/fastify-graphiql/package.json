@@ -1,0 +1,10 @@
+{
+  "name": "fastify-graphiql",
+  "main": "./src/index.ts",
+  "scripts": {},
+  "dependencies": {
+    "fastify": "^4.26.1",
+    "fastify-plugin": "^4.5.1"
+  },
+	"type": "module"
+}
