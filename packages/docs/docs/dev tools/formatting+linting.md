@@ -20,13 +20,13 @@ Go to **Settings** -> **Tools** -> **File Watcher**:
 3. Choose the file type for files to watch, e.g., `TypeScript JSX`.
 4. Scope: `Project Files`.
 5. Program: Specify the path to the Biome executable in your project, for example, `$ProjectFileDir$/node_modules/.pnpm/@biomejs+biome@1.5.3/node_modules/@biomejs/biome/bin/biome` (adjust the version as necessary).
-6. Arguments: `format --write $FilePath$`.
+6. Arguments: `check --apply --no-errors-on-unmatched $FileName$`.
 
 Alternatively, you can import this configuration:
 
 ```markdown
 <TaskOptions>
-  <option name="arguments" value="format --write $FilePath$" />
+  <option name="arguments" value="check --apply --no-errors-on-unmatched $FileName$" />
   <option name="checkSyntaxErrors" value="true" />
   <option name="description" />
   <option name="exitCodeBehavior" value="ALWAYS" />
