@@ -1,1 +1,1 @@
-export { InboxItemPage } from "./InboxItemPage.tsx";
+export { InboxItemPage } from './InboxItemPage.tsx';

@@ -1,8 +1,8 @@
-import { Button } from "@digdir/design-system-react";
-import { XMarkIcon } from "@navikt/aksel-icons";
-import styles from "./actionPanel.module.css";
-import React from "react";
-import { useTranslation } from "react-i18next";
+import { Button } from '@digdir/design-system-react';
+import { XMarkIcon } from '@navikt/aksel-icons';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './actionPanel.module.css';
 
 interface ActionButton {
   label: string;
@@ -34,11 +34,7 @@ interface ActionPanelProps {
  *   selectedItemCount={2}
  * />
  */
-export function ActionPanel({
-  actionButtons,
-  onUndoSelection,
-  selectedItemCount = 0,
-}: ActionPanelProps) {
+export function ActionPanel({ actionButtons, onUndoSelection, selectedItemCount = 0 }: ActionPanelProps) {
   const { t } = useTranslation();
   return (
     <div className={styles.actionPanel}>
@@ -63,15 +59,8 @@ export function ActionPanel({
       </div>
       {selectedItemCount > 0 && (
         <div>
-          <Button
-            className={styles.undoButton}
-            onClick={onUndoSelection}
-            variant="tertiary"
-            size="small"
-          >
-            <span className={styles.undoButtonLabel}>
-              {t("actionPanel.chosen", { count: selectedItemCount })}
-            </span>
+          <Button className={styles.undoButton} onClick={onUndoSelection} variant="tertiary" size="small">
+            <span className={styles.undoButtonLabel}>{t('actionPanel.chosen', { count: selectedItemCount })}</span>
             <span className={styles.undoButtonIcon}>
               <XMarkIcon />
             </span>

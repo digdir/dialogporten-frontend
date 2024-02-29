@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from './sidebarItem.module.css';
 import cx from 'classnames';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from './sidebarItem.module.css';
 
 export type SidebarItemProps = {
   displayText: string;

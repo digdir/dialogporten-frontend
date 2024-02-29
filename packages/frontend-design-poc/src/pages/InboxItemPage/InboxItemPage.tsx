@@ -1,8 +1,8 @@
-import styles from './inboxItemPage.module.css';
 import { ClockIcon, EyeWithPupilIcon, PersonSuitIcon } from '@navikt/aksel-icons';
-import { InboxItemDetail } from '../../components/InboxItem';
 import { useTranslation } from 'react-i18next';
 import { BackButton } from '../../components/BackButton';
+import { InboxItemDetail } from '../../components/InboxItem';
+import styles from './inboxItemPage.module.css';
 
 // This could e.g. be the output of a react-markdown conversion and contain basic HTML elements
 const ExampleDescription = () => {

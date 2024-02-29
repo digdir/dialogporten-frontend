@@ -1,7 +1,7 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
 import styles from './pageLayout.module.css';
-import React from 'react';
 
 export const PageLayout: React.FC = () => {
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
