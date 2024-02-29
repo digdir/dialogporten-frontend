@@ -321,8 +321,8 @@ importers:
   packages/frontend-design-poc:
     dependencies:
       '@digdir/design-system-react':
-        specifier: ^0.47.0
-        version: 0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^0.51.0
+        version: 0.51.1(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/design-system-tokens':
         specifier: ^0.12.0
         version: 0.12.0
@@ -400,8 +400,8 @@ importers:
   packages/storybook:
     dependencies:
       '@digdir/design-system-react':
-        specifier: ^0.47.0
-        version: 0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^0.51.0
+        version: 0.51.1(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/design-system-tokens':
         specifier: ^0.12.0
         version: 0.12.0
@@ -2569,14 +2569,14 @@ packages:
       postcss-selector-parser: 6.0.15
     dev: false
 
-  /@digdir/design-system-react@0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-glZjOyllDTn22zRWWb9XOrnzYlC8kr+mBf6y2NQlS6mtvB36scRpSiPMfWmYy4v8BqbRlHyy9tn7R8Wqdp+Ylg==}
+  /@digdir/design-system-react@0.51.1(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-XwOVorAiuA5Ahm7MdWSNffALmXDmPw9NotqqrPJk92MsCZf4GcSQj0Rp5nDPv72lHqLx2V9tUIRpiGVQWaloQA==}
     peerDependencies:
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
       '@altinn/figma-design-tokens': 6.0.1
-      '@digdir/design-system-tokens': 0.12.0
+      '@digdir/design-system-tokens': 0.13.0
       '@floating-ui/react': 0.26.4(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 5.18.0
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
@@ -2590,6 +2590,10 @@ packages:
 
   /@digdir/design-system-tokens@0.12.0:
     resolution: {integrity: sha512-vq9x3j3u+08Lr+p9O58RfLkDNeQom3Bzon0Jn/QP5Iujog3f1zXR8M1kM9rtBS60QmjYCodv+9b/NN3AM5LzZA==}
+    dev: false
+
+  /@digdir/design-system-tokens@0.13.0:
+    resolution: {integrity: sha512-4ow+zmD7RLQnzesrYnWfHZCZtN3n8gkd4b/WnE/3Yb+dL5j3DTrR++p/O4GVsnUDQlMz72CrUW8ipu6RCc8vTQ==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
