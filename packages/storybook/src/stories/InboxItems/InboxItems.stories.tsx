@@ -1,12 +1,12 @@
-import { useState } from "react";
-import type { Meta } from "@storybook/react";
-import { SealIcon, StarIcon, CalendarIcon } from "@navikt/aksel-icons";
-import { InboxItems, InboxItem } from "frontend-design-poc";
+import { CalendarIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
+import type { Meta } from '@storybook/react';
+import { InboxItem, InboxItems } from 'frontend-design-poc';
+import { useState } from 'react';
 
 const meta = {
-  title: "components/InboxItem/InboxItems",
+  title: 'components/InboxItem/InboxItems',
   component: InboxItems,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
     docs: {
       source: { language: 'tsx' },
@@ -25,12 +25,12 @@ export const SimpleDesktopExample = () => {
       <InboxItem
         title="Har du glemt oss?"
         description="Eksempel på en beskrivelse av en ulest melding"
-        sender={{ label: "DigDir", icon: <StarIcon /> }}
-        receiver={{ label: "Per Person" }}
+        sender={{ label: 'DigDir', icon: <StarIcon /> }}
+        receiver={{ label: 'Per Person' }}
         toLabel="til"
         tags={[
-          { label: "19.01.2024", icon: <CalendarIcon /> },
-          { label: "Viktig!", icon: <SealIcon /> },
+          { label: '19.01.2024', icon: <CalendarIcon /> },
+          { label: 'Viktig!', icon: <SealIcon /> },
         ]}
         checkboxValue="value1"
         isChecked={isCheckedFirst}
@@ -40,12 +40,12 @@ export const SimpleDesktopExample = () => {
       <InboxItem
         title="Aksjeoppgaven for 2022"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin, nisi vitae auctor accumsan, odio ipsum efficitur nulla, eu tempus sem leo et felis. Curabitur vel varius tortor. Proin semper in nisl eget venenatis. Vestibulum egestas urna id sapien iaculis, id consequat ante varius. Vestibulum vel facilisis nulla. Aenean vitae orci est. Nulla at sagittis mauris. Vestibulum nisl nibh, pulvinar non odio quis, fermentum aliquet tortor. Mauris imperdiet ante lacus. Sed pretium, lorem sed ornare vehicula, neque diam dictum massa, et aliquam lectus metus sit amet nunc. Aliquam erat volutpat. Aliquam ac massa mauris"
-        sender={{ label: "DigDir" }}
-        receiver={{ label: "Per Person" }}
+        sender={{ label: 'DigDir' }}
+        receiver={{ label: 'Per Person' }}
         toLabel="til"
         tags={[
-          { label: "16.01.2024", icon: <CalendarIcon /> },
-          { label: "Viktig!", icon: <SealIcon /> },
+          { label: '16.01.2024', icon: <CalendarIcon /> },
+          { label: 'Viktig!', icon: <SealIcon /> },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedSecond}
@@ -54,12 +54,12 @@ export const SimpleDesktopExample = () => {
       <InboxItem
         title="Aksjeoppgaven for 2021"
         description="Integer lacinia ornare ex id consequat. Vivamus condimentum ex vitae elit dignissim convallis. Vivamus nec velit lacus. Vestibulum pharetra pharetra nibh vitae auctor."
-        sender={{ label: "DigDir" }}
-        receiver={{ label: "Per Person" }}
+        sender={{ label: 'DigDir' }}
+        receiver={{ label: 'Per Person' }}
         toLabel="til"
         tags={[
-          { label: "12.01.2024", icon: <CalendarIcon /> },
-          { label: "Viktig!", icon: <SealIcon /> },
+          { label: '12.01.2024', icon: <CalendarIcon /> },
+          { label: 'Viktig!', icon: <SealIcon /> },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedThird}

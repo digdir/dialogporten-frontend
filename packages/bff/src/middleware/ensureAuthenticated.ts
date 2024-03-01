@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { SessionRepository } from '..';
-import { readCookie } from '../util/sessionUtils';
-import { SessionData } from '../entities/SessionData';
 import passport from 'passport';
+import { SessionRepository } from '..';
+import { SessionData } from '../entities/SessionData';
+import { readCookie } from '../util/sessionUtils';
 
 export async function ensureAuthenticated(req: any, res: any, next: any) {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
@@ -10,10 +10,8 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
   req.session.returnTo = req.originalUrl;
   let session = sessionCookie ? await SessionRepository.findOneBy({ id: sessionCookie }) : null;
 
-  const isRefreshTokenValid =
-    session?.refreshTokenExpiresAt && session?.refreshTokenExpiresAt > new Date();
-  const isAccessTokenValid =
-    session?.accessTokenExpiresAt && session?.accessTokenExpiresAt > new Date();
+  const isRefreshTokenValid = session?.refreshTokenExpiresAt && session?.refreshTokenExpiresAt > new Date();
+  const isAccessTokenValid = session?.accessTokenExpiresAt && session?.accessTokenExpiresAt > new Date();
 
   if (session?.id && !isAccessTokenValid && isRefreshTokenValid) {
     await refreshTokens(sessionCookie);
@@ -28,7 +26,7 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
   }
 
   if (session?.id && !isRefreshTokenValid && !isAccessTokenValid) {
-    req.logout(async function (err: Error) {
+    req.logout(async (err: Error) => {
       if (err) {
         console.error(err);
         return next(err);
@@ -58,7 +56,7 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
 async function refreshTokens(sessionId: string) {
   try {
     if (!SessionRepository) throw new Error('SessionRepository not initialized');
-    let session = await SessionRepository.findOneBy({ id: sessionId });
+    const session = await SessionRepository.findOneBy({ id: sessionId });
     if (!session) {
       throw new Error('refreshTokens: Session not found');
     }
@@ -80,7 +78,7 @@ async function refreshTokens(sessionId: string) {
             'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: AuthEncoded,
           },
-        }
+        },
       )
       .then(async (response) => {
         const {

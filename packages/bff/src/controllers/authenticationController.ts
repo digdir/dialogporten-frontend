@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
+import { Session } from 'express-session';
 import passport from 'passport';
-import { deleteCookie, readCookie, setCookie } from '../util/sessionUtils';
-import { SessionData } from '../entities/SessionData';
 import { SessionRepository } from '..';
 import '../config/env';
-import { Session } from 'express-session';
+import { SessionData } from '../entities/SessionData';
+import { deleteCookie, readCookie, setCookie } from '../util/sessionUtils';
 
 interface CustomSession extends Session, Partial<SessionData> {
   returnTo?: string;
@@ -40,7 +40,7 @@ const login = async (req: Express.Request, res: Response, next: any) => {
   passport.authenticate('oidc')(req, res, next);
 };
 
-const logout = async function (req: any, res: any, next: any) {
+const logout = async (req: any, res: any, next: any) => {
   const sessionCookie = readCookie(req);
 
   const currentSession: SessionData | null = await SessionRepository!.findOneBy({
@@ -53,7 +53,7 @@ const logout = async function (req: any, res: any, next: any) {
   if (currentSession && logoutUri && logoutRedirectUri) {
     const logoutRedirectUrl = `${logoutUri}?post_logout_redirect_uri=${logoutRedirectUri}&id_token_hint=${currentSession.idToken}`;
 
-    req.logout(function (err: Error) {
+    req.logout((err: Error) => {
       if (err) {
         console.error('Logout Error:', err);
         return next(err);
@@ -61,7 +61,7 @@ const logout = async function (req: any, res: any, next: any) {
 
       if (req.session) {
         deleteCookie(res);
-        req.session.destroy(function (err: Error) {
+        req.session.destroy((err: Error) => {
           if (err) {
             console.error('Error destroying session:', err);
             return next(err);
@@ -90,7 +90,7 @@ const protectedEndpoint = async (req: CustomRequest, res: Response) => {
 const callback = async (req: CustomRequest, res: any) => {
   try {
     let userRequestedUrl = req.user?.postLoginRedirectUrl;
-    let currentSessionId = req.user?.currentSessionId;
+    const currentSessionId = req.user?.currentSessionId;
     let currentSession;
 
     if (currentSessionId) {

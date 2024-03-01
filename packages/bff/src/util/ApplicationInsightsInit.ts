@@ -3,8 +3,10 @@ import * as appInsights from 'applicationinsights';
 import { bffVersion } from '..';
 import { waitNSeconds } from './waitNSeconds';
 
+const isAppInsightsEnabled = process.env.ENABLE_APP_INSIGHTS !== 'true';
+
 export const initAppInsights = async () => {
-  if (process.env.ENABLE_APP_INSIGHTS === 'true') {
+  if (isAppInsightsEnabled) {
     return new Promise((resolve, reject) => {
       if (!process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
         reject("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");

@@ -1,6 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
   title: 'Dialogporten Frontend',
@@ -26,23 +26,23 @@ const config: Config = {
     locales: ['en'],
   },
 
-	markdown: {
-		mermaid: true,
-	},
+  markdown: {
+    mermaid: true,
+  },
 
-	themes: [
-		/* mermaid */
-		'@docusaurus/theme-mermaid',
+  themes: [
+    /* mermaid */
+    '@docusaurus/theme-mermaid',
 
-		/* search */
-		[
-			require.resolve("@easyops-cn/docusaurus-search-local"),
-			/** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-			({
-				hashed: true,
-			}),
-		]
-	],
+    /* search */
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        hashed: true,
+      }),
+    ],
+  ],
 
   presets: [
     [
@@ -50,13 +50,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl:
-            'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
+          editUrl: 'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
         },
         blog: {
           showReadingTime: true,
-          editUrl:
-            'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
+          editUrl: 'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -84,9 +82,9 @@ const config: Config = {
         { to: '/blog', label: 'Blog', position: 'left' },
         {
           href: 'https://digdir.github.io/dialogporten-frontend/storybook-static',
-					label: 'Storybook',
-					position: 'left'
-				},
+          label: 'Storybook',
+          position: 'left',
+        },
         {
           href: 'https://github.com/digdir/dialogporten-frontend',
           label: 'GitHub',
@@ -120,7 +118,8 @@ const config: Config = {
           ],
         },
       ],
-      copyright: 'Alt innhold på denne siden er å regne som forskning og work-in-progress, og representerer ikke nødvendigvis egenskapene til noe produkt, vedtatt strategi eller politikk hos Digitaliseringsdirektoratet.',
+      copyright:
+        'Alt innhold på denne siden er å regne som forskning og work-in-progress, og representerer ikke nødvendigvis egenskapene til noe produkt, vedtatt strategi eller politikk hos Digitaliseringsdirektoratet.',
     },
     prism: {
       theme: prismThemes.github,

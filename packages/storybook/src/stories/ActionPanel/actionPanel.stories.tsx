@@ -1,17 +1,12 @@
-import { ActionPanel } from "frontend-design-poc";
-import { Meta, StoryObj } from "@storybook/react";
-import {
-  ArrowForwardIcon,
-  ClockDashedIcon,
-  EnvelopeOpenIcon,
-  TrashIcon,
-} from "@navikt/aksel-icons";
+import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
+import { Meta, StoryObj } from '@storybook/react';
+import { ActionPanel } from 'frontend-design-poc';
 
 export default {
-  title: "Components/ActionPanel",
+  title: 'Components/ActionPanel',
   component: ActionPanel,
   parameters: {
-    layout: "fullscreen"
+    layout: 'fullscreen',
   },
 } as Meta<typeof ActionPanel>;
 
@@ -19,19 +14,19 @@ export const Default: StoryObj<typeof ActionPanel> = {
   args: {
     actionButtons: [
       {
-        label: "Del",
-        icon: <ArrowForwardIcon/>,
+        label: 'Del',
+        icon: <ArrowForwardIcon />,
       },
       {
-        label: "Markert som lest",
+        label: 'Markert som lest',
         icon: <EnvelopeOpenIcon />,
       },
       {
-        label: "Flytt til arkiv",
+        label: 'Flytt til arkiv',
         icon: <ClockDashedIcon />,
       },
       {
-        label: "Slett",
+        label: 'Slett',
         icon: <TrashIcon />,
       },
     ],

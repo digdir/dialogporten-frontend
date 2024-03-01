@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import './config/env';
 
-export let connectionOptions: DataSourceOptions = {
+export const connectionOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5430'),

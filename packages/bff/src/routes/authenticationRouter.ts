@@ -1,7 +1,7 @@
 import express from 'express';
+import passport from 'passport';
 import { CustomRequest, authenticationController } from '../controllers/authenticationController';
 import { ensureAuthenticated } from '../middleware/ensureAuthenticated';
-import passport from 'passport';
 
 const authenticationRouter = express.Router();
 
@@ -14,10 +14,10 @@ authenticationRouter.get(
   passport.authenticate('oidc', {
     failureRedirect: '/login',
   }),
-  authenticationController.callback
+  authenticationController.callback,
 );
 authenticationRouter.get('/protected', ensureAuthenticated, (req, res, next) =>
-  authenticationController.protectedEndpoint(req as CustomRequest, res).catch(next)
+  authenticationController.protectedEndpoint(req as CustomRequest, res).catch(next),
 );
 
 export { authenticationRouter };

@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { AltinnError, TestResult } from '../types/global';
-import { QueryKey } from '../types/QueryKey';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { QueryKey } from '../types/QueryKey';
+import { AltinnError, TestResult } from '../types/global';
 
 export const useTestQuery = (name?: string): UseQueryResult<TestResult | null, AltinnError> => {
   const requestUrl = '/auth/protected';

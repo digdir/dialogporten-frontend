@@ -1,22 +1,15 @@
-import type { Preview } from '@storybook/react';
 import '@digdir/design-system-tokens/brand/altinn/tokens.css';
-import customTheme from './customTheme';
+import { A11yParameters } from '@storybook/addon-a11y';
+import type { Preview } from '@storybook/react';
+import { Rule, getRules } from 'axe-core';
+import { nbResources } from 'frontend-design-poc';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
-import { nbResources } from 'frontend-design-poc';
-import { Rule, getRules } from "axe-core";
-import { A11yParameters } from '@storybook/addon-a11y';
+import customTheme from './customTheme';
 
-import './i18next'
+import './i18next';
 
-const enabledTags = [
-  "wcag2a",
-  "wcag2aa",
-  "wcag21a",
-  "wcag21aa",
-  "wcag22aa",
-  "best-practice",
-];
+const enabledTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 
 const enabledRules: Rule[] = getRules(enabledTags).map((ruleMetadata) => ({
   id: ruleMetadata.ruleId,
@@ -40,24 +33,25 @@ const preview: Preview = {
     (Story) => {
       return (
         <I18nextProvider i18n={i18n}>
-            <Story />
+          <Story />
         </I18nextProvider>
-    );
+      );
     },
   ],
   parameters: {
     i18n,
     a11y,
-    actions: { argTypesRegex: '^on[A-Z].*' }, docs: {
-      theme: customTheme
-    }, controls: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    docs: {
+      theme: customTheme,
+    },
+    controls: {
       matchers: {
-        color: /(background|color)$/i, date: /Date$/i
-      }
-    }
-  }
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+  },
 };
-
-
 
 export default preview;
