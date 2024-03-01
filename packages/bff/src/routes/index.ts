@@ -1,6 +1,6 @@
 import express from 'express';
-import { helloWorldRouter } from './helloWorldRouter';
 import { authenticationRouter } from './authenticationRouter';
+import { helloWorldRouter } from './helloWorldRouter';
 
 const routes = express.Router();
 

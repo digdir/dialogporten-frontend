@@ -1,11 +1,11 @@
 import { Issuer, Strategy as OpenIDStrategy, TokenSet } from 'openid-client';
-import './env';
-import { IDPortenProfile } from '../types/types';
-import { Profile } from '../entities/Profile';
-import { ProfileRepository, SessionRepository } from '..';
 import passport from 'passport';
-import { readCookie } from '../util/sessionUtils';
+import { ProfileRepository, SessionRepository } from '..';
+import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
+import { IDPortenProfile } from '../types/types';
+import { readCookie } from '../util/sessionUtils';
+import './env';
 
 export const initPassport = async () => {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
@@ -15,11 +15,9 @@ export const initPassport = async () => {
     process.exit(1);
   }
 
-  const idportenIssuer = await Issuer.discover(process.env.ISSUER_URL).then(
-    async (idportenIssuer) => {
-      return idportenIssuer;
-    }
-  );
+  const idportenIssuer = await Issuer.discover(process.env.ISSUER_URL).then(async (idportenIssuer) => {
+    return idportenIssuer;
+  });
 
   const client = new idportenIssuer.Client({
     client_id: process.env.CLIENT_ID!,
@@ -55,12 +53,7 @@ export const initPassport = async () => {
             sessionId = session?.id;
           }
           if (!sessionId) {
-            const session = await createSession(
-              sid as string,
-              tokenSet,
-              user,
-              postLoginRedirectUrl
-            );
+            const session = await createSession(sid as string, tokenSet, user, postLoginRedirectUrl);
             sessionId = session?.id;
           }
 
@@ -77,8 +70,8 @@ export const initPassport = async () => {
           console.error("authenticate('oidc') error: ", error);
           return done(error);
         }
-      }
-    )
+      },
+    ),
   );
 
   passport.serializeUser((user: any, done) => {
@@ -117,7 +110,7 @@ const createSession = async (
   idportenSessionId: string,
   tokenSet: TokenSet,
   user: Profile,
-  postLoginRedirectUrl: string
+  postLoginRedirectUrl: string,
 ) => {
   const {
     id_token: idToken,

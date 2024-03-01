@@ -82,8 +82,7 @@ export const dialogMock = {
           httpMethod: 'POST',
           requestSchema:
             'https://digdir.apps.tt02.altinn.no/digdir/super-simple-service/api/jsonschema/mainform-20231015',
-          responseSchema:
-            'https://docs.altinn.studio/swagger/altinn-app-v1.json#/components/schemas/DataElement',
+          responseSchema: 'https://docs.altinn.studio/swagger/altinn-app-v1.json#/components/schemas/DataElement',
           deprecated: false,
         },
       ],

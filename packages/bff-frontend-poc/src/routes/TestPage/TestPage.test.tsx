@@ -6,7 +6,7 @@ import { TestPage } from './TestPage';
 */
 
 test.skip('renders TestPage component with a link to the root', () => {
-	/*
+  /*
   render(
     <MemoryRouter initialEntries={['/']}>
       <TestPage />

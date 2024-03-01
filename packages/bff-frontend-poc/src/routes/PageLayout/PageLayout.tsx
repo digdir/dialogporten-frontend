@@ -1,9 +1,9 @@
-import React from 'react';
-import classes from './PageLayout.module.css';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useTestQuery } from '../../queries/useTestQuery';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { dialogMock } from '../../mockData/dialogMock';
+import { useTestQuery } from '../../queries/useTestQuery';
+import classes from './PageLayout.module.css';
 
 const instance = axios.create({
   baseURL: '/api/', // This path will be proxied in development
@@ -26,6 +26,7 @@ export const PageLayout = () => {
       {/* <p>{testData?.message}</p> */}
       <Link to={`test`}>Go to React Router Test Page</Link>
       <button
+        type="button"
         onClick={() =>
           fetch('http://localhost:3000/auth/protected', {
             method: 'GET', // or 'POST'
@@ -33,9 +34,7 @@ export const PageLayout = () => {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',
-              // Other headers can go here
             },
-            // No body for GET requests
           })
             .then((response) => response.json())
             .then((d) => {

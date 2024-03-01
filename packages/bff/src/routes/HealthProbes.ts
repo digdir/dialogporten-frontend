@@ -1,5 +1,5 @@
 import { app, bffVersion } from '..';
-let migrationsuccessful = false;
+const migrationsuccessful = false;
 
 export const isReady = () => migrationsuccessful;
 
@@ -8,7 +8,7 @@ export function startReadinessProbe(startTimeStamp: Date) {
     bffVersion,
     'Starting /readiness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,
-    'seconds'
+    'seconds',
   );
   app.get('/readiness', (req, res) => {
     res.send('OK');
@@ -20,7 +20,7 @@ export function startLivenessProbe(startTimeStamp: Date) {
     bffVersion,
     'Starting /liveness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,
-    'seconds'
+    'seconds',
   );
   app.get('/liveness', (req, res) => {
     res.send('OK');

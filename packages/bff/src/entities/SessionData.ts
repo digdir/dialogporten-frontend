@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Profile } from './Profile';
 
 @Entity()
@@ -43,6 +36,9 @@ export class SessionData {
   @Column('simple-json', { nullable: true })
   sessionData: any;
 
-  @ManyToOne(() => Profile, (profile) => profile.sessions)
+  @ManyToOne(
+    () => Profile,
+    (profile) => profile.sessions,
+  )
   profile: Profile;
 }
