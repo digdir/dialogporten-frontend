@@ -24,7 +24,7 @@ export const PageLayout = () => {
       <h1 className={classes.heading}>Dialogporten Frontend</h1>
       {/* <h2>Current BFF version: {testData?.bffVersion}</h2> */}
       {/* <p>{testData?.message}</p> */}
-      <Link to={`test`}>Go to React Router Test Page</Link>
+      <Link to={'test'}>Go to React Router Test Page</Link>
       <button
         type="button"
         onClick={() =>
