@@ -1,4 +1,4 @@
-import styles from "./app.module.css";
+import styles from './app.module.css';
 
 const App = () => <div className={styles.app}>Storybook</div>;
 

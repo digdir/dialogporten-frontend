@@ -16,7 +16,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon --watch 'src/**/*.ts'\"",
     "docker": "concurrently \"npx tsc --watch\" \"nodemon --watch '/app/packages/bff/src/**/*.ts'\"",
     "build:docker": "docker build -f ./Dockerfile -t bff ../..",
-    "run:docker": "docker run -e IS_LOCAL=true -it -p 80:80 bff"
+    "run:docker": "docker run -e -it -p 80:80 bff"
   },
   "dependencies": {
     "@azure/app-configuration": "^1.4.1",

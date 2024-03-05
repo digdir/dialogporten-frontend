@@ -1,7 +1,7 @@
-import 'reflect-metadata';
-import '../config/env';
 import util from 'util';
+import 'reflect-metadata';
 import { bffVersion } from '..';
+import '../config/env';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { waitNSeconds } from './waitNSeconds';
 

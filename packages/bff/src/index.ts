@@ -1,9 +1,6 @@
 export const bffVersion = process.env.GIT_SHA || 'v6.1.5';
-export const isLocal = process.env.IS_LOCAL === 'true';
 import './config/env';
 
-if (process.env.IS_LOCAL === 'true')
-  console.log(`Starting BFF ${bffVersion} in local mode with env file '${process.env.ENV_FILE}'.`);
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import 'reflect-metadata';
@@ -28,6 +25,8 @@ export let StartUpRepository: Repository<StartUp> | undefined = undefined;
 export let SessionRepository: Repository<SessionData> | undefined = undefined;
 export let ProfileRepository: Repository<Profile> | undefined = undefined;
 const startTimeStamp = new Date();
+const isAppInsightsEnabled = process.env.ENABLE_APP_INSIGHTS !== 'true';
+
 declare module 'express-session' {
   export interface SessionData {
     returnTo?: string;
@@ -43,7 +42,7 @@ const main = async (): Promise<void> => {
   });
 
   // ************ INITIALIZE APPLICATION INSIGHTS ************
-  if (!isLocal) {
+  if (isAppInsightsEnabled) {
     const { initAppInsights } = await import('./util/ApplicationInsightsInit');
     await initAppInsights();
     console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);

@@ -1,11 +1,4 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { SessionData } from './SessionData';
 
 @Entity()
@@ -28,6 +21,9 @@ export class Profile {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => SessionData, (session) => session.profile)
+  @OneToMany(
+    () => SessionData,
+    (session) => session.profile,
+  )
   sessions: SessionData[];
 }

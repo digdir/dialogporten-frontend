@@ -90,7 +90,7 @@ const SidebarSimpleExamplePerson = () => {
 };
 
 const SidebarSimpleExampleCompany = () => {
-  return <Sidebar />;
+  return <Sidebar isCompany />;
 };
 
 export const simpleDesktopExamplePerson: () => JSX.Element = () => <SidebarSimpleExamplePerson />;

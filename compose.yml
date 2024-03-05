@@ -67,7 +67,6 @@ services:
       DB_USER: postgres
       DB_PASSWORD: mysecretpassword
       DB_NAME: dialogporten
-      IS_LOCAL: true
       PORT: 3000
       DEV_ENV: dev
       REDIRECT_URI: http://localhost:3000/auth/cb

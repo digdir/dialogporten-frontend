@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { HelloWorldDto } from '../Dtos';
 import { StartUpRepository, bffVersion } from '..';
+import { HelloWorldDto } from '../Dtos';
 const process = require('process');
 
 async function getMostRecentStartUp() {
