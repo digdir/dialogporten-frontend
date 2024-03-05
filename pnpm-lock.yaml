@@ -277,6 +277,9 @@ importers:
 
   packages/dialogporten-types-generated:
     dependencies:
+      dialogporten-swagger:
+        specifier: ^1.0.4
+        version: 1.0.4
       swagger-typescript-api:
         specifier: 13.0.3
         version: 13.0.3
@@ -10882,6 +10885,10 @@ packages:
       semver: 7.5.4
     dev: false
 
+  /dialogporten-swagger@1.0.4:
+    resolution: {integrity: sha512-+vkGl/K8cIHvzCBSiJh5HobQccSrCATtYiRBbj/Mn/XNRGOTh/UpugFy8zSwo9omRkvqmoNH3rMFBsckEZB3Dg==}
+    dev: false
+
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
     dev: false
@@ -19504,6 +19511,7 @@ packages:
   /semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
+    requiresBuild: true
 
   /semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
