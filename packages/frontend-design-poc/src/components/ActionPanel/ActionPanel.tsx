@@ -1,4 +1,4 @@
-import { Button } from '@digdir/design-system-react';
+import { Button } from '@digdir/designsystemet-react';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

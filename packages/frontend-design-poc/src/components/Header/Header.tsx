@@ -1,4 +1,4 @@
-import { Search } from '@digdir/design-system-react';
+import { Search } from '@digdir/designsystemet-react';
 import cx from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';

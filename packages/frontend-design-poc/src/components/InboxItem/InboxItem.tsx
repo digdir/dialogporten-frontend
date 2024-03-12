@@ -1,4 +1,4 @@
-import { Checkbox } from '@digdir/design-system-react';
+import { Checkbox } from '@digdir/designsystemet-react';
 import classNames from 'classnames';
 import { JSX } from 'react';
 import { Link } from 'react-router-dom';

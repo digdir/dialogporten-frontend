@@ -2,16 +2,16 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es6",
-    "module": "commonjs",                               
-    "jsx": "react",
+    "module": "commonjs",
+    "jsx": "react-jsx", 
     "rootDir": "./src",
-    "esModuleInterop": true,                            
+    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,           
-    "strict": true,                                     
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "plugins": [{ "name": "typescript-plugin-css-modules" }],
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

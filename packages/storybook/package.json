@@ -11,8 +11,9 @@
     "run:docker": "docker run -it -p 80:80 storybook"
   },
   "dependencies": {
-    "@digdir/design-system-react": "^0.47.0",
-    "@digdir/design-system-tokens": "^0.12.0",
+    "@digdir/designsystemet-css": "0.1.1-alpha.0",
+    "@digdir/designsystemet-react": "0.52.0-alpha.0",
+    "@digdir/designsystemet-theme": "0.13.1-alpha.0",
     "@navikt/aksel-icons": "^5.18.0",
     "frontend-design-poc": "workspace:*",
     "i18next": "^23.8.2",
