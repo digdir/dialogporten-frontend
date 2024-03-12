@@ -1,0 +1,40 @@
+.filterButton {
+    button {
+        border-radius: 0;
+    }
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+}
+
+.xed {
+    text-decoration: line-through;
+}
+
+.filterListContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1em;
+}
+
+.filterListLabel {
+    font-size: 1rem;
+}
+
+.filterListCount {
+    padding: 0.5em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1em;
+    border-radius: 50%;
+    height: 1em;
+    width: 1em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(243, 244, 246);
+    color: rgba(0,0,0);
+}
