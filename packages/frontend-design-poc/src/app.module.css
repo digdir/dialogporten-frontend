@@ -1,8 +1,10 @@
-@import '@digdir/design-system-tokens/brand/digdir/tokens.css';
+@import '@digdir/designsystemet-css';
+@import '@digdir/designsystemet-theme';
 
 :root {
   font-family: 'Inter', sans-serif;
-  font-feature-settings: 'cv05' 1 !important; /* Enable lowercase l with tail */
+  font-feature-settings: 'cv05'1 !important;
+  /* Enable lowercase l with tail */
   font-weight: 400;
 
   font-synthesis: none;
@@ -15,4 +17,3 @@
   width: 100%;
   margin: 0 auto;
 }
-

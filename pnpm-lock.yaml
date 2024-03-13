@@ -335,12 +335,15 @@ importers:
 
   packages/frontend-design-poc:
     dependencies:
-      '@digdir/design-system-react':
-        specifier: ^0.47.0
-        version: 0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
-      '@digdir/design-system-tokens':
-        specifier: ^0.12.0
-        version: 0.12.0
+      '@digdir/designsystemet-css':
+        specifier: 0.1.1-alpha.0
+        version: 0.1.1-alpha.0
+      '@digdir/designsystemet-react':
+        specifier: 0.52.0-alpha.0
+        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+      '@digdir/designsystemet-theme':
+        specifier: 0.13.1-alpha.0
+        version: 0.13.1-alpha.0
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
@@ -414,12 +417,15 @@ importers:
 
   packages/storybook:
     dependencies:
-      '@digdir/design-system-react':
-        specifier: ^0.47.0
-        version: 0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
-      '@digdir/design-system-tokens':
-        specifier: ^0.12.0
-        version: 0.12.0
+      '@digdir/designsystemet-css':
+        specifier: 0.1.1-alpha.0
+        version: 0.1.1-alpha.0
+      '@digdir/designsystemet-react':
+        specifier: 0.52.0-alpha.0
+        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+      '@digdir/designsystemet-theme':
+        specifier: 0.13.1-alpha.0
+        version: 0.13.1-alpha.0
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
@@ -653,10 +659,6 @@ packages:
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
-    dev: false
-
-  /@altinn/figma-design-tokens@6.0.1:
-    resolution: {integrity: sha512-8MbIZDZdDzeYwvQ1DaRUoVd6VkWjax/mlbq1haABwv0WX8++L426O9g2wg9YtZ+WeIa3JUSOhbiXMgpTVcXBDQ==}
     dev: false
 
   /@ampproject/remapping@2.2.1:
@@ -2584,27 +2586,29 @@ packages:
       postcss-selector-parser: 6.0.15
     dev: false
 
-  /@digdir/design-system-react@0.47.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-glZjOyllDTn22zRWWb9XOrnzYlC8kr+mBf6y2NQlS6mtvB36scRpSiPMfWmYy4v8BqbRlHyy9tn7R8Wqdp+Ylg==}
+  /@digdir/designsystemet-css@0.1.1-alpha.0:
+    resolution: {integrity: sha512-1oqCS24OVjbRn7ulM7vBOMffSfX5rWlM39GucqqIdEX7KA8Ed7oulDmJsmbVPmt7Bj4Dvnr2FsHBiCneeRJfGA==}
+    dev: false
+
+  /@digdir/designsystemet-react@0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-gOO3NlsQV/wyvkZNo6SqTmpg08ajnHpoBqB+Oz7j2K+dd8sEie39cIctj0GHI2vRkz169mwOtX3qdcAJE9/fnQ==}
     peerDependencies:
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
-      '@altinn/figma-design-tokens': 6.0.1
-      '@digdir/design-system-tokens': 0.12.0
+      '@digdir/designsystemet-theme': 0.13.1-alpha.0
       '@floating-ui/react': 0.26.4(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 5.18.0
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
       '@tanstack/react-virtual': 3.0.2(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-number-format: 5.3.1(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
 
-  /@digdir/design-system-tokens@0.12.0:
-    resolution: {integrity: sha512-vq9x3j3u+08Lr+p9O58RfLkDNeQom3Bzon0Jn/QP5Iujog3f1zXR8M1kM9rtBS60QmjYCodv+9b/NN3AM5LzZA==}
+  /@digdir/designsystemet-theme@0.13.1-alpha.0:
+    resolution: {integrity: sha512-NgbcDqYf/3niVq98zteoRMbDERYhetoN6WPRcPtlpwJbOyUH1bsN6kFVpaNe9iiDb7JEqxCQXpUgMKi863IiTA==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
@@ -18550,17 +18554,6 @@ packages:
       '@babel/runtime': 7.23.9
       react-loadable: /@docusaurus/react-loadable@5.5.2(react@18.2.0)
       webpack: 5.90.0
-    dev: false
-
-  /react-number-format@5.3.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-qpYcQLauIeEhCZUZY9jXZnnroOtdy3jYaS1zQ3M1Sr6r/KMOBEIGNIb7eKT19g2N1wbYgFgvDzs19hw5TrB8XQ==}
-    peerDependencies:
-      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-query@3.39.3(react-dom@18.2.0)(react@18.2.0):
