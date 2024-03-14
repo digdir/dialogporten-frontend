@@ -13,8 +13,3 @@ jobs:
   
   playwright-test:
     uses: ./.github/workflows/workflow-playwright-test.yml
-  
-  dry-run-infrastructure:
-    uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    with:
-      environment: test
