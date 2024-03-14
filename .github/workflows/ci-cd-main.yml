@@ -1,0 +1,16 @@
+name: CI/CD Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/workflow-build-and-test.yml
+    with:
+      environment: test
+    
+  deploy-documentation:
+    uses: ./.github/workflows/workflow-deploy-docs.yml
+    
