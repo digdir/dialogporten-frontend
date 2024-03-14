@@ -24,6 +24,7 @@
     "@mdx-js/react": "^3.0.0",
     "@types/node": "^16.11.10",
     "clsx": "^2.0.0",
+    "docusaurus-tldraw-plugin": "workspace: *",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
