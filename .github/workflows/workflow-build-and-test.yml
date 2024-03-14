@@ -6,16 +6,6 @@ on:
       environment:
         required: true
         type: string
-  push:
-    paths:
-      - 'packages/**'
-      - './**'
-      - '.github/workflows/CI.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'turbo.json'
-      - 'biome.json'
 
 concurrency:
   group: ${{ github.ref }}

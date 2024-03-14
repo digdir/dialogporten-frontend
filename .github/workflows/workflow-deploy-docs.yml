@@ -1,9 +1,7 @@
-name: CD Docs
+name: Deploy documentation
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   deploy-github-pages:
