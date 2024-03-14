@@ -18,7 +18,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
     location: location
 }
 
-module keyVaultModule 'keyvault/create.bicep' = {
+module keyVaultModule '../modules/keyvault/create.bicep' = {
     scope: resourceGroup
     name: 'keyVault'
     params: {
@@ -28,7 +28,7 @@ module keyVaultModule 'keyvault/create.bicep' = {
     }
 }
 
-module appConfiguration 'appConfiguration/create.bicep' = {
+module appConfiguration '../modules/appConfiguration/create.bicep' = {
     scope: resourceGroup
     name: 'appConfiguration'
     params: {
@@ -37,7 +37,7 @@ module appConfiguration 'appConfiguration/create.bicep' = {
     }
 }
 
-module appInsights 'applicationInsights/create.bicep' = {
+module appInsights '../modules/applicationInsights/create.bicep' = {
     scope: resourceGroup
     name: 'appInsights'
     params: {
@@ -53,7 +53,7 @@ resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
 }
 
 // Create resources with dependencies to other resources
-module postgresql 'postgreSql/create.bicep' = {
+module postgresql '../modules/postgreSql/create.bicep' = {
     scope: resourceGroup
     name: 'postgresql'
     params: {
@@ -66,7 +66,7 @@ module postgresql 'postgreSql/create.bicep' = {
     }
 }
 
-module copySecret 'keyvault/copySecrets.bicep' = {
+module copySecret '../modules/keyvault/copySecrets.bicep' = {
     scope: resourceGroup
     name: 'copySecrets'
     params: {
@@ -79,7 +79,7 @@ module copySecret 'keyvault/copySecrets.bicep' = {
     }
 }
 
-module migrationJob 'migrationJob/create.bicep' = {
+module migrationJob '../modules/migrationJob/create.bicep' = {
     scope: resourceGroup
     name: 'migrationJob'
     params: {
@@ -129,7 +129,7 @@ module migrationJob 'migrationJob/create.bicep' = {
     }
 }
 
-module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
+module appConfigConfigurations '../modules/appConfiguration/upsertKeyValue.bicep' = {
     scope: resourceGroup
     name: 'AppConfig_Add_DialogDbConnectionString'
     params: {
@@ -150,7 +150,7 @@ module appConfigConfigurations 'appConfiguration/upsertKeyValue.bicep' = {
 //     }
 // }
 
-module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
+module keyVaultReaderAccessPolicy '../modules/keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
     name: 'keyVaultReaderAccessPolicy'
     params: {
@@ -169,7 +169,7 @@ module keyVaultReaderAccessPolicy 'keyvault/addReaderRoles.bicep' = {
 //     }
 // }
 
-module initContainerApp 'containerApp/init.bicep' = {
+module initContainerApp '../modules/containerApp/init.bicep' = {
     scope: resourceGroup
     name: 'initContainerApp'
     params: {
@@ -180,7 +180,7 @@ module initContainerApp 'containerApp/init.bicep' = {
     }
 
 }
-module createMECertificate 'containerApp/createMECertificate.bicep' = {
+module createMECertificate '../modules/containerApp/createMECertificate.bicep' = {
     dependsOn: [ initContainerApp ]
     scope: resourceGroup
     name: 'createMECertificate'
@@ -189,7 +189,7 @@ module createMECertificate 'containerApp/createMECertificate.bicep' = {
         location: location
     }
 }
-module containerApp 'containerApp/addNECertufucateToContainer.bicep' = {
+module containerApp '../modules/containerApp/addNECertufucateToContainer.bicep' = {
     dependsOn: [ createMECertificate ]
     scope: resourceGroup
     name: 'containerApp'
@@ -245,7 +245,7 @@ module containerApp 'containerApp/addNECertufucateToContainer.bicep' = {
 
 }
 
-module customContainerAppRole 'customRoles/create.bicep' = {
+module customContainerAppRole '../modules/customRoles/create.bicep' = {
     scope: resourceGroup
     name: 'customContainerAppRole'
     params: {
@@ -253,7 +253,7 @@ module customContainerAppRole 'customRoles/create.bicep' = {
     }
 }
 
-module assignContainerAppJobRoles 'customRoles/assign.bicep' = {
+module assignContainerAppJobRoles '../modules/customRoles/assign.bicep' = {
     scope: resourceGroup
     name: 'assignContainerAppJobRoles'
     params: {
@@ -262,7 +262,7 @@ module assignContainerAppJobRoles 'customRoles/assign.bicep' = {
     }
 }
 
-module assignConfigReaderRole 'customRoles/assign.bicep' = {
+module assignConfigReaderRole '../modules/customRoles/assign.bicep' = {
     scope: resourceGroup
     name: 'assignConfigReaderRole'
     params: {
@@ -271,7 +271,7 @@ module assignConfigReaderRole 'customRoles/assign.bicep' = {
     }
 }
 
-module appConfigReaderAccessPolicy 'appConfiguration/addReaderRoles.bicep' = {
+module appConfigReaderAccessPolicy '../modules/appConfiguration/addReaderRoles.bicep' = {
     scope: resourceGroup
     name: 'appConfigReaderAccessPolicy'
     params: {
