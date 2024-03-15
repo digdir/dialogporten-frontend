@@ -2,13 +2,31 @@ targetScope = 'subscription'
 
 param environment string
 param location string
-param keyVault object
-// param imageUrl string
-// param deployTimestamp string
+param keyVaultSourceKeys array
+
 param gitSha string
-var namePrefix = 'dp-fe-${environment}'
+
 @secure()
-param secrets object
+@minLength(3)
+param dialogportenPgAdminPassword string
+@secure()
+@minLength(3)
+param sourceKeyVaultSubscriptionId string
+@secure()
+@minLength(3)
+param sourceKeyVaultResourceGroup string
+@secure()
+@minLength(3)
+param sourceKeyVaultName string
+
+var secrets = {
+    dialogportenPgAdminPassword: dialogportenPgAdminPassword
+    sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
+    sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
+    sourceKeyVaultName: sourceKeyVaultName
+}
+
+var namePrefix = 'dp-fe-${environment}'
 
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend'
 
@@ -18,13 +36,12 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
     location: location
 }
 
-module keyVaultModule '../modules/keyvault/create.bicep' = {
+module environmentKeyVault '../modules/keyvault/create.bicep' = {
     scope: resourceGroup
     name: 'keyVault'
     params: {
         namePrefix: namePrefix
         location: location
-        adminObjectIds: keyVault.adminObjectIds
     }
 }
 
@@ -48,8 +65,14 @@ module appInsights '../modules/applicationInsights/create.bicep' = {
 
 // Create references to existing resources
 resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
-    name: keyVault.source.name
-    scope: az.resourceGroup(keyVault.source.subscriptionId, keyVault.source.resourceGroupName)
+    name: secrets.sourceKeyVaultName
+    scope: az.resourceGroup(secrets.sourceKeyVaultSubscriptionId, secrets.sourceKeyVaultResourceGroup)
+}
+
+var srcKeyVault = {
+    name: secrets.sourceKeyVaultName
+    subscriptionId: secrets.sourceKeyVaultSubscriptionId
+    resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
 // Create resources with dependencies to other resources
@@ -59,10 +82,10 @@ module postgresql '../modules/postgreSql/create.bicep' = {
     params: {
         namePrefix: namePrefix
         location: location
-        keyVaultName: keyVaultModule.outputs.name
-        srcKeyVault: keyVault.source
+        keyVaultName: environmentKeyVault.outputs.name
+        srcKeyVault: srcKeyVault
         srcSecretName: 'dialogportenPgAdminPassword${environment}'
-        administratorLoginPassword: contains(keyVault.source.keys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
+        administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
     }
 }
 
@@ -70,11 +93,11 @@ module copySecret '../modules/keyvault/copySecrets.bicep' = {
     scope: resourceGroup
     name: 'copySecrets'
     params: {
-        srcKeyVaultKeys: keyVault.source.keys
-        srcKeyVaultName: keyVault.source.name
-        srcKeyVaultRGNName: keyVault.source.resourceGroupName
-        srcKeyVaultSubId: keyVault.source.subscriptionId
-        destKeyVaultName: keyVaultModule.outputs.name
+        srcKeyVaultKeys: keyVaultSourceKeys
+        srcKeyVaultName: srcKeyVault.name
+        srcKeyVaultRGNName: srcKeyVault.resourceGroupName
+        srcKeyVaultSubId: srcKeyVault.subscriptionId
+        destKeyVaultName: environmentKeyVault.outputs.name
         secretPrefix: 'dialogporten--${environment}--'
     }
 }
@@ -99,7 +122,7 @@ module migrationJob '../modules/migrationJob/create.bicep' = {
             }
             {
                 name: 'KV_NAME'
-                value: keyVaultModule.outputs.name
+                value: environmentKeyVault.outputs.name
             }
             {
                 name: 'PSQL_CONNECTION_JSON_NAME' // MÅ BYTTES UT, DETTE SKAL HENTES FRA APP CONFIG
@@ -154,7 +177,7 @@ module keyVaultReaderAccessPolicy '../modules/keyvault/addReaderRoles.bicep' = {
     scope: resourceGroup
     name: 'keyVaultReaderAccessPolicy'
     params: {
-        keyvaultName: keyVaultModule.outputs.name
+        keyvaultName: environmentKeyVault.outputs.name
         // TODO: Har lagt til dialogporten-subscription-deploy-principal ettersom den m� hente ut db connectionstring fra keyvault for migrasjon
         principalIds: [ containerApp.outputs.identityPrincipalId, migrationJob.outputs.principalId, '49f570f3-9677-4eb7-b360-eaed33f98632', '2e8cd2b0-400f-4be7-9b8e-311c14263048' ] // FJERNES!!!!!
     }
@@ -214,7 +237,7 @@ module containerApp '../modules/containerApp/addNECertufucateToContainer.bicep' 
             }
             {
                 name: 'KV_NAME'
-                value: keyVaultModule.outputs.name
+                value: environmentKeyVault.outputs.name
             }
             {
                 name: 'GIT_SHA'
