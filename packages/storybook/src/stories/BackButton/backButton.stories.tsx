@@ -6,6 +6,7 @@ export default {
   title: 'Components/BackButton',
   component: BackButton,
   decorators: [withRouter],
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
