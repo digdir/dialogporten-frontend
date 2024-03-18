@@ -18,95 +18,97 @@ param sourceKeyVaultResourceGroup string
 param sourceKeyVaultName string
 
 var secrets = {
-    dialogportenPgAdminPassword: dialogportenPgAdminPassword
-    sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
-    sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
-    sourceKeyVaultName: sourceKeyVaultName
+  dialogportenPgAdminPassword: dialogportenPgAdminPassword
+  sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
+  sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
+  sourceKeyVaultName: sourceKeyVaultName
 }
 
 var namePrefix = 'dp-fe-${environment}'
 
 // Create resource groups
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-    name: '${namePrefix}-rg'
-    location: location
+  name: '${namePrefix}-rg'
+  location: location
 }
 
 module environmentKeyVault '../modules/keyvault/create.bicep' = {
-    scope: resourceGroup
-    name: 'keyVault'
-    params: {
-        namePrefix: namePrefix
-        location: location
-    }
+  scope: resourceGroup
+  name: 'keyVault'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
 }
 
 module appConfiguration '../modules/appConfiguration/create.bicep' = {
-    scope: resourceGroup
-    name: 'appConfiguration'
-    params: {
-        namePrefix: namePrefix
-        location: location
-    }
+  scope: resourceGroup
+  name: 'appConfiguration'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
 }
 
 module appInsights '../modules/applicationInsights/create.bicep' = {
-    scope: resourceGroup
-    name: 'appInsights'
-    params: {
-        namePrefix: namePrefix
-        location: location
-    }
+  scope: resourceGroup
+  name: 'appInsights'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
 }
 
 // Create references to existing resources
 resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
-    name: secrets.sourceKeyVaultName
-    scope: az.resourceGroup(secrets.sourceKeyVaultSubscriptionId, secrets.sourceKeyVaultResourceGroup)
+  name: secrets.sourceKeyVaultName
+  scope: az.resourceGroup(secrets.sourceKeyVaultSubscriptionId, secrets.sourceKeyVaultResourceGroup)
 }
 
 var srcKeyVault = {
-    name: secrets.sourceKeyVaultName
-    subscriptionId: secrets.sourceKeyVaultSubscriptionId
-    resourceGroupName: secrets.sourceKeyVaultResourceGroup
+  name: secrets.sourceKeyVaultName
+  subscriptionId: secrets.sourceKeyVaultSubscriptionId
+  resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
 // Create resources with dependencies to other resources
 module postgresql '../modules/postgreSql/create.bicep' = {
-    scope: resourceGroup
-    name: 'postgresql'
-    params: {
-        namePrefix: namePrefix
-        location: location
-        keyVaultName: environmentKeyVault.outputs.name
-        srcKeyVault: srcKeyVault
-        srcSecretName: 'dialogportenPgAdminPassword${environment}'
-        administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}') ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}') : secrets.dialogportenPgAdminPassword
-    }
+  scope: resourceGroup
+  name: 'postgresql'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    keyVaultName: environmentKeyVault.outputs.name
+    srcKeyVault: srcKeyVault
+    srcSecretName: 'dialogportenPgAdminPassword${environment}'
+    administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}')
+      ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
+      : secrets.dialogportenPgAdminPassword
+  }
 }
 
 module copySecrets '../modules/keyvault/copySecrets.bicep' = {
-    scope: resourceGroup
-    name: 'copySecrets'
-    params: {
-        srcKeyVaultKeys: keyVaultSourceKeys
-        srcKeyVaultName: srcKeyVault.name
-        srcKeyVaultRGNName: srcKeyVault.resourceGroupName
-        srcKeyVaultSubId: srcKeyVault.subscriptionId
-        destKeyVaultName: environmentKeyVault.outputs.name
-        secretPrefix: 'dialogporten--${environment}--'
-    }
+  scope: resourceGroup
+  name: 'copySecrets'
+  params: {
+    srcKeyVaultKeys: keyVaultSourceKeys
+    srcKeyVaultName: srcKeyVault.name
+    srcKeyVaultRGNName: srcKeyVault.resourceGroupName
+    srcKeyVaultSubId: srcKeyVault.subscriptionId
+    destKeyVaultName: environmentKeyVault.outputs.name
+    secretPrefix: 'dialogporten--${environment}--'
+  }
 }
 
 module appConfigDatabaseConnectionString '../modules/appConfiguration/upsertKeyValue.bicep' = {
-    scope: resourceGroup
-    name: 'AppConfig_Add_DatabaseConnectionString'
-    params: {
-        configStoreName: appConfiguration.outputs.name
-        key: 'DATABASE_CONNECTION_STRING'
-        value: postgresql.outputs.connectionStringSecretUri
-        keyValueType: 'keyVaultReference'
-    }
+  scope: resourceGroup
+  name: 'AppConfig_Add_DatabaseConnectionString'
+  params: {
+    configStoreName: appConfiguration.outputs.name
+    key: 'DATABASE_CONNECTION_STRING'
+    value: postgresql.outputs.connectionStringSecretUri
+    keyValueType: 'keyVaultReference'
+  }
 }
 
 // module dnsZone 'dnsZones/create.bicep' = {

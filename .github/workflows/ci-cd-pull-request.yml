@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
-    
+
 jobs:
   generate-git-short-sha:
     name: Generate git short sha
@@ -18,17 +18,13 @@ jobs:
     uses: ./.github/workflows/workflow-build-and-test.yml
     with:
       environment: test
-  
+
   playwright-test:
     uses: ./.github/workflows/workflow-playwright-test.yml
-  
+
   dry-run-deploy-infra:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs:
-      [
-        generate-git-short-sha,
-        check-for-changes
-      ]
+    needs: [generate-git-short-sha, check-for-changes]
     if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -42,11 +38,10 @@ jobs:
       region: norwayeast
       dryRun: true
       version: ${{ github.sha }}
-  
+
   deploy-apps-test:
     name: Deploy apps to test
-    needs:
-      [
+    needs: [
         # todo: uncomment when release-please in enabled
         # get-current-version,
         check-for-changes,

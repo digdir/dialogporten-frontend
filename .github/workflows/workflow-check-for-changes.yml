@@ -38,4 +38,3 @@ jobs:
               - '.azure/applications/bff/*'
               - '.azure/modules/**/*'
               - 'packages/bff/**/*'
-              
