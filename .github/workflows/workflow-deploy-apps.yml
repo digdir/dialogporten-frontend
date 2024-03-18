@@ -67,7 +67,9 @@ jobs:
         id: deploy
         env:
           # parameters
-          IMAGE_TAG: ${{ inputs.version }}
+          # todo: uncomment when we have a proper versioning
+          # IMAGE_TAG: ${{ inputs.version }}
+          IMAGE_TAG: f9be14d82a3d418f398cecbd2974d6c27a12fd57
           # secrets
           CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
@@ -136,7 +138,9 @@ jobs:
         id: deploy
         env:
           # parameters
-          IMAGE_TAG: ${{ inputs.version }}
+          # todo: uncomment when we have a proper versioning
+          # IMAGE_TAG: ${{ inputs.version }}
+          IMAGE_TAG: f9be14d82a3d418f398cecbd2974d6c27a12fd57
           # secrets
           CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}

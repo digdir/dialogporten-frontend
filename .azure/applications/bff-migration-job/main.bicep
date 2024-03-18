@@ -56,7 +56,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
   params: {
     name: containerAppJobName
     location: location
-    image: '${baseImageUrl}node-bff:f9be14d82a3d418f398cecbd2974d6c27a12fd57'
+    image: '${baseImageUrl}node-bff:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
   }
