@@ -62,6 +62,7 @@ jobs:
     with:
       environment: test
       region: norwayeast
+      dryRun: true
       # todo: uncomment when release-please in enabled
       # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
       version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
