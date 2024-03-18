@@ -3,7 +3,7 @@ param name string
 param image string
 param containerAppEnvId string
 param port int = 8080
-param environmentVariables {name: string, value: string}[] = []
+param environmentVariables { name: string, value: string }[] = []
 
 var probes = [
   {
@@ -27,33 +27,33 @@ var probes = [
 ]
 
 resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
-	name: name
-	location: location
-	properties: {
-		environmentId: containerAppEnvId
-		configuration: {
-			replicaRetryLimit: 1
+  name: name
+  location: location
+  properties: {
+    environmentId: containerAppEnvId
+    configuration: {
+      replicaRetryLimit: 1
       replicaTimeout: 120
       triggerType: 'Manual'
-			manualTriggerConfig: {
+      manualTriggerConfig: {
         parallelism: 1
         replicaCompletionCount: 1
       }
-		}
-		template: {
-			containers: [
-				{
-					name: name
-					image: image
-					env: environmentVariables
-					probes: probes
-				}
-			]
-		}
-	}
-	identity: {
-		type: 'SystemAssigned'
-	}
+    }
+    template: {
+      containers: [
+        {
+          name: name
+          image: image
+          env: environmentVariables
+          probes: probes
+        }
+      ]
+    }
+  }
+  identity: {
+    type: 'SystemAssigned'
+  }
 }
 
 output identityPrincipalId string = containerAppJob.identity.principalId

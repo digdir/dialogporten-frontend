@@ -24,7 +24,6 @@ var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend'
 var containerAppJobName = '${namePrefix}-bff'
 
-
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
 }
@@ -38,14 +37,14 @@ resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' exis
 }
 
 resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' = {
-	parent: containerAppEnvironment
-	name: '${containerAppEnvironment.name}-${containerAppJobName}-certificate'
-	location: location
-	// tags: tags
-	properties: {
-		subjectName: 'test.portal-pp.dialogporten.no'
-		domainControlValidation: 'CNAME'
-	}
+  parent: containerAppEnvironment
+  name: '${containerAppEnvironment.name}-${containerAppJobName}-certificate'
+  location: location
+  // tags: tags
+  properties: {
+    subjectName: 'test.portal-pp.dialogporten.no'
+    domainControlValidation: 'CNAME'
+  }
 }
 
 var containerAppEnvVars = [
@@ -66,11 +65,11 @@ var containerAppEnvVars = [
 module containerAppJob '../../modules/containerAppJob/main.bicep' = {
   name: containerAppJobName
   params: {
-      name: containerAppJobName
-      location: location
-      image: '${baseImageUrl}bff:${imageTag}'
-      containerAppEnvId: containerAppEnvironment.id
-      environmentVariables: containerAppEnvVars
+    name: containerAppJobName
+    location: location
+    image: '${baseImageUrl}bff:${imageTag}'
+    containerAppEnvId: containerAppEnvironment.id
+    environmentVariables: containerAppEnvVars
   }
 }
 
@@ -78,7 +77,7 @@ module keyVaultReaderAccessPolicy '../../modules/keyvault/addReaderRoles.bicep' 
   name: 'keyVaultReaderAccessPolicy-${containerAppJobName}'
   params: {
     keyvaultName: environmentKeyVaultResource.name
-    principalIds: [ containerAppJob.outputs.identityPrincipalId ]
+    principalIds: [containerAppJob.outputs.identityPrincipalId]
   }
 }
 
@@ -86,7 +85,7 @@ module appConfigReaderAccessPolicy '../../modules/appConfiguration/addReaderRole
   name: 'appConfigReaderAccessPolicy-${containerAppJobName}'
   params: {
     appConfigurationName: appConfigurationName
-    principalIds: [ containerAppJob.outputs.identityPrincipalId ]
+    principalIds: [containerAppJob.outputs.identityPrincipalId]
   }
 }
 

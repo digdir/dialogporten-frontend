@@ -8,15 +8,15 @@ resource appInsightsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-
 }
 
 resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
-	name: '${namePrefix}-cae'
-	location: location
-	properties: {
-		appLogsConfiguration: {
+  name: '${namePrefix}-cae'
+  location: location
+  properties: {
+    appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: appInsightsWorkspace.properties.customerId
         sharedKey: appInsightsWorkspace.listKeys().primarySharedKey
       }
     }
-	}
+  }
 }
