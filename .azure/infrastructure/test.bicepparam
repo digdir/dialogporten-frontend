@@ -3,7 +3,6 @@ using './main.bicep'
 param environment = 'test'
 param location = 'norwayeast'
 
-param gitSha = readEnvironmentVariable('GIT_SHA')
 param keyVaultSourceKeys = json(readEnvironmentVariable('KEY_VAULT_SOURCE_KEYS'))
 
 // secrets

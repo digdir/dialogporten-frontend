@@ -6,6 +6,9 @@ on:
       hasInfrastructureChanges:
         description: "Infrastructure related files changed"
         value: ${{ jobs.check-for-changes.outputs.hasInfrastructureChanges }}
+      hasBFFChanges:
+        description: "BFF related files changed"
+        value: ${{ jobs.check-for-changes.outputs.hasBFFChanges }}
 
 jobs:
   check-for-changes:
@@ -13,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       hasInfrastructureChanges: ${{ steps.filter.outputs.infrastructure_any_changed == 'true' }}
+      hasBFFChanges: ${{ steps.filter.outputs.bff_any_changed == 'true' }}
 
     steps:
       - name: Checkout
@@ -29,4 +33,9 @@ jobs:
               - '.github/**/*'
               - '.azure/infrastructure/*'
               - '.azure/modules/**/*'
+            bff:
+              - '.github/**/*'
+              - '.azure/applications/bff/*'
+              - '.azure/modules/**/*'
+              - 'packages/bff/**/*'
               

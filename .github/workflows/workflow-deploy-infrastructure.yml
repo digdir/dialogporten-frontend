@@ -91,7 +91,6 @@ jobs:
         id: deploy
         env:
           # parameters
-          GIT_SHA: ${{ github.sha }}
           KEY_VAULT_SOURCE_KEYS: ${{ steps.keyvault-keys.outputs.key-vault-keys }}
           # secrets
           PG_ADMIN_PASSWORD: ${{ steps.pwd-generator.outputs.postgresqlPassword }}
