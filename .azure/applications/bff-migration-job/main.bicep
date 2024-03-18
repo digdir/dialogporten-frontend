@@ -21,7 +21,7 @@ param appConfigurationName string
 param environmentKeyVaultName string
 
 var namePrefix = 'dp-fe-${environment}'
-var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend'
+var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var containerAppJobName = '${namePrefix}-bff'
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
@@ -34,17 +34,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 
 resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: environmentKeyVaultName
-}
-
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' = {
-  parent: containerAppEnvironment
-  name: '${containerAppEnvironment.name}-${containerAppJobName}-certificate'
-  location: location
-  // tags: tags
-  properties: {
-    subjectName: 'test.portal-pp.dialogporten.no'
-    domainControlValidation: 'CNAME'
-  }
 }
 
 var containerAppEnvVars = [
@@ -67,7 +56,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
   params: {
     name: containerAppJobName
     location: location
-    image: '${baseImageUrl}bff:${imageTag}'
+    image: '${baseImageUrl}node-bff:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
   }
