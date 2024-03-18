@@ -21,7 +21,7 @@ param appConfigurationName string
 param environmentKeyVaultName string
 
 var namePrefix = 'dp-fe-${environment}'
-var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend'
+var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var containerAppName = '${namePrefix}-bff'
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
@@ -63,7 +63,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
   params: {
     name: containerAppName
     location: location
-    image: '${baseImageUrl}bff:${imageTag}'
+    image: '${baseImageUrl}node-bff:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
   }
