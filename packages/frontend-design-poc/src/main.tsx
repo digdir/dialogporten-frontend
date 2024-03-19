@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import './i18n/config.ts';
 
+import '@digdir/designsystemet-css';
+import '@digdir/designsystemet-theme';
+
 import App from './App.tsx';
 
 async function enableMocking() {
