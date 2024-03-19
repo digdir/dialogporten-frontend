@@ -18,6 +18,6 @@ interface InboxItemsProps {
  *
  */
 
-export const InboxItems = ({ children }: InboxItemsProps) => {
+export const InboxItems = ({ children }: InboxItemsProps): JSX.Element => {
   return <ul className={styles.inboxItems}>{children}</ul>;
 };

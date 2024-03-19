@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 
 import styles from './inboxItem.module.css';
 
-interface Participant {
+export interface Participant {
   label: string;
   icon?: JSX.Element;
 }
 
-interface InboxItemTag {
+export interface InboxItemTag {
   label: string;
   icon?: JSX.Element;
   className?: string;
