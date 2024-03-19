@@ -6,11 +6,74 @@ on:
       - main
 
 jobs:
+  generate-git-short-sha:
+    name: Generate git short sha
+    uses: ./.github/workflows/workflow-generate-git-short-sha.yml
+
+  check-for-changes:
+    name: Check for changes
+    uses: ./.github/workflows/workflow-check-for-changes.yml
+
   build-and-test:
     uses: ./.github/workflows/workflow-build-and-test.yml
     with:
       environment: test
-    
+
+  docker-build-and-push:
+    name: Build and publish docker images
+    uses: ./.github/workflows/workflow-docker-build-and-push.yml
+    needs: [check-for-changes, generate-git-short-sha, build-and-test]
+    # todo: only run this if necessary (the appropriate files have changed)
+    secrets:
+      GCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      dockerImageBaseName: ghcr.io/digdir/dialogporten-frontend-
+      # todo: uncomment when release-please in enabled
+      # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+
   deploy-documentation:
     uses: ./.github/workflows/workflow-deploy-docs.yml
-  
+
+  deploy-infrastructure:
+    uses: ./.github/workflows/workflow-deploy-infrastructure.yml
+    needs: [generate-git-short-sha, check-for-changes]
+    if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_SOURCE_KEY_VAULT_NAME: ${{ secrets.AZURE_SOURCE_KEY_VAULT_NAME }}
+      AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID }}
+      AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP: ${{ secrets.AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP }}
+    with:
+      environment: test
+      region: norwayeast
+      version: ${{ github.sha }}
+
+  deploy-apps:
+    name: Deploy apps to test
+    needs: [
+        # todo: uncomment when release-please in enabled
+        # get-current-version,
+        check-for-changes,
+        generate-git-short-sha,
+      ]
+    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+    uses: ./.github/workflows/workflow-deploy-apps.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # todo: consider resolving these in another way since they are created in the infra-step
+      AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      AZURE_ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+      AZURE_CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
+      AZURE_APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
+      AZURE_APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
+    with:
+      environment: test
+      region: norwayeast
+      # todo: uncomment when release-please in enabled
+      # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
