@@ -56,7 +56,7 @@ jobs:
 
   deploy-infrastructure:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs: [generate-git-short-sha, check-for-changes]
+    needs: [generate-git-short-sha, check-for-changes, get-current-version]
     if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -68,12 +68,12 @@ jobs:
     with:
       environment: test
       region: norwayeast
-      version: ${{ github.sha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
 
   deploy-apps:
     name: Deploy apps to test
     needs: [get-current-version, check-for-changes, generate-git-short-sha]
-    if: ${{ needs.check-for-changes.outputs.hasBFFChanges == 'true' }}
+    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
