@@ -59,7 +59,7 @@ jobs:
         check-for-changes,
         generate-git-short-sha,
       ]
-    if: ${{ needs.check-for-changes.outputs.hasBFFChanges == 'true' }}
+    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
