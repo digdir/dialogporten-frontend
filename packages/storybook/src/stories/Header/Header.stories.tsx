@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Header } from 'frontend-design-poc';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
@@ -11,8 +11,17 @@ const meta = {
 
 export default meta;
 
-export const withNameOnly: () => JSX.Element = () => <Header name="Ola Nordmann" />;
+type Story = StoryObj<typeof Header>;
 
-export const withNameAndCompany: () => JSX.Element = () => (
-  <Header name="Ola Nordmann" companyName="Aker Solutions AS" />
-);
+export const WithNameOnly: Story = {
+  args: {
+    name: 'Ola Nordmann',
+  },
+};
+
+export const WithNameAndCompany: Story = {
+  args: {
+    name: 'Ola Nordmann',
+    companyName: 'Aker Solutions AS',
+  },
+};
