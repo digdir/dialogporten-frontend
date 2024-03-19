@@ -1,6 +1,5 @@
 import { Search } from '@digdir/designsystemet-react';
 import cx from 'classnames';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { AltinnLogo } from './AltinnLogo';
 import styles from './header.module.css';
@@ -22,22 +21,19 @@ const getInitials = (name: string, companyName?: string) => {
 };
 
 /**
- * Simple header component with a logo, search bar, and user name with initials.
- * 
+ * `Header` component displaying navigation, logo, search bar, and user/company information.
  *
- * @component
- * @param {string} props.name - The name of the user.
- * @param {string} props.companyName - The name of the company the user is associated with if any.
- * @returns {JSX.Element} The header component.
+ * It includes a logo linking to the home page, a search bar, and displays user or company name.
+ * If a company name is provided, both the company and the user's name are displayed, along with
+ * initials. The component is designed with accessibility in mind, using appropriate ARIA labels.
  *
- * @example
- * <Header 
- * name={'Ola Nordmann'} 
- * companyName="Aker Solutions AS" 
- * />
-
+ * @param props The props of the component.
+ * @param props.name The name of the user.
+ * @param props.companyName The name of the company. Optional.
+ * @returns The `Header` component.
  */
-export const Header: React.FC<HeaderProps> = ({ name, companyName }) => {
+
+export const Header = ({ name, companyName }: HeaderProps): JSX.Element => {
   return (
     <header>
       <nav className={styles.navigation} aria-label="Navigasjon">

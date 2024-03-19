@@ -1,0 +1,21 @@
+{
+  "name": "docusaurus-tldraw-plugin",
+  "version": "1.0.0",
+  "description": "Docusaurus plugin for embedding tldraw drawings in docs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "docusaurus",
+    "tldraw",
+    "plugin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/core": "3.1.1",
+    "react": "^18.2.0",
+    "tldraw": "^2.0.1"
+  }
+}

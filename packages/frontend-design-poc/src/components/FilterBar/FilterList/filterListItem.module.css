@@ -1,0 +1,12 @@
+.filterListItem {
+    cursor: pointer;
+    &:hover:not(.disabled){
+        background: rgb(243, 244, 246);
+    }
+    padding: 0.6em 1em;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

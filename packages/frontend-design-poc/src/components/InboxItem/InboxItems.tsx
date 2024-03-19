@@ -16,12 +16,6 @@ interface InboxItemsProps {
  * @returns {JSX.Element} A div element wrapping the children in a styled manner,
  * according to the `inboxItems` CSS class defined in `inboxItems.module.css`.
  *
- * @example
- * <InboxItems>
- *   <InboxItem {...inboxItemProps1} />
- *   <InboxItem {...inboxItemProps2} />
- *   <InboxItem {...inboxItemProps3} />
- * </InboxItems>
  */
 
 export const InboxItems = ({ children }: InboxItemsProps) => {

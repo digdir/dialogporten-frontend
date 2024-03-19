@@ -30,6 +30,10 @@ const config: Config = {
     mermaid: true,
   },
 
+	plugins: [
+		'docusaurus-tldraw-plugin',	
+	],
+
   themes: [
     /* mermaid */
     '@docusaurus/theme-mermaid',
