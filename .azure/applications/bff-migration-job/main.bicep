@@ -49,6 +49,20 @@ var containerAppEnvVars = [
     name: 'IS_MIGRATION_JOB'
     value: 'true'
   }
+  {
+    name: 'DB_CONNECTION_STRING'
+    secretRef: 'dbConnectionString'
+  }
+]
+
+var keyVaultUri = 'https://${environmentKeyVaultName}.${az.environment().suffixes.keyvaultDns}/secrets/databaseConnectionString'
+
+var secrets = [
+  {
+    name: 'dbConnectionString'
+    keyVaultUri: keyVaultUri
+    identity: 'System'
+  }
 ]
 
 module containerAppJob '../../modules/containerAppJob/main.bicep' = {
@@ -59,6 +73,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
     image: '${baseImageUrl}node-bff:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
+    secrets: secrets
   }
 }
 
