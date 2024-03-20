@@ -67,9 +67,7 @@ jobs:
         id: deploy
         env:
           # parameters
-          # todo: uncomment when we have a proper versioning
-          # IMAGE_TAG: ${{ inputs.version }}
-          IMAGE_TAG: f9be14d82a3d418f398cecbd2974d6c27a12fd57
+          IMAGE_TAG: ${{ inputs.version }}
           # secrets
           CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
@@ -102,9 +100,7 @@ jobs:
         with:
           azcliversion: ${{ env.AZ_CLI_VERSION }}
           inlineScript: |
-            # todo: uncomment when we have a proper versioning
-            ./.github/tools/containerAppJobVerifier.sh ${{ steps.deploy.outputs.name }} ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} f9be14d82a3d418f398cecbd2974d6c27a12fd57
-            # ./.github/tools/containerAppJobVerifier.sh ${{ steps.deploy.outputs.name }} ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} ${{ inputs.version }}
+            ./.github/tools/containerAppJobVerifier.sh ${{ steps.deploy.outputs.name }} ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} ${{ inputs.version }}
 
       - name: Logout from azure
         if: ${{failure() || success()}}
@@ -142,9 +138,7 @@ jobs:
         id: deploy
         env:
           # parameters
-          # todo: uncomment when we have a proper versioning
-          # IMAGE_TAG: ${{ inputs.version }}
-          IMAGE_TAG: f9be14d82a3d418f398cecbd2974d6c27a12fd57
+          IMAGE_TAG: ${{ inputs.version }}
           # secrets
           CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
