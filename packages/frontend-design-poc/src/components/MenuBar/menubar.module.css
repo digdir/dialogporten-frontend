@@ -1,0 +1,143 @@
+.menuContainer {
+  position: relative;
+  display: flex;
+  background-color: var(--avatar-color);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0.375em;
+  padding: 0.625em;
+  height: 2.25em;
+  max-height: 2.25em;
+}
+
+.menuText {
+  color: white;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 0.25em;
+}
+
+.menuCircle {
+  min-width: 36px;
+  min-height: 36px;
+  background-color: var(--avatar-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 20px;
+  position: relative;
+  padding-left: 0.25em;
+}
+
+.menuCircle.isOrganization {
+  border-radius: 0.25em;
+}
+
+
+.icon {
+  flex-shrink: 0;
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 0.25rem;
+
+  >svg {
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+
+.menuItems {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 1em;
+  box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  gap: 1rem;
+  z-index: 1;
+  width: 12.5em;
+
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  >svg {
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+}
+
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: var(--Action-Important, #E02E49);
+  color: white;
+  margin-right: 0.5em;
+  color: #fff;
+  font-size: 0.75em;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1rem;
+  position: absolute;
+  transform: translate(50%, -50%);
+  top: 0;
+  margin-top: 0.25em;
+  right: 0;
+}
+
+.nameWithInitials {
+  display: flex;
+  align-items: center;
+  gap: 0.625em;
+  background-color: var(--avatar-color);
+  border-radius: 0.375em;
+  color: white;
+  height: 2.25em;
+  max-height: 2.25em;
+  padding-right: 0.625em;
+}
+
+.primaryName {
+  text-align: center;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.secondaryName {
+  width: 100%;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

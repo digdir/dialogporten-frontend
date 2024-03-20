@@ -1,0 +1,14 @@
+.initialsCircle {
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 20px;
+  border: 1px solid white;
+}
+
+.initialsCircle.isOrganization {
+  border-radius: 0.25em;
+}

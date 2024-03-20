@@ -38,16 +38,8 @@
 }
 
 .icon.isInbox {
-    background-color: #118849;
+    background: var(--button-color);
     color: white;
-}
-
-.isInbox.isCompany {
-    background-color: #008FD6;
-}
-
-.icon.isCompany {
-    border-radius: 4px;
 }
 
 .icon svg {
@@ -67,9 +59,8 @@
     height: 1.5rem;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.05);
-    ;
     margin-right: 8px;
-    color: #000;
+    color: black;
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -78,7 +69,7 @@
 
 
 .redCounter {
-    background-color: var(--Action-Important, #E02E49);
+    background-color: var(--Action-Important);
     color: white;
 }
 
