@@ -22,7 +22,7 @@ param environmentKeyVaultName string
 
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
-var containerAppJobName = '${namePrefix}-bff'
+var containerAppJobName = '${namePrefix}-bff-migration-job'
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
