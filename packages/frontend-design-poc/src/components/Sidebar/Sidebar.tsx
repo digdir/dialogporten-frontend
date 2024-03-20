@@ -12,6 +12,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
+import { useWindowSize } from '../../../utils/useWindowSize';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -22,6 +23,8 @@ export const HorizontalLine = () => <hr className={styles.horizontalLine} />;
 
 export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { t } = useTranslation();
+  const { isMobile } = useWindowSize();
+  if (isMobile) return <></>;
   return (
     <aside className={styles.sidebar}>
       {children || (

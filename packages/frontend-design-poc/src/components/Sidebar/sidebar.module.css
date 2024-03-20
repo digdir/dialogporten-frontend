@@ -1,6 +1,5 @@
 .sidebar {
     width: calc(224px + 2em + 2em);
-    background-color: #E5EBEC;
     display: flex;
     flex-direction: column;
     padding: 1.25em 0;
@@ -11,4 +10,12 @@
     height: 1px;
     background-color: rgba(0, 0, 0, 0.25);
     margin: 0.5em 2em;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        padding: 1.25em 1em;
+    }
+
 }

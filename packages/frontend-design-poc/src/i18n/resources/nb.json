@@ -7,6 +7,8 @@
   "inbox.heading.choose_all": "Velg alle",
   "word.back": "Tilbake",
   "word.to": "til",
+  "word.search": "Søk",
+  "word.menu": "Meny",
   "sidebar.drafts": "Utkast",
   "sidebar.sent": "Sendt",
   "sidebar.archived": "Arkiv",
@@ -23,5 +25,9 @@
   "actionPanel.buttons.archive": "Flytt til arkiv",
   "actionPanel.buttons.mark_as_read": "Markert som lest",
   "actionPanel.buttons.share": "Del",
-  "actionPanel.chosen": "{count, plural, =0 {Ingen valgt} one {# valgt} other {# valgt}}"
+  "actionPanel.chosen": "{count, plural, =0 {Ingen valgt} one {# valgt} other {# valgt}}",
+  "notifications.count": "{count, plural, one {# ulest melding} other {# uleste meldinger}}",
+  "header.searchPlaceholder": "Søk i personlig innboks",
+  "link.goToMain": "Gå til hovedsiden",
+  "link.goToInbox": "Gå til innboks"
 }

@@ -1,70 +1,71 @@
 import { Search } from '@digdir/designsystemet-react';
-import cx from 'classnames';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { AltinnLogo } from './AltinnLogo';
+import { AltinnLogoSvg } from './AltinnLogo';
 import styles from './header.module.css';
+import { useWindowSize } from '../../../utils/useWindowSize';
+import { useTranslation } from 'react-i18next';
+import { MenuBar } from '../MenuBar';
+import { DogIcon } from '@navikt/aksel-icons';
+import { MenuBarItemProps } from '../MenuBar/MenuBarItem';
 
 type HeaderProps = {
   name: string;
   companyName?: string;
+  notificationCount?: number;
 };
 
-const getInitials = (name: string, companyName?: string) => {
-  if (!companyName?.length) {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('');
-  }
+const AltinnLogo = () => {
+  const { t } = useTranslation();
+  return (
+    <div className={styles.logo}>
+      <Link to="/" aria-label={t('link.goToMain')}>
+        <AltinnLogoSvg aria-label="Altinn logo" />
+        <span className={styles.logoText}>Altinn</span>
+      </Link>
+    </div>
+  );
+};
 
-  return companyName[0];
+const HeaderSearchBar = () => {
+  const { t } = useTranslation();
+  return (
+    <div className={styles.searchBar}>
+      <Search size="small" aria-label={t('header.searchPlaceholder')} placeholder={t('header.searchPlaceholder')} />
+    </div>
+  );
 };
 
 /**
- * `Header` component displaying navigation, logo, search bar, and user/company information.
+ * Renders a header with Altinn logo, search bar, and a menu bar. The menu includes user details,
+ * company association, and an optional notification count. The search bar is hidden on mobile.
  *
- * It includes a logo linking to the home page, a search bar, and displays user or company name.
- * If a company name is provided, both the company and the user's name are displayed, along with
- * initials. The component is designed with accessibility in mind, using appropriate ARIA labels.
+ * @component
+ * @param {string} props.name - User's name.
+ * @param {string} [props.companyName] - Associated company name, if applicable.
+ * @param {number} [props.notificationCount] - Optional count of notifications to display.
+ * @returns {JSX.Element} The Header component.
  *
- * @param props The props of the component.
- * @param props.name The name of the user.
- * @param props.companyName The name of the company. Optional.
- * @returns The `Header` component.
+ * @example
+ * <Header
+ *  name="Ola Nordmann"
+ *  companyName="Aker Solutions AS"
+ *  notificationCount={3}
+ * />
  */
 
-export const Header = ({ name, companyName }: HeaderProps): JSX.Element => {
+const menuItemsMock: MenuBarItemProps[] = [{ title: 'Hjem', href: '/', icon: <DogIcon /> }];
+
+export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationCount }) => {
+  const { isMobile } = useWindowSize();
   return (
     <header>
       <nav className={styles.navigation} aria-label="Navigasjon">
-        <div className={styles.logo}>
-          <Link to="/" aria-label="Gå til hovedsiden">
-            <AltinnLogo aria-label="Altinn logo" />
-            <span className={styles.logoText}>Altinn</span>
-          </Link>
-        </div>
-        <div className={styles.searchBar}>
-          <Search size="small" aria-label="Søk" />
-        </div>
-        {companyName ? (
-          <div className={styles.nameWithInitials}>
-            <div className={styles.companyContainer}>
-              <div className={styles.primaryName}>{companyName}</div>
-              <div className={styles.secondaryName}>{name}</div>
-            </div>
-            <div className={cx(styles.initialsCircle, styles.isOrganization)} aria-hidden="true">
-              {getInitials(name, companyName)}
-            </div>
-          </div>
-        ) : (
-          <div className={styles.nameWithInitials}>
-            <span className={styles.primaryName}>{name}</span>
-            <div className={styles.initialsCircle} aria-hidden="true">
-              {getInitials(name, companyName)}
-            </div>
-          </div>
-        )}
+        <AltinnLogo />
+        {!isMobile && <HeaderSearchBar />}
+        <MenuBar items={menuItemsMock} notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
+      {isMobile && <HeaderSearchBar />}
     </header>
   );
 };
