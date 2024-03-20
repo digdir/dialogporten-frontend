@@ -6,9 +6,24 @@ on:
       - main
 
 jobs:
+  release-please:
+    name: Release please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_PAT }}
+          config-file: ./release-please-config.json
+          release-type: simple
+
   generate-git-short-sha:
     name: Generate git short sha
     uses: ./.github/workflows/workflow-generate-git-short-sha.yml
+
+  get-current-version:
+    name: Get current version
+    uses: ./.github/workflows/workflow-get-current-version.yml
 
   check-for-changes:
     name: Check for changes
@@ -22,22 +37,26 @@ jobs:
   docker-build-and-push:
     name: Build and publish docker images
     uses: ./.github/workflows/workflow-docker-build-and-push.yml
-    needs: [check-for-changes, generate-git-short-sha, build-and-test]
+    needs:
+      [
+        check-for-changes,
+        generate-git-short-sha,
+        get-current-version,
+        build-and-test,
+      ]
     # todo: only run this if necessary (the appropriate files have changed)
     secrets:
       GCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     with:
       dockerImageBaseName: ghcr.io/digdir/dialogporten-frontend-
-      # todo: uncomment when release-please in enabled
-      # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
 
   deploy-documentation:
     uses: ./.github/workflows/workflow-deploy-docs.yml
 
   deploy-infrastructure:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs: [generate-git-short-sha, check-for-changes]
+    needs: [generate-git-short-sha, check-for-changes, get-current-version]
     if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -49,16 +68,16 @@ jobs:
     with:
       environment: test
       region: norwayeast
-      version: ${{ github.sha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
 
   deploy-apps:
     name: Deploy apps to test
-    needs: [
-        # todo: uncomment when release-please in enabled
-        # get-current-version,
-        docker-build-and-push,
+    needs:
+      [
+        get-current-version,
         check-for-changes,
         generate-git-short-sha,
+        docker-build-and-push,
       ]
     if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
@@ -75,6 +94,4 @@ jobs:
     with:
       environment: test
       region: norwayeast
-      # todo: uncomment when release-please in enabled
-      # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}

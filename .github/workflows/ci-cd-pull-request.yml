@@ -10,6 +10,10 @@ jobs:
     name: Generate git short sha
     uses: ./.github/workflows/workflow-generate-git-short-sha.yml
 
+  get-current-version:
+    name: Get current version
+    uses: ./.github/workflows/workflow-get-current-version.yml
+
   check-for-changes:
     name: Check for changes
     uses: ./.github/workflows/workflow-check-for-changes.yml
@@ -24,7 +28,7 @@ jobs:
 
   dry-run-deploy-infra:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs: [generate-git-short-sha, check-for-changes]
+    needs: [generate-git-short-sha, check-for-changes, get-current-version]
     if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -37,16 +41,11 @@ jobs:
       environment: test
       region: norwayeast
       dryRun: true
-      version: ${{ github.sha }}
+      version: ${{needs.get-current-version.outputs.version}}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
 
   deploy-apps-test:
     name: Deploy apps to test
-    needs: [
-        # todo: uncomment when release-please in enabled
-        # get-current-version,
-        check-for-changes,
-        generate-git-short-sha,
-      ]
+    needs: [get-current-version, check-for-changes, generate-git-short-sha]
     if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
@@ -63,6 +62,4 @@ jobs:
       environment: test
       region: norwayeast
       dryRun: true
-      # todo: uncomment when release-please in enabled
-      # version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      version: ${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
