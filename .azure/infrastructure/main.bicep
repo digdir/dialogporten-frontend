@@ -59,6 +59,16 @@ module appInsights '../modules/applicationInsights/create.bicep' = {
   }
 }
 
+module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
+  scope: resourceGroup
+  name: 'containerAppEnv'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
+  }
+}
+
 // Create references to existing resources
 resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2022-11-01' existing = {
   name: secrets.sourceKeyVaultName
