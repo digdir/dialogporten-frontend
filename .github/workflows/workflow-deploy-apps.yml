@@ -20,8 +20,6 @@ on:
         required: true
       AZURE_APP_CONFIGURATION_NAME:
         required: true
-      DB_CONNECTION_STRING:
-        required: true
 
     inputs:
       region:
