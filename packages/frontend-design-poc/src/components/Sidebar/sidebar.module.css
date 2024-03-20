@@ -2,7 +2,6 @@
     width: calc(224px + 2em + 2em);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding: 1.25em 0;
 }
 
