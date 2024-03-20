@@ -72,7 +72,13 @@ jobs:
 
   deploy-apps:
     name: Deploy apps to test
-    needs: [get-current-version, check-for-changes, generate-git-short-sha]
+    needs:
+      [
+        get-current-version,
+        check-for-changes,
+        generate-git-short-sha,
+        docker-build-and-push,
+      ]
     if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:

@@ -25,7 +25,7 @@ export let StartUpRepository: Repository<StartUp> | undefined = undefined;
 export let SessionRepository: Repository<SessionData> | undefined = undefined;
 export let ProfileRepository: Repository<Profile> | undefined = undefined;
 const startTimeStamp = new Date();
-const isAppInsightsEnabled = process.env.ENABLE_APP_INSIGHTS !== 'true';
+const isAppInsightsEnabled = process.env.ENABLE_APP_INSIGHTS === 'true';
 
 declare module 'express-session' {
   export interface SessionData {

@@ -4,6 +4,7 @@
   "inbox.title": "Innboks",
   "inbox.attachment.count": "{count, plural, =0 {Ingen vedlegg} one {# vedlegg} other {# vedlegg}}",
   "inbox.attachment.link": "Lenke som vedlegg",
+  "inbox.heading.choose_all": "Velg alle",
   "word.back": "Tilbake",
   "word.to": "til",
   "sidebar.drafts": "Utkast",
