@@ -118,6 +118,8 @@ jobs:
       matrix:
         include:
           - name: bff
+          - name: bff-frontend-poc
+          - name: frontend-design-poc
     environment: ${{ inputs.environment }}
     permissions:
       id-token: write
