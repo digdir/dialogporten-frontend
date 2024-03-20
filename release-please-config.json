@@ -2,6 +2,7 @@
     "release-type": "node",
     "pull-request-header": "New release!",
     "extra-files": [
+        "./package.json",
         "./packages/bff/package.json",
         "./packages/bff-frontend-poc/package.json",
         "./packages/dialogporten-types-generated/package.json",
