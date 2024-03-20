@@ -26,11 +26,11 @@ jobs:
       matrix:
         include:
           - dockerfile: ./packages/bff/Dockerfile
-            imageName: bff
+            imageName: node-bff
           - dockerfile: ./packages/bff-frontend-poc/Dockerfile
             imageName: bff-frontend-poc
-          - dockerfile: ./packages/storybook/Dockerfile
-            imageName: storybook
+          - dockerfile: ./packages/frontend-design-poc/Dockerfile
+            imageName: frontend-design-poc
 
     permissions:
       contents: read
