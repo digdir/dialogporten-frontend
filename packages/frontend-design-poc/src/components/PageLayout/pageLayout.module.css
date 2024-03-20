@@ -8,7 +8,7 @@
     grid-template-rows: auto 1fr auto;
     max-width: 1920px;
     margin: 0 auto;
-    background: #E5EBEC;
+    background: var(--background-color);
 }
 
 .pageLayout>header {
