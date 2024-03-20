@@ -14,8 +14,7 @@ jobs:
         id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_PAT }}
-          config-file: ./release-please-config.json
-          release-type: simple
+          config-file: release-please-config.json
 
   generate-git-short-sha:
     name: Generate git short sha
