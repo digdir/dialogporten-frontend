@@ -5,7 +5,7 @@ param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
 
-param secrets { name: string, keyVaultUri: string, identity: 'System' }[] = []
+param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
 var probes = [
   {
@@ -31,8 +31,10 @@ var probes = [
 resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
   name: name
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
-    environmentId: containerAppEnvId
     configuration: {
       secrets: secrets
       replicaRetryLimit: 1
@@ -43,6 +45,7 @@ resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
         replicaCompletionCount: 1
       }
     }
+    environmentId: containerAppEnvId
     template: {
       containers: [
         {
@@ -53,9 +56,6 @@ resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
         }
       ]
     }
-  }
-  identity: {
-    type: 'SystemAssigned'
   }
 }
 
