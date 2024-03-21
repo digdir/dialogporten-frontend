@@ -51,7 +51,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'DB_CONNECTION_STRING'
-    secretRef: 'dbConnectionString'
+    secretRef: 'dbconnectionstring'
   }
 ]
 
@@ -59,7 +59,7 @@ var keyVaultUrl = 'https://${environmentKeyVaultName}.${az.environment().suffixe
 
 var secrets = [
   {
-    name: 'dbConnectionString'
+    name: 'dbconnectionstring'
     keyVaultUrl: keyVaultUrl
     identity: 'System'
   }
