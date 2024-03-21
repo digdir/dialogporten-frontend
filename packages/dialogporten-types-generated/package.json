@@ -1,5 +1,6 @@
 {
   "name": "dialogporten-types-generated",
+  "version": "1.0.0",
   "scripts": {
     "build": "swagger-typescript-api --path ./node_modules/dialogporten-swagger/swagger.json -o generated --modular --clean-output --module-name-first-tag"
   },

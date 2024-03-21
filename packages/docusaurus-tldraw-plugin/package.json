@@ -6,11 +6,7 @@
   "scripts": {
     "test": ""
   },
-  "keywords": [
-    "docusaurus",
-    "tldraw",
-    "plugin"
-  ],
+  "keywords": ["docusaurus", "tldraw", "plugin"],
   "author": "",
   "license": "MIT",
   "dependencies": {

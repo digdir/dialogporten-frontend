@@ -5,6 +5,15 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+  id-token: write
+
 jobs:
   release-please:
     name: Release please

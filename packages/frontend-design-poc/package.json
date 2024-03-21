@@ -1,5 +1,6 @@
 {
   "name": "frontend-design-poc",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "./index.ts",
@@ -46,8 +47,6 @@
     "vitest": "^1.2.2"
   },
   "msw": {
-    "workerDirectory": [
-      "public"
-    ]
+    "workerDirectory": ["public"]
   }
 }
