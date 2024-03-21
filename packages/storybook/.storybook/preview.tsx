@@ -1,5 +1,5 @@
-import '@digdir/designsystemet-theme';
 import '@digdir/designsystemet-css';
+import '@digdir/designsystemet-theme';
 import { A11yParameters } from '@storybook/addon-a11y';
 import type { Preview } from '@storybook/react';
 import { Rule, getRules } from 'axe-core';

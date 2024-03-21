@@ -1,13 +1,13 @@
 import { Search } from '@digdir/designsystemet-react';
+import { DogIcon } from '@navikt/aksel-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useWindowSize } from '../../../utils/useWindowSize';
+import { MenuBar } from '../MenuBar';
+import { MenuBarItemProps } from '../MenuBar/MenuBarItem';
 import { AltinnLogoSvg } from './AltinnLogo';
 import styles from './header.module.css';
-import { useWindowSize } from '../../../utils/useWindowSize';
-import { useTranslation } from 'react-i18next';
-import { MenuBar } from '../MenuBar';
-import { DogIcon } from '@navikt/aksel-icons';
-import { MenuBarItemProps } from '../MenuBar/MenuBarItem';
 
 type HeaderProps = {
   name: string;

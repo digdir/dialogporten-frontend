@@ -10,9 +10,9 @@ import {
 } from '@navikt/aksel-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWindowSize } from '../../../utils/useWindowSize';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
-import { useWindowSize } from '../../../utils/useWindowSize';
 
 export interface SidebarProps {
   children?: React.ReactNode;
