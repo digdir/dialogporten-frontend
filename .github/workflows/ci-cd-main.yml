@@ -15,6 +15,7 @@ permissions:
   packages: write
   id-token: write
   security-events: write
+  pages: write
 
 jobs:
   release-please:
