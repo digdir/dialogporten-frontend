@@ -55,7 +55,8 @@ var containerAppEnvVars = [
   }
 ]
 
-var keyVaultUrl = 'https://${environmentKeyVaultName}.${az.environment().suffixes.keyvaultDns}/secrets/databaseConnectionString'
+// https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
+var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets/databaseConnectionString'
 
 var secrets = [
   {
