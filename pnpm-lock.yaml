@@ -329,9 +329,9 @@ importers:
 
   packages/dialogporten-types-generated:
     dependencies:
-      dialogporten-swagger:
-        specifier: ^1.0.4
-        version: 1.0.4
+      '@digdir/dialogporten-swagger':
+        specifier: 1.1.0
+        version: 1.1.0
       swagger-typescript-api:
         specifier: 13.0.3
         version: 13.0.3
@@ -426,6 +426,9 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      dialogporten-types-generated:
+        specifier: workspace:*
+        version: link:../dialogporten-types-generated
       i18next:
         specifier: ^23.8.2
         version: 23.8.2
@@ -2691,6 +2694,10 @@ packages:
 
   /@digdir/designsystemet-theme@0.13.1-alpha.0:
     resolution: {integrity: sha512-NgbcDqYf/3niVq98zteoRMbDERYhetoN6WPRcPtlpwJbOyUH1bsN6kFVpaNe9iiDb7JEqxCQXpUgMKi863IiTA==}
+    dev: false
+
+  /@digdir/dialogporten-swagger@1.1.0:
+    resolution: {integrity: sha512-Uo45Rv6XzG7AFHQlR/xZFdNx+kRf2G3Dd+hu6cnuVVQ36Qi8KGVNBh1EBadwg6wV+tj1PLVoh0oWgdCqDLo2LA==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
@@ -11242,10 +11249,6 @@ packages:
     resolution: {integrity: sha512-r2HV5qFkUICyoaKlBEpLKHjxMXATUf/l+h8UZPGBHGLy4DDiY2sOLcIctax4eRnTw5wH2jTMExLntGPJ8eOJxw==}
     dependencies:
       semver: 7.5.4
-    dev: false
-
-  /dialogporten-swagger@1.0.4:
-    resolution: {integrity: sha512-+vkGl/K8cIHvzCBSiJh5HobQccSrCATtYiRBbj/Mn/XNRGOTh/UpugFy8zSwo9omRkvqmoNH3rMFBsckEZB3Dg==}
     dev: false
 
   /didyoumean@1.2.2:

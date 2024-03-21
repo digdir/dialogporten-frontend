@@ -21,7 +21,6 @@
 }
 
 .pageLayout>main {
-    background: white;
     margin-right: 192px;
     grid-area: main;
     padding: 1.5rem;
