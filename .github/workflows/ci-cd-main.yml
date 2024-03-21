@@ -15,6 +15,7 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_PLEASE_PAT }}
           config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   generate-git-short-sha:
     name: Generate git short sha
