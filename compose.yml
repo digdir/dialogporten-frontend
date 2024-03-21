@@ -7,7 +7,7 @@ include:
 services:
   reverse-proxy:
     container_name: reverse-proxy
-    image: traefik:v2.3
+    image: traefik:2.11
     command:
       # Enables the Web UI
       - "--api.dashboard=true"
