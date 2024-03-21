@@ -1,20 +1,16 @@
 {
   "release-type": "node",
   "pull-request-header": "New release!",
+  "initial-version": "1.0.0",
   "packages": {
-    ".": {
-      "release-type": "node"
-    }
+    ".": {},
+    "packages/bff": {},
+    "packages/bff-frontend-poc": {},
+    "packages/dialogporten-types-generated": {},
+    "packages/docs": {},
+    "packages/docusaurus-tldraw-plugin": {},
+    "packages/frontend-design-poc": {},
+    "packages/storybook": {}
   },
-  "extra-files": [
-    "./package.json",
-    "./packages/bff/package.json",
-    "./packages/bff-frontend-poc/package.json",
-    "./packages/dialogporten-types-generated/package.json",
-    "./packages/docs/package.json",
-    "./packages/docusaurus-tldraw-plugin/package.json",
-    "./packages/frontend-design-poc/package.json",
-    "./packages/storybook/package.json"
-  ],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
