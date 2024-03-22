@@ -1,4 +1,5 @@
 import z from 'zod';
+import 'dotenv/config';
 
 // Setup types and default values for enviroment variables
 const envVariables = z.object({
