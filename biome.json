@@ -28,7 +28,10 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noUnusedTemplateLiteral": "off"
+        "noUnusedTemplateLiteral": "off",
+        "noNonNullAssertion": "off",
+        "noExplicitAny": "off",
+        "useTemplate": "off"
       }
     }
   },
