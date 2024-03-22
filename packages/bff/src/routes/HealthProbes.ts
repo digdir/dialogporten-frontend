@@ -1,7 +1,4 @@
 import { app, bffVersion } from '..';
-const migrationsuccessful = false;
-
-export const isReady = () => migrationsuccessful;
 
 export function startReadinessProbe(startTimeStamp: Date) {
   console.log(

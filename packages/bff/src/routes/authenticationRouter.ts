@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import { CustomRequest, authenticationController } from '../controllers/authenticationController';
-import { ensureAuthenticated } from '../middleware/ensureAuthenticated';
+import { CustomRequest, authenticationController } from '../oidc/authenticationController';
+import { ensureAuthenticated } from '../oidc/ensureAuthenticated';
 
 const authenticationRouter = express.Router();
 

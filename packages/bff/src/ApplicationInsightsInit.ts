@@ -1,7 +1,13 @@
-import '../config/env';
 import * as appInsights from 'applicationinsights';
-import { bffVersion } from '..';
-import { waitNSeconds } from './waitNSeconds';
+import { bffVersion } from '.';
+
+function waitNSeconds(n = 1): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000 * n);
+  });
+}
 
 const connectionString = process.env.APPLICATIONINSIGHTS_CONNECTION_STRING;
 

@@ -1,6 +1,5 @@
 import { CookieOptions } from 'express';
 import session from 'express-session';
-import '../config/env';
 
 export const setCookie = (res: any, value: string) => {
   const cookieName = process.env.COOKIE_NAME || 'cookieName';

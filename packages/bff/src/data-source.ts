@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import './config/env';
+
+const isDev = process.env.DEV_ENV === 'dev';
+
+console.log('isDev: ', isDev);
 
 console.log(
   'REMINDER: In datasource file, synchronize needs to be changed to false for production',
@@ -14,12 +17,11 @@ export const connectionOptions: DataSourceOptions = {
   username: process.env.DB_USER !== 'undefined' ? process.env.DB_USER : 'postgres',
   password: process.env.DB_PASSWORD !== 'undefined' ? process.env.DB_PASSWORD : 'mysecretpassword',
   database: process.env.DB_NAME !== 'undefined' ? process.env.DB_NAME : 'dialogporten',
-  synchronize: true, // if true, you don't really need migrations // ENDRES!!!!!!!!!!!!!
-  logging: false,
-  entities: ['src/entities/*{.ts,.js}'], // where our entities reside
-  // migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
+  synchronize: isDev,
+  logging: isDev,
+  entities: ['src/entities/*{.ts,.js}'],
   migrations: [__dirname + '/migrations/**/*.ts'],
-  ...(process.env.DEV_ENV !== 'dev' && {
+  ...(!isDev && {
     extra: {
       ssl: {
         rejectUnauthorized: false,

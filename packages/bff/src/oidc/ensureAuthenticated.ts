@@ -2,7 +2,7 @@ import axios from 'axios';
 import passport from 'passport';
 import { SessionRepository } from '..';
 import { SessionData } from '../entities/SessionData';
-import { readCookie } from '../util/sessionUtils';
+import { readCookie } from './sessionUtils';
 
 export async function ensureAuthenticated(req: any, res: any, next: any) {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
@@ -37,20 +37,21 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
     });
 
     return;
-  } else
-    try {
-      req.session.returnTo = req.originalUrl;
-      if (req.isAuthenticated()) {
-        return next();
-      }
+  }
 
-      // Redirect the user to the identity provider for authentication
-      passport.authenticate('oidc', {
-        failureRedirect: '/auth/login',
-      })(req, res, next);
-    } catch (error) {
-      console.error('ensureAuthenticated error: ', error);
+  try {
+    req.session.returnTo = req.originalUrl;
+    if (req.isAuthenticated()) {
+      return next();
     }
+
+    // Redirect the user to the identity provider for authentication
+    passport.authenticate('oidc', {
+      failureRedirect: '/auth/login',
+    })(req, res, next);
+  } catch (error) {
+    console.error('ensureAuthenticated error: ', error);
+  }
 }
 
 async function refreshTokens(sessionId: string) {
@@ -61,7 +62,7 @@ async function refreshTokens(sessionId: string) {
       throw new Error('refreshTokens: Session not found');
     }
 
-    const tokenEndpoint = process.env.TOKEN_ENDPOINT;
+    const tokenEndpoint = `https://${process.env.OIDC_URL}/token`;
     const AuthString = `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`;
     const AuthEncoded = `Basic ${Buffer.from(AuthString).toString('base64')}`;
     if (!tokenEndpoint || !process.env.CLIENT_ID || !process.env.CLIENT_SECRET) return;

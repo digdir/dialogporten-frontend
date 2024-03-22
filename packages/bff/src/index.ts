@@ -1,27 +1,21 @@
 export const bffVersion = process.env.GIT_SHA || 'v6.1.5';
-import './config/env';
-
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import 'reflect-metadata';
 import { DataSource, Repository } from 'typeorm';
-import { StartUp } from './entities/StartUp';
 import { startLivenessProbe, startReadinessProbe } from './routes/HealthProbes';
-import { runMigrationApp } from './util/Migration';
+import { runMigrationApp } from './Migration';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { Profile } from './entities/Profile';
 import { SessionData } from './entities/SessionData';
-import { initPassport } from './config/passport';
-import { sessionMiddleware } from './util/sessionUtils';
-import { initPgEnvVars } from './util/initPgEnvVars';
+import { initPassport } from './oidc/passport';
+import { sessionMiddleware } from './oidc/sessionUtils';
 import cors from 'cors';
 
-export const app: Express = express();
-export const probes: Express = express();
 const port = process.env.PORT || 3000;
-export let mainDataSource: DataSource;
-export let StartUpRepository: Repository<StartUp> | undefined = undefined;
+
+export const app: Express = express();
 export let SessionRepository: Repository<SessionData> | undefined = undefined;
 export let ProfileRepository: Repository<Profile> | undefined = undefined;
 const startTimeStamp = new Date();
@@ -34,6 +28,21 @@ declare module 'express-session' {
   }
 }
 
+const initPgEnvVars = (dbConnectionString: string) => {
+  try {
+    const pgJson = JSON.parse(dbConnectionString);
+    if (pgJson?.host) {
+      process.env.DB_HOST = pgJson.host;
+      process.env.DB_PORT = pgJson.port;
+      process.env.DB_USER = pgJson.user;
+      process.env.DB_PASSWORD = pgJson.password;
+      process.env.DB_NAME = pgJson.dbname;
+    }
+  } catch (error) {
+    console.error('initPgEnvVars: Error reading dbConnectionStringOK: ', error);
+  }
+};
+
 // ***** MAIN FUNCTION *****
 const main = async (): Promise<void> => {
   startLivenessProbe(startTimeStamp);
@@ -43,7 +52,7 @@ const main = async (): Promise<void> => {
 
   // ************ INITIALIZE APPLICATION INSIGHTS ************
   if (isAppInsightsEnabled) {
-    const { initAppInsights } = await import('./util/ApplicationInsightsInit');
+    const { initAppInsights } = await import('./ApplicationInsightsInit');
     await initAppInsights();
     console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
   }
@@ -77,9 +86,6 @@ const main = async (): Promise<void> => {
   app.use(passport.initialize());
   app.use(passport.session());
   await initPassport();
-  StartUpRepository = dataSource.getRepository(StartUp);
-
-  await logStartupToDb();
 
   try {
     const { routes } = await import('./routes');
@@ -101,10 +107,3 @@ if (process.env.IS_MIGRATION_JOB === 'true') {
   console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
   runMigrationApp();
 } else void main();
-
-const logStartupToDb = async () => {
-  if (!StartUpRepository) throw new Error('StartUpRepository not initialized');
-  const startUp = new StartUp();
-  startUp.version = bffVersion;
-  await StartUpRepository.save(startUp);
-};

@@ -1,9 +1,15 @@
 import util from 'util';
 import 'reflect-metadata';
-import { bffVersion } from '..';
-import '../config/env';
+import { bffVersion } from '.';
 import { initAppInsights } from './ApplicationInsightsInit';
-import { waitNSeconds } from './waitNSeconds';
+
+function waitNSeconds(n = 1): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000 * n);
+  });
+}
 
 let migrationsuccessful = false;
 
@@ -12,7 +18,7 @@ const execMigration = async () => {
   const execAsync = util.promisify(exec);
 
   try {
-    const { stdout, stderr } = await execAsync('yarn typeorm migration:run -d src/data-source.ts');
+    const { stdout, stderr } = await execAsync('pnpm typeorm migration:run -d src/data-source.ts');
     if (stderr) {
       console.error('BFF: Standard Error:', stderr);
     }
