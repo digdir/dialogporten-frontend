@@ -9,7 +9,6 @@
     "typecheck": "tsc --noEmit",
     "typeorm": "typeorm-ts-node-commonjs",
     "typeormold": "typeorm-ts-node-commonjs -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts",
-    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.local.ts",
     "typeorm:migrate": "npm run typeorm migration:generate -- -n",
     "migration:create": "node src/scripts/migration-create.js",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -- -d src/data-source.ts",

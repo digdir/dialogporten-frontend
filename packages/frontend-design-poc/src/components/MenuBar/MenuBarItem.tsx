@@ -8,6 +8,7 @@ export type MenuBarItemProps = {
 
 export type MenuBarDropdownProps = {
   show?: boolean;
+
   items: MenuBarItemProps[];
 };
 
