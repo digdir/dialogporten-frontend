@@ -11,8 +11,13 @@ type IDPortenProfile = {
 };
 
 export const initPassport = async () => {
-  if (!SessionRepository) throw new Error('SessionRepository not initialized');
-  if (!ProfileRepository) throw new Error('ProfileRepository not initialized');
+  if (!SessionRepository) {
+    throw new Error('SessionRepository not initialized');
+  }
+  if (!ProfileRepository) {
+    throw new Error('ProfileRepository not initialized');
+  }
+
   if (!process.env.OIDC_URL) {
     console.error('No issuer url found in environment variables, exiting');
     process.exit(1);
@@ -38,17 +43,19 @@ export const initPassport = async () => {
     'oidc',
     new OpenIDStrategy(
       { client, passReqToCallback: true },
-      async (req: any, tokenSet: TokenSet, profile: any, done: any) => {
+      async (req: any, tokenSet: TokenSet, idPortenProfile: any, done: any) => {
         try {
-          const idPortenProfile: IDPortenProfile = profile;
           const postLoginRedirectUrl = req.session.returnTo || '/';
-          const userId = idPortenProfile.pid;
+          const userId = (idPortenProfile as IDPortenProfile).pid;
           const { sid, locale, pid } = tokenSet.claims();
 
-          const user: Profile | null = await getOrCreateProfile(userId, {
+          const user: Profile | undefined = await getOrCreateProfile(userId, {
             language: locale || '',
           });
-          if (!user) throw new Error('Fatal: Unable to find/create user');
+
+          if (!user) {
+            throw new Error('Fatal: Unable to find/create user');
+          }
 
           const existingSessionIdFromCookie = readCookie(req);
 
@@ -62,7 +69,9 @@ export const initPassport = async () => {
             sessionId = session?.id;
           }
 
-          if (!sessionId) throw new Error('Fatal: Unable to find/create session');
+          if (!sessionId) {
+            throw new Error('Fatal: Unable to find/create session');
+          }
 
           return done(null, {
             sid,
@@ -98,18 +107,20 @@ const getOrCreateProfile = async (userId: string, userInfo: Partial<Profile>) =>
       newProfile.id = userId;
       newProfile.language = userInfo.language || '';
       user = await ProfileRepository!.save(newProfile);
-      if (!user) throw new Error('Fatal: User not found and not able to create');
+      if (!user) {
+        throw new Error('Fatal: User not found and not able to create');
+      }
     }
 
     return user;
   } catch (error) {
     console.error('getOrCreateProfile error: ', error);
   }
-  return null;
 };
 
-const getSession = async (existingSessionIdFromCookie: string) =>
-  await SessionRepository!.findOneBy({ id: existingSessionIdFromCookie });
+const getSession = async (existingSessionIdFromCookie: string) => {
+  return await SessionRepository!.findOneBy({ id: existingSessionIdFromCookie });
+}
 
 const createSession = async (
   idportenSessionId: string,
@@ -133,7 +144,7 @@ const createSession = async (
   const sessionProps: Partial<SessionData> = {
     accessToken,
     accessTokenExpiresAt,
-    idportenSessionId: idportenSessionId || undefined,
+    idportenSessionId,
     refreshToken,
     refreshTokenExpiresAt,
     idToken,
@@ -144,6 +155,5 @@ const createSession = async (
     ...(user && { profile: user }),
   };
 
-  const session = await SessionRepository!.save(sessionProps);
-  return session;
+  return await SessionRepository!.save(sessionProps);
 };

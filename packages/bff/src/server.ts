@@ -1,10 +1,8 @@
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Express } from 'express';
 import passport from 'passport';
 import 'reflect-metadata';
-import { DataSource, Repository } from 'typeorm';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import config from './config';
@@ -28,7 +26,7 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   startLivenessProbe(app, startTimeStamp);
 
   if (isAppInsightsEnabled) {
-    const connectionString = config.applicationInsights.connectionString;
+    const { connectionString } = config.applicationInsights;
     if (!connectionString) {
       throw new Error("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
     } else {
@@ -41,19 +39,18 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(bodyParser.json());
 
-  // CORS configuration for local env
+  /* CORS configuration for local env, needs to be applied before routes are defined */
   const corsOptions = {
-    origin: 'http://localhost', // Replace with your app's origin
-    credentials: true, // To accept credentials (cookies) from the front-end
+    origin: [ 'http://frontend-design-poc.localhost', 'http://localhost:3000' ],
+    credentials: true,
+    methods: "GET, POST, PATCH, DELETE, PUT",
+    allowedHeaders: "Content-Type, Authorization",
+    preflightContinue: true,
   };
 
   app.use(cors(corsOptions));
-
-  // Session Middleware Configuration
   app.use(sessionMiddleware);
-
   app.use(passport.initialize());
   app.use(passport.session());
   await initPassport();
