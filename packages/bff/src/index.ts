@@ -7,7 +7,6 @@ import 'reflect-metadata';
 import { DataSource, Repository } from 'typeorm';
 import { StartUp } from './entities/StartUp';
 import { startLivenessProbe, startReadinessProbe } from './routes/HealthProbes';
-import { runMigrationApp } from './util/Migration';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { Profile } from './entities/Profile';
@@ -97,10 +96,13 @@ const main = async (): Promise<void> => {
   }
 };
 
-if (process.env.IS_MIGRATION_JOB === 'true') {
-  console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
-  runMigrationApp();
-} else void main();
+main()
+  .then(() => {
+    console.log('BFF started.');
+  })
+  .catch((error) => {
+    console.error('BFF failed to start', error);
+  });
 
 const logStartupToDb = async () => {
   if (!StartUpRepository) throw new Error('StartUpRepository not initialized');

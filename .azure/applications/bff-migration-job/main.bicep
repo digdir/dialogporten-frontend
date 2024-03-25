@@ -46,10 +46,6 @@ var containerAppEnvVars = [
     value: appConfiguration.properties.endpoint
   }
   {
-    name: 'IS_MIGRATION_JOB'
-    value: 'true'
-  }
-  {
     name: 'DB_CONNECTION_STRING'
     secretRef: 'dbconnectionstring'
   }
@@ -75,6 +71,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
     secrets: secrets
+    command: ['pnpm', '--filter', 'bff', 'run', 'migration:run']
   }
 }
 

@@ -53,6 +53,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           image: image
           env: environmentVariables
           probes: probes
+          command: [
+            'dotnet'
+            'MyApp.dll'
+          ]
         }
       ]
       scale: {

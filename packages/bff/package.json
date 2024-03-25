@@ -11,6 +11,7 @@
     "typeormold": "typeorm-ts-node-commonjs -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.ts",
     "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/data-source.local.ts",
     "typeorm:migrate": "npm run typeorm migration:generate -- -n",
+    "migration:run": "ts-node src/migration.ts",
     "migration:create": "node src/scripts/migration-create.js",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -- -d src/data-source.ts",
     "typeorm:revert": "npm run typeorm migration:revert",
@@ -42,7 +43,7 @@
     "swagger-ui-express": "^5.0.0",
     "typeorm": "0.3.19",
     "util": "^0.12.5",
-    "zod": "^3.22.2"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@azure/keyvault-secrets": "^4.7.0",
