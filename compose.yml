@@ -71,20 +71,15 @@ services:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
       PORT: 3000
       DEV_ENV: dev
-      REDIRECT_URI: http://localhost:3000/auth/cb
+      HOSTNAME: http://bff.localhost
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      OIDC_URL: test.idporten.no
       SCOPE: digdir:dialogporten.noconsent openid
-      AUTH_URL: https://login.test.idporten.no/authorize
-      ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
-      TOKEN_ENDPOINT: https://test.idporten.no/token
-      LOGOUT_REDIRECT_URI: http://localhost:3000/auth/loggedout
-      LOGOUT_URI: https://login.test.idporten.no/logout
       SESSION_SECRET: IDPortenSessionSecret2023
       COOKIE_NAME: oidc:test.idporten.no
       REFRESH_TOKEN_EXPIRES_IN: 120
       ACCESS_TOKEN_EXPIRES_IN: 60
-      TYPEORM_MIGRATIONS: src/migrations/*.ts
-      TYPEORM_MIGRATIONS_DIR: src/migrations
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`bff.localhost`)"
@@ -230,6 +225,29 @@ services:
         - action: sync
           path: ./packages/docs/
           target: /app/packages/docs/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+
+  bff-graphql-poc:
+    container_name: bff-graphql-poc
+    restart: always
+    build:
+      context: .
+      dockerfile: ./packages/bff-graphql-poc/Dockerfile
+      target: build
+    command: sh -c "pnpm --filter bff-graphql-poc run dev:start"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bff-graphql-poc.rule=Host(`bff-graphql-poc.localhost`)"
+      - "dave.relativeSubdomain=bff-graphql-poc"
+      - "dave.icon=fa-brands:node"
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/bff-graphql-poc/
+          target: /app/packages/bff-graphql-poc/
           ignore:
             - node_modules/
             - .azure/

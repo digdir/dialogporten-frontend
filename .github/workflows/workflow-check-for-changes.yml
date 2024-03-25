@@ -40,4 +40,5 @@ jobs:
               - 'packages/bff/**/*'
               - 'packages/bff-frontend-poc/**/*'
               - 'packages/frontend-design-poc/**/*'
+              - 'packages/dialogporten-types-generated/**/*'
               - 'packages/storybook/**/*'

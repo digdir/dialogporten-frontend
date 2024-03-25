@@ -3,30 +3,35 @@ import passport from 'passport';
 import { ProfileRepository, SessionRepository } from '..';
 import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
-import { IDPortenProfile } from '../types/types';
-import { readCookie } from '../util/sessionUtils';
-import './env';
+import { readCookie } from './sessionUtils';
+
+type IDPortenProfile = {
+  sub: string;
+  pid: string;
+};
 
 export const initPassport = async () => {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
   if (!ProfileRepository) throw new Error('ProfileRepository not initialized');
-  if (!process.env.ISSUER_URL) {
+  if (!process.env.OIDC_URL) {
     console.error('No issuer url found in environment variables, exiting');
     process.exit(1);
   }
 
-  const idportenIssuer = await Issuer.discover(process.env.ISSUER_URL).then(async (idportenIssuer) => {
-    return idportenIssuer;
-  });
+  const idportenIssuer = await Issuer.discover(`https://${process.env.OIDC_URL}/.well-known/openid-configuration`).then(
+    async (idportenIssuer) => {
+      return idportenIssuer;
+    },
+  );
 
   const client = new idportenIssuer.Client({
     client_id: process.env.CLIENT_ID!,
     client_secret: process.env.CLIENT_SECRET,
-    redirect_uris: [process.env.REDIRECT_URI!],
+    redirect_uris: [`${process.env.HOSTNAME!}/auth/cb`],
     response_types: ['code'],
     token_endpoint_auth_method: 'client_secret_basic',
     scope: process.env.SCOPE,
-    authorizationURL: process.env.AUTH_URL,
+    authorizationURL: `https://login.${process.env.OIDC_URL}/authorize`,
   });
 
   passport.use(

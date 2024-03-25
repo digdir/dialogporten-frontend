@@ -2,9 +2,8 @@ import { Request, Response } from 'express';
 import { Session } from 'express-session';
 import passport from 'passport';
 import { SessionRepository } from '..';
-import '../config/env';
 import { SessionData } from '../entities/SessionData';
-import { deleteCookie, readCookie, setCookie } from '../util/sessionUtils';
+import { deleteCookie, readCookie, setCookie } from './sessionUtils';
 
 interface CustomSession extends Session, Partial<SessionData> {
   returnTo?: string;
@@ -47,8 +46,8 @@ const logout = async (req: any, res: any, next: any) => {
     id: sessionCookie as string,
   });
 
-  const logoutUri = process.env.LOGOUT_URI;
-  const logoutRedirectUri = process.env.LOGOUT_REDIRECT_URI;
+  const logoutUri = `https://login.${process.env.OIDC_URL}/logout`;
+  const logoutRedirectUri = `${process.env.HOSTNAME!}/auth/loggedout`;
 
   if (currentSession && logoutUri && logoutRedirectUri) {
     const logoutRedirectUrl = `${logoutUri}?post_logout_redirect_uri=${logoutRedirectUri}&id_token_hint=${currentSession.idToken}`;

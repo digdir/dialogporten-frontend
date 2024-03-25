@@ -1,7 +1,6 @@
 {
    "compilerOptions": {
       "outDir": "./dist",
-      // "baseUrl": "./src",
       "target": "es2020",
       "module": "commonjs",
       "moduleResolution": "node",

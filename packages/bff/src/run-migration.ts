@@ -1,10 +1,16 @@
 import util from 'util';
 import 'reflect-metadata';
-import { bffVersion } from '..';
-import '../config/env';
+import { bffVersion } from '.';
 import { initAppInsights } from './ApplicationInsightsInit';
-import { waitNSeconds } from './waitNSeconds';
-import config from '../config/config';
+import config from './config';
+
+function waitNSeconds(n = 1): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000 * n);
+  });
+}
 
 let migrationsuccessful = false;
 

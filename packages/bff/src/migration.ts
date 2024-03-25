@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { runMigrationApp } from './util/Migration';
+import { runMigrationApp } from './run-migration';
 
 runMigrationApp()
   .then(() => {

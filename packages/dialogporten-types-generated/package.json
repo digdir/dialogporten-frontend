@@ -1,11 +1,14 @@
 {
   "name": "dialogporten-types-generated",
+  "main": "src/index.ts",
   "version": "1.0.0",
   "scripts": {
-    "build": "swagger-typescript-api --path ./node_modules/dialogporten-swagger/swagger.json -o generated --modular --clean-output --module-name-first-tag"
+    "prepare": "pnpm run generate:types",
+    "build": "pnpm run generate:types",
+    "generate:types": "swagger-typescript-api --path ./node_modules/@digdir/dialogporten-swagger/swagger.verified.json -o generated --modular --clean-output --module-name-first-tag --union-enums"
   },
   "dependencies": {
-    "dialogporten-swagger": "^1.0.4",
+    "@digdir/dialogporten-swagger": "1.1.0",
     "swagger-typescript-api": "13.0.3"
   }
 }

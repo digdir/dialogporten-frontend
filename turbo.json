@@ -1,7 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "build:dialogporten-types-generated": {
+      "dependsOn": ["^build"],
+      "outputs": ["generated/**"],
+      "cache": false
+    },
     "build": {
+      "dependsOn": ["build:dialogporten-types-generated"],
       "cache": false
     },
     "test": {
