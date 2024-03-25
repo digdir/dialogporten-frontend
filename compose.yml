@@ -103,7 +103,6 @@ services:
 
   bff-migration:
     container_name: bff-migration
-    restart: always
     command: ["pnpm", "--filter", "bff", "run", "migration:run"]
     build:
       context: .
