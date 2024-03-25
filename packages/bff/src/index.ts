@@ -13,7 +13,6 @@ import { Profile } from './entities/Profile';
 import { SessionData } from './entities/SessionData';
 import { initPassport } from './config/passport';
 import { sessionMiddleware } from './util/sessionUtils';
-import { initPgEnvVars } from './util/initPgEnvVars';
 import cors from 'cors';
 
 export const app: Express = express();
@@ -46,8 +45,6 @@ const main = async (): Promise<void> => {
     await initAppInsights();
     console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
   }
-  if (process.env.Infrastructure__DialogDbConnectionString)
-    initPgEnvVars(process.env.Infrastructure__DialogDbConnectionString);
 
   // ************ CONNECT TO DB ************
   const { connectionOptions } = await import('./data-source');
