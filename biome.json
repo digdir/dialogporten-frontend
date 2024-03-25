@@ -30,7 +30,6 @@
       "style": {
         "noUnusedTemplateLiteral": "off",
         "noNonNullAssertion": "off",
-        "noExplicitAny": "off",
         "useTemplate": "off"
       }
     }

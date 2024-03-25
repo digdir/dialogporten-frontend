@@ -4,8 +4,11 @@ import { SessionRepository } from '..';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './sessionUtils';
 
+/* TODO: Fix this - unable to locate user session */
 export async function ensureAuthenticated(req: any, res: any, next: any) {
-  if (!SessionRepository) throw new Error('SessionRepository not initialized');
+  if (!SessionRepository) {
+    throw new Error('SessionRepository not initialized');
+  }
   const sessionCookie = readCookie(req);
   req.session.returnTo = req.originalUrl;
   let session = sessionCookie ? await SessionRepository.findOneBy({ id: sessionCookie }) : null;
