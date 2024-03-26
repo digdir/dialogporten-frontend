@@ -17,10 +17,9 @@ export const connectionOptions: DataSourceOptions = {
   url: config.postgresql.connectionString,
   synchronize: isDev,
   logging: isDev,
-  entities: ['src/entities/*{.ts,.js}'], // where our entities reside
-  // migrations: ['src/migrations/*{.ts,.js}'], // where our migrations reside
-  migrations: [`${__dirname}'/migrations/**/*.ts'`],
-  ...(process.env.DEV_ENV !== 'dev' && {
+  entities: ['src/entities/*{.ts,.js}'],
+  migrations: [__dirname + '/migrations/**/*.ts'],
+  ...(!isDev && {
     extra: {
       ssl: {
         rejectUnauthorized: false,
