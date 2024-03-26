@@ -1,8 +1,9 @@
-import { app, bffVersion } from '..';
+import express from 'express';
+import config from '../config';
 
-export function startReadinessProbe(startTimeStamp: Date) {
+export function startReadinessProbe(app: express.Express, startTimeStamp: Date) {
   console.log(
-    bffVersion,
+    config.version,
     'Starting /readiness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,
     'seconds',
@@ -12,9 +13,9 @@ export function startReadinessProbe(startTimeStamp: Date) {
   });
 }
 
-export function startLivenessProbe(startTimeStamp: Date) {
+export function startLivenessProbe(app: express.Express, startTimeStamp: Date) {
   console.log(
-    bffVersion,
+    config.version,
     'Starting /liveness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,
     'seconds',

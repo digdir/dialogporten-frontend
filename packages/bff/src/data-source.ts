@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import './config/env';
 import config from './config';
 
 const isDev = process.env.DEV_ENV === 'dev';
