@@ -1,6 +1,5 @@
 import util from 'util';
 import 'reflect-metadata';
-import { bffVersion } from '.';
 import { initAppInsights } from './ApplicationInsightsInit';
 import config from './config';
 
@@ -25,13 +24,13 @@ const execMigration = async () => {
     }
     if (stdout) {
       if (stdout.includes('No migrations are pending')) {
-        console.log(bffVersion, ': ', 'Migration: Success! (No migrations were pending)');
+        console.log(config.version, ': ', 'Migration: Success! (No migrations were pending)');
         return true;
       } else if (stdout.includes('new migrations must be executed')) {
-        console.log(bffVersion, ': ', 'Migration: Success! (New migrations were executed)');
+        console.log(config.version, ': ', 'Migration: Success! (New migrations were executed)');
         return true;
       }
-      console.log(bffVersion, ': ', 'Migration: Standard Output:', stdout);
+      console.log(config.version, ': ', 'Migration: Standard Output:', stdout);
     }
     return false;
   } catch (error) {
@@ -49,13 +48,13 @@ export const runMigrationApp = async () => {
         const appInsightResult = await initAppInsights();
         if (appInsightResult === 'Done') appInsightSetupComplete = true;
       } catch (error) {
-        console.error(bffVersion, ': ', 'Migration: Error setting up appInsights: ', error);
+        console.error(config.version, ': ', 'Migration: Error setting up appInsights: ', error);
       }
       await waitNSeconds(1);
     } while (!appInsightSetupComplete);
 
   // ************ RUN MIGRATION ************
-  console.log(bffVersion, ': ', 'MIGRATION: Starting migration:');
+  console.log(config.version, ': ', 'MIGRATION: Starting migration:');
 
   try {
     migrationsuccessful = await execMigration();
@@ -65,8 +64,8 @@ export const runMigrationApp = async () => {
   }
 
   if (migrationsuccessful) {
-    console.log(bffVersion, ': ', 'Migration successful, setting migrationStatus to true');
-    console.log(bffVersion, ': ', 'Migration: Exiting with success');
+    console.log(config.version, ': ', 'Migration successful, setting migrationStatus to true');
+    console.log(config.version, ': ', 'Migration: Exiting with success');
   } else {
     console.log('Migration not successful, Exiting with failure ');
     process.exit(1);

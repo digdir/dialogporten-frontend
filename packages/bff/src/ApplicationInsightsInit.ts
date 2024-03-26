@@ -1,5 +1,5 @@
 import * as appInsights from 'applicationinsights';
-import { bffVersion } from '.';
+import config from './config';
 
 function waitNSeconds(n = 1): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -33,9 +33,9 @@ export const initAppInsights = async () => {
     waitNSeconds(1)
       .then(() => {
         if (appInsights.defaultClient) {
-          console.log(bffVersion, ': ', 'AppInsights initialized properly.');
+          console.log(config.version, ': ', 'AppInsights initialized properly.');
         } else {
-          console.error(bffVersion, ': ', 'AppInsights failed to initialize properly.');
+          console.error(config.version, ': ', 'AppInsights failed to initialize properly.');
         }
         resolve('Done');
       })

@@ -1,4 +1,3 @@
-export const bffVersion = process.env.GIT_SHA || 'v6.1.5';
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import 'reflect-metadata';
@@ -12,10 +11,13 @@ import { initPassport } from './oidc/passport';
 
 import cors from 'cors';
 import { sessionMiddleware } from './oidc/sessionUtils';
+import config from './config';
+
+const bffVersion = config.version;
 
 const port = process.env.PORT || 3000;
 
-export const app: Express = express();
+const app: Express = express();
 export let SessionRepository: Repository<SessionData> | undefined = undefined;
 export let ProfileRepository: Repository<Profile> | undefined = undefined;
 const startTimeStamp = new Date();
@@ -30,7 +32,7 @@ declare module 'express-session' {
 
 // ***** MAIN FUNCTION *****
 const main = async (): Promise<void> => {
-  startLivenessProbe(startTimeStamp);
+  startLivenessProbe(app, startTimeStamp);
   app.listen(port, () => {
     console.log(`BFF: ⚡️[server]: Server ${bffVersion} is running on PORT: ${port}`);
   });
@@ -79,7 +81,7 @@ const main = async (): Promise<void> => {
     app.use(bodyParser.json());
     app.use('/', routes);
 
-    startReadinessProbe(startTimeStamp);
+    startReadinessProbe(app, startTimeStamp);
   } catch (error) {
     console.error(error);
     process.exit(1);
