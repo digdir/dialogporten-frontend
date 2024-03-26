@@ -1,5 +1,6 @@
 import * as appInsights from 'applicationinsights';
 import config from './config';
+import logger from './logger';
 
 function waitNSeconds(n = 1): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -33,9 +34,9 @@ export const initAppInsights = async () => {
     waitNSeconds(1)
       .then(() => {
         if (appInsights.defaultClient) {
-          console.log(config.version, ': ', 'AppInsights initialized properly.');
+          logger.info(config.version, ': ', 'AppInsights initialized properly.');
         } else {
-          console.error(config.version, ': ', 'AppInsights failed to initialize properly.');
+          logger.error(config.version, ': ', 'AppInsights failed to initialize properly.');
         }
         resolve('Done');
       })

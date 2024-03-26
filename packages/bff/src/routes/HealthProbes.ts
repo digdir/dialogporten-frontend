@@ -1,8 +1,9 @@
 import express from 'express';
 import config from '../config';
+import logger from '../logger';
 
 export function startReadinessProbe(app: express.Express, startTimeStamp: Date) {
-  console.log(
+  logger.info(
     config.version,
     'Starting /readiness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,
@@ -14,7 +15,7 @@ export function startReadinessProbe(app: express.Express, startTimeStamp: Date) 
 }
 
 export function startLivenessProbe(app: express.Express, startTimeStamp: Date) {
-  console.log(
+  logger.info(
     config.version,
     'Starting /liveness probe after ',
     (new Date().getTime() - startTimeStamp.getTime()) / 1000,

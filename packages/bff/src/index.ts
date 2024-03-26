@@ -12,6 +12,7 @@ import { initPassport } from './oidc/passport';
 import cors from 'cors';
 import { sessionMiddleware } from './oidc/sessionUtils';
 import config from './config';
+import logger from './logger';
 
 const bffVersion = config.version;
 
@@ -34,14 +35,14 @@ declare module 'express-session' {
 const main = async (): Promise<void> => {
   startLivenessProbe(app, startTimeStamp);
   app.listen(port, () => {
-    console.log(`BFF: ⚡️[server]: Server ${bffVersion} is running on PORT: ${port}`);
+    logger.info(`BFF: ⚡️[server]: Server ${bffVersion} is running on PORT: ${port}`);
   });
 
   // ************ INITIALIZE APPLICATION INSIGHTS ************
   if (isAppInsightsEnabled) {
     const { initAppInsights } = await import('./ApplicationInsightsInit');
     await initAppInsights();
-    console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
+    logger.info(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
   }
 
   // ************ CONNECT TO DB ************
@@ -83,7 +84,7 @@ const main = async (): Promise<void> => {
 
     startReadinessProbe(app, startTimeStamp);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     process.exit(1);
   }
 };

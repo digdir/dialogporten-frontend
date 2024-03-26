@@ -1,5 +1,6 @@
 import { CookieOptions } from 'express';
 import session from 'express-session';
+import logger from '../logger';
 
 export const setCookie = (res: any, value: string) => {
   const cookieName = process.env.COOKIE_NAME || 'cookieName';
@@ -20,7 +21,7 @@ export const deleteCookie = async (res: any) => {
     res.clearCookie[process.env.COOKIE_NAME || 'cookieName'];
     res.clearCookie('connect.sid');
   } catch (error) {
-    console.error('deleteCookie failed: ', error);
+    logger.error('deleteCookie failed: ', error);
   }
 };
 
