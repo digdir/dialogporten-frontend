@@ -4,14 +4,14 @@ import bodyParser from 'body-parser';
 import 'reflect-metadata';
 import { DataSource, Repository } from 'typeorm';
 import { startLivenessProbe, startReadinessProbe } from './routes/HealthProbes';
-import { runMigrationApp } from './Migration';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { Profile } from './entities/Profile';
 import { SessionData } from './entities/SessionData';
 import { initPassport } from './oidc/passport';
-import { sessionMiddleware } from './oidc/sessionUtils';
+
 import cors from 'cors';
+import { sessionMiddleware } from './oidc/sessionUtils';
 
 const port = process.env.PORT || 3000;
 
@@ -28,21 +28,6 @@ declare module 'express-session' {
   }
 }
 
-const initPgEnvVars = (dbConnectionString: string) => {
-  try {
-    const pgJson = JSON.parse(dbConnectionString);
-    if (pgJson?.host) {
-      process.env.DB_HOST = pgJson.host;
-      process.env.DB_PORT = pgJson.port;
-      process.env.DB_USER = pgJson.user;
-      process.env.DB_PASSWORD = pgJson.password;
-      process.env.DB_NAME = pgJson.dbname;
-    }
-  } catch (error) {
-    console.error('initPgEnvVars: Error reading dbConnectionStringOK: ', error);
-  }
-};
-
 // ***** MAIN FUNCTION *****
 const main = async (): Promise<void> => {
   startLivenessProbe(startTimeStamp);
@@ -56,8 +41,6 @@ const main = async (): Promise<void> => {
     await initAppInsights();
     console.log(`Starting BFF ${bffVersion} with GIT SHA: ${process.env.GIT_SHA}.`);
   }
-  if (process.env.Infrastructure__DialogDbConnectionString)
-    initPgEnvVars(process.env.Infrastructure__DialogDbConnectionString);
 
   // ************ CONNECT TO DB ************
   const { connectionOptions } = await import('./data-source');
@@ -103,7 +86,4 @@ const main = async (): Promise<void> => {
   }
 };
 
-if (process.env.IS_MIGRATION_JOB === 'true') {
-  console.log("_ ************* MIGRATION JOB, DON'T START SERVER *************");
-  runMigrationApp();
-} else void main();
+main();

@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import './config/env';
+import config from './config';
 
 const isDev = process.env.DEV_ENV === 'dev';
 
@@ -12,11 +14,7 @@ console.log(
 
 export const connectionOptions: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST !== 'undefined' ? process.env.DB_HOST : 'postgresdb-dp-fe',
-  port: 5432,
-  username: process.env.DB_USER !== 'undefined' ? process.env.DB_USER : 'postgres',
-  password: process.env.DB_PASSWORD !== 'undefined' ? process.env.DB_PASSWORD : 'mysecretpassword',
-  database: process.env.DB_NAME !== 'undefined' ? process.env.DB_NAME : 'dialogporten',
+  url: config.postgresql.connectionString,
   synchronize: isDev,
   logging: isDev,
   entities: ['src/entities/*{.ts,.js}'],
@@ -30,7 +28,6 @@ export const connectionOptions: DataSourceOptions = {
   }),
 };
 
-console.log({ ...connectionOptions });
 export default new DataSource({
   ...connectionOptions,
 });

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 include:
   - path:
@@ -42,6 +42,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: dialogporten
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 20s
+      retries: 5
 
   pgadmin4:
     container_name: pgadmin4
@@ -63,15 +68,12 @@ services:
       dockerfile: ./packages/bff/Dockerfile
       target: build
     environment:
-      CLIENT_ID: ${CLIENT_ID}
-      CLIENT_SECRET: ${CLIENT_SECRET}
-      DB_HOST: db
-      DB_USER: postgres
-      DB_PASSWORD: mysecretpassword
-      DB_NAME: dialogporten
+      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
       PORT: 3000
       DEV_ENV: dev
       HOSTNAME: http://bff.localhost
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
       SCOPE: digdir:dialogporten.noconsent openid
       SESSION_SECRET: IDPortenSessionSecret2023
@@ -84,7 +86,10 @@ services:
       - "dave.relativeSubdomain=bff"
       - "dave.icon=fa-brands:node"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      bff-migration:
+        condition: service_completed_successfully
     command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
@@ -95,6 +100,35 @@ services:
             - node_modules/
             - .azure/
             - .git/
+
+  bff-migration:
+    container_name: bff-migration
+    restart: always
+    command: ["pnpm", "--filter", "bff", "run", "migration:run"]
+    build:
+      context: .
+      dockerfile: ./packages/bff/Dockerfile
+      target: build
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
+      PORT: 3000
+      DEV_ENV: dev
+      REDIRECT_URI: http://localhost:3000/auth/cb
+      SCOPE: digdir:dialogporten.noconsent openid
+      AUTH_URL: https://login.test.idporten.no/authorize
+      ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
+      TOKEN_ENDPOINT: https://test.idporten.no/token
+      LOGOUT_REDIRECT_URI: http://localhost:3000/auth/loggedout
+      LOGOUT_URI: https://login.test.idporten.no/logout
+      SESSION_SECRET: IDPortenSessionSecret2023
+      COOKIE_NAME: oidc:test.idporten.no
+      REFRESH_TOKEN_EXPIRES_IN: 120
+      ACCESS_TOKEN_EXPIRES_IN: 60
+      TYPEORM_MIGRATIONS: src/migrations/*.ts
+      TYPEORM_MIGRATIONS_DIR: src/migrations
+    depends_on:
+      db:
+        condition: service_healthy
 
   bff-frontend-poc:
     container_name: bff-frontend-poc

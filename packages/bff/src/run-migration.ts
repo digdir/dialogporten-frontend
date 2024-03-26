@@ -2,6 +2,7 @@ import util from 'util';
 import 'reflect-metadata';
 import { bffVersion } from '.';
 import { initAppInsights } from './ApplicationInsightsInit';
+import config from './config';
 
 function waitNSeconds(n = 1): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ const execMigration = async () => {
   const execAsync = util.promisify(exec);
 
   try {
-    const { stdout, stderr } = await execAsync('pnpm typeorm migration:run -d src/data-source.ts');
+    const { stdout, stderr } = await execAsync('pnpm --filter bff run typeorm migration:run -d src/data-source.ts');
     if (stderr) {
       console.error('BFF: Standard Error:', stderr);
     }
@@ -42,7 +43,7 @@ const execMigration = async () => {
 export const runMigrationApp = async () => {
   // ************ INIT APP INSIGHTS ************
   let appInsightSetupComplete = false;
-  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+  if (config.applicationInsights.connectionString)
     do {
       try {
         const appInsightResult = await initAppInsights();
@@ -57,22 +58,6 @@ export const runMigrationApp = async () => {
   console.log(bffVersion, ': ', 'MIGRATION: Starting migration:');
 
   try {
-    let pgJson;
-    if (process.env.Infrastructure__DialogDbConnectionString)
-      do {
-        try {
-          pgJson = JSON.parse(process.env.Infrastructure__DialogDbConnectionString!);
-        } catch (error) {
-          console.error(bffVersion, ': ', 'BFF: Error reading dbConnectionStringOK: ', error);
-        }
-        await waitNSeconds(1);
-      } while (!pgJson?.host);
-    process.env.DB_HOST = pgJson?.host;
-    process.env.DB_USER = pgJson?.user;
-    process.env.DB_PORT = pgJson?.port;
-    process.env.DB_PASSWORD = pgJson?.password;
-    process.env.DB_NAME = pgJson?.dbname;
-
     migrationsuccessful = await execMigration();
   } catch (error) {
     console.error('runMigrationApp: Migration run failed: ', error);

@@ -4,6 +4,7 @@ param image string
 param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
+param command string[]
 
 param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
@@ -53,6 +54,7 @@ resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
           image: image
           env: environmentVariables
           probes: probes
+          command: command
         }
       ]
     }
