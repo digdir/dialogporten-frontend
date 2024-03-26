@@ -28,21 +28,6 @@ declare module 'express-session' {
   }
 }
 
-const initPgEnvVars = (dbConnectionString: string) => {
-  try {
-    const pgJson = JSON.parse(dbConnectionString);
-    if (pgJson?.host) {
-      process.env.DB_HOST = pgJson.host;
-      process.env.DB_PORT = pgJson.port;
-      process.env.DB_USER = pgJson.user;
-      process.env.DB_PASSWORD = pgJson.password;
-      process.env.DB_NAME = pgJson.dbname;
-    }
-  } catch (error) {
-    console.error('initPgEnvVars: Error reading dbConnectionStringOK: ', error);
-  }
-};
-
 // ***** MAIN FUNCTION *****
 const main = async (): Promise<void> => {
   startLivenessProbe(startTimeStamp);
@@ -101,10 +86,4 @@ const main = async (): Promise<void> => {
   }
 };
 
-main()
-  .then(() => {
-    console.log('BFF started.');
-  })
-  .catch((error) => {
-    console.error('BFF failed to start', error);
-  });
+main();
