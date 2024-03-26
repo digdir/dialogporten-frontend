@@ -126,11 +126,6 @@ services:
       ACCESS_TOKEN_EXPIRES_IN: 60
       TYPEORM_MIGRATIONS: src/migrations/*.ts
       TYPEORM_MIGRATIONS_DIR: src/migrations
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bff.rule=Host(`bff.localhost`)"
-      - "dave.relativeSubdomain=bff"
-      - "dave.icon=fa-brands:node"
     depends_on:
       db:
         condition: service_healthy
