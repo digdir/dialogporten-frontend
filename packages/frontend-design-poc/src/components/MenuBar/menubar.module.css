@@ -5,44 +5,44 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-radius: 0.375em;
-  padding: 0.625em;
-  height: 2.25em;
-  max-height: 2.25em;
+  border-radius: 6px;
+  padding: 0.625rem;
+  height: 2.25rem;
+  max-height: 2.25rem;
 }
 
 .menuText {
   color: white;
-  font-size: 1em;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px;
-  padding: 0.25em;
+  line-height: 1.25;
+  padding: 0.25rem;
 }
 
 .menuCircle {
   min-width: 36px;
   min-height: 36px;
   background-color: var(--avatar-color);
-  color: white;
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 1.25rem;
   position: relative;
-  padding-left: 0.25em;
+  padding-left: 0.25rem;
 }
 
 .menuCircle.isOrganization {
-  border-radius: 0.25em;
+  border-radius: 4px;
 }
 
 
 .icon {
   flex-shrink: 0;
-  font-size: 24px;
+  font-size: 1.5rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -60,13 +60,13 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  border-radius: 1em;
-  box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   gap: 1rem;
   z-index: 1;
-  width: 12.5em;
+  width: 12.5rem;
 
 }
 
@@ -93,36 +93,34 @@
   height: 1.5rem;
   border-radius: 50%;
   background-color: var(--Action-Important, #E02E49);
-  color: white;
-  margin-right: 0.5em;
+  margin-right: 0.5rem;
   color: #fff;
-  font-size: 0.75em;
+  font-size: 0.75rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1rem;
   position: absolute;
   transform: translate(50%, -50%);
   top: 0;
-  margin-top: 0.25em;
+  margin-top: 0.25rem;
   right: 0;
 }
 
 .nameWithInitials {
   display: flex;
   align-items: center;
-  gap: 0.625em;
+  gap: 0.625rem;
   background-color: var(--avatar-color);
-  border-radius: 0.375em;
-  color: white;
-  height: 2.25em;
-  max-height: 2.25em;
-  padding-right: 0.625em;
+  border-radius: 0.375rem;
+  color: #fff;
+  height: 2.25rem;
+  max-height: 36px;
+  padding-right: 0.625rem;
 }
 
 .primaryName {
   text-align: center;
-  text-align: center;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 500;
   line-height: 28px;
@@ -130,10 +128,10 @@
 
 .secondaryName {
   width: 100%;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%;
+  line-height: 1.5;
 }
 
 .nameContainer {
