@@ -64,7 +64,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'PORT'
-    value: '3000'
+    value: '8080'
   }
   {
     name: 'DEV_ENV'
@@ -115,7 +115,7 @@ var secrets = [
   {
     name: 'dbconnectionstring'
     keyVaultUrl: keyVaultUrl
-    identity: 'System'
+    identity: 'system'
   }
 ]
 
