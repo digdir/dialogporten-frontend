@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5em 1em;
+    padding: 0.5rem 1rem;
     flex-shrink: 0;
     border-radius: 20px;
     border: 1px solid #00315D;
@@ -13,7 +13,7 @@
 
 .actionButtons {
     display: flex;
-    column-gap: 0.5em;
+    column-gap: 0.5rem;
 }
 
 .actionButton {
@@ -23,8 +23,8 @@
         color: #000;
     }
     .actionButtonIcon {
-        height: 1.5em;
-        width: 1.5em;
+        height: 1.5rem;
+        width: 1.5rem;
         margin-right: 5px;
         svg {
             height: 100%;
@@ -40,8 +40,8 @@
         color: #000;
     }
     .undoButtonIcon {
-        height: 1.5em;
-        width: 1.5em;
+        height: 1.5rem;
+        width: 1.5rem;
         margin-left: 5px;
         svg {
             height: 100%;
