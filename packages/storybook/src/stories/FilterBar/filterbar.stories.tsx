@@ -89,7 +89,16 @@ const historicalPeople: Person[] = [
 export default {
   title: 'Components/FilterBar',
   component: FilterBar,
-  decorators: [withRouter],
+  decorators: [
+    withRouter,
+    (Story) => {
+      return (
+        <div style={{ padding: 20 }}>
+          <Story />
+        </div>
+      );
+    },
+  ],
   parameters: {
     layout: 'fullscreen',
     docs: { source: { type: 'code' } }, // Important: https://github.com/storybookjs/storybook/issues/19575
