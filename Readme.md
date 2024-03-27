@@ -33,3 +33,12 @@ Running Docker in watch mode:
 ```bash
 make compose-watch
 ```
+
+
+### env
+Ensure .env (in root) is created with following keys and appropriate values
+```
+CLIENT_ID=
+CLIENT_SECRET=
+DB_CONNECTION_STRING=
+```

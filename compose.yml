@@ -68,7 +68,7 @@ services:
       dockerfile: ./packages/bff/Dockerfile
       target: build
     environment:
-      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
       PORT: 3000
       DEV_ENV: dev
       HOSTNAME: http://bff.localhost
