@@ -4,6 +4,7 @@ import { ProfileRepository, SessionRepository } from '..';
 import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './sessionUtils';
+import logger from '../logger';
 
 type IDPortenProfile = {
   sub: string;
@@ -14,7 +15,7 @@ export const initPassport = async () => {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
   if (!ProfileRepository) throw new Error('ProfileRepository not initialized');
   if (!process.env.OIDC_URL) {
-    console.error('No issuer url found in environment variables, exiting');
+    logger.error('No issuer url found in environment variables, exiting');
     process.exit(1);
   }
 
@@ -72,7 +73,7 @@ export const initPassport = async () => {
             currentSessionId: sessionId,
           });
         } catch (error) {
-          console.error("authenticate('oidc') error: ", error);
+          logger.error("authenticate('oidc') error: ", error);
           return done(error);
         }
       },
@@ -103,7 +104,7 @@ const getOrCreateProfile = async (userId: string, userInfo: Partial<Profile>) =>
 
     return user;
   } catch (error) {
-    console.error('getOrCreateProfile error: ', error);
+    logger.error('getOrCreateProfile error: ', error);
   }
   return null;
 };

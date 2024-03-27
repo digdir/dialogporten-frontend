@@ -3,6 +3,7 @@ import passport from 'passport';
 import { SessionRepository } from '..';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './sessionUtils';
+import logger from '../logger';
 
 export async function ensureAuthenticated(req: any, res: any, next: any) {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');
@@ -28,7 +29,7 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
   if (session?.id && !isRefreshTokenValid && !isAccessTokenValid) {
     req.logout(async (err: Error) => {
       if (err) {
-        console.error(err);
+        logger.error(err);
         return next(err);
       }
       await SessionRepository?.delete(session!.id);
@@ -50,7 +51,7 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
       failureRedirect: '/auth/login',
     })(req, res, next);
   } catch (error) {
-    console.error('ensureAuthenticated error: ', error);
+    logger.error('ensureAuthenticated error: ', error);
   }
 }
 
@@ -107,10 +108,10 @@ async function refreshTokens(sessionId: string) {
       })
       .catch((error) => {
         // Handle error
-        console.error('Error refreshing token:', error);
+        logger.error('Error refreshing token:', error);
         return error;
       });
   } catch (error) {
-    console.error('refreshTokens error: ', error);
+    logger.error('refreshTokens error: ', error);
   }
 }

@@ -4,6 +4,7 @@ import passport from 'passport';
 import { SessionRepository } from '..';
 import { SessionData } from '../entities/SessionData';
 import { deleteCookie, readCookie, setCookie } from './sessionUtils';
+import logger from '../logger';
 
 interface CustomSession extends Session, Partial<SessionData> {
   returnTo?: string;
@@ -54,7 +55,7 @@ const logout = async (req: any, res: any, next: any) => {
 
     req.logout((err: Error) => {
       if (err) {
-        console.error('Logout Error:', err);
+        logger.error('Logout Error:', err);
         return next(err);
       }
 
@@ -62,7 +63,7 @@ const logout = async (req: any, res: any, next: any) => {
         deleteCookie(res);
         req.session.destroy((err: Error) => {
           if (err) {
-            console.error('Error destroying session:', err);
+            logger.error('Error destroying session:', err);
             return next(err);
           }
 
@@ -111,7 +112,7 @@ const callback = async (req: CustomRequest, res: any) => {
     setCookie(res, currentSession.id);
     res.redirect(userRequestedUrl || '/');
   } catch (error) {
-    console.error('Error in OIDC callback:', error);
+    logger.error('Error in OIDC callback:', error);
     res.redirect('/fail');
   }
 };

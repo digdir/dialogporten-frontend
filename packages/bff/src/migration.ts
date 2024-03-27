@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import { runMigrationApp } from './run-migration';
+import logger from './logger';
 
 runMigrationApp()
   .then(() => {
-    console.log('Migration done.');
+    logger.info('Migration done.');
     process.exit(0);
   })
   .catch((error) => {
-    console.error('Migration failed', error);
+    logger.error('Migration failed', error);
   });
