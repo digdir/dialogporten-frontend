@@ -4,6 +4,7 @@ param image string
 param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
+param customDomain string?
 
 param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
@@ -31,12 +32,14 @@ var probes = [
 var ingress = {
   targetPort: port
   external: true
-  customDomains: [
-    {
-      name: 'test.portal-pp.dialogporten.no'
-      bindingType: 'Disabled'
-    }
-  ]
+  customDomains: customDomain != null
+    ? [
+        {
+          name: customDomain!
+          bindingType: 'Disabled'
+        }
+      ]
+    : []
 }
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {

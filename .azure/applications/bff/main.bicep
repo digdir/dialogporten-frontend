@@ -6,6 +6,7 @@ param imageTag string
 param environment string
 @minLength(3)
 param location string
+param customDomain string?
 
 @minLength(3)
 @secure()
@@ -36,16 +37,17 @@ resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' exis
   name: environmentKeyVaultName
 }
 
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' = {
-  parent: containerAppEnvironment
-  name: '${containerAppEnvironment.name}-${containerAppName}-certificate'
-  location: location
-  // tags: tags
-  properties: {
-    subjectName: 'test.portal-pp.dialogporten.no'
-    domainControlValidation: 'CNAME'
+resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' =
+  if (customDomain != null) {
+    parent: containerAppEnvironment
+    name: '${containerAppEnvironment.name}-${containerAppName}-certificate'
+    location: location
+    // tags: tags
+    properties: {
+      subjectName: customDomain
+      domainControlValidation: 'CNAME'
+    }
   }
-}
 
 var containerAppEnvVars = [
   {
@@ -126,6 +128,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     containerAppEnvId: containerAppEnvironment.id
     secrets: secrets
     environmentVariables: containerAppEnvVars
+    customDomain: customDomain
   }
 }
 
