@@ -26,22 +26,24 @@ export interface CustomRequest extends Request {
   };
 }
 
-const login = async (req: Express.Request, res: Response, next: any) => {
-  const newSessionProps = {
-    sessionData: { postLoginRedirectUrl: req.session?.returnTo || '/' },
-    setFrom: 'login',
-  };
-  const newSession = await SessionRepository!.save(newSessionProps);
-
-  req.session!.sessionId = newSession.id;
-  setCookie(res, newSession.id);
-
-  passport.authenticate('oidc')(req, res, next);
+const login = async (req: any, res: Response, next: any) => {
+  try {
+    const postLoginRedirectUrl = req.query.postLoginRedirectUrl ??  '/'
+    const newSessionProps = {
+      sessionData: { postLoginRedirectUrl },
+      setFrom: 'login', // TODO: Debugging purposes. Remove before prod
+    };
+    const newSession = await SessionRepository!.save(newSessionProps);
+    req.session!.sessionId = newSession.id;
+    setCookie(res, newSession.id);
+    passport.authenticate('oidc')(req, res, next);
+  } catch (e) {
+    console.log('error in login', e)
+  }
 };
 
 const logout = async (req: any, res: any, next: any) => {
   const sessionCookie = readCookie(req);
-
   const currentSession: SessionData | null = await SessionRepository!.findOneBy({
     id: sessionCookie as string,
   });
@@ -79,8 +81,6 @@ const logout = async (req: any, res: any, next: any) => {
 };
 
 const protectedEndpoint = async (req: CustomRequest, res: Response) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.json({
     message: `You are now logged in (This content requires user to be logged in). Your user id is: ${req?.user?.id}`,
   });
@@ -103,8 +103,7 @@ const callback = async (req: CustomRequest, res: any) => {
     }
 
     if (!currentSession?.id) {
-      res.redirect('/fail');
-      return;
+      return res.redirect('/fail');
     }
 
     userRequestedUrl = currentSession?.sessionData?.postLoginRedirectUrl || userRequestedUrl;

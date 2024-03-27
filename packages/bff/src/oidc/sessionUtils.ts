@@ -5,7 +5,7 @@ export const setCookie = (res: any, value: string) => {
   const cookieName = process.env.COOKIE_NAME || 'cookieName';
   const options: CookieOptions = {
     httpOnly: true, // Cookie not accessible via client-side script
-    secure: process.env.ENABLE_HTTPS === 'true' ? true : false, // Cookie will be sent only over HTTPS if set to true
+    secure: process.env.ENABLE_HTTPS === 'true', // Cookie will be sent only over HTTPS if set to true
   };
   res.cookie(cookieName, value, options);
 };
@@ -28,5 +28,5 @@ export const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET || 'SecretHere',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: process.env.ENABLE_HTTPS ? true : false },
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: !!process.env.ENABLE_HTTPS },
 });
