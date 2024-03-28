@@ -418,8 +418,8 @@ importers:
         specifier: 0.52.0-alpha.0
         version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 0.13.1-alpha.0
-        version: 0.13.1-alpha.0
+        specifier: 0.15.0
+        version: 0.15.0
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
@@ -503,8 +503,8 @@ importers:
         specifier: 0.52.0-alpha.0
         version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 0.13.1-alpha.0
-        version: 0.13.1-alpha.0
+        specifier: 0.15.0
+        version: 0.15.0
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
@@ -2694,6 +2694,10 @@ packages:
 
   /@digdir/designsystemet-theme@0.13.1-alpha.0:
     resolution: {integrity: sha512-NgbcDqYf/3niVq98zteoRMbDERYhetoN6WPRcPtlpwJbOyUH1bsN6kFVpaNe9iiDb7JEqxCQXpUgMKi863IiTA==}
+    dev: false
+
+  /@digdir/designsystemet-theme@0.15.0:
+    resolution: {integrity: sha512-TlMLYbmIuZ4ThSNnBzVoc6Jg+GF7qtQ+HN07y/zVg9J89BGPkkdSLK8c6evovds0yfKQd2XIxUD+fpQxwG4cTw==}
     dev: false
 
   /@digdir/dialogporten-swagger@1.1.0:
