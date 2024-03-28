@@ -415,8 +415,8 @@ importers:
         specifier: 0.1.1-alpha.0
         version: 0.1.1-alpha.0
       '@digdir/designsystemet-react':
-        specifier: 0.52.0-alpha.0
-        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.55.0
+        version: 0.55.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 0.13.1-alpha.0
         version: 0.13.1-alpha.0
@@ -500,8 +500,8 @@ importers:
         specifier: 0.1.1-alpha.0
         version: 0.1.1-alpha.0
       '@digdir/designsystemet-react':
-        specifier: 0.52.0-alpha.0
-        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.55.0
+        version: 0.55.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 0.13.1-alpha.0
         version: 0.13.1-alpha.0
@@ -2675,13 +2675,12 @@ packages:
     resolution: {integrity: sha512-1oqCS24OVjbRn7ulM7vBOMffSfX5rWlM39GucqqIdEX7KA8Ed7oulDmJsmbVPmt7Bj4Dvnr2FsHBiCneeRJfGA==}
     dev: false
 
-  /@digdir/designsystemet-react@0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-gOO3NlsQV/wyvkZNo6SqTmpg08ajnHpoBqB+Oz7j2K+dd8sEie39cIctj0GHI2vRkz169mwOtX3qdcAJE9/fnQ==}
+  /@digdir/designsystemet-react@0.55.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-TxQ7ZOWNKbt7W54EeILIVEUXzBxPb5zIXD8ozVz0faP1ToB9iyVQsO2R43QcWjDpjjI/HpqNONfOpMBLtsp8ww==}
     peerDependencies:
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
-      '@digdir/designsystemet-theme': 0.13.1-alpha.0
       '@floating-ui/react': 0.26.4(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 5.18.0
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
