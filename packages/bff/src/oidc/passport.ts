@@ -5,6 +5,8 @@ import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './cookies';
 
+export const originBaseUrl = 'http://frontend-design-poc.localhost/'
+
 type IDPortenProfile = {
   sub: string;
   pid: string;
@@ -45,7 +47,7 @@ export const initPassport = async () => {
       { client, passReqToCallback: true },
       async (req: any, tokenSet: TokenSet, idPortenProfile: any, done: any) => {
         try {
-          const postLoginRedirectUrl = req.session.returnTo || '/';
+          const postLoginRedirectUrl = req.session.returnTo || originBaseUrl;
           const userId = (idPortenProfile as IDPortenProfile).pid;
           const { sid, locale, pid } = tokenSet.claims();
 
@@ -59,9 +61,13 @@ export const initPassport = async () => {
 
           const existingSessionIdFromCookie = readCookie(req);
 
-          let sessionId = null;
+          let sessionId: undefined | string;
           if (existingSessionIdFromCookie) {
             const session = await getSession(existingSessionIdFromCookie);
+            if (session?.id && !session?.accessToken) {
+              updateSession(session.id, tokenSet, user);
+            }
+
             sessionId = session?.id;
           }
           if (!sessionId) {
@@ -100,7 +106,9 @@ export const initPassport = async () => {
 
 const getOrCreateProfile = async (userId: string, userInfo: Partial<Profile>) => {
   try {
-    let user: Profile | null = await ProfileRepository!.findOne({ where: { id: userId } });
+    let user: Profile | null = await ProfileRepository!.findOne({
+      where: { id: userId },
+    });
 
     if (!user) {
       const newProfile = new Profile();
@@ -156,4 +164,33 @@ const createSession = async (
   };
 
   return await SessionRepository!.save(sessionProps);
+};
+
+const updateSession = async (sessionId: string, tokenSet: TokenSet, user: Profile) => {
+  const {
+    id_token: idToken,
+    refresh_token: refreshToken,
+    access_token: accessToken,
+    expires_at: expiresAtUnix = 1200,
+  } = tokenSet;
+  const accessTokenExpiresAt = new Date(expiresAtUnix * 1000);
+  const refreshTokenExpiresAt = new Date();
+  const refreshExpiresIn: number = process.env.REFRESH_TOKEN_EXPIRES_IN
+    ? parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN)
+    : 3600;
+  refreshTokenExpiresAt.setSeconds(refreshTokenExpiresAt.getSeconds() + refreshExpiresIn);
+
+  const sessionProps: Partial<SessionData> = {
+    accessToken,
+    accessTokenExpiresAt,
+    refreshToken,
+    refreshTokenExpiresAt,
+    idToken,
+    ...(user && { profile: user }),
+  };
+
+
+  const retValue = await SessionRepository!.update(sessionId, sessionProps);
+
+  return retValue;
 };
