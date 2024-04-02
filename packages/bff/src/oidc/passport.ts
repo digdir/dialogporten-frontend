@@ -65,7 +65,7 @@ export const initPassport = async () => {
           if (existingSessionIdFromCookie) {
             const session = await getSession(existingSessionIdFromCookie);
             if (session?.id && !session?.accessToken) {
-              updateSession(session.id, tokenSet, user);
+              updateSession(sid as string, session.id, tokenSet, user);
             }
 
             sessionId = session?.id;
@@ -166,7 +166,7 @@ const createSession = async (
   return await SessionRepository!.save(sessionProps);
 };
 
-const updateSession = async (sessionId: string, tokenSet: TokenSet, user: Profile) => {
+const updateSession = async (idportenSessionId: string,sessionId: string, tokenSet: TokenSet, user: Profile) => {
   const {
     id_token: idToken,
     refresh_token: refreshToken,
@@ -183,6 +183,7 @@ const updateSession = async (sessionId: string, tokenSet: TokenSet, user: Profil
   const sessionProps: Partial<SessionData> = {
     accessToken,
     accessTokenExpiresAt,
+    idportenSessionId,
     refreshToken,
     refreshTokenExpiresAt,
     idToken,
