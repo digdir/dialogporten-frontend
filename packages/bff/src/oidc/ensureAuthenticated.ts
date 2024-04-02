@@ -1,8 +1,8 @@
 import axios from 'axios';
 import passport from 'passport';
-import { SessionRepository } from '..';
+import { SessionRepository } from '../db';
 import { SessionData } from '../entities/SessionData';
-import { readCookie } from './sessionUtils';
+import { readCookie } from './cookies';
 
 export async function ensureAuthenticated(req: any, res: any, next: any) {
   if (!SessionRepository) throw new Error('SessionRepository not initialized');

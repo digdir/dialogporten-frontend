@@ -1,7 +1,7 @@
 import express from 'express';
-import config from '../config';
+import config from './config';
 
-export function startReadinessProbe(app: express.Express, startTimeStamp: Date) {
+export const startReadinessProbe = (app: express.Express, startTimeStamp: Date) => {
   console.log(
     config.version,
     'Starting /readiness probe after ',
@@ -11,9 +11,9 @@ export function startReadinessProbe(app: express.Express, startTimeStamp: Date) 
   app.get('/readiness', (req, res) => {
     res.send('OK');
   });
-}
+};
 
-export function startLivenessProbe(app: express.Express, startTimeStamp: Date) {
+export const startLivenessProbe = (app: express.Express, startTimeStamp: Date) => {
   console.log(
     config.version,
     'Starting /liveness probe after ',
@@ -23,4 +23,4 @@ export function startLivenessProbe(app: express.Express, startTimeStamp: Date) {
   app.get('/liveness', (req, res) => {
     res.send('OK');
   });
-}
+};

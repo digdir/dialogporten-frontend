@@ -45,8 +45,8 @@ export const runMigrationApp = async () => {
   if (config.applicationInsights.connectionString)
     do {
       try {
-        const appInsightResult = await initAppInsights();
-        if (appInsightResult === 'Done') appInsightSetupComplete = true;
+        await initAppInsights(config.applicationInsights.connectionString);
+        appInsightSetupComplete = true;
       } catch (error) {
         console.error(config.version, ': ', 'Migration: Error setting up appInsights: ', error);
       }

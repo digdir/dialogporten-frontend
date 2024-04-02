@@ -1,5 +1,4 @@
 import * as appInsights from 'applicationinsights';
-import config from './config';
 
 function waitNSeconds(n = 1): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -9,36 +8,27 @@ function waitNSeconds(n = 1): Promise<void> {
   });
 }
 
-const connectionString = process.env.APPLICATIONINSIGHTS_CONNECTION_STRING;
+export const initAppInsights = async (connectionString: string) => {
+  appInsights
+    .setup(connectionString)
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true, true)
+    .setUseDiskRetryCaching(true)
+    .setSendLiveMetrics(false)
+    .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+    .start();
 
-export const initAppInsights = async () => {
-  return new Promise((resolve, reject) => {
-    if (!connectionString) {
-      reject("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
-    }
+  await waitNSeconds(1);
 
-    appInsights
-      .setup(connectionString)
-      .setAutoDependencyCorrelation(true)
-      .setAutoCollectRequests(true)
-      .setAutoCollectPerformance(true, true)
-      .setAutoCollectExceptions(true)
-      .setAutoCollectDependencies(true)
-      .setAutoCollectConsole(true, true)
-      .setUseDiskRetryCaching(true)
-      .setSendLiveMetrics(false)
-      .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
-      .start();
-
-    waitNSeconds(1)
-      .then(() => {
-        if (appInsights.defaultClient) {
-          console.log(config.version, ': ', 'AppInsights initialized properly.');
-        } else {
-          console.error(config.version, ': ', 'AppInsights failed to initialize properly.');
-        }
-        resolve('Done');
-      })
-      .catch(reject);
-  });
+  if (appInsights.defaultClient) {
+    console.log('AppInsights initialized properly.');
+    return true;
+  } else {
+    console.error('AppInsights failed to initialize properly.');
+    return false;
+  }
 };
