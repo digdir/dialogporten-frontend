@@ -22,6 +22,4 @@ export const connectionOptions: DataSourceOptions = {
   }),
 };
 
-export default new DataSource({
-  ...connectionOptions,
-});
+export default new DataSource(connectionOptions);

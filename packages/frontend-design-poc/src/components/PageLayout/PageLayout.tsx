@@ -39,7 +39,7 @@ export const PageLayout: React.FC = () => {
         onClick={() => {
           fetch("/api/protected", {
             method: "GET",
-            credentials: "same-origin",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },

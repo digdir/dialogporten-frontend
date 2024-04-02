@@ -53,7 +53,6 @@ export async function ensureAuthenticated(req: any, res: any, next: any) {
 					return next(err);
 				}
 				await SessionRepository?.delete(session!.id);
-				res.redirect(loginURL);
 			});
 
 			return res.status(401).json({ error: 'Unauthorized, token have expired and you have been logged out' });
