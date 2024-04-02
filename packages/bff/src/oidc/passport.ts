@@ -1,9 +1,9 @@
 import { Issuer, Strategy as OpenIDStrategy, TokenSet } from 'openid-client';
 import passport from 'passport';
-import { ProfileRepository, SessionRepository } from '..';
+import { ProfileRepository, SessionRepository } from '../db';
 import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
-import { readCookie } from './sessionUtils';
+import { readCookie } from './cookies';
 
 type IDPortenProfile = {
   sub: string;

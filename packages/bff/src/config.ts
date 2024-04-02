@@ -9,8 +9,15 @@ const envVariables = z.object({
 
 const env = envVariables.parse(process.env);
 
+const port = process.env.PORT || 3000;
+const isAppInsightsEnabled = process.env.ENABLE_APP_INSIGHTS === 'true';
+const isDev = process.env.DEV_ENV === 'dev';
+
 export default {
   version: env.GIT_SHA,
+  port,
+  isAppInsightsEnabled,
+  isDev,
   applicationInsights: {
     connectionString: env.APPLICATIONINSIGHTS_CONNECTION_STRING,
   },

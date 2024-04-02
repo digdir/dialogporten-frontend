@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { Session } from 'express-session';
 import passport from 'passport';
-import { SessionRepository } from '..';
+import { SessionRepository } from '../db';
 import { SessionData } from '../entities/SessionData';
-import { deleteCookie, readCookie, setCookie } from './sessionUtils';
+import { deleteCookie, readCookie, setCookie } from './cookies';
 
 interface CustomSession extends Session, Partial<SessionData> {
   returnTo?: string;
