@@ -5,6 +5,10 @@ import { SessionRepository } from '../db';
 import { SessionData } from '../entities/SessionData';
 import { deleteCookie, readCookie, setCookie } from './cookies';
 
+const logoutUri = `https://login.${process.env.OIDC_URL}/logout`;
+const logoutRedirectUri = `${process.env.HOSTNAME!}/api/loggedout`;
+const loggedoutURL = '/api/loggedout';
+
 interface CustomSession extends Session, Partial<SessionData> {
   returnTo?: string;
   sessionId?: string;
@@ -48,8 +52,6 @@ const logout = async (req: any, res: any, next: any) => {
     id: sessionCookie as string,
   });
 
-  const logoutUri = `https://login.${process.env.OIDC_URL}/logout`;
-  const logoutRedirectUri = `${process.env.HOSTNAME!}/auth/loggedout`;
 
   if (currentSession && logoutUri && logoutRedirectUri) {
     const logoutRedirectUrl = `${logoutUri}?post_logout_redirect_uri=${logoutRedirectUri}&id_token_hint=${currentSession.idToken}`;
@@ -76,7 +78,7 @@ const logout = async (req: any, res: any, next: any) => {
       res.redirect(logoutRedirectUrl);
     });
   } else {
-    res.redirect('/auth/loggedout');
+    res.redirect(loggedoutURL);
   }
 };
 
@@ -111,7 +113,7 @@ const callback = async (req: CustomRequest, res: any) => {
     res.redirect(userRequestedUrl || '/');
   } catch (error) {
     console.error('Error in OIDC callback:', error);
-    res.redirect('/fail');
+    res.redirect('/api/fail');
   }
 };
 const fail = async (req: Request, res: Response) => res.send('Failed');

@@ -28,5 +28,5 @@ export const oidc = (app: Express) => {
     authenticationController.protectedEndpoint(req as CustomRequest, res).catch(next),
   );
 
-  app.use('/auth', authenticationRouter);
+  app.use('/api', authenticationRouter);
 };

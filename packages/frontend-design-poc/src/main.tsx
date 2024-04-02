@@ -11,8 +11,8 @@ import App from './App.tsx';
 
 async function enableMocking() {
   if (import.meta.env.MODE === 'development') {
-    const { worker } = await import('./mocks/browser');
-    return worker.start();
+//    const { worker } = await import('./mocks/browser');
+//    return worker.start();
   }
 }
 

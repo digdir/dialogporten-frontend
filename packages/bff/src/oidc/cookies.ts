@@ -10,12 +10,13 @@ export const setCookie = (res: any, value: string) => {
   const options: CookieOptions = {
     httpOnly: true, // Cookie not accessible via client-side script
     secure: enableHttps, // Cookie will be sent only over HTTPS if set to true
+		sameSite: 'lax', // https://www.npmjs.com/package/cookie#samesite
   };
   res.cookie(cookieName, value, options);
 };
 
 export const readCookie = (req: any) => {
-  return req.cookies[cookieName] || null;
+  return req.cookies[cookieName];
 };
 
 export const deleteCookie = async (res: any) => {

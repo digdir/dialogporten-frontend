@@ -13,10 +13,7 @@ build: ## Runs `pnpm turbo build`
 build-docker: ## Runs `pnpm turbo build:docker`
 	pnpm turbo build:docker
 
-compose-up: ## Runs `docker compose up -d`
-	docker compose up -d
-
-compose-watch: ## Runs Docker compose in watch mode for development
+dev: ## Runs Docker compose in watch mode for development
 	docker compose watch
 
 compose-down: ## Runs `docker compose down`

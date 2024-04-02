@@ -58,10 +58,6 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   // Setup OIDC
   oidc(app);
 
-  app.get('/', (req, res) => {
-    res.send(`BFF: ⚡️[server]: Server ${version} is running on PORT: ${port}`);
-  });
-
   app.listen(port, () => {
     console.log(`Server ${version} is running on PORT: ${port}`);
   });

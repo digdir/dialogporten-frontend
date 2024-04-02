@@ -29,7 +29,7 @@ export const PageLayout: React.FC = () => {
         type="button"
         onClick={() => {
           (window as any).location =
-            `http://bff.localhost/auth/login?postLoginRedirectUrl=${location.href}`;
+            `/api/login?postLoginRedirectUrl=${location.href}`;
         }}
       >
         Login
@@ -37,9 +37,9 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          fetch("http://bff.localhost/auth/protected", {
+          fetch("/api/protected", {
             method: "GET",
-            credentials: "include",
+            credentials: "same-origin",
             headers: {
               "Content-Type": "application/json",
             },

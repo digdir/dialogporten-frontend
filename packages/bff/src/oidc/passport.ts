@@ -32,7 +32,7 @@ export const initPassport = async () => {
   const client = new idportenIssuer.Client({
     client_id: process.env.CLIENT_ID!,
     client_secret: process.env.CLIENT_SECRET,
-    redirect_uris: [`${process.env.HOSTNAME!}/auth/cb`],
+    redirect_uris: [`${process.env.HOSTNAME!}/api/cb`],
     response_types: ['code'],
     token_endpoint_auth_method: 'client_secret_basic',
     scope: process.env.SCOPE,
