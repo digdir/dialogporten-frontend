@@ -9,6 +9,13 @@ Docker | We recommend to use OrbStack if you're using Mac for development, on Li
 pnpm | Package manager used in this project
 fzf | Fuzzy finder used in some scripts
 
+
+### env
+Ensure that `./.env` (in root) is created with following keys and appropriate values (**Note**: replace the examples)
+```
+CLIENT_ID=<my_example_service>
+CLIENT_SECRET=<secret_password_keep_this_private>
+```
 ### macOS
 
 On macOS using [Homebrew](https://brew.sh/) you can install dependencies by running:
