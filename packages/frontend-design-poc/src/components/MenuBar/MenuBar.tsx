@@ -2,7 +2,7 @@ import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '../Avatar';
 import { MenuBarDropdown, MenuBarItemProps } from './MenuBarItem';
 import styles from './menubar.module.css';
 
