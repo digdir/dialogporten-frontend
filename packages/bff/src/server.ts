@@ -8,8 +8,8 @@ import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import config from './config';
 import { connectToDB } from './db';
 import { oidc } from './oidc';
-import { initPassport } from './oidc/passport';
 import { sessionMiddleware } from './oidc/cookies';
+import { initPassport } from './oidc/passport';
 
 const { version, port, isAppInsightsEnabled } = config;
 
@@ -42,10 +42,10 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
 
   /* CORS configuration for local env, needs to be applied before routes are defined */
   const corsOptions = {
-    origin: [ 'http://frontend-design-poc.localhost', 'http://localhost:3000' ],
+    origin: ['http://frontend-design-poc.localhost', 'http://localhost:3000'],
     credentials: true,
-    methods: "GET, POST, PATCH, DELETE, PUT",
-    allowedHeaders: "Content-Type, Authorization",
+    methods: 'GET, POST, PATCH, DELETE, PUT',
+    allowedHeaders: 'Content-Type, Authorization',
     preflightContinue: true,
   };
 

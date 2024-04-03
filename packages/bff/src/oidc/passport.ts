@@ -5,7 +5,7 @@ import { Profile } from '../entities/Profile';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './cookies';
 
-export const originBaseUrl = 'http://frontend-design-poc.localhost/'
+export const originBaseUrl = 'http://frontend-design-poc.localhost/';
 
 type IDPortenProfile = {
   sub: string;
@@ -128,7 +128,7 @@ const getOrCreateProfile = async (userId: string, userInfo: Partial<Profile>) =>
 
 const getSession = async (existingSessionIdFromCookie: string) => {
   return await SessionRepository!.findOneBy({ id: existingSessionIdFromCookie });
-}
+};
 
 const createSession = async (
   idportenSessionId: string,
@@ -166,7 +166,7 @@ const createSession = async (
   return await SessionRepository!.save(sessionProps);
 };
 
-const updateSession = async (idportenSessionId: string,sessionId: string, tokenSet: TokenSet, user: Profile) => {
+const updateSession = async (idportenSessionId: string, sessionId: string, tokenSet: TokenSet, user: Profile) => {
   const {
     id_token: idToken,
     refresh_token: refreshToken,
@@ -189,7 +189,6 @@ const updateSession = async (idportenSessionId: string,sessionId: string, tokenS
     idToken,
     ...(user && { profile: user }),
   };
-
 
   const retValue = await SessionRepository!.update(sessionId, sessionProps);
 

@@ -9,7 +9,7 @@ export const oidc = (app: Express) => {
   /* test endpoint */
   authenticationRouter.get('/ping', async (req: any, res: Response) => {
     res.json({
-      message: 'pong'
+      message: 'pong',
     });
   });
 

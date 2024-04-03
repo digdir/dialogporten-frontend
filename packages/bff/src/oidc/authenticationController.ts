@@ -32,7 +32,7 @@ export interface CustomRequest extends Request {
 
 const login = async (req: any, res: Response, next: any) => {
   try {
-    const postLoginRedirectUrl = req.query.postLoginRedirectUrl ??  '/'
+    const postLoginRedirectUrl = req.query.postLoginRedirectUrl ?? '/';
     const newSessionProps = {
       sessionData: { postLoginRedirectUrl },
       setFrom: 'login', // TODO: Debugging purposes. Remove before prod
@@ -42,7 +42,7 @@ const login = async (req: any, res: Response, next: any) => {
     setCookie(res, newSession.id);
     passport.authenticate('oidc')(req, res, next);
   } catch (e) {
-    console.log('error in login', e)
+    console.log('error in login', e);
   }
 };
 
@@ -51,7 +51,6 @@ const logout = async (req: any, res: any, next: any) => {
   const currentSession: SessionData | null = await SessionRepository!.findOneBy({
     id: sessionCookie as string,
   });
-
 
   if (currentSession && logoutUri && logoutRedirectUri) {
     const logoutRedirectUrl = `${logoutUri}?post_logout_redirect_uri=${logoutRedirectUri}&id_token_hint=${currentSession.idToken}`;
