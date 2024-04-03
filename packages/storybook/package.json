@@ -6,6 +6,7 @@
   "scripts": {
     "build": "storybook build",
     "start:storybook": "storybook dev -p 6006",
+    "test:storybook": "test-storybook",
     "build:storybook": "storybook build",
     "build:docker": "docker build -f ./Dockerfile -t storybook ../..",
     "run:docker": "docker run -it -p 80:80 storybook"
@@ -35,6 +36,7 @@
     "@storybook/react": "^8.0.0",
     "@storybook/react-vite": "^8.0.0",
     "@storybook/test": "^8.0.0",
+    "@storybook/test-runner": "^0.17.0",
     "@storybook/theming": "^8.0.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

@@ -11,7 +11,7 @@ export const PageLayout: React.FC = () => {
     '--background-color': isCompany ? '#E9F5FF' : '#EAF7EF',
     '--button-color': isCompany ? '#111D46' : '#084826',
     '--avatar-color': '#111D46',
-    '--Action-Important': '#E02E49',
+    '--action-important': '#E02E49',
   };
 
   return (
@@ -22,7 +22,7 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          (window as any).location = `/api/login?postLoginRedirectUrl=${location.href}`;
+          (window as Window).location = `/api/login?postLoginRedirectUrl=${location.href}`;
         }}
       >
         Login
@@ -51,7 +51,7 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          (window as any).location = `/api/logout`;
+          (window as Window).location = `/api/logout`;
         }}
       >
         Logout

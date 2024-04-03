@@ -68,7 +68,7 @@
 
 
 .redCounter {
-    background-color: var(--Action-Important);
+    background-color: var(--action-important, #E02E49);
     color: #fff;
 }
 
