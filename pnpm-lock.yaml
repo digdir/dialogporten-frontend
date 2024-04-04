@@ -144,6 +144,9 @@ importers:
       '@fastify/websocket':
         specifier: ^9.0.0
         version: 9.0.0
+      '@tsconfig/node20':
+        specifier: ^20.1.2
+        version: 20.1.2
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -174,22 +177,19 @@ importers:
       nexus:
         specifier: ^1.3.0
         version: 1.3.0(graphql@16.8.1)
-      zod:
-        specifier: ^3.22.2
-        version: 3.22.4
-    devDependencies:
-      '@tsconfig/node20':
-        specifier: ^20.1.2
-        version: 20.1.2
-      nodemon:
-        specifier: ^3.1.0
-        version: 3.1.0
       ts-node:
         specifier: ^10.9.1
         version: 10.9.2(@types/node@16.18.78)(typescript@5.3.3)
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.4
+    devDependencies:
+      nodemon:
+        specifier: ^3.1.0
+        version: 3.1.0
 
   packages/dialogporten-types-generated:
     dependencies:
@@ -6773,7 +6773,7 @@ packages:
 
   /@tsconfig/node20@20.1.2:
     resolution: {integrity: sha512-madaWq2k+LYMEhmcp0fs+OGaLFk0OenpHa4gmI4VEmCKX4PJntQ6fnnGADVFrVkBj0wIdAlQnK/MrlYTHsa1gQ==}
-    dev: true
+    dev: false
 
   /@tybys/wasm-util@0.8.1:
     resolution: {integrity: sha512-GSsTwyBl4pIzsxAY5wroZdyQKyhXk0d8PCRZtrSZ2WEB1cBdrp2EgGBwHOGCZtIIPun/DL3+AykCv+J6fyRH4Q==}
@@ -18474,7 +18474,7 @@ packages:
       typescript: 5.3.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: true
+    dev: false
 
   /tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
