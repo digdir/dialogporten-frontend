@@ -5,7 +5,6 @@
   "packages": {
     ".": {},
     "packages/bff": {},
-    "packages/bff-frontend-poc": {},
     "packages/dialogporten-types-generated": {},
     "packages/docs": {},
     "packages/docusaurus-tldraw-plugin": {},
