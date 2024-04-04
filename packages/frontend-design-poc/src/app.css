@@ -1,3 +1,6 @@
+/* GLOBAL VARIABLES */
+@import './globalColors.css';
+
 :root {
   font-family: 'Inter', sans-serif;
   font-feature-settings: 'cv05'1 !important;
