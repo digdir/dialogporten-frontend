@@ -4,6 +4,7 @@ import passport from 'passport';
 import { SessionRepository } from '../db';
 import { SessionData } from '../entities/SessionData';
 import { deleteCookie, readCookie, setCookie } from './cookies';
+import { getSession } from './passport';
 
 const logoutUri = `https://login.${process.env.OIDC_URL}/logout`;
 const logoutRedirectUri = `${process.env.HOSTNAME!}/api/loggedout`;
@@ -33,13 +34,25 @@ export interface CustomRequest extends Request {
 const login = async (req: any, res: Response, next: any) => {
   try {
     const postLoginRedirectUrl = req.query.postLoginRedirectUrl ?? '/';
-    const newSessionProps = {
+    const sessionProps: Partial<SessionData> = {
       sessionData: { postLoginRedirectUrl },
-      setFrom: 'login', // TODO: Debugging purposes. Remove before prod
     };
-    const newSession = await SessionRepository!.save(newSessionProps);
-    req.session!.sessionId = newSession.id;
-    setCookie(res, newSession.id);
+
+    // Check if user has a cookie already
+    const existingSessionIdFromCookie = readCookie(req);
+
+    // Check if session actually exists in DB
+    const existingSession = existingSessionIdFromCookie && (await getSession(existingSessionIdFromCookie));
+
+    if (existingSession?.id) {
+      await SessionRepository!.update(existingSession.id, sessionProps);
+      req.session!.sessionId = existingSession.id;
+    } else {
+      const newSession = await SessionRepository!.save(sessionProps);
+      req.session!.sessionId = newSession.id;
+    }
+
+    setCookie(res, req.session!.sessionId);
     passport.authenticate('oidc')(req, res, next);
   } catch (e) {
     console.log('error in login', e);

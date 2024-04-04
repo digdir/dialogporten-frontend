@@ -48,6 +48,14 @@ export const PageLayout: React.FC = () => {
       >
         Fetch
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          (window as any).location = `/api/logout`;
+        }}
+      >
+        Logout
+      </button>
       <div className={styles.pageLayout}>
         <Header name="John Doe" companyName={companyName} />
         <Sidebar isCompany={!!companyName} />

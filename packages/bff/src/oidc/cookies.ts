@@ -10,7 +10,6 @@ export const setCookie = (res: any, value: string) => {
   const options: CookieOptions = {
     httpOnly: true, // Cookie not accessible via client-side script
     secure: enableHttps, // Cookie will be sent only over HTTPS if set to true
-    sameSite: 'strict', // https://www.npmjs.com/package/cookie#samesite
   };
   res.cookie(cookieName, value, options);
 };
@@ -35,6 +34,6 @@ export const sessionMiddleware = session({
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     secure: enableHttps,
-    sameSite: 'strict',
+    sameSite: 'lax',
   },
 });

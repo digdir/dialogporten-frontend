@@ -126,7 +126,7 @@ const getOrCreateProfile = async (userId: string, userInfo: Partial<Profile>) =>
   }
 };
 
-const getSession = async (existingSessionIdFromCookie: string) => {
+export const getSession = async (existingSessionIdFromCookie: string) => {
   return await SessionRepository!.findOneBy({ id: existingSessionIdFromCookie });
 };
 
