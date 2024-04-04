@@ -37,7 +37,7 @@ resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' exis
   name: environmentKeyVaultName
 }
 
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' =
+resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-05-01' =
   if (customDomain != null) {
     parent: containerAppEnvironment
     name: '${containerAppEnvironment.name}-${containerAppName}-certificate'
