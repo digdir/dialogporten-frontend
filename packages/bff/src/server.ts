@@ -1,68 +1,65 @@
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express, { Express } from 'express';
-import passport from 'passport';
+import Fastify from 'fastify';
+import passport from '@fastify/passport';
+import formBody from '@fastify/formbody';
+import session from '@fastify/session';
+import cookie from '@fastify/cookie';
+import cors from '@fastify/cors';
 import 'reflect-metadata';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import config from './config';
 import { connectToDB } from './db';
-import { oidc } from './oidc';
-import { sessionMiddleware } from './oidc/cookies';
+import oidc from './oidc';
 import { initPassport } from './oidc/passport';
+import { cookieSessionConfig } from './oidc/cookies';
+import rootApi from './services/root'
 
 const { version, port, isAppInsightsEnabled } = config;
 
-declare module 'express-session' {
-  export interface SessionData {
-    returnTo?: string;
-    sessionId?: string;
-  }
-}
-
 const startServer = async (startTimeStamp: Date): Promise<void> => {
-  const app: Express = express();
+  const server = Fastify({
+    logger: true,
+    ignoreTrailingSlash: true,
+    ignoreDuplicateSlashes: true,
+  });
 
-  startLivenessProbe(app, startTimeStamp);
+  startLivenessProbe(server, startTimeStamp);
 
   if (isAppInsightsEnabled) {
     const { connectionString } = config.applicationInsights;
     if (!connectionString) {
       throw new Error("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
-    } else {
-      await initAppInsights(connectionString);
     }
+    await initAppInsights(connectionString);
   }
 
   await connectToDB();
-
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
-
   /* CORS configuration for local env, needs to be applied before routes are defined */
   const corsOptions = {
-    origin: ['http://frontend-design-poc.localhost', 'http://localhost:3000'],
+    origin: ['http://app.localhost', 'http://localhost:3000'],
     credentials: true,
     methods: 'GET, POST, PATCH, DELETE, PUT',
     allowedHeaders: 'Content-Type, Authorization',
     preflightContinue: true,
   };
 
-  app.use(cors(corsOptions));
-  app.use(sessionMiddleware);
-  app.use(passport.initialize());
-  app.use(passport.session());
-  await initPassport();
+  server.decorateRequest('sessionId', '');
+  server.register(cors, corsOptions);
+  server.register(formBody);
+  server.register(cookie);
+  server.register(session, cookieSessionConfig);
 
-  // Setup OIDC
-  oidc(app);
+  //server.register(rootApi);
+  server.register(oidc);
 
-  app.listen(port, () => {
-    console.log(`Server ${version} is running on PORT: ${port}`);
+  server.listen({ port: 3000, host: '0.0.0.0' }, (error, address) => {
+    if (error) {
+      throw error;
+    }
+    console.log(`Server ${version} is running on ${address}`);
   });
 
-  startReadinessProbe(app, startTimeStamp);
+  startReadinessProbe(server, startTimeStamp);
 };
 
 export default startServer;

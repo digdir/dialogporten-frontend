@@ -1,8 +1,8 @@
 import startServer from './server';
-const startTimeStamp = new Date();
 
 try {
-  startServer(startTimeStamp);
+  const startTimeStamp = new Date();
+  void startServer(startTimeStamp);
 } catch (error) {
   console.error(error);
   process.exit(1);

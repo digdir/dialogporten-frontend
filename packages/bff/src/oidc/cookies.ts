@@ -1,39 +1,34 @@
-import { CookieOptions } from 'express';
-import session from 'express-session';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import config from '../config';
 
-// TODO: refactor to ../config.ts
-const cookieName = process.env.COOKIE_NAME || 'cookieName';
-const secret = process.env.SESSION_SECRET || 'SecretHere';
-const enableHttps = process.env.ENABLE_HTTPS === 'true';
-
-export const setCookie = (res: any, value: string) => {
-  const options: CookieOptions = {
+const CONNECT_SID_COOKIE = 'connect.sid';
+const { enableHttps, cookieName, secret} = config
+export const setCookie = (res: FastifyReply, value: string) => {
+  const options = {
     httpOnly: true, // Cookie not accessible via client-side script
     secure: enableHttps, // Cookie will be sent only over HTTPS if set to true
   };
-  res.cookie(cookieName, value, options);
+  res.cookie(cookieName, value, options)
 };
 
-export const readCookie = (req: any) => {
-  return req.cookies[cookieName];
+export const readCookie = (req: FastifyRequest) => {
+  return req.cookies[cookieName] ?? '';
 };
 
-export const deleteCookie = async (res: any) => {
+export const deleteCookie = async (res: FastifyReply) => {
   try {
-    res.clearCookie[cookieName];
-    res.clearCookie('connect.sid');
+    res.clearCookie(cookieName);
+    res.clearCookie(CONNECT_SID_COOKIE);
   } catch (error) {
-    console.error('deleteCookie failed: ', error);
+    console.error('Unable to clear cookie: ', error);
   }
 };
 
-export const sessionMiddleware = session({
+export const cookieSessionConfig = {
   secret,
-  resave: false,
+  cookieName,
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  secure: enableHttps,
+  sameSite: 'lax', // this will automatically be set to lax for http, so maybe we should avoid this?
   saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    secure: enableHttps,
-    sameSite: 'lax',
-  },
-});
+};

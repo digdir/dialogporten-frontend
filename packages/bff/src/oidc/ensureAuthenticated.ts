@@ -1,76 +1,8 @@
 import axios from 'axios';
-import passport from 'passport';
 import { SessionRepository } from '../db';
 import { SessionData } from '../entities/SessionData';
 import { readCookie } from './cookies';
-
-const loginURL = '/api/login';
-
-/* TODO: Fix this - unable to locate user session */
-export async function ensureAuthenticated(req: any, res: any, next: any) {
-  try {
-    if (!SessionRepository) {
-      throw new Error('SessionRepository not initialized');
-    }
-    const sessionCookie = readCookie(req);
-    req.session.returnTo = req.originalUrl;
-
-    if (!sessionCookie) {
-      return res.status(401).json({ error: 'Unauthorized, no session cookie' });
-    }
-
-    let session: any = null;
-    if (sessionCookie) {
-      session = await SessionRepository.findOneBy({ id: sessionCookie });
-      console.log(sessionCookie);
-
-      if (session === null) {
-        return res.status(401).json({ error: "Unauthorized, couldn't find session" });
-      }
-    }
-
-    const isRefreshTokenValid = session?.refreshTokenExpiresAt && session?.refreshTokenExpiresAt > new Date();
-    const isAccessTokenValid = session?.accessTokenExpiresAt && session?.accessTokenExpiresAt > new Date();
-
-    if (session.id && !isAccessTokenValid && isRefreshTokenValid) {
-      await refreshTokens(sessionCookie);
-      session = await SessionRepository.findOneBy({ id: sessionCookie });
-    }
-
-    if (session.id && isRefreshTokenValid && isAccessTokenValid) {
-      await refreshTokens(sessionCookie);
-      session = await SessionRepository.findOneBy({ id: sessionCookie });
-      req.user = session;
-
-      // Happy path:
-      return next();
-    }
-
-    if (session.id && !isRefreshTokenValid && !isAccessTokenValid) {
-      req.logout(async (err: Error) => {
-        if (err) {
-          console.error(err);
-          return next(err);
-        }
-        await SessionRepository?.delete(session!.id);
-      });
-
-      return res.status(401).json({ error: 'Unauthorized, token have expired and you have been logged out' });
-    }
-
-    req.session.returnTo = req.originalUrl;
-    if (req.isAuthenticated()) {
-      // Happy path:
-      return next();
-    }
-
-    return res.status(401).json({ error: 'Unauthorized' });
-  } catch (error) {
-    console.error('ensureAuthenticated error: ', error);
-
-    return res.status(401).json({ error: 'Unauthorized, something went wrong' });
-  }
-}
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 async function refreshTokens(sessionId: string) {
   if (!SessionRepository) {
@@ -104,7 +36,7 @@ async function refreshTokens(sessionId: string) {
   const {
     access_token: accessToken = '',
     refresh_token: refreshToken = '',
-    expires_in, //= process.env.ACCESS_TOKEN_EXPIRES_IN || 1200,
+    expires_in,
   } = response.data;
   const accessTokenExpiresAt = new Date();
   const refreshTokenExpiresAt = new Date();
@@ -124,3 +56,48 @@ async function refreshTokens(sessionId: string) {
   await SessionRepository?.update(sessionId, sessionProps);
   return response.data;
 }
+
+export async function ensureAuthenticated(req: FastifyRequest, reply: FastifyReply) {
+  if (!SessionRepository) {
+    reply.code(401).send({ error: 'SessionRepository not initialized' });
+    return;
+  }
+
+  const sessionCookie = readCookie(req);
+  if (!sessionCookie) {
+    reply.code(401).send({ error: 'Unauthorized, no session cookie' });
+    return;
+  }
+
+  let session = await SessionRepository.findOneBy({ id: sessionCookie });
+  if (!session) {
+    reply.code(401).send({ error: "Unauthorized, couldn't find session" });
+    return;
+  }
+
+  const isRefreshTokenValid = session.refreshTokenExpiresAt > new Date();
+  const isAccessTokenValid = session.accessTokenExpiresAt > new Date();
+
+  if (session.id && (!isAccessTokenValid || isRefreshTokenValid)) {
+    try {
+      await refreshTokens(sessionCookie);
+      session = await SessionRepository.findOneBy({ id: sessionCookie });
+      if (!session) {
+        reply.code(401).send({ error: 'Unauthorized, session not found after refresh' });
+        return;
+      }
+      req.user = session;
+    } catch (error) {
+      console.error('Error refreshing tokens:', error);
+      reply.code(401).send({ error: 'Unauthorized, failed to refresh tokens' });
+      return;
+    }
+  }
+
+  if (session.id && !isRefreshTokenValid && !isAccessTokenValid) {
+    await req.logOut();
+    await SessionRepository.delete(session.id);
+    reply.code(401).send({ error: 'Unauthorized, token expired and you have been logged out' });
+  }
+}
+
