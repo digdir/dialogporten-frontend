@@ -43,17 +43,21 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: dialogporten
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 2s
       timeout: 20s
       retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   pgadmin4:
     container_name: pgadmin4
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: mysecretpassword
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
@@ -71,7 +75,7 @@ services:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
       PORT: 3000
       DEV_ENV: dev
-      HOSTNAME: http://bff.localhost
+      HOSTNAME: http://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
@@ -82,14 +86,14 @@ services:
       ACCESS_TOKEN_EXPIRES_IN: 60
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bff.rule=Host(`bff.localhost`)"
-      - "dave.relativeSubdomain=bff"
+      - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
+      - "dave.relativeSubdomain=app"
       - "dave.icon=fa-brands:node"
     depends_on:
       db:
         condition: service_healthy
-      bff-migration:
-        condition: service_completed_successfully
+    #      bff-migration:
+    #        condition: service_completed_successfully
     command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
@@ -101,58 +105,33 @@ services:
             - .azure/
             - .git/
 
-  bff-migration:
-    container_name: bff-migration
-    command: ["pnpm", "--filter", "bff", "run", "migration:run"]
-    build:
-      context: .
-      dockerfile: ./packages/bff/Dockerfile
-      target: build
-    environment:
-      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      PORT: 3000
-      DEV_ENV: dev
-      REDIRECT_URI: http://localhost:3000/auth/cb
-      SCOPE: digdir:dialogporten.noconsent openid
-      AUTH_URL: https://login.test.idporten.no/authorize
-      ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
-      TOKEN_ENDPOINT: https://test.idporten.no/token
-      LOGOUT_REDIRECT_URI: http://localhost:3000/auth/loggedout
-      LOGOUT_URI: https://login.test.idporten.no/logout
-      SESSION_SECRET: IDPortenSessionSecret2023
-      COOKIE_NAME: oidc:test.idporten.no
-      REFRESH_TOKEN_EXPIRES_IN: 120
-      ACCESS_TOKEN_EXPIRES_IN: 60
-      TYPEORM_MIGRATIONS: src/migrations/*.ts
-      TYPEORM_MIGRATIONS_DIR: src/migrations
-    depends_on:
-      db:
-        condition: service_healthy
-
-  bff-frontend-poc:
-    container_name: bff-frontend-poc
-    build:
-      context: .
-      dockerfile: ./packages/bff-frontend-poc/Dockerfile
-      target: build
-    environment:
-      NODE_ENV: development
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bff-frontend-poc.rule=Host(`bff-frontend-poc.localhost`)"
-      - "dave.relativeSubdomain=bff-frontend-poc"
-      - "dave.icon=fluent-mdl2:react-logo"
-    depends_on:
-      - bff
-    develop:
-      watch:
-        - action: sync
-          path: ./packages/bff-frontend-poc/
-          target: /app/packages/bff-frontend-poc/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
+  #  bff-migration:
+  #    container_name: bff-migration
+  #    command: ["pnpm", "--filter", "bff", "run", "migration:run"]
+  #    build:
+  #      context: .
+  #      dockerfile: ./packages/bff/Dockerfile
+  #      target: build
+  #    environment:
+  #      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
+  #      PORT: 3000
+  #      DEV_ENV: dev
+  #      REDIRECT_URI: http://localhost:3000/auth/cb
+  #      SCOPE: digdir:dialogporten.noconsent openid
+  #      AUTH_URL: https://login.test.idporten.no/authorize
+  #      ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
+  #      TOKEN_ENDPOINT: https://test.idporten.no/token
+  #      LOGOUT_REDIRECT_URI: http://localhost:3000/auth/loggedout
+  #      LOGOUT_URI: https://login.test.idporten.no/logout
+  #      SESSION_SECRET: IDPortenSessionSecret2023
+  #      COOKIE_NAME: oidc:test.idporten.no
+  #      REFRESH_TOKEN_EXPIRES_IN: 120
+  #      ACCESS_TOKEN_EXPIRES_IN: 60
+  #      TYPEORM_MIGRATIONS: src/migrations/*.ts
+  #      TYPEORM_MIGRATIONS_DIR: src/migrations
+  #    depends_on:
+  #      db:
+  #        condition: service_healthy
 
   frontend-design-poc:
     container_name: frontend-design-poc
@@ -162,8 +141,8 @@ services:
       target: build
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-design-poc.rule=Host(`frontend-design-poc.localhost`)"
-      - "dave.relativeSubdomain=frontend-design-poc"
+      - "traefik.http.routers.frontend-design-poc.rule=Host(`app.localhost`)"
+      - "dave.relativeSubdomain=app"
       - "dave.icon=fluent-mdl2:react-logo"
     develop:
       watch:
@@ -246,3 +225,6 @@ services:
             - node_modules/
             - .azure/
             - .git/
+volumes:
+  pgadmin_data:
+  postgres_data:

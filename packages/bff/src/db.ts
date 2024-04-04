@@ -11,8 +11,13 @@ export const connectToDB = async () => {
 
   SessionRepository = dataSource.getRepository(SessionData);
   ProfileRepository = dataSource.getRepository(Profile);
-  if (!SessionRepository) throw new Error('SessionRepository not initialized');
-  if (!ProfileRepository) throw new Error('ProfileRepository not initialized');
+
+  if (!SessionRepository) {
+    throw new Error('SessionRepository not initialized');
+  }
+  if (!ProfileRepository) {
+    throw new Error('ProfileRepository not initialized');
+  }
 
   return { SessionRepository, ProfileRepository };
 };

@@ -15,7 +15,7 @@ export const setCookie = (res: any, value: string) => {
 };
 
 export const readCookie = (req: any) => {
-  return req.cookies[cookieName] || null;
+  return req.cookies[cookieName];
 };
 
 export const deleteCookie = async (res: any) => {
@@ -31,5 +31,9 @@ export const sessionMiddleware = session({
   secret,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: enableHttps },
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    secure: enableHttps,
+    sameSite: 'lax',
+  },
 });
