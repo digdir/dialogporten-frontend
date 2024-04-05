@@ -92,7 +92,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'SESSION_SECRET'
-    value: 'IDPortenSessionSecret2023'
+    value: 'IDPortenSessionSecret2023MoreLettersBlaBla'
   }
   {
     name: 'COOKIE_NAME'
