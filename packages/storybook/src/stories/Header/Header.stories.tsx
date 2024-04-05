@@ -6,7 +6,18 @@ import { withRouter } from 'storybook-addon-react-router-v6';
 const meta = {
   title: 'Components/Header',
   component: Header,
-  decorators: [withRouter],
+  decorators: [
+    withRouter,
+    (Story, context) => {
+      const { args } = context;
+
+      return (
+        <div className={args.companyName ? 'isCompany' : ''}>
+          <Story />
+        </div>
+      );
+    },
+  ],
   tags: ['autodocs'],
 } satisfies Meta<typeof Header>;
 
@@ -17,7 +28,7 @@ type Story = StoryObj<typeof Header>;
  * See https://storybook.js.org/docs/writing-stories/play-function#working-with-the-canvas
  * to learn more about using the canvasElement to query the DOM
  */
-export const WithNameOnly: Story = {
+export const Person: Story = {
   args: {
     name: 'Ola Nordmann',
   },
@@ -27,7 +38,7 @@ export const WithNameOnly: Story = {
   },
 };
 
-export const WithNameAndCompany: Story = {
+export const Company: Story = {
   args: {
     name: 'Ola Nordmann',
     companyName: 'Aker Solutions AS',

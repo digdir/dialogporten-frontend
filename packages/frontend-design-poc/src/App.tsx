@@ -4,12 +4,12 @@ import { Inbox } from './pages/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
 import { PageNotFound } from './pages/PageNotFound';
 
-import styles from './app.module.css';
+import './app.css';
 import { PageLayout } from './components/PageLayout';
 
 function App() {
   return (
-    <div className={styles.app}>
+    <div className="app">
       <Routes>
         <Route element={<PageLayout />}>
           <Route path="/" element={<Home />} />

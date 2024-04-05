@@ -94,4 +94,8 @@ const SidebarSimpleExampleCompany = () => {
 };
 
 export const simpleDesktopExamplePerson: () => JSX.Element = () => <SidebarSimpleExamplePerson />;
-export const simpleDesktopExampleCompany: () => JSX.Element = () => <SidebarSimpleExampleCompany />;
+export const simpleDesktopExampleCompany: () => JSX.Element = () => (
+  <div className="isCompany">
+    <SidebarSimpleExampleCompany />
+  </div>
+);

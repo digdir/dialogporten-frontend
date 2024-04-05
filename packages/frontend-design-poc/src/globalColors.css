@@ -1,0 +1,13 @@
+/* GLOBAL VARIABLES */
+
+:root {
+  --background-color: #EAF7EF;
+  --button-color: #084826;
+  --avatar-color: #111D46;
+  --Action-Important: #E02E49;
+}
+
+.isCompany {
+  --background-color: #E9F5FF;
+  --button-color: #111D46;
+}

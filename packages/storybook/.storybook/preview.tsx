@@ -7,6 +7,7 @@ import { nbResources } from 'frontend-design-poc';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import customTheme from './customTheme';
+import 'frontend-design-poc/src/globalColors.css';
 
 import './i18next';
 
