@@ -1,10 +1,9 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { SessionData } from './SessionData';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Profile {
   @PrimaryColumn()
-  id: string; // hashed pid
+  id: string; // sid
 
   @Column({ length: 255, nullable: true })
   language: string;
@@ -20,10 +19,4 @@ export class Profile {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToMany(
-    () => SessionData,
-    (session) => session.profile,
-  )
-  sessions: SessionData[];
 }

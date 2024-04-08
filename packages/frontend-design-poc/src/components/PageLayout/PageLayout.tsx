@@ -18,7 +18,8 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          (window as Window).location = `/api/login?postLoginRedirectUrl=${location.href}`;
+          (window as Window).location = `/api/login`;
+          // TODO: Store current URL (will be returned to this url in PageLayout upon mount with redirected=true)
         }}
       >
         Login
@@ -26,7 +27,7 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          fetch('/api/protected', {
+          fetch('/api/user', {
             method: 'GET',
             credentials: 'include',
             headers: {

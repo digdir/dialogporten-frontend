@@ -1,156 +1,120 @@
+import oauthPlugin, { OAuth2Namespace } from '@fastify/oauth2';
+import jwt from 'jsonwebtoken';
+import { FastifyPluginAsync, FastifyPluginCallback, FastifyRegister, FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
-import Fastify, { FastifyPluginAsync } from 'fastify';
-import fastifyPassport from '@fastify/passport';
-import { ensureAuthenticated } from './ensureAuthenticated';
+import { ProfileRepository } from '../db';
+import { Profile } from '../entities/Profile';
 
-import { FastifyRequest, FastifyReply } from 'fastify';
-import { fastifySession } from '@fastify/session';
-import passport from '@fastify/passport';
-import { SessionRepository } from '../db';
-import { SessionData } from '../entities/SessionData';
-import { deleteCookie, readCookie, setCookie } from './cookies';
-import { getSession, initPassport } from './passport';
-
-const logoutUri = `https://login.${process.env.OIDC_URL}/logout`;
-const logoutRedirectUri = `${process.env.HOSTNAME!}/api/loggedout`;
-const loggedoutURL = '/api/loggedout';
-
-type FastifySession = typeof fastifySession;
-interface CustomSession extends FastifySession, Partial<SessionData> {
-  returnTo?: string;
-  sessionId?: string;
-  id: string;
+declare module 'fastify' {
+  interface FastifyInstance {
+    idporten: OAuth2Namespace;
+  }
 }
 
-interface postLoginRedirectQuery {
-  postLoginRedirectUrl: string;
+interface PluginOptions {
+  oidc_url: string;
+  hostname: string;
+  client_id: string;
+  client_secret: string;
+  refresh_token_expires_in: number;
 }
 
-export interface CustomRequest extends Omit<FastifyRequest, 'session'> {
-  session: CustomSession;
-  query: postLoginRedirectQuery;
-  user?: {
-    postLoginRedirectUrl: string;
-    currentSessionId: string;
-    sid: string;
-    pid: string;
-    userId: string;
-    id: string;
+interface OAuthPluginOptions {
+  name: string;
+  scope: string[];
+  credentials: {
+    client: {
+      id: string;
+      secret: string;
+    };
+  };
+  startRedirectPath: string;
+  callbackUri: string;
+  discovery: {
+    issuer: string;
   };
 }
 
-const plugin: FastifyPluginAsync = async (fastify) => {
 
-  const login = async (req: FastifyRequest, res: FastifyReply) => {
+
+const getOrCreateProfile = async (sId: string, locale: string): Promise<Profile> => {
+    const profile = await ProfileRepository!.findOne({
+      where: { id: sId },
+    });
+
+    if (profile) {
+      return profile;
+    }
+
+    const newProfile = new Profile();
+    newProfile.id = sId;
+    newProfile.language = locale || 'nb';
+    const savedProfile = await ProfileRepository!.save(newProfile);
+    if (!savedProfile) {
+      throw new Error('Fatal: Not able to create new profile');
+    }
+    return savedProfile;
+};
+
+const plugin: FastifyPluginAsync<PluginOptions> = async (fastify, options) => {
+  const { client_id, client_secret, oidc_url, hostname } = options;
+
+  fastify.register<OAuthPluginOptions>(oauthPlugin as unknown as FastifyPluginCallback<OAuthPluginOptions>, {
+    name: 'idporten',
+    scope: ['digdir:dialogporten.noconsent', 'openid'],
+    credentials: {
+      client: {
+        id: client_id,
+        secret: client_secret,
+      },
+    },
+    startRedirectPath: '/api/login/',
+    callbackUri: `${hostname}/api/cb`,
+    discovery: {
+      issuer: `https://${oidc_url}/.well-known/openid-configuration`,
+    },
+  });
+
+  fastify.get('/api/cb', async function (request: FastifyRequest, reply: FastifyReply) {
     try {
-      const customRequest: CustomRequest = req as unknown as CustomRequest;
-      const postLoginRedirectUrl = customRequest.query.postLoginRedirectUrl ?? '/';
-      const sessionProps: Partial<SessionData> = {
-        sessionData: { postLoginRedirectUrl },
-      };
+      const { token } = await this.idporten.getAccessTokenFromAuthorizationCodeFlow(request);
+      request.session.set<any>('token', token);
+      reply.redirect('/?loggedIn=true');
+    } catch (e: any) {
+      console.log(e);
+      reply.status(500);
+    }
+  });
 
-      const existingSessionIdFromCookie = readCookie(req);
-      const existingSession = existingSessionIdFromCookie && (await getSession(existingSessionIdFromCookie));
-      let sessionId;
+  fastify.get('/api/logout', async (request: FastifyRequest, reply: FastifyReply) => {
+    // TODO: Make logout endpoint
+    // https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_logout.html
+    // remove cookie and destroy session
+    reply.status(501);
+  });
 
-      if (existingSession && existingSession?.id) {
-        await SessionRepository!.update(existingSession.id, sessionProps);
-        sessionId = existingSession.id;
+  fastify.get('/api/user', async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      // TODO: getAccessTokenFromAuthorizationCodeFlow does not work, invalid state
+      const token = request.session.get<any>('token');
+      // TODO
+      //  1. verify jwt verify(token, secretOrPublicKey, [options, callback])
+      // 2. check if not expired, if refresh token is valid but at is invalid, refresh at
+      // return line below if neither
+      if (token) {
+        const { sid, locale = 'nb' } = jwt.decode((token.id_token as any)) as any;
+        const profile = getOrCreateProfile(sid, locale);
+        reply.send(profile);
       } else {
-        const newSession = await SessionRepository!.save(sessionProps);
-        sessionId = newSession.id;
+        reply.status(401).send({ error: 'Unauthorized' });
       }
-      if (req?.session) {
-        (req as FastifyRequest & {sessionId: string}).sessionId = sessionId;
-      }
-      setCookie(res, sessionId);
-      passport.authenticate('oidc');
 
     } catch (e) {
-      console.log('error in login', e);
+      console.error('Error fetching user endpoint:', e);
+      reply.status(500).send({ error: 'Internal Server Error' });
     }
-  };
-
-  const logout = async (req: FastifyRequest, res: FastifyReply) => {
-    const sessionCookie = readCookie(req);
-    const customRequest: CustomRequest = req as unknown as CustomRequest;
-    const currentSession: SessionData | null = await SessionRepository!.findOneBy({
-      id: sessionCookie as string,
-    });
-
-    if (currentSession && logoutUri && logoutRedirectUri) {
-      const logoutRedirectUrl = `${logoutUri}?post_logout_redirect_uri=${logoutRedirectUri}&id_token_hint=${currentSession.idToken}`;
-      await req.logout()
-      await req.session.destroy();
-      await deleteCookie(res);
-
-      res.redirect(logoutRedirectUrl);
-    } else {
-      res.redirect(loggedoutURL);
-    }
-  };
-
-  const protectedEndpoint = async (req: FastifyRequest, res: FastifyReply) => {
-    const customRequest: CustomRequest = req as unknown as CustomRequest;
-    res.send({
-      message: `You are now logged in (This content requires user to be logged in). Your user id is: ${customRequest?.user?.id}`,
-    });
-  };
-
-  const callback = async (req: FastifyRequest, res: FastifyReply) => {
-    try {
-      const customRequest: CustomRequest = req as unknown as CustomRequest;
-      let userRequestedUrl = customRequest.user?.postLoginRedirectUrl ?? '/';
-      const currentSessionId = customRequest.user?.currentSessionId;
-      let currentSession: SessionData | undefined | null;
-
-      if (currentSessionId) {
-        currentSession = await SessionRepository!.findOneBy({ id: currentSessionId as string });
-      } else if (customRequest.user?.sid) {
-        // No session found, creating new session
-        const newSession = new SessionData();
-        newSession.sessionData = {
-          postLoginRedirectUrl: userRequestedUrl,
-          setFrom: 'cb',
-          idportenSessionId: customRequest?.user?.sid,
-        };
-        currentSession = await SessionRepository!.save(newSession);
-      }
-
-      if (!currentSession?.id) {
-        return res.redirect('/api/fail');
-      }
-      userRequestedUrl = currentSession?.sessionData?.postLoginRedirectUrl || userRequestedUrl;
-      setCookie(res, currentSession.id);
-      res.redirect(userRequestedUrl);
-    } catch (error) {
-      console.error('Error in OIDC callback:', error);
-      res.redirect('/api/fail');
-    }
-  };
-  const fail = async (_: FastifyRequest, res: FastifyReply) => res.send('Failed');
-  const loggedOut = async (_: FastifyRequest, res: FastifyReply) => res.send('Logged out');
-
-  // passport
-  fastify.register(passport.initialize());
-  fastify.register(passport.secureSession())
-  await initPassport();
-
-  fastify.get('/api/fail', {}, fail);
-  fastify.get('/api/loggedout', {}, loggedOut);
-  fastify.get('/api/login', {}, login);
-  fastify.get('/api/logout', {}, logout);
-  fastify.get('/api/cb', {
-    preValidation: fastifyPassport.authenticate('oidc', {
-      authInfo: false,
-      failureRedirect: '/api/login'
-    })
-  }, callback);
-
-  fastify.get('/api/protected', {
-    preValidation: [ensureAuthenticated]
-  }, protectedEndpoint);
-}
+  });
+};
 
 export default fp(plugin, {
   fastify: '4.x',
