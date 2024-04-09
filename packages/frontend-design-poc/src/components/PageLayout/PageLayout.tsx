@@ -2,13 +2,16 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
 import styles from './pageLayout.module.css';
+import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 
 export const PageLayout: React.FC = () => {
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
   const isCompany = !!companyName;
+  const isTestFeatureToggleEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.TestFeatureToggleEnabled);
 
   return (
     <div className={isCompany ? `isCompany` : ''}>
+      <p>isTestFeatureToggleEnabled: {JSON.stringify(isTestFeatureToggleEnabled)}</p>
       <button type="button" onClick={() => setCompanyName(companyName !== '' ? '' : 'Aker Solutions AS')}>
         User/Company Switch
       </button>

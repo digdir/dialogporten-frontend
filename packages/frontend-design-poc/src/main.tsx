@@ -8,6 +8,7 @@ import '@digdir/designsystemet-css';
 import '@digdir/designsystemet-theme';
 
 import App from './App.tsx';
+import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
 async function enableMocking() {
   if (import.meta.env.MODE === 'development') {
@@ -25,7 +26,9 @@ if (element) {
       <React.StrictMode>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <App />
+            <FeatureFlagProvider flags={featureFlags}>
+              <App />
+            </FeatureFlagProvider>
           </BrowserRouter>
         </QueryClientProvider>
       </React.StrictMode>,
