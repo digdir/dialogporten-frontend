@@ -6,8 +6,8 @@ export function useFeatureFlag<T>(flag: FeatureFlagKeys): T {
   const context = useContext(FeatureFlagContext);
 
   if (context === undefined) {
-    throw new Error('useFeatureFlag must be used within a FeatureFlagProvider');
+    console.error('useFeatureFlag must be used within a FeatureFlagProvider');
+    return undefined as T;
   }
-
   return context[flag] as T;
 }

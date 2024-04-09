@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 
 import '../src/i18n/config.ts';
+import { FeatureFlagProvider, featureFlags } from '../src/featureFlags';
 
 interface IExtendedRenderOptions extends RenderOptions {
   initialEntries?: string[];
@@ -21,7 +22,9 @@ export const customRender = (ui: ReactElement, options?: Omit<IExtendedRenderOpt
   const Wrapper = ({ children }: { children: React.ReactNode }) => {
     return (
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>{children}</MemoryRouter>
+        <FeatureFlagProvider flags={featureFlags}>
+          <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>{children}</MemoryRouter>
+        </FeatureFlagProvider>
       </QueryClientProvider>
     );
   };
