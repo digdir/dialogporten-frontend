@@ -49,6 +49,26 @@ resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments
     }
   }
 
+// https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
+var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets'
+
+var dbConnectionStringSecret = {
+  name: 'dbconnectionstring'
+  keyVaultUrl: '${keyVaultUrl}/databaseConnectionString'
+  identity: 'system'
+}
+
+var redisConnectionStringSecret = {
+  name: 'redisconnectionstring'
+  keyVaultUrl: '${keyVaultUrl}/redisConnectionString'
+  identity: 'system'
+}
+
+var secrets = [
+  dbConnectionStringSecret
+  redisConnectionStringSecret
+]
+
 var containerAppEnvVars = [
   {
     name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
@@ -60,7 +80,11 @@ var containerAppEnvVars = [
   }
   {
     name: 'DB_CONNECTION_STRING'
-    secretRef: 'dbconnectionstring'
+    secretRef: dbConnectionStringSecret.name
+  }
+  {
+    name: 'REDIS_CONNECTION_STRING'
+    secretRef: redisConnectionStringSecret.name
   }
   {
     name: 'PORT'
@@ -105,17 +129,6 @@ var containerAppEnvVars = [
   {
     name: 'ACCESS_TOKEN_EXPIRES_IN'
     value: '60'
-  }
-]
-
-// https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
-var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets/databaseConnectionString'
-
-var secrets = [
-  {
-    name: 'dbconnectionstring'
-    keyVaultUrl: keyVaultUrl
-    identity: 'system'
   }
 ]
 
