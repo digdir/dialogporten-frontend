@@ -17,6 +17,11 @@ param sourceKeyVaultResourceGroup string
 @minLength(3)
 param sourceKeyVaultName string
 
+import { Sku as RedisSku } from '../modules/redis/main.bicep'
+param redisSku RedisSku
+@minLength(1)
+param redisVersion string
+
 var secrets = {
   dialogportenPgAdminPassword: dialogportenPgAdminPassword
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
@@ -66,6 +71,18 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
+  }
+}
+
+module redis '../modules/redis/main.bicep' = {
+  scope: resourceGroup
+  name: 'redis'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    environmentKeyVaultName: environmentKeyVault.outputs.name
+    version: redisVersion
+    sku: redisSku
   }
 }
 
