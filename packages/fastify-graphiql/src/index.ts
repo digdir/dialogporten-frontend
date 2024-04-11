@@ -1,4 +1,4 @@
-import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify';
+import { FastifyPluginCallback } from 'fastify';
 import fp from 'fastify-plugin';
 
 type Options = {};
