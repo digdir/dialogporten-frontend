@@ -9,6 +9,7 @@ import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import config, { cookieSessionConfig } from './config';
 import { connectToDB } from './db';
 import oidc from './oidc';
+import userApi from './userApi';
 
 const {
   version,
@@ -49,7 +50,6 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     methods: 'GET, POST, PATCH, DELETE, PUT',
     allowedHeaders: 'Content-Type, Authorization',
     preflightContinue: true,
-
   };
 
   server.register(cors, corsOptions);
@@ -63,6 +63,7 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     client_secret,
     refresh_token_expires_in,
   });
+  server.register(userApi);
 
   server.listen({ port: 3000, host }, (error, address) => {
     if (error) {

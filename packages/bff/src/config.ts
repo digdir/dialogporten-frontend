@@ -1,3 +1,4 @@
+import { FastifySessionOptions } from '@fastify/session';
 import 'dotenv/config';
 import z from 'zod';
 
@@ -16,6 +17,10 @@ const envVariables = z.object({
   REFRESH_TOKEN_EXPIRES_IN: z.coerce.number().default(3600),
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
+  COOKIE_NAME: z.string(),
+  SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
+  ENABLE_HTTPS: z.boolean().default(false),
+  COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
 });
 
 const env = envVariables.parse(process.env);
@@ -37,17 +42,18 @@ const config = {
   postgresql: {
     connectionString: env.DB_CONNECTION_STRING,
   },
-  cookieName: process.env.COOKIE_NAME || 'cookieName',
-  secret: process.env.SESSION_SECRET || 'SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere',
-  enableHttps: process.env.ENABLE_HTTPS === 'true',
+  cookieName: env.COOKIE_NAME,
+  secret: env.SESSION_SECRET,
+  enableHttps: env.ENABLE_HTTPS,
+  cookieMaxAge: env.COOKIE_MAX_AGE,
 };
 
-export const cookieSessionConfig = {
+export const cookieSessionConfig: FastifySessionOptions = {
   secret: config.secret,
-  cookieName: config.cookieName,
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-  secure: config.enableHttps,
-  sameSite: 'lax',
-  saveUninitialized: true,
+  cookie: {
+    secure: config.enableHttps,
+    httpOnly: !config.enableHttps,
+    maxAge: config.cookieMaxAge,
+  },
 };
 export default config;
