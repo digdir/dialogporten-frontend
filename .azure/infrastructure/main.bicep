@@ -22,6 +22,9 @@ param redisSku RedisSku
 @minLength(1)
 param redisVersion string
 
+import { Sku as ApplicationGatewaySku } from '../modules/applicationGateway/main.bicep'
+param applicationGatewaySku ApplicationGatewaySku
+
 var secrets = {
   dialogportenPgAdminPassword: dialogportenPgAdminPassword
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
@@ -43,6 +46,17 @@ module vnet '../modules/vnet/main.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+  }
+}
+
+module applicationGateway '../modules/applicationGateway/main.bicep' = {
+  scope: resourceGroup
+  name: 'applicationGateway'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    sku: applicationGatewaySku
+    subnetId: vnet.outputs.subnetId
   }
 }
 
