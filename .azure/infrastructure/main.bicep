@@ -31,15 +31,12 @@ var secrets = {
 
 var namePrefix = 'dp-fe-${environment}'
 
-
-
 // Create resource groups
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: '${namePrefix}-rg'
   location: location
 }
 
-// todo: create a virtual network
 module vnet '../modules/vnet/main.bicep' = {
   scope: resourceGroup
   name: 'vnet'
