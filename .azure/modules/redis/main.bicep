@@ -1,5 +1,6 @@
 param namePrefix string
 param location string
+param subnetId string
 @minLength(1)
 param environmentKeyVaultName string
 @minLength(1)
@@ -29,6 +30,7 @@ resource redis 'Microsoft.Cache/Redis@2023-08-01' = {
       'maxmemory-policy': 'allkeys-lru'
     }
     redisVersion: version
+    subnetId: subnetId
   }
 }
 
