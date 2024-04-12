@@ -1,68 +1,80 @@
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express, { Express } from 'express';
-import passport from 'passport';
+import cookie from '@fastify/cookie';
+import cors from '@fastify/cors';
+import formBody from '@fastify/formbody';
+import session from '@fastify/session';
+import Fastify from 'fastify';
 import 'reflect-metadata';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
-import config from './config';
+import config, { cookieSessionConfig } from './config';
 import { connectToDB } from './db';
-import { oidc } from './oidc';
-import { sessionMiddleware } from './oidc/cookies';
-import { initPassport } from './oidc/passport';
+import oidc from './oidc';
+import userApi from './userApi';
 
-const { version, port, isAppInsightsEnabled } = config;
-
-declare module 'express-session' {
-  export interface SessionData {
-    returnTo?: string;
-    sessionId?: string;
-  }
-}
+const {
+  version,
+  port,
+  isAppInsightsEnabled,
+  host,
+  isDev,
+  oidc_url,
+  hostname,
+  client_id,
+  client_secret,
+  refresh_token_expires_in,
+} = config;
 
 const startServer = async (startTimeStamp: Date): Promise<void> => {
-  const app: Express = express();
+  const server = Fastify({
+    ignoreTrailingSlash: true,
+    ignoreDuplicateSlashes: true,
+  });
 
-  startLivenessProbe(app, startTimeStamp);
+  if (!isDev) {
+    startLivenessProbe(server, startTimeStamp);
+  }
 
   if (isAppInsightsEnabled) {
     const { connectionString } = config.applicationInsights;
     if (!connectionString) {
       throw new Error("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
-    } else {
-      await initAppInsights(connectionString);
     }
+    await initAppInsights(connectionString);
   }
 
   await connectToDB();
-
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
-
   /* CORS configuration for local env, needs to be applied before routes are defined */
   const corsOptions = {
-    origin: ['http://frontend-design-poc.localhost', 'http://localhost:3000'],
+    origin: ['http://app.localhost', 'http://localhost:3000'],
     credentials: true,
     methods: 'GET, POST, PATCH, DELETE, PUT',
     allowedHeaders: 'Content-Type, Authorization',
     preflightContinue: true,
   };
 
-  app.use(cors(corsOptions));
-  app.use(sessionMiddleware);
-  app.use(passport.initialize());
-  app.use(passport.session());
-  await initPassport();
+  server.register(cors, corsOptions);
+  server.register(formBody);
+  server.register(cookie);
+  server.register(session, cookieSessionConfig);
+  server.register(oidc, {
+    oidc_url,
+    hostname,
+    client_id,
+    client_secret,
+    refresh_token_expires_in,
+  });
+  server.register(userApi);
 
-  // Setup OIDC
-  oidc(app);
-
-  app.listen(port, () => {
-    console.log(`Server ${version} is running on PORT: ${port}`);
+  server.listen({ port: 3000, host }, (error, address) => {
+    if (error) {
+      throw error;
+    }
+    console.log(`Server ${version} is running on ${address}`);
   });
 
-  startReadinessProbe(app, startTimeStamp);
+  if (!isDev) {
+    startReadinessProbe(server, startTimeStamp);
+  }
 };
 
 export default startServer;
