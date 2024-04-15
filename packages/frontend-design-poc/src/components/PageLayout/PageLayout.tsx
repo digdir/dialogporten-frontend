@@ -1,28 +1,21 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import styles from './pageLayout.module.css';
+import { useAuthenticated } from '../../auth/useAuthenticated.ts';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
+import styles from './pageLayout.module.css';
 
 export const PageLayout: React.FC = () => {
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
   const isCompany = !!companyName;
   const isTestFeatureToggleEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.TestFeatureToggleEnabled);
+  useAuthenticated();
 
   return (
     <div className={isCompany ? `isCompany` : ''}>
       <p>isTestFeatureToggleEnabled: {JSON.stringify(isTestFeatureToggleEnabled)}</p>
       <button type="button" onClick={() => setCompanyName(companyName !== '' ? '' : 'Aker Solutions AS')}>
         User/Company Switch
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          (window as Window).location = `/api/login`;
-          // TODO: Store current URL (will be returned to this url in PageLayout upon mount with redirected=true)
-        }}
-      >
-        Login
       </button>
       <button
         type="button"
