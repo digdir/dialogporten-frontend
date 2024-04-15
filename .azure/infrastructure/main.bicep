@@ -37,6 +37,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
 }
 
+module vnet '../modules/vnet/main.bicep' = {
+  scope: resourceGroup
+  name: 'vnet'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
+}
+
 module environmentKeyVault '../modules/keyvault/create.bicep' = {
   scope: resourceGroup
   name: 'keyVault'
@@ -71,6 +80,7 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
+    subnetId: vnet.outputs.subnetId
   }
 }
 
@@ -83,6 +93,7 @@ module redis '../modules/redis/main.bicep' = {
     environmentKeyVaultName: environmentKeyVault.outputs.name
     version: redisVersion
     sku: redisSku
+    subnetId: vnet.outputs.subnetId
   }
 }
 
@@ -111,6 +122,7 @@ module postgresql '../modules/postgreSql/create.bicep' = {
     administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}')
       ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
       : secrets.dialogportenPgAdminPassword
+    subnetId: vnet.outputs.subnetId
   }
 }
 
