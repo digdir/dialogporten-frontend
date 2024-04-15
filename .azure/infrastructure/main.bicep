@@ -93,7 +93,6 @@ module redis '../modules/redis/main.bicep' = {
     environmentKeyVaultName: environmentKeyVault.outputs.name
     version: redisVersion
     sku: redisSku
-    subnetId: vnet.outputs.subnetId
   }
 }
 
