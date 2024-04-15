@@ -76,3 +76,5 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
 output identityPrincipalId string = containerApp.identity.principalId
 output name string = containerApp.name
 output revisionName string = containerApp.properties.latestRevisionName
+// todo: use the ingress here instead of fqdn?
+output fqdn string = containerApp.properties.latestRevisionFqdn
