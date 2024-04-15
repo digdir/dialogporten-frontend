@@ -1,5 +1,6 @@
 param location string
 param namePrefix string
+param subnetId string
 
 param appInsightWorkspaceName string
 
@@ -11,6 +12,9 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: '${namePrefix}-containerappenv'
   location: location
   properties: {
+    vnetConfiguration: {
+      infrastructureSubnetId: subnetId
+    }
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {

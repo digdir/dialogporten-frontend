@@ -1,7 +1,11 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';
+import { SaveSearchButton } from './AddFilterButton/SaveSearchButton';
+import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
+import { getFiltersFromQueryParams } from '../../pages/Inbox/Inbox';
+import { useSearchString } from '..';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -91,6 +95,7 @@ type ListOpenTarget = 'none' | string | 'add_filter';
 export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: FilterBarProps) => {
   const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters);
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
+  const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
 
   const handleOnRemove = useCallback(
     (fieldName: string) => {
@@ -133,6 +138,20 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
     },
     [activeFilters, onFilterChange],
   );
+
+  const handleSaveSearch = () => {
+    const searchHistory: SavedSearch[] = getSearchHistory();
+    const newSearch: SavedSearch = {
+      id: Date.now(),
+      filters: activeFilters,
+      timestamp: new Date(),
+      name: '', // Needs functionality for saving a custom name
+      searchString: searchString,
+    };
+    searchHistory.push(newSearch);
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    queryClient.invalidateQueries('savedSearches'); // Step 3: Invalidate the 'savedSearches' query
+  };
 
   return (
     <section className={styles.filterBar}>
@@ -177,6 +196,7 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
           setListOpenTarget(filterOpt.id);
         }}
       />
+      <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length} />
       {listOpenTarget !== 'none' && (
         <div
           className={styles.background}

@@ -42,10 +42,7 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server
-      --save 20 1
-      --loglevel warning
-      --requirepass mysecretpassword
+      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
     volumes:
       - redis_cache:/data
   # GUI for checking whats in Redis
@@ -223,29 +220,28 @@ services:
             - node_modules/
             - .azure/
             - .git/
-
-  bff-graphql-poc:
-    container_name: bff-graphql-poc
-    restart: always
-    build:
-      context: .
-      dockerfile: ./packages/bff-graphql-poc/Dockerfile
-      target: build
-    command: sh -c "pnpm --filter bff-graphql-poc run dev:start"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bff-graphql-poc.rule=Host(`bff-graphql-poc.localhost`)"
-      - "dave.relativeSubdomain=bff-graphql-poc"
-      - "dave.icon=fa-brands:node"
-    develop:
-      watch:
-        - action: sync
-          path: ./packages/bff-graphql-poc/
-          target: /app/packages/bff-graphql-poc/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
+  # bff-graphql-poc:
+  #   container_name: bff-graphql-poc
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: ./packages/bff-graphql-poc/Dockerfile
+  #     target: build
+  #   command: sh -c "pnpm --filter bff-graphql-poc run dev:start"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.bff-graphql-poc.rule=Host(`bff-graphql-poc.localhost`)"
+  #     - "dave.relativeSubdomain=bff-graphql-poc"
+  #     - "dave.icon=fa-brands:node"
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: ./packages/bff-graphql-poc/
+  #         target: /app/packages/bff-graphql-poc/
+  #         ignore:
+  #           - node_modules/
+  #           - .azure/
+  #           - .git/
 volumes:
   pgadmin_data:
   postgres_data:

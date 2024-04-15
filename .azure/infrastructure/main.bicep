@@ -80,6 +80,7 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
+    subnetId: vnet.outputs.subnetId
   }
 }
 
@@ -92,6 +93,7 @@ module redis '../modules/redis/main.bicep' = {
     environmentKeyVaultName: environmentKeyVault.outputs.name
     version: redisVersion
     sku: redisSku
+    subnetId: vnet.outputs.subnetId
   }
 }
 
@@ -120,6 +122,7 @@ module postgresql '../modules/postgreSql/create.bicep' = {
     administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}')
       ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
       : secrets.dialogportenPgAdminPassword
+    subnetId: vnet.outputs.subnetId
   }
 }
 

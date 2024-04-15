@@ -8,11 +8,21 @@ import { MenuBar } from '../MenuBar';
 import { MenuBarItemProps } from '../MenuBar/MenuBarItem';
 import { AltinnLogoSvg } from './AltinnLogo';
 import styles from './header.module.css';
+import { useQuery, useQueryClient } from 'react-query';
 
 type HeaderProps = {
   name: string;
   companyName?: string;
   notificationCount?: number;
+};
+
+export const useSearchString = () => {
+  const queryClient = useQueryClient();
+  const { data: searchString } = useQuery<string>(['search'], () => '', {
+    enabled: false,
+    staleTime: Infinity,
+  });
+  return { searchString, queryClient };
 };
 
 const AltinnLogo = () => {
@@ -29,9 +39,23 @@ const AltinnLogo = () => {
 
 const HeaderSearchBar = () => {
   const { t } = useTranslation();
+  const { queryClient, searchString } = useSearchString();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    queryClient.setQueryData(['search'], () => e.target.value || '');
+  };
   return (
     <div className={styles.searchBar}>
-      <Search size="small" aria-label={t('header.searchPlaceholder')} placeholder={t('header.searchPlaceholder')} />
+      <Search
+        size="small"
+        aria-label={t('header.searchPlaceholder')}
+        placeholder={t('header.searchPlaceholder')}
+        onChange={handleSearch}
+        value={searchString}
+        onClear={() => {
+          queryClient.setQueryData(['search'], () => '');
+        }}
+      />
     </div>
   );
 };

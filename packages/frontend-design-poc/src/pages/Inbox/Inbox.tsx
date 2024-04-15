@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashIcon } from '@navikt/aksel-icons';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery } from 'react-query';
 import { getDialogs } from '../../api/queries.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
 import { type Filter, FilterBar } from '../../components/FilterBar';
@@ -9,6 +9,9 @@ import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { mapDialogDtoToInboxItem } from '../../mocks/dialogs.tsx';
 import styles from './inbox.module.css';
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
+import { SavedSearch } from '../SavedSearches/SavedSearches.tsx';
+import { useLocation } from 'react-router-dom';
 
 export interface InboxItemInput {
   id: string;
@@ -33,16 +36,69 @@ function countOccurrences(array: string[]): Record<string, number> {
   );
 }
 
+export interface QueryParams {
+  [key: string]: string;
+}
+
+export const compressQueryParams = (params: SavedSearch): string => {
+  const queryParamsString = JSON.stringify(params);
+  return compressToEncodedURIComponent(queryParamsString);
+};
+
+export const decompressQueryParams = (compressedString: string): SavedSearch => {
+  const decompressedString = decompressFromEncodedURIComponent(compressedString);
+  if (!decompressedString) throw new Error('Decompression failed');
+  return JSON.parse(decompressedString);
+};
+
+export const getFiltersFromQueryParams = (qc?: QueryClient): Filter[] => {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const compressedData = urlSearchParams.get('data');
+
+  if (compressedData) {
+    try {
+      const queryParams = decompressQueryParams(compressedData);
+      return queryParams.filters as Filter[];
+    } catch (error) {
+      console.error('Failed to decompress query parameters:', error);
+    }
+  }
+  return [] as Filter[];
+};
+
+export const getSearchStringFromQueryParams = (queryClient: QueryClient): string => {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const compressedData = urlSearchParams.get('data');
+
+  if (compressedData) {
+    try {
+      const queryParams = decompressQueryParams(compressedData);
+      queryClient.setQueryData(['search'], () => queryParams.searchString || '');
+      return queryParams.searchString || '';
+    } catch (error) {
+      console.error('Failed to decompress query parameters:', error);
+    }
+  } else {
+    queryClient.setQueryData(['search'], () => '');
+  }
+  return '';
+};
+
 export const Inbox = () => {
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<{
     [key: string]: boolean;
   }>({});
+  const location = useLocation();
 
   const { data: dialogs } = useQuery('dialogs', getDialogs);
   const dialogData = useMemo(() => mapDialogDtoToInboxItem(dialogs || []), [dialogs]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
+
+  useEffect(() => {
+    setActiveFilters(getFiltersFromQueryParams());
+  }, [location]);
 
   const filteredData = useMemo(() => {
     return dialogData.filter((item) =>
@@ -108,7 +164,11 @@ export const Inbox = () => {
   return (
     <main>
       <div className={styles.filterBarWrapper}>
-        <FilterBar fields={filterBarFields} onFilterChange={(filters) => setActiveFilters(filters)} />
+        <FilterBar
+          fields={filterBarFields}
+          onFilterChange={(filters) => setActiveFilters(filters)}
+          initialFilters={activeFilters}
+        />
       </div>
       {selectedItemCount > 0 && (
         <div className={styles.actionPanelWrapper}>

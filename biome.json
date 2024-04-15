@@ -26,11 +26,17 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
       "recommended": true,
       "style": {
         "noUnusedTemplateLiteral": "off",
         "noNonNullAssertion": "off",
         "useTemplate": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn"
       }
     }
   },
