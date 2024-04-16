@@ -8,8 +8,9 @@ import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import config, { cookieSessionConfig } from './config';
 import { connectToDB } from './db';
-import oidc from './oidc';
-import userApi from './userApi';
+import oidc from './plugins/oidc';
+import userApi from './plugins/userApi';
+import verifyToken from './plugins/verifyToken';
 
 const {
   version,
@@ -21,7 +22,6 @@ const {
   hostname,
   client_id,
   client_secret,
-  refresh_token_expires_in,
 } = config;
 
 const startServer = async (startTimeStamp: Date): Promise<void> => {
@@ -56,12 +56,12 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   server.register(formBody);
   server.register(cookie);
   server.register(session, cookieSessionConfig);
+  server.register(verifyToken);
   server.register(oidc, {
     oidc_url,
     hostname,
     client_id,
     client_secret,
-    refresh_token_expires_in,
   });
   server.register(userApi);
 

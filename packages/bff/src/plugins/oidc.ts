@@ -1,0 +1,131 @@
+import oauthPlugin, { OAuth2Namespace, OAuth2Token } from '@fastify/oauth2';
+import {
+  CustomOAuth2Token,
+  FastifyPluginAsync,
+  FastifyPluginCallback,
+  FastifyReply,
+  FastifyRequest,
+  HookHandlerDoneFunction,
+} from 'fastify';
+import fp from 'fastify-plugin';
+import jwt from 'jsonwebtoken';
+import config from '../config';
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    idporten: OAuth2Namespace;
+    verifyToken: (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => void;
+  }
+
+  interface CustomOAuth2Token extends OAuth2Token {
+    refresh_token_expires_in: number;
+  }
+
+  interface Session {
+    token: SessionStorageToken;
+    refreshTokenExpiresAt: Date;
+    sub: string;
+    locale: string;
+  }
+}
+
+export interface IdTokenPayload {
+  sub: string;
+  locale: string;
+  jwt: string;
+}
+
+export interface SessionStorageToken {
+  access_token: string;
+  refresh_token: string;
+  id_token: string;
+  refresh_token_expires_in: number;
+  expires_at: string;
+}
+
+interface CustomOICDPluginOptions {
+  oidc_url: string;
+  hostname: string;
+  client_id: string;
+  client_secret: string;
+}
+
+interface OAuthPluginOptions {
+  name: string;
+  scope: string[];
+  credentials: {
+    client: {
+      id: string;
+      secret: string;
+    };
+  };
+  startRedirectPath: string;
+  callbackUri: string;
+  discovery: {
+    issuer: string;
+  };
+}
+
+const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, options) => {
+  const { client_id, client_secret, oidc_url, hostname } = options;
+
+  fastify.register<OAuthPluginOptions>(oauthPlugin as unknown as FastifyPluginCallback<OAuthPluginOptions>, {
+    name: 'idporten',
+    scope: ['digdir:dialogporten.noconsent', 'openid'],
+    credentials: {
+      client: {
+        id: client_id,
+        secret: client_secret,
+      },
+    },
+    startRedirectPath: '/api/login/',
+    callbackUri: `${hostname}/api/cb`,
+    discovery: {
+      issuer: `https://${oidc_url}/.well-known/openid-configuration`,
+    },
+  });
+
+  /* Post login: retrieves token, stores values to user session and redirects to client */
+  fastify.get('/api/cb', async function (request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { token, refresh_token_expires_in }: CustomOAuth2Token =
+        (await this.idporten.getAccessTokenFromAuthorizationCodeFlow(request)) as CustomOAuth2Token;
+      const refreshTokenExpiresAt = new Date(Date.now() + refresh_token_expires_in * 1000);
+
+      const { sub, locale = 'nb' } = jwt.decode(token.id_token as string) as unknown as IdTokenPayload;
+
+      request.session.set('token', token);
+      request.session.set('sub', sub);
+      request.session.set('locale', locale);
+      request.session.set('refreshTokenExpiresAt', refreshTokenExpiresAt);
+
+      reply.redirect('/?loggedIn=true');
+    } catch (e) {
+      console.log(e);
+      reply.status(500);
+    }
+  });
+
+  fastify.get(
+    '/api/logout',
+    { preValidation: fastify.verifyToken },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const token: SessionStorageToken = request.session.get('token');
+      const postLogoutRedirectUri = `${config.hostname}/loggedout`;
+
+      if (token?.id_token) {
+        const logoutRedirectUrl = `https://login.${config.oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${token.id_token}`;
+        reply.setCookie('token', '', {
+          expires: new Date('01-01-1970'),
+        });
+        reply.redirect(logoutRedirectUrl);
+      }
+
+      reply.status(401);
+    },
+  );
+};
+export default fp(plugin, {
+  fastify: '4.x',
+  name: 'fastify-oicd',
+});
