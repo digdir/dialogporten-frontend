@@ -9,23 +9,13 @@ import Redis from 'ioredis';
 import 'reflect-metadata';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
+import { verifyToken } from './auth';
+import { oidc } from './auth';
+import { userApi } from './auth';
 import config from './config';
 import { connectToDB } from './db';
-import oidc from './oidc';
-import userApi from './userApi';
 
-const {
-  version,
-  port,
-  isAppInsightsEnabled,
-  host,
-  isDev,
-  oidc_url,
-  hostname,
-  client_id,
-  client_secret,
-  refresh_token_expires_in,
-} = config;
+const { version, port, isAppInsightsEnabled, host, isDev, oidc_url, hostname, client_id, client_secret } = config;
 
 const startServer = async (startTimeStamp: Date): Promise<void> => {
   const server = Fastify({
@@ -83,12 +73,12 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     server.register(session, cookieSessionConfig);
   }
 
+  server.register(verifyToken);
   server.register(oidc, {
     oidc_url,
     hostname,
     client_id,
     client_secret,
-    refresh_token_expires_in,
   });
   server.register(userApi);
 

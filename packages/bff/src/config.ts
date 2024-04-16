@@ -13,7 +13,6 @@ const envVariables = z.object({
   OIDC_URL: z.string().default('test.idporten.no'),
   HOSTNAME: z.string().default('http://localhost'),
   ENABLE_APP_INSIGHTS: z.string().default('false'),
-  REFRESH_TOKEN_EXPIRES_IN: z.coerce.number().default(3600),
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
   ENABLE_HTTPS: z.boolean().default(false),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
@@ -32,7 +31,6 @@ const config = {
   host: env.HOST,
   oidc_url: env.OIDC_URL,
   hostname: env.HOSTNAME,
-  refresh_token_expires_in: env.REFRESH_TOKEN_EXPIRES_IN,
   client_id: env.CLIENT_ID,
   client_secret: env.CLIENT_SECRET,
   applicationInsights: {
