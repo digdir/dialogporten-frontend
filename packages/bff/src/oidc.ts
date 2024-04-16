@@ -2,6 +2,7 @@ import oauthPlugin, { OAuth2Namespace } from '@fastify/oauth2';
 import { FastifyPluginAsync, FastifyPluginCallback, FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import jwt from 'jsonwebtoken';
+import config from './config';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -16,13 +17,9 @@ declare module 'fastify' {
 }
 
 interface SessionStorageToken {
-  [key: string]:
-    | {
-        access_token: string;
-        refresh_token: string;
-        id_token: string;
-      }
-    | undefined;
+  access_token: string;
+  refresh_token: string;
+  id_token: string;
 }
 
 interface CustomOICDPluginOptions {
@@ -52,26 +49,32 @@ interface OAuthPluginOptions {
 interface IdTokenPayload {
   sub: string;
   locale: string;
+  jwt: string;
 }
 interface ValidToken {
   idToken: IdTokenPayload;
 }
 
 export async function validateRequest(request: FastifyRequest): Promise<ValidToken | undefined> {
-  const token = request.session.get('token') as unknown as SessionStorageToken;
+  const token: SessionStorageToken = request.session.get('token');
+  const idTokenJwt: string = token?.id_token;
 
-  if (!token?.id_token) {
+  if (!idTokenJwt) {
     return undefined;
   }
-  const { sub, locale = 'nb' } = jwt.decode(token.id_token as unknown as string) as IdTokenPayload;
 
+  const { sub, locale = 'nb' } = jwt.decode(idTokenJwt) as IdTokenPayload;
   /* TODO
     1. jwt.verify(token, secretKey) => not valid -> return undefined
     2. check expiration of token and refresh token, refresh if needed
    */
 
   return {
-    idToken: { sub, locale },
+    idToken: {
+      sub,
+      locale,
+      jwt: idTokenJwt,
+    },
   } as ValidToken;
 }
 
@@ -106,13 +109,24 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
   });
 
   fastify.get('/api/logout', async (request: FastifyRequest, reply: FastifyReply) => {
-    // TODO: Make logout endpoint
-    // https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_logout.html
-    // remove cookie and destroy session
+    const validToken = await validateRequest(request);
+    if (validToken) {
+      const {
+        idToken: { jwt: idTokenJwt },
+      } = validToken;
+      const postLogoutRedirectUri = `${config.hostname}/loggedout`;
+      if (jwt) {
+        const logoutRedirectUrl = `https://login.${config.oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${idTokenJwt}`;
+        request.session.set('token', undefined);
+        reply.setCookie('token', '', {
+          expires: new Date('01-01-1997'),
+        });
+        reply.redirect(logoutRedirectUrl);
+      }
+    }
     reply.status(501);
   });
 };
-
 export default fp(plugin, {
   fastify: '4.x',
   name: 'fastify-oicd',

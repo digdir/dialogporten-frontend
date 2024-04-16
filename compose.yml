@@ -109,7 +109,6 @@ services:
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
-      SCOPE: digdir:dialogporten.noconsent openid
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       COOKIE_NAME: oidc:test.idporten.no
       REFRESH_TOKEN_EXPIRES_IN: 120
@@ -151,7 +150,6 @@ services:
           AUTH_URL: https://login.test.idporten.no/authorize
           ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
           TOKEN_ENDPOINT: https://test.idporten.no/token
-          LOGOUT_REDIRECT_URI: http://localhost:3000/auth/loggedout
           LOGOUT_URI: https://login.test.idporten.no/logout
           SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
           COOKIE_NAME: oidc:test.idporten.no

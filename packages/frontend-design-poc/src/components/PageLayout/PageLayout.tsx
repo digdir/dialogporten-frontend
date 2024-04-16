@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import { useAuthenticated } from '../../auth/useAuthenticated.ts';
+import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import styles from './pageLayout.module.css';
 
