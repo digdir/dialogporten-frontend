@@ -1,4 +1,3 @@
-import { FastifySessionOptions } from '@fastify/session';
 import 'dotenv/config';
 import z from 'zod';
 
@@ -15,12 +14,12 @@ const envVariables = z.object({
   HOSTNAME: z.string().default('http://localhost'),
   ENABLE_APP_INSIGHTS: z.string().default('false'),
   REFRESH_TOKEN_EXPIRES_IN: z.coerce.number().default(3600),
-  CLIENT_ID: z.string(),
-  CLIENT_SECRET: z.string(),
-  COOKIE_NAME: z.string(),
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
   ENABLE_HTTPS: z.boolean().default(false),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
+  REDIS_CONNECTION_STRING: z.string().default('redis://:mysecretpassword@127.0.0.1:6379/0'),
+  CLIENT_ID: z.string(),
+  CLIENT_SECRET: z.string(),
 });
 
 const env = envVariables.parse(process.env);
@@ -42,18 +41,10 @@ const config = {
   postgresql: {
     connectionString: env.DB_CONNECTION_STRING,
   },
-  cookieName: env.COOKIE_NAME,
   secret: env.SESSION_SECRET,
   enableHttps: env.ENABLE_HTTPS,
   cookieMaxAge: env.COOKIE_MAX_AGE,
+  redisConnectionString: env.REDIS_CONNECTION_STRING,
 };
 
-export const cookieSessionConfig: FastifySessionOptions = {
-  secret: config.secret,
-  cookie: {
-    secure: config.enableHttps,
-    httpOnly: !config.enableHttps,
-    maxAge: config.cookieMaxAge,
-  },
-};
 export default config;
