@@ -2,11 +2,14 @@ import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
 import session from '@fastify/session';
+import { FastifySessionOptions } from '@fastify/session';
+import RedisStore from 'connect-redis';
 import Fastify from 'fastify';
+import Redis from 'ioredis';
 import 'reflect-metadata';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
-import config, { cookieSessionConfig } from './config';
+import config from './config';
 import { connectToDB } from './db';
 import oidc from './oidc';
 import userApi from './userApi';
@@ -55,7 +58,31 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   server.register(cors, corsOptions);
   server.register(formBody);
   server.register(cookie);
-  server.register(session, cookieSessionConfig);
+
+  // Session setup
+  const cookieSessionConfig: FastifySessionOptions = {
+    secret: config.secret,
+    cookie: {
+      secure: config.enableHttps,
+      httpOnly: !config.enableHttps,
+      maxAge: config.cookieMaxAge,
+    },
+  };
+
+  if (config.redisConnectionString) {
+    const store = new RedisStore({
+      client: new Redis(config.redisConnectionString, {
+        enableAutoPipelining: true,
+      }),
+    });
+
+    console.log('Setting up fastify-session with a Redis store');
+    server.register(session, { ...cookieSessionConfig, store });
+  } else {
+    console.log('Setting up fastify-session');
+    server.register(session, cookieSessionConfig);
+  }
+
   server.register(oidc, {
     oidc_url,
     hostname,
