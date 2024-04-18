@@ -1,7 +1,7 @@
 param namePrefix string
 param location string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: '${namePrefix}-vnet'
   location: location
   properties: {
