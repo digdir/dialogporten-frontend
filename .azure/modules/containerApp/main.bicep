@@ -5,29 +5,32 @@ param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
 param customDomain string?
+param probes { periodSeconds: int, initialDelaySeconds: int, type: string, httpGet: { path: string, port: int } }[] = []
 
 param secrets { name: string, keyVaultUrl: string, identity: 'system' }[] = []
 
-var probes = [
-  {
-    periodSeconds: 5
-    initialDelaySeconds: 2
-    type: 'Liveness'
-    httpGet: {
-      path: '/liveness'
-      port: port
-    }
-  }
-  {
-    periodSeconds: 5
-    initialDelaySeconds: 2
-    type: 'Readiness'
-    httpGet: {
-      path: '/readiness'
-      port: port
-    }
-  }
-]
+var healthProbes = empty(probes)
+  ? [
+      {
+        periodSeconds: 5
+        initialDelaySeconds: 2
+        type: 'Liveness'
+        httpGet: {
+          path: '/liveness'
+          port: port
+        }
+      }
+      {
+        periodSeconds: 5
+        initialDelaySeconds: 2
+        type: 'Readiness'
+        httpGet: {
+          path: '/readiness'
+          port: port
+        }
+      }
+    ]
+  : probes
 
 var ingress = {
   targetPort: port
@@ -58,7 +61,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           name: name
           image: image
           env: environmentVariables
-          probes: probes
+          probes: healthProbes
         }
       ]
       scale: {
