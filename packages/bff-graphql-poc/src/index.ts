@@ -2,9 +2,10 @@
 import debug from 'debug';
 import Fastify from 'fastify';
 import fastifyGraphiql from 'fastify-graphiql';
+import fastifyGraphql from 'fastify-graphql';
 import debugScreen from './debug-screen.tsx';
 import { host, mode, port } from './env.ts';
-import fastifyGraphql from './graphql.ts';
+import { schema } from './schema.ts';
 
 // Setting up logger function
 const log = debug('app');
@@ -12,11 +13,17 @@ const log = debug('app');
 // Setting up webserver
 const app = Fastify();
 
-app.register(fastifyGraphql);
+app.register(fastifyGraphql, {
+  schema,
+  url: '/graphql',
+});
 
 if (mode === 'development') {
   log('`development` mode, activating Graphiql and debug screen');
-  app.register(fastifyGraphiql);
+  app.register(fastifyGraphiql, {
+    url: '/graphiql',
+    graphqlURL: '/graphql',
+  });
   app.register(debugScreen);
 }
 
