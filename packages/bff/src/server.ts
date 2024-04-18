@@ -1,28 +1,19 @@
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
+import proxy from '@fastify/http-proxy';
 import session from '@fastify/session';
 import Fastify from 'fastify';
 import 'reflect-metadata';
 import { initAppInsights } from './ApplicationInsightsInit';
 import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
+import oidc from './auth/oidc';
+import userApi from './auth/userApi';
+import verifyToken from './auth/verifyToken';
 import config, { cookieSessionConfig } from './config';
 import { connectToDB } from './db';
-import oidc from './plugins/oidc';
-import userApi from './plugins/userApi';
-import verifyToken from './plugins/verifyToken';
 
-const {
-  version,
-  port,
-  isAppInsightsEnabled,
-  host,
-  isDev,
-  oidc_url,
-  hostname,
-  client_id,
-  client_secret,
-} = config;
+const { version, port, isAppInsightsEnabled, host, isDev, oidc_url, hostname, client_id, client_secret } = config;
 
 const startServer = async (startTimeStamp: Date): Promise<void> => {
   const server = Fastify({
@@ -64,6 +55,20 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     client_secret,
   });
   server.register(userApi);
+  server.register(proxy, {
+    upstream: 'https://altinn-dev-api.azure-api.net',
+    prefix: '/api/proxy/',
+    preValidation: server.verifyToken,
+    replyOptions: {
+      rewriteRequestHeaders: (originalReq, headers) => {
+        const token = originalReq.session.get('token');
+        return {
+          Authorization: `Bearer ${token!.access_token}`,
+          accept: 'application/json',
+        };
+      },
+    },
+  });
 
   server.listen({ port: 3000, host }, (error, address) => {
     if (error) {

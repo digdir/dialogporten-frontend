@@ -45,6 +45,7 @@ export async function getIsTokenValid(request: FastifyRequest): Promise<boolean>
         },
       );
 
+      console.log('Token refreshed!');
       const updatedToken = refreshResponse?.data;
 
       if (updatedToken) {

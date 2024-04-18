@@ -71,7 +71,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
   fastify.register<OAuthPluginOptions>(oauthPlugin as unknown as FastifyPluginCallback<OAuthPluginOptions>, {
     name: 'idporten',
-    scope: ['digdir:dialogporten.noconsent', 'openid'],
+    scope: ['digdir:dialogporten', 'openid'],
     credentials: {
       client: {
         id: client_id,
