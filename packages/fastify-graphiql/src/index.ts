@@ -1,12 +1,15 @@
-import { FastifyPluginCallback } from 'fastify';
+import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 
-type Options = {};
+type Options = {
+  url: string;
+  graphqlURL: string;
+};
 
-const plugin: FastifyPluginCallback<Options> = (fastify, opts, done) => {
-  const graphqlURL = '/graphql';
+const plugin: FastifyPluginAsync<Options> = async (fastify, opts) => {
+  const { url, graphqlURL } = opts;
 
-  fastify.get('/graphiql', (request, reply) => {
+  fastify.get(url, (request, reply) => {
     reply.type('text/html');
     reply.send(
       `
@@ -78,8 +81,6 @@ const plugin: FastifyPluginCallback<Options> = (fastify, opts, done) => {
 `,
     );
   });
-
-  done();
 };
 
 export default fp(plugin, {

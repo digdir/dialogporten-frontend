@@ -156,6 +156,9 @@ importers:
       fastify-graphiql:
         specifier: workspace:*
         version: link:../fastify-graphiql
+      fastify-graphql:
+        specifier: workspace:*
+        version: link:../fastify-graphql
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
@@ -269,6 +272,24 @@ importers:
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
+
+  packages/fastify-graphql:
+    dependencies:
+      '@fastify/websocket':
+        specifier: ^9.0.0
+        version: 9.0.0
+      fastify:
+        specifier: ^4.26.1
+        version: 4.26.1
+      fastify-plugin:
+        specifier: ^4.5.1
+        version: 4.5.1
+      graphql-http:
+        specifier: ^1.22.0
+        version: 1.22.0(graphql@16.8.1)
+      graphql-ws:
+        specifier: ^5.15.0
+        version: 5.15.0(graphql@16.8.1)
 
   packages/frontend-design-poc:
     dependencies:
