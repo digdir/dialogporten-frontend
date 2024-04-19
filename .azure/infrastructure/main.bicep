@@ -80,7 +80,6 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
-    subnetId: vnet.outputs.subnetId
   }
 }
 
