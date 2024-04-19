@@ -146,7 +146,6 @@ export const dialogs: GetDialogDtoSO[] = [
       {
         id: '6d26ab76-f957-4229-a4b2-20dbe80df470',
         createdAt: '2024-03-21T08:55:52.0028870Z',
-        type: 'Seen',
         performedBy: [
           {
             value: 'Local Development User',
@@ -300,7 +299,6 @@ export const dialogs: GetDialogDtoSO[] = [
       {
         id: '6d26ab76-f957-4229-a4b2-20dbe80df470',
         createdAt: '2024-03-21T08:55:52.0028870Z',
-        type: 'Seen',
         performedBy: [
           {
             value: 'Local Development User',
@@ -454,7 +452,6 @@ export const dialogs: GetDialogDtoSO[] = [
       {
         id: '6d26ab76-f957-4229-a4b2-20dbe80df470',
         createdAt: '2024-03-21T08:55:52.0028870Z',
-        type: 'Seen',
         performedBy: [
           {
             value: 'Local Development Admin',
