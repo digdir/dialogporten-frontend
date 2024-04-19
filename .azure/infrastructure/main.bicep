@@ -121,7 +121,6 @@ module postgresql '../modules/postgreSql/create.bicep' = {
     administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}')
       ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
       : secrets.dialogportenPgAdminPassword
-    subnetId: vnet.outputs.subnetId
   }
 }
 
