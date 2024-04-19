@@ -35,6 +35,6 @@
     }
   },
   "files": {
-    "ignore": [".azure", ".github", "node_modules"]
+    "ignore": [".azure", ".github", "node_modules", "generated"]
   }
 }

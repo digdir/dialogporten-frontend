@@ -5,10 +5,19 @@
   "scripts": {
     "prepare": "pnpm run generate:types",
     "build": "pnpm run generate:types",
-    "generate:types": "swagger-typescript-api --path ./node_modules/@digdir/dialogporten-swagger/swagger.verified.json -o generated --modular --clean-output --module-name-first-tag --union-enums"
+    "generate:types": "pnpm generate:types-rest && pnpm generate:types-gql",
+    "generate:types-rest": "swagger-typescript-api --path ./node_modules/@digdir/dialogporten-schema/swagger.verified.json -o generated --modular --clean-output --module-name-first-tag --union-enums",
+    "generate:types-gql": "graphql-codegen"
   },
   "dependencies": {
-    "@digdir/dialogporten-swagger": "1.1.0",
+    "@digdir/dialogporten-schema": "1.0.7",
+    "@graphql-codegen/cli": "^5.0.2",
+    "graphql": "^16.8.1",
     "swagger-typescript-api": "13.0.3"
+  },
+  "devDependencies": {
+    "@graphql-codegen/graphql-modules-preset": "^4.0.6",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-resolvers": "^4.0.6"
   }
 }
