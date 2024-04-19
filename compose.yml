@@ -145,7 +145,7 @@ services:
           PORT: 3000
           DEV_ENV: dev
           REDIRECT_URI: http://localhost:3000/auth/cb
-          SCOPE: digdir:dialogporten.noconsent openid
+          SCOPE: digdir:dialogporten openid
           AUTH_URL: https://login.test.idporten.no/authorize
           ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
           TOKEN_ENDPOINT: https://test.idporten.no/token

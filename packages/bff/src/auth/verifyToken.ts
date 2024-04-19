@@ -34,6 +34,7 @@ export async function getIsTokenValid(request: FastifyRequest): Promise<boolean>
         {
           grant_type: 'refresh_token',
           refresh_token: token.refresh_token,
+          scope: 'digdir:dialogporten openid',
         },
         {
           headers: {
@@ -48,12 +49,15 @@ export async function getIsTokenValid(request: FastifyRequest): Promise<boolean>
       if (updatedToken) {
         const refreshTokenExpiresAt = new Date(Date.now() + updatedToken.refresh_token_expires_in * 1000).toISOString();
         const accessTokenExpiresAt = new Date(Date.now() + updatedToken.expires_in * 1000).toISOString();
+
+        /* We need to make sure id_token is included or else it will expire and log out will not work */
         const updatedSessionStorageToken = {
           ...token,
           access_token: updatedToken,
           refresh_token_expires_at: refreshTokenExpiresAt,
           refresh_token: updatedToken.refresh_token,
           access_token_expires_at: accessTokenExpiresAt,
+          idToken: updatedToken?.id_token || token.id_token,
         };
 
         request.session.set('token', updatedSessionStorageToken);

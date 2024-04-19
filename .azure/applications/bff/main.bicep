@@ -112,7 +112,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'SCOPE'
-    value: 'digdir:dialogporten.noconsent openid'
+    value: 'digdir:dialogporten openid'
   }
   {
     name: 'SESSION_SECRET'
