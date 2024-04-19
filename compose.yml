@@ -225,28 +225,6 @@ services:
             - .azure/
             - .git/
 
-  bff-graphql-poc:
-    container_name: bff-graphql-poc
-    restart: always
-    build:
-      context: .
-      dockerfile: ./packages/bff-graphql-poc/Dockerfile
-      target: build
-    command: sh -c "pnpm --filter bff-graphql-poc run dev:start"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bff-graphql-poc.rule=Host(`bff-graphql-poc.localhost`)"
-      - "dave.relativeSubdomain=bff-graphql-poc"
-      - "dave.icon=fa-brands:node"
-    develop:
-      watch:
-        - action: sync
-          path: ./packages/bff-graphql-poc/
-          target: /app/packages/bff-graphql-poc/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
 volumes:
   pgadmin_data:
   postgres_data:
