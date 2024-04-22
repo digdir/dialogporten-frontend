@@ -1,6 +1,4 @@
-# GraphiQL
-
-Adds the GraphiQL graphical interactive in-browser GraphQL IDE to fastify.
+# GraphQL
 
 ## Usage
 
@@ -8,14 +6,14 @@ In a `fastify` node project, add the following:
 
 ```typescript
 import Fastify from 'fastify';
-import fastifyGraphiql from 'fastify-graphiql';
+import fastifyGraphql from 'fastify-graphql';
 
 // Setting up webserver
 const app = Fastify();
 
-app.register(fastifyGraphiql, {
-   url: '/graphiql',
-   graphqlURL: '/graphql',
+app.register(fastifyGraphql, {
+	schema,
+	url: '/graphql',
 });
 
 app.listen({ port }, (err, address) => {

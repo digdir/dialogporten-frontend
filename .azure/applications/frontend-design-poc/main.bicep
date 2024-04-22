@@ -20,6 +20,27 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
   name: containerAppEnvironmentName
 }
 
+var healthProbes = [
+  {
+    periodSeconds: 5
+    initialDelaySeconds: 2
+    type: 'Liveness'
+    httpGet: {
+      path: '/'
+      port: 8080
+    }
+  }
+  {
+    periodSeconds: 5
+    initialDelaySeconds: 2
+    type: 'Readiness'
+    httpGet: {
+      path: '/'
+      port: 8080
+    }
+  }
+]
+
 module containerApp '../../modules/containerApp/main.bicep' = {
   name: containerAppName
   params: {
@@ -27,6 +48,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     location: location
     image: '${baseImageUrl}${serviceName}:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
+    probes: healthProbes
   }
 }
 

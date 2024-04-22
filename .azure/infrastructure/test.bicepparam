@@ -2,7 +2,7 @@ using './main.bicep'
 
 param environment = 'test'
 param location = 'norwayeast'
-param redisVersion = '7.2'
+param redisVersion = '6.0'
 
 param keyVaultSourceKeys = json(readEnvironmentVariable('KEY_VAULT_SOURCE_KEYS'))
 

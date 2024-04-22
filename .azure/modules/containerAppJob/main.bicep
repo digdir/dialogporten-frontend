@@ -6,7 +6,7 @@ param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
 param command string[]
 
-param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
+param secrets { name: string, keyVaultUrl: string, identity: 'system' }[] = []
 
 var probes = [
   {
