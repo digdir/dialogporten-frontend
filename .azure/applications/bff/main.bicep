@@ -133,10 +133,6 @@ var containerAppEnvVars = [
     value: 'test.idporten.no'
   }
   {
-    name: 'SCOPE'
-    value: 'digdir:dialogporten openid'
-  }
-  {
     name: 'SESSION_SECRET'
     secretRef: idPortenSessionSecretSecret.name
   }
