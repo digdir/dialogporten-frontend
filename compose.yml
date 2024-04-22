@@ -42,10 +42,7 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server
-      --save 20 1
-      --loglevel warning
-      --requirepass mysecretpassword
+      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
     volumes:
       - redis_cache:/data
   # GUI for checking whats in Redis
@@ -110,7 +107,6 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      COOKIE_NAME: oidc:test.idporten.no
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
     labels:
       - "traefik.enable=true"
@@ -135,7 +131,7 @@ services:
 
       bff-migration:
         container_name: bff-migration
-        command: ["pnpm", "--filter", "bff", "run", "migration:run"]
+        command: [ "pnpm", "--filter", "bff", "run", "migration:run" ]
         build:
           context: .
           dockerfile: ./packages/bff/Dockerfile

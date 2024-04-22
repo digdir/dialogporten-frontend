@@ -36,6 +36,40 @@ resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' exis
   name: environmentKeyVaultName
 }
 
+// https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
+var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets'
+
+var dbConnectionStringSecret = {
+  name: 'dbconnectionstring'
+  keyVaultUrl: '${keyVaultUrl}/databaseConnectionString'
+  identity: 'system'
+}
+
+var redisConnectionStringSecret = {
+  name: 'redisconnectionstring'
+  keyVaultUrl: '${keyVaultUrl}/redisConnectionString'
+  identity: 'system'
+}
+
+var idPortenClientIdSecret = {
+  name: 'idPortenClientId'
+  keyVaultUrl: '${keyVaultUrl}/idPortenClientId'
+  identity: 'system'
+}
+
+var idPortenClientSecretSecret = {
+  name: 'idPortenClientSecret'
+  keyVaultUrl: '${keyVaultUrl}/idPortenClientSecret'
+  identity: 'system'
+}
+
+var secrets = [
+  dbConnectionStringSecret
+  redisConnectionStringSecret
+  idPortenClientIdSecret
+  idPortenClientSecretSecret
+]
+
 var containerAppEnvVars = [
   {
     name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
@@ -47,18 +81,31 @@ var containerAppEnvVars = [
   }
   {
     name: 'DB_CONNECTION_STRING'
-    secretRef: 'dbconnectionstring'
+    secretRef: dbConnectionStringSecret.name
   }
-]
-
-// https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
-var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets/databaseConnectionString'
-
-var secrets = [
   {
-    name: 'dbconnectionstring'
-    keyVaultUrl: keyVaultUrl
-    identity: 'System'
+    name: 'REDIS_CONNECTION_STRING'
+    secretRef: redisConnectionStringSecret.name
+  }
+  {
+    name: 'DEV_ENV'
+    value: 'dev'
+  }
+  {
+    name: 'CLIENT_ID'
+    secretRef: idPortenClientIdSecret.name
+  }
+  {
+    name: 'CLIENT_SECRET'
+    secretRef: idPortenClientSecretSecret.name
+  }
+  {
+    name: 'OIDC_URL'
+    value: 'test.idporten.no'
+  }
+  {
+    name: 'SESSION_SECRET'
+    value: 'IDPortenSessionSecret2023MoreLettersBlaBla'
   }
 ]
 
