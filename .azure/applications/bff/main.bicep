@@ -37,10 +37,6 @@ resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' exis
   name: environmentKeyVaultName
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' existing = {
-  name: '${namePrefix}-applicationGateway'
-}
-
 resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' =
   if (customDomain != null) {
     parent: containerAppEnvironment
@@ -160,18 +156,6 @@ module appConfigReaderAccessPolicy '../../modules/appConfiguration/addReaderRole
   params: {
     appConfigurationName: appConfigurationName
     principalIds: [containerApp.outputs.identityPrincipalId]
-  }
-}
-
-// todo: nope, this ain't gonna work. The application gateway does not have sub resources so we have to create it in one big ARM/Bicep.
-resource applicationGatewayBackendPool 'Microsoft.Network/applicationGateways/backendAddressPools@2023-04-01' = {
-  name: '${applicationGateway.name}/backendPool-${containerAppName}'
-  properties: {
-    backendAddresses: [
-      {
-        fqdn: containerApp.outputs.fqdn
-      }
-    ]
   }
 }
 
