@@ -64,9 +64,30 @@ var redisConnectionStringSecret = {
   identity: 'system'
 }
 
+var idPortenClientIdSecret = {
+  name: 'idPortenClientId'
+  keyVaultUrl: '${keyVaultUrl}/idPortenClientId'
+  identity: 'system'
+}
+
+var idPortenClientSecretSecret = {
+  name: 'idPortenClientSecret'
+  keyVaultUrl: '${keyVaultUrl}/idPortenClientSecret'
+  identity: 'system'
+}
+
+var idPortenSessionSecretSecret = {
+  name: 'idPortenSessionSecret'
+  keyVaultUrl: '${keyVaultUrl}/idPortenSessionSecret'
+  identity: 'system'
+}
+
 var secrets = [
   dbConnectionStringSecret
   redisConnectionStringSecret
+  idPortenClientIdSecret
+  idPortenClientSecretSecret
+  idPortenSessionSecretSecret
 ]
 
 var containerAppEnvVars = [
@@ -87,48 +108,25 @@ var containerAppEnvVars = [
     secretRef: redisConnectionStringSecret.name
   }
   {
-    name: 'PORT'
-    value: '8080'
-  }
-  {
-    name: 'DEV_ENV'
-    value: 'dev'
-  }
-  {
     name: 'HOSTNAME'
-    value: 'http://bff.localhost'
+    // todo: should be replaced with application gateway URL
+    value: 'https://${containerAppName}.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
   }
   {
     name: 'CLIENT_ID'
-    value: 'client-id-replace-me'
+    secretRef: idPortenClientIdSecret.name
   }
   {
     name: 'CLIENT_SECRET'
-    value: 'client-secret-replace-me'
+    secretRef: idPortenClientSecretSecret.name
   }
   {
     name: 'OIDC_URL'
     value: 'test.idporten.no'
   }
   {
-    name: 'SCOPE'
-    value: 'digdir:dialogporten openid'
-  }
-  {
     name: 'SESSION_SECRET'
-    value: 'IDPortenSessionSecret2023MoreLettersBlaBla'
-  }
-  {
-    name: 'COOKIE_NAME'
-    value: 'oidc:test.idporten.no'
-  }
-  {
-    name: 'REFRESH_TOKEN_EXPIRES_IN'
-    value: '120'
-  }
-  {
-    name: 'ACCESS_TOKEN_EXPIRES_IN'
-    value: '60'
+    secretRef: idPortenSessionSecretSecret.name
   }
 ]
 
