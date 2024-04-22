@@ -108,10 +108,6 @@ var containerAppEnvVars = [
     secretRef: redisConnectionStringSecret.name
   }
   {
-    name: 'PORT'
-    value: '8080'
-  }
-  {
     name: 'DEV_ENV'
     value: 'dev'
   }
