@@ -10,12 +10,14 @@ type Sku = {
 }
 param sku Sku
 
+var gatewayName = '${namePrefix}-applicationGateway'
+
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: containerAppEnvName
 }
 
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
-  name: 'applicationGatewayPublicIp'
+  name: '${gatewayName}-publicIp'
   location: location
   properties: {
     publicIPAllocationMethod: 'Dynamic'
@@ -26,7 +28,7 @@ var publicIpAddressId = publicIp.id
 
 var bffBackend = {
   pool: {
-    name: 'bffBackendPool'
+    name: '${gatewayName}-bffBackendPool'
     properties: {
       backendAddresses: [
         {
@@ -36,7 +38,7 @@ var bffBackend = {
     }
   }
   httpSettings: {
-    name: 'bffBackendPool-backendHttpSettings'
+    name: '${gatewayName}-bffBackendPool-backendHttpSettings'
     properties: {
       port: 3000
       protocol: 'Http'
@@ -47,7 +49,7 @@ var bffBackend = {
 
 var frontendBackend = {
   pool: {
-    name: 'frontendPool'
+    name: '${gatewayName}-frontendPool'
     properties: {
       backendAddresses: [
         {
@@ -57,7 +59,7 @@ var frontendBackend = {
     }
   }
   httpSettings: {
-    name: 'frontendPool-backendHttpSettings'
+    name: '${gatewayName}-frontendPool-backendHttpSettings'
     properties: {
       port: 80
       protocol: 'Http'
@@ -66,8 +68,6 @@ var frontendBackend = {
   }
 }
 
-var gatewayName = '${namePrefix}-applicationGateway'
-
 resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' = {
   name: gatewayName
   location: location
@@ -75,7 +75,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     sku: sku
     gatewayIPConfigurations: [
       {
-        name: 'appGatewayIpConfig'
+        name: '${gatewayName}-gatewayIpConfig'
         properties: {
           subnet: {
             id: subnetId
@@ -85,7 +85,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
     frontendIPConfigurations: [
       {
-        name: 'appGatewayFrontendIp'
+        name: '${gatewayName}-gatewayFrontendIp'
         properties: {
           publicIPAddress: {
             id: publicIpAddressId
@@ -95,7 +95,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
     frontendPorts: [
       {
-        name: 'appGatewayFrontendPort'
+        name: '${gatewayName}-gatewayFrontendPort'
         properties: {
           port: 80
         }
@@ -103,17 +103,21 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
     httpListeners: [
       {
-        name: 'appGatewayHttpListener'
+        name: '${gatewayName}-gatewayHttpListener'
         properties: {
           frontendIPConfiguration: {
             id: resourceId(
               'Microsoft.Network/applicationGateways/frontendIPConfigurations',
               gatewayName,
-              'appGatewayFrontendIp'
+              '${gatewayName}-gatewayFrontendIp'
             )
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', gatewayName, 'appGatewayFrontendPort')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/frontendPorts',
+              gatewayName,
+              '${gatewayName}-gatewayFrontendPort'
+            )
           }
           protocol: 'Http'
         }
@@ -178,7 +182,11 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
         properties: {
           ruleType: 'PathBasedRouting'
           httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', gatewayName, 'appGatewayHttpListener')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/httpListeners',
+              gatewayName,
+              '${gatewayName}-gatewayHttpListener'
+            )
           }
           urlPathMap: {
             id: resourceId(
