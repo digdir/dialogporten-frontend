@@ -27,8 +27,7 @@ export const initAppInsights = async (connectionString: string) => {
   if (appInsights.defaultClient) {
     console.log('AppInsights initialized properly.');
     return true;
-  } else {
-    console.error('AppInsights failed to initialize properly.');
-    return false;
   }
+  console.error('AppInsights failed to initialize properly.');
+  return false;
 };

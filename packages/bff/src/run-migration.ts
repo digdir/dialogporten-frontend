@@ -1,6 +1,6 @@
 import util from 'util';
 import 'reflect-metadata';
-import { initAppInsights } from './ApplicationInsightsInit';
+import { initAppInsights } from './azure/ApplicationInsightsInit';
 import config from './config';
 
 function waitNSeconds(n = 1): Promise<void> {
@@ -26,7 +26,8 @@ const execMigration = async () => {
       if (stdout.includes('No migrations are pending')) {
         console.log(config.version, ': ', 'Migration: Success! (No migrations were pending)');
         return true;
-      } else if (stdout.includes('new migrations must be executed')) {
+      }
+      if (stdout.includes('new migrations must be executed')) {
         console.log(config.version, ': ', 'Migration: Success! (New migrations were executed)');
         return true;
       }
