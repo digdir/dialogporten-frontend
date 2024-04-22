@@ -63,11 +63,18 @@ var idPortenClientSecretSecret = {
   identity: 'system'
 }
 
+var idPortenSessionSecretSecret = {
+  name: 'idPortenSessionSecret'
+  keyVaultUrl: '${keyVaultUrl}/idPortenSessionSecret'
+  identity: 'system'
+}
+
 var secrets = [
   dbConnectionStringSecret
   redisConnectionStringSecret
   idPortenClientIdSecret
   idPortenClientSecretSecret
+  idPortenSessionSecretSecret
 ]
 
 var containerAppEnvVars = [
@@ -105,7 +112,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'SESSION_SECRET'
-    value: 'IDPortenSessionSecret2023MoreLettersBlaBla'
+    secretRef: idPortenSessionSecretSecret.name
   }
 ]
 
