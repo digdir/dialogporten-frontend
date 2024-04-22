@@ -95,10 +95,6 @@ var containerAppEnvVars = [
     secretRef: redisConnectionStringSecret.name
   }
   {
-    name: 'DEV_ENV'
-    value: 'dev'
-  }
-  {
     name: 'CLIENT_ID'
     secretRef: idPortenClientIdSecret.name
   }

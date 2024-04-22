@@ -108,10 +108,6 @@ var containerAppEnvVars = [
     secretRef: redisConnectionStringSecret.name
   }
   {
-    name: 'DEV_ENV'
-    value: 'dev'
-  }
-  {
     name: 'HOSTNAME'
     // todo: should be replaced with application gateway URL
     value: 'https://${containerAppName}.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
