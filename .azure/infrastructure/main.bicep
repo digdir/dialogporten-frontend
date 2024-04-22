@@ -49,17 +49,6 @@ module vnet '../modules/vnet/main.bicep' = {
   }
 }
 
-module applicationGateway '../modules/applicationGateway/main.bicep' = {
-  scope: resourceGroup
-  name: 'applicationGateway'
-  params: {
-    namePrefix: namePrefix
-    location: location
-    sku: applicationGatewaySku
-    subnetId: vnet.outputs.subnetId
-  }
-}
-
 module environmentKeyVault '../modules/keyvault/create.bicep' = {
   scope: resourceGroup
   name: 'keyVault'
@@ -94,6 +83,18 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
+    subnetId: vnet.outputs.subnetId
+  }
+}
+
+module applicationGateway '../modules/applicationGateway/main.bicep' = {
+  scope: resourceGroup
+  name: 'applicationGateway'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    sku: applicationGatewaySku
+    containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.subnetId
   }
 }

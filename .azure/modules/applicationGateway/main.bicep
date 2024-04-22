@@ -1,6 +1,7 @@
 param namePrefix string
 param location string
 param subnetId string
+param containerAppEnvName string
 
 @export()
 type Sku = {
@@ -8,6 +9,10 @@ type Sku = {
   tier: 'Standard_v2' | 'WAF_v2'
 }
 param sku Sku
+
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+  name: containerAppEnvName
+}
 
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: 'applicationGatewayPublicIp'
@@ -19,8 +24,52 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
 
 var publicIpAddressId = publicIp.id
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
-  name: '${namePrefix}-applicationGateway'
+var bffBackend = {
+  pool: {
+    name: 'bffBackendPool'
+    properties: {
+      backendAddresses: [
+        {
+          fqdn: 'https://${namePrefix}-bff.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+        }
+      ]
+    }
+  }
+  httpSettings: {
+    name: 'bffBackendPool-backendHttpSettings'
+    properties: {
+      port: 3000
+      protocol: 'Http'
+      cookieBasedAffinity: 'Disabled'
+    }
+  }
+}
+
+var frontendBackend = {
+  pool: {
+    name: 'frontendPool'
+    properties: {
+      backendAddresses: [
+        {
+          fqdn: 'https://${namePrefix}-frontend-design-poc.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+        }
+      ]
+    }
+  }
+  httpSettings: {
+    name: 'frontendPool-backendHttpSettings'
+    properties: {
+      port: 80
+      protocol: 'Http'
+      cookieBasedAffinity: 'Disabled'
+    }
+  }
+}
+
+var gatewayName = '${namePrefix}-applicationGateway'
+
+resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' = {
+  name: gatewayName
   location: location
   properties: {
     sku: sku
@@ -57,24 +106,87 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' =
         name: 'appGatewayHttpListener'
         properties: {
           frontendIPConfiguration: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', 'applicationGatewayName', 'appGatewayFrontendIp')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+              gatewayName,
+              'appGatewayFrontendIp'
+            )
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', 'applicationGatewayName', 'appGatewayFrontendPort')
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', gatewayName, 'appGatewayFrontendPort')
           }
           protocol: 'Http'
         }
       }
     ]
+    backendAddressPools: [
+      bffBackend.pool
+      frontendBackend.pool
+    ]
+    backendHttpSettingsCollection: [
+      bffBackend.httpSettings
+      frontendBackend.httpSettings
+    ]
+    urlPathMaps: [
+      {
+        name: '${bffBackend.pool.name}.pathMap'
+        properties: {
+          defaultBackendAddressPool: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendAddressPools',
+              gatewayName,
+              frontendBackend.pool.name
+            )
+          }
+          defaultBackendHttpSettings: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+              gatewayName,
+              frontendBackend.httpSettings.name
+            )
+          }
+          pathRules: [
+            {
+              name: bffBackend.pool.name
+              properties: {
+                paths: [
+                  '/api*'
+                ]
+                backendAddressPool: {
+                  id: resourceId(
+                    'Microsoft.Network/applicationGateways/backendAddressPools',
+                    gatewayName,
+                    bffBackend.pool.name
+                  )
+                }
+                backendHttpSettings: {
+                  id: resourceId(
+                    'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+                    gatewayName,
+                    bffBackend.httpSettings.name
+                  )
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
     requestRoutingRules: [
       {
-        name: 'rule1'
+        name: 'pathBasedRoutingRule'
         properties: {
-          ruleType: 'Basic'
+          ruleType: 'PathBasedRouting'
           httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', 'applicationGatewayName', 'appGatewayHttpListener')
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', gatewayName, 'appGatewayHttpListener')
           }
-          // Backends are added for the applications
+          urlPathMap: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/urlPathMaps',
+              gatewayName,
+              '${bffBackend.pool.name}.pathMap'
+            )
+          }
         }
       }
     ]
