@@ -42,7 +42,10 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
+      redis-server
+      --save 20 1
+      --loglevel warning
+      --requirepass mysecretpassword
     volumes:
       - redis_cache:/data
   # GUI for checking whats in Redis
@@ -132,7 +135,7 @@ services:
 
       bff-migration:
         container_name: bff-migration
-        command: [ "pnpm", "--filter", "bff", "run", "migration:run" ]
+        command: ["pnpm", "--filter", "bff", "run", "migration:run"]
         build:
           context: .
           dockerfile: ./packages/bff/Dockerfile
