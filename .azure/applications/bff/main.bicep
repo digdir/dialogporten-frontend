@@ -108,6 +108,10 @@ var containerAppEnvVars = [
     secretRef: redisConnectionStringSecret.name
   }
   {
+    name: 'PORT'
+    value: '80'
+  }
+  {
     name: 'HOSTNAME'
     // todo: should be replaced with application gateway URL
     value: 'https://${containerAppName}.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
@@ -140,6 +144,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     secrets: secrets
     environmentVariables: containerAppEnvVars
     customDomain: customDomain
+    port: 80
   }
 }
 

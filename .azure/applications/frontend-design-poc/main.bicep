@@ -27,7 +27,7 @@ var healthProbes = [
     type: 'Liveness'
     httpGet: {
       path: '/'
-      port: 8080
+      port: 80
     }
   }
   {
@@ -36,7 +36,7 @@ var healthProbes = [
     type: 'Readiness'
     httpGet: {
       path: '/'
-      port: 8080
+      port: 80
     }
   }
 ]
@@ -49,6 +49,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     image: '${baseImageUrl}${serviceName}:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     probes: healthProbes
+    port: 80
   }
 }
 
