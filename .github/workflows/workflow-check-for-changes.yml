@@ -47,4 +47,3 @@ jobs:
               - 'packages/storybook/**/*'
             migrations:
               - 'packages/bff/src/migrations/**/*'
-              - 'packages/bff/src/entities/**/*'
