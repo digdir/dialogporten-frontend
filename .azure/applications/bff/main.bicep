@@ -55,31 +55,31 @@ var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes
 var dbConnectionStringSecret = {
   name: 'db-connection-string'
   keyVaultUrl: '${keyVaultUrl}/databaseConnectionString'
-  identity: 'system'
+  identity: 'System'
 }
 
 var redisConnectionStringSecret = {
   name: 'redis-connection-string'
   keyVaultUrl: '${keyVaultUrl}/redisConnectionString'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenClientIdSecret = {
   name: 'id-porten-client-id'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientId'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenClientSecretSecret = {
   name: 'id-porten-client-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientSecret'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenSessionSecretSecret = {
   name: 'id-porten-session-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenSessionSecret'
-  identity: 'system'
+  identity: 'System'
 }
 
 var secrets = [
