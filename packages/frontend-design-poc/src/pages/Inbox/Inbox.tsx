@@ -47,7 +47,9 @@ export const compressQueryParams = (params: SavedSearch): string => {
 
 export const decompressQueryParams = (compressedString: string): SavedSearch => {
   const decompressedString = decompressFromEncodedURIComponent(compressedString);
-  if (!decompressedString) throw new Error('Decompression failed');
+  if (!decompressedString) {
+    throw new Error('Decompression failed');
+  }
   return JSON.parse(decompressedString);
 };
 

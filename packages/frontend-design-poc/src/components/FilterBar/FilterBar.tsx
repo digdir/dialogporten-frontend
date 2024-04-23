@@ -2,9 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';
-import { SaveSearchButton } from './AddFilterButton/SaveSearchButton';
+import { SaveSearchButton } from './SaveSearchButton';
 import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
-import { getFiltersFromQueryParams } from '../../pages/Inbox/Inbox';
 import { useSearchString } from '..';
 
 export type FieldOptionOperation = 'equals' | 'includes';
@@ -144,7 +143,7 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
     const newSearch: SavedSearch = {
       id: Date.now(),
       filters: activeFilters,
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
       name: '', // Needs functionality for saving a custom name
       searchString: searchString,
     };
@@ -196,7 +195,7 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
           setListOpenTarget(filterOpt.id);
         }}
       />
-      <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length} />
+      <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
       {listOpenTarget !== 'none' && (
         <div
           className={styles.background}

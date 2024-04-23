@@ -76,7 +76,7 @@ export interface SavedSearch {
   name: string;
   filters?: Filter[];
   searchString?: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
 export const getSearchHistory = (): SavedSearch[] => {

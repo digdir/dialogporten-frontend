@@ -3,7 +3,6 @@ param location string
 param keyVaultName string
 param srcKeyVault object
 param srcSecretName string
-param subnetId string
 
 @secure()
 param administratorLoginPassword string
@@ -29,9 +28,6 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
     storage: { storageSizeGB: 32 }
-    network: {
-      delegatedSubnetResourceId: subnetId
-    }
   }
   sku: {
     name: 'Standard_B1ms'

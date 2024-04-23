@@ -15,10 +15,8 @@ export const SaveSearchButton = ({ disabled, onBtnClick }: SaveSearchButtonProps
   }
 
   return (
-    <div>
-      <Button size="small" onClick={onBtnClick} variant="secondary" color="first">
-        <PlusIcon /> {t('filter_bar.save_search')}
-      </Button>
-    </div>
+    <Button size="small" onClick={onBtnClick} variant="secondary" color="first">
+      <PlusIcon /> {t('filter_bar.save_search')}
+    </Button>
   );
 };
