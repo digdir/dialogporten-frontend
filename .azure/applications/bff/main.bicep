@@ -7,6 +7,7 @@ param environment string
 @minLength(3)
 param location string
 param customDomain string?
+param port int = 80
 
 @minLength(3)
 @secure()
@@ -109,7 +110,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'PORT'
-    value: '80'
+    value: '${port}'
   }
   {
     name: 'HOSTNAME'
@@ -144,7 +145,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     secrets: secrets
     environmentVariables: containerAppEnvVars
     customDomain: customDomain
-    port: 80
+    port: port
   }
 }
 
