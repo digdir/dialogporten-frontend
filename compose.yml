@@ -48,6 +48,9 @@ services:
       --requirepass mysecretpassword
     volumes:
       - redis_cache:/data
+    networks:
+      - backend
+
   # GUI for checking whats in Redis
   redisinsight:
     container_name: redisinsight
@@ -63,6 +66,8 @@ services:
       - "dave.icon=devicon-plain:redis-wordmark"
     volumes:
       - redisinsight_cache:/data
+    networks:
+      - backend
 
   db:
     container_name: db
@@ -76,6 +81,8 @@ services:
       interval: 2s
       timeout: 20s
       retries: 5
+    networks:
+      - backend
     ports:
       - 5432:5432
     volumes:
@@ -87,6 +94,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - backend
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     labels:
@@ -121,7 +130,10 @@ services:
         condition: service_healthy
     #      bff-migration:
     #        condition: service_completed_successfully
-    command: sh -c "pnpm --filter bff run docker"
+    networks:
+      - backend
+    cap_add:
+      - NET_ADMIN
     develop:
       watch:
         - action: sync
@@ -150,9 +162,31 @@ services:
       TYPEORM_SYNCHRONIZE_ENABLED: true
       TYPEORM_MIGRATIONS: src/migrations/*.ts
       TYPEORM_MIGRATIONS_DIR: src/migrations
+    networks:
+      - backend
     depends_on:
       db:
         condition: service_healthy
+
+
+  mitmproxy:
+    container_name: mitmproxy
+    image: mitmproxy/mitmproxy
+    command: mitmweb --web-host 0.0.0.0 -m transparent
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - backend
+    cap_add:
+      - NET_ADMIN
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mitmproxy.rule=Host(`mitmproxy.localhost`)"
+      - "traefik.http.services.mitmproxy.loadbalancer.server.port=8081"
+      - "dave.relativeSubdomain=mitmproxy"
+      - "dave.icon=lucide:door-open"
+
 
   frontend-design-poc:
     container_name: frontend-design-poc
@@ -246,6 +280,7 @@ services:
             - node_modules/
             - .azure/
             - .git/
+
 volumes:
   pgadmin_data:
   postgres_data:
@@ -253,3 +288,6 @@ volumes:
     driver: local
   redisinsight_cache:
     driver: local
+
+networks:
+  backend:
