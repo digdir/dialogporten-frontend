@@ -8,15 +8,25 @@ import RedisStore from 'connect-redis';
 import Fastify from 'fastify';
 import Redis from 'ioredis';
 import 'reflect-metadata';
-import { initAppInsights } from './ApplicationInsightsInit';
-import { startLivenessProbe, startReadinessProbe } from './HealthProbes';
 import { verifyToken } from './auth';
 import { oidc } from './auth';
 import { userApi } from './auth';
+import { initAppInsights } from './azure/ApplicationInsightsInit';
+import healthProbes from './azure/HealthProbes';
 import config from './config';
 import { connectToDB } from './db';
 
-const { version, port, isAppInsightsEnabled, host, isDev, oidc_url, hostname, client_id, client_secret } = config;
+const {
+  version,
+  isAppInsightsEnabled,
+  applicationInsights,
+  host,
+  oidc_url,
+  hostname,
+  client_id,
+  client_secret,
+  redisConnectionString,
+} = config;
 
 const startServer = async (startTimeStamp: Date): Promise<void> => {
   const server = Fastify({
@@ -24,12 +34,8 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     ignoreDuplicateSlashes: true,
   });
 
-  if (!isDev) {
-    startLivenessProbe(server, startTimeStamp);
-  }
-
   if (isAppInsightsEnabled) {
-    const { connectionString } = config.applicationInsights;
+    const { connectionString } = applicationInsights;
     if (!connectionString) {
       throw new Error("No APPLICATIONINSIGHTS_CONNECTION_STRING found in env, can't initialize appInsights");
     }
@@ -51,18 +57,19 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   server.register(cookie);
 
   // Session setup
+  const { secret, enableHttps, cookieMaxAge } = config;
   const cookieSessionConfig: FastifySessionOptions = {
-    secret: config.secret,
+    secret,
     cookie: {
-      secure: config.enableHttps,
-      httpOnly: !config.enableHttps,
-      maxAge: config.cookieMaxAge,
+      secure: enableHttps,
+      httpOnly: !enableHttps,
+      maxAge: cookieMaxAge,
     },
   };
 
-  if (config.redisConnectionString) {
+  if (redisConnectionString) {
     const store = new RedisStore({
-      client: new Redis(config.redisConnectionString, {
+      client: new Redis(redisConnectionString, {
         enableAutoPipelining: true,
       }),
     });
@@ -75,6 +82,7 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   }
 
   server.register(verifyToken);
+  server.register(healthProbes);
   server.register(oidc, {
     oidc_url,
     hostname,
@@ -103,10 +111,6 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
     }
     console.log(`Server ${version} is running on ${address}`);
   });
-
-  if (!isDev) {
-    startReadinessProbe(server, startTimeStamp);
-  }
 };
 
 export default startServer;
