@@ -10,5 +10,5 @@ RUN pnpm install --frozen-lockfile
 
 ENV PORT=80
 
-EXPOSE 80
+EXPOSE $PORT
 CMD [ "pnpm", "--filter", "bff", "run", "start" ]
