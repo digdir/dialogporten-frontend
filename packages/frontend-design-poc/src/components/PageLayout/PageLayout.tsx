@@ -41,12 +41,12 @@ export const PageLayout: React.FC = () => {
       <button
         type="button"
         onClick={() => {
-          fetch('api/proxy/dialogporten/api/v1/enduser/dialogs/14f18e01-7ed5-0272-a810-a5683df6c64d', {
-            method: 'GET',
+          fetch('/api/test', {
+            method: 'POST',
             credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            body: JSON.stringify({
+              query: '{ dialogById(dialogId: "14f18e01-7ed5-0272-a810-a5683df6c64d") }',
+            }),
           })
             .then((response) => response.json())
             .then((d) => {
