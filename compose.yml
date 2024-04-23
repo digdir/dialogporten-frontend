@@ -111,7 +111,6 @@ services:
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
-      MIGRATION_RUN: true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
@@ -151,6 +150,7 @@ services:
       TYPEORM_SYNCHRONIZE_ENABLED: true
       TYPEORM_MIGRATIONS: src/migrations/*.ts
       TYPEORM_MIGRATIONS_DIR: src/migrations
+      MIGRATION_RUN: true
     depends_on:
       db:
         condition: service_healthy
