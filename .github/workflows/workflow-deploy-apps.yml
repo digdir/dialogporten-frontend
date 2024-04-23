@@ -37,6 +37,11 @@ on:
         description: "Current version to use as tag"
         required: true
         type: string
+      runMigration:
+        description: "If true, the migration job will be deployed."
+        required: false
+        type: boolean
+        default: false
 concurrency:
   # Existing runs are cancelled if someone repeatedly commits to their own Pull Request (PR). However, it does not stop others' dry runs or actual deployments from the main branch.
   # Also, the cancellation does not occur on merges to the main branch. Therefore, if multiple merges to main are performed simultaneously, they will just be queued up.
@@ -46,6 +51,7 @@ concurrency:
 jobs:
   deploy-migration-job:
     name: Deploy migration job to ${{ inputs.environment }}
+    if: ${{ inputs.runMigration }}
     runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
     permissions:
@@ -110,6 +116,8 @@ jobs:
   deploy-apps:
     name: Deploy ${{ matrix.name }} to ${{ inputs.environment }}
     runs-on: ubuntu-latest
+    # Should run even though the migration job was skipped
+    if: ${{ always() && !cancelled() && !failure() }}
     needs: deploy-migration-job
     strategy:
       fail-fast: true

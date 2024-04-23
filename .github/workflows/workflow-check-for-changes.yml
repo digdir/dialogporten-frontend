@@ -9,6 +9,9 @@ on:
       hasApplicationChanges:
         description: "Application related files changed"
         value: ${{ jobs.check-for-changes.outputs.hasApplicationChanges }}
+      hasMigrationChanges:
+        description: "Migration related files changed"
+        value: ${{ jobs.check-for-changes.outputs.hasMigrationChanges }}
 
 jobs:
   check-for-changes:
@@ -17,6 +20,7 @@ jobs:
     outputs:
       hasInfrastructureChanges: ${{ steps.filter.outputs.infrastructure_any_changed == 'true' }}
       hasApplicationChanges: ${{ steps.filter.outputs.applications_any_changed == 'true' }}
+      hasMigrationChanges: ${{ steps.filter.outputs.migrations_any_changed == 'true' }}
 
     steps:
       - name: Checkout
@@ -41,3 +45,6 @@ jobs:
               - 'packages/frontend-design-poc/**/*'
               - 'packages/dialogporten-types-generated/**/*'
               - 'packages/storybook/**/*'
+            migrations:
+              - 'packages/bff/src/migrations/**/*'
+              - 'packages/bff/src/entities/**/*'
