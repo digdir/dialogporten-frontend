@@ -16,7 +16,7 @@ var healthProbes = empty(probes)
         initialDelaySeconds: 2
         type: 'Liveness'
         httpGet: {
-          path: '/liveness'
+          path: '/api/liveness'
           port: port
         }
       }
@@ -25,7 +25,7 @@ var healthProbes = empty(probes)
         initialDelaySeconds: 2
         type: 'Readiness'
         httpGet: {
-          path: '/readiness'
+          path: '/api/readiness'
           port: port
         }
       }
