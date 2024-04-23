@@ -46,7 +46,7 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
 }
 
 var secretName = 'databaseConnectionString'
-var secretValue = 'postgres://${administratorLogin}:${administratorLoginPassword}@${postgres.properties.fullyQualifiedDomainName}:5432/${databaseName}'
+var secretValue = 'postgres://${administratorLogin}:${administratorLoginPassword}@${postgres.properties.fullyQualifiedDomainName}:5432/${databaseName}?ssl=true'
 module psqlConnectionObject '../keyvault/upsertSecret.bicep' = {
   name: secretName
   params: {
