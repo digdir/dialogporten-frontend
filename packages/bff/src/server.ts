@@ -6,15 +6,15 @@ import session from '@fastify/session';
 import { FastifySessionOptions } from '@fastify/session';
 import RedisStore from 'connect-redis';
 import Fastify from 'fastify';
-import Redis from 'ioredis';
-import 'reflect-metadata';
-import { verifyToken } from './auth';
-import { oidc } from './auth';
-import { userApi } from './auth';
-import { initAppInsights } from './azure/ApplicationInsightsInit';
-import healthProbes from './azure/HealthProbes';
-import config from './config';
-import { connectToDB } from './db';
+import fastifyGraphiql from 'fastify-graphiql';
+import fastifyGraphql from 'fastify-graphql';
+import { default as Redis } from 'ioredis';
+import { oidc, userApi, verifyToken } from './auth/index.ts';
+import { initAppInsights } from './azure/ApplicationInsightsInit.ts';
+import healthProbes from './azure/HealthProbes.ts';
+import config from './config.ts';
+import { connectToDB } from './db.ts';
+import { schema } from './schema.ts';
 
 const {
   version,
@@ -28,7 +28,7 @@ const {
   redisConnectionString,
 } = config;
 
-const startServer = async (startTimeStamp: Date): Promise<void> => {
+const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
@@ -69,7 +69,7 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
 
   if (redisConnectionString) {
     const store = new RedisStore({
-      client: new Redis(redisConnectionString, {
+      client: new Redis.default(redisConnectionString, {
         enableAutoPipelining: true,
       }),
     });
@@ -82,7 +82,7 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
   }
 
   server.register(verifyToken);
-  server.register(healthProbes);
+  server.register(healthProbes, { version });
   server.register(oidc, {
     oidc_url,
     hostname,
@@ -103,6 +103,16 @@ const startServer = async (startTimeStamp: Date): Promise<void> => {
         };
       },
     },
+  });
+
+  server.register(fastifyGraphql, {
+    schema,
+    url: '/api/graphql',
+  });
+
+  server.register(fastifyGraphiql, {
+    url: '/api/graphiql',
+    graphqlURL: '/api/graphql',
   });
 
   server.listen({ port: 3000, host }, (error, address) => {

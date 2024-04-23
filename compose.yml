@@ -111,6 +111,7 @@ services:
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      MIGRATION_RUN: true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
@@ -134,7 +135,7 @@ services:
 
   bff-migration:
     container_name: bff-migration
-    command: [ "pnpm", "--filter", "bff", "run", "migration:run" ]
+    command: sh -c "pnpm --filter bff run docker"
     build:
       context: .
       dockerfile: ./packages/bff/Dockerfile

@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { ProfileRepository } from '../db';
+import { ProfileRepository } from '../db.ts';
 
 @Entity()
 export class Profile {
