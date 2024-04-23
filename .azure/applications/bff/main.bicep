@@ -53,31 +53,31 @@ resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments
 var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets'
 
 var dbConnectionStringSecret = {
-  name: 'dbconnectionstring'
+  name: 'db-connection-string'
   keyVaultUrl: '${keyVaultUrl}/databaseConnectionString'
   identity: 'system'
 }
 
 var redisConnectionStringSecret = {
-  name: 'redisconnectionstring'
+  name: 'redis-connection-string'
   keyVaultUrl: '${keyVaultUrl}/redisConnectionString'
   identity: 'system'
 }
 
 var idPortenClientIdSecret = {
-  name: 'idPortenClientId'
+  name: 'id-porten-client-id'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientId'
   identity: 'system'
 }
 
 var idPortenClientSecretSecret = {
-  name: 'idPortenClientSecret'
+  name: 'id-porten-client-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientSecret'
   identity: 'system'
 }
 
 var idPortenSessionSecretSecret = {
-  name: 'idPortenSessionSecret'
+  name: 'id-porten-session-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenSessionSecret'
   identity: 'system'
 }
