@@ -9,6 +9,7 @@ console.log(
 export const connectionOptions: DataSourceOptions = {
   type: 'postgres',
   url: config.postgresql.connectionString,
+  ssl: true,
   synchronize: config.typeormSynchronizeEnabled,
   logging: false,
   entities: ['src/entities/*{.ts,.js}'],
