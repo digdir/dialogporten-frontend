@@ -18,6 +18,7 @@ const envVariables = z.object({
   REDIS_CONNECTION_STRING: z.string().default('redis://:mysecretpassword@127.0.0.1:6379/0'),
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
+  MIGRATION_RUN: z.coerce.boolean().default(false),
 });
 
 const env = envVariables.parse(process.env);
@@ -42,6 +43,7 @@ const config = {
   cookieMaxAge: env.COOKIE_MAX_AGE,
   redisConnectionString: env.REDIS_CONNECTION_STRING,
   typeormSynchronizeEnabled: env.TYPEORM_SYNCHRONIZE_ENABLED,
+  migrationRun: env.MIGRATION_RUN,
 };
 
 export default config;

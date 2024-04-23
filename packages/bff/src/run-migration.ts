@@ -1,7 +1,7 @@
 import util from 'util';
 import 'reflect-metadata';
-import { initAppInsights } from './azure/ApplicationInsightsInit';
-import config from './config';
+import { initAppInsights } from './azure/ApplicationInsightsInit.ts';
+import config from './config.ts';
 
 function waitNSeconds(n = 1): Promise<void> {
   return new Promise((resolve, reject) => {

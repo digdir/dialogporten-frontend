@@ -9,7 +9,6 @@ import {
 } from 'fastify';
 import fp from 'fastify-plugin';
 import jwt from 'jsonwebtoken';
-import config from '../config';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -135,10 +134,10 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
     { preValidation: fastify.verifyToken },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const token: SessionStorageToken = request.session.get('token');
-      const postLogoutRedirectUri = `${config.hostname}/loggedout`;
+      const postLogoutRedirectUri = `${hostname}/loggedout`;
 
       if (token?.id_token) {
-        const logoutRedirectUrl = `https://login.${config.oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${token.id_token}`;
+        const logoutRedirectUrl = `https://login.${oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${token.id_token}`;
         reply.setCookie('token', '', {
           expires: new Date('01-01-1970'),
         });

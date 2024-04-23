@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
-import { getOrCreateProfile } from '../entities/Profile';
+import { getOrCreateProfile } from '../entities/Profile.ts';
 
 const plugin: FastifyPluginAsync = async (fastify, options) => {
   fastify.post(
