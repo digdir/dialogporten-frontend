@@ -126,7 +126,7 @@ services:
         condition: service_healthy
       # bff-migration:
       #   condition: service_completed_successfully
-      command: sh -c "pnpm --filter bff run docker"
+    command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
         - action: sync
