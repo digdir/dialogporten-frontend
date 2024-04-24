@@ -200,3 +200,5 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
   }
 }
+
+output applicationGatewayId string = applicationGateway.id
