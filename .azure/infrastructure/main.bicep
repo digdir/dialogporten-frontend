@@ -99,18 +99,6 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
   }
 }
 
-module applicationGateway '../modules/applicationGateway/main.bicep' = {
-  scope: resourceGroup
-  name: 'applicationGateway'
-  params: {
-    namePrefix: namePrefix
-    location: location
-    sku: applicationGatewaySku
-    containerAppEnvName: containerAppEnv.outputs.name
-    subnetId: vnet.outputs.applicationGatewaySubnetId
-  }
-}
-
 module redis '../modules/redis/main.bicep' = {
   scope: resourceGroup
   name: 'redis'
