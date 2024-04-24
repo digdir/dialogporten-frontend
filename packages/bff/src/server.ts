@@ -18,6 +18,7 @@ import { schema } from './schema.ts';
 
 const {
   version,
+	port,
   isAppInsightsEnabled,
   applicationInsights,
   host,
@@ -115,7 +116,7 @@ const startServer = async (): Promise<void> => {
     graphqlURL: '/api/graphql',
   });
 
-  server.listen({ port: 3000, host }, (error, address) => {
+  server.listen({ port, host }, (error, address) => {
     if (error) {
       throw error;
     }
