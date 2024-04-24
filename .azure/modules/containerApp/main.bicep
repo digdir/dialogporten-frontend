@@ -7,7 +7,7 @@ param environmentVariables { name: string, value: string?, secretRef: string? }[
 param customDomain string?
 param probes { periodSeconds: int, initialDelaySeconds: int, type: string, httpGet: { path: string, port: int } }[] = []
 
-param secrets { name: string, keyVaultUrl: string, identity: 'system' }[] = []
+param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
 var healthProbes = empty(probes)
   ? [
@@ -16,7 +16,7 @@ var healthProbes = empty(probes)
         initialDelaySeconds: 2
         type: 'Liveness'
         httpGet: {
-          path: '/liveness'
+          path: '/api/liveness'
           port: port
         }
       }
@@ -25,7 +25,7 @@ var healthProbes = empty(probes)
         initialDelaySeconds: 2
         type: 'Readiness'
         httpGet: {
-          path: '/readiness'
+          path: '/api/readiness'
           port: port
         }
       }

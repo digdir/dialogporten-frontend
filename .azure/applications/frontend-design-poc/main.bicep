@@ -6,6 +6,7 @@ param imageTag string
 param environment string
 @minLength(3)
 param location string
+param port int = 80
 
 @minLength(3)
 @secure()
@@ -27,7 +28,7 @@ var healthProbes = [
     type: 'Liveness'
     httpGet: {
       path: '/'
-      port: 8080
+      port: port
     }
   }
   {
@@ -36,7 +37,7 @@ var healthProbes = [
     type: 'Readiness'
     httpGet: {
       path: '/'
-      port: 8080
+      port: port
     }
   }
 ]
@@ -49,6 +50,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     image: '${baseImageUrl}${serviceName}:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     probes: healthProbes
+    port: port
   }
 }
 

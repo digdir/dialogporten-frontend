@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
-import config from '../config';
-import { SessionStorageToken } from './oidc';
-export async function getIsTokenValid(request: FastifyRequest): Promise<boolean> {
+import config from '../config.ts';
+import { SessionStorageToken } from './oidc.ts';
+
+const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
   const token: SessionStorageToken = request.session.get('token');
 
   if (!token) {
@@ -70,7 +71,7 @@ export async function getIsTokenValid(request: FastifyRequest): Promise<boolean>
     }
   }
   return false;
-}
+};
 
 const plugin: FastifyPluginAsync = async (fastify, _) => {
   fastify.decorate('verifyToken', (request: FastifyRequest, reply: FastifyReply, done) => {
@@ -86,6 +87,7 @@ const plugin: FastifyPluginAsync = async (fastify, _) => {
       .catch(done);
   });
 };
+
 export default fp(plugin, {
   fastify: '4.x',
   name: 'fastify-verify-token',

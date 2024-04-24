@@ -104,13 +104,12 @@ services:
       target: build
     environment:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      DEV_ENV: dev
       HOSTNAME: http://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      COOKIE_NAME: oidc:test.idporten.no
+      TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
     labels:
       - "traefik.enable=true"
@@ -133,30 +132,28 @@ services:
             - .azure/
             - .git/
 
-      bff-migration:
-        container_name: bff-migration
-        command: ["pnpm", "--filter", "bff", "run", "migration:run"]
-        build:
-          context: .
-          dockerfile: ./packages/bff/Dockerfile
-          target: build
-        environment:
-          DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-          PORT: 3000
-          DEV_ENV: dev
-          REDIRECT_URI: http://localhost:3000/auth/cb
-          SCOPE: digdir:dialogporten openid
-          AUTH_URL: https://login.test.idporten.no/authorize
-          ISSUER_URL: https://test.idporten.no/.well-known/openid-configuration
-          TOKEN_ENDPOINT: https://test.idporten.no/token
-          LOGOUT_URI: https://login.test.idporten.no/logout
-          SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-          COOKIE_NAME: oidc:test.idporten.no
-          TYPEORM_MIGRATIONS: src/migrations/*.ts
-          TYPEORM_MIGRATIONS_DIR: src/migrations
-        depends_on:
-          db:
-            condition: service_healthy
+  bff-migration:
+    container_name: bff-migration
+    command: sh -c "pnpm --filter bff run docker"
+    build:
+      context: .
+      dockerfile: ./packages/bff/Dockerfile
+      target: build
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
+      HOSTNAME: http://app.localhost
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      OIDC_URL: test.idporten.no
+      SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
+      REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      TYPEORM_SYNCHRONIZE_ENABLED: true
+      TYPEORM_MIGRATIONS: src/migrations/*.ts
+      TYPEORM_MIGRATIONS_DIR: src/migrations
+      MIGRATION_RUN: true
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend-design-poc:
     container_name: frontend-design-poc
@@ -228,28 +225,6 @@ services:
             - .azure/
             - .git/
 
-  bff-graphql-poc:
-    container_name: bff-graphql-poc
-    restart: always
-    build:
-      context: .
-      dockerfile: ./packages/bff-graphql-poc/Dockerfile
-      target: build
-    command: sh -c "pnpm --filter bff-graphql-poc run dev:start"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bff-graphql-poc.rule=Host(`bff-graphql-poc.localhost`)"
-      - "dave.relativeSubdomain=bff-graphql-poc"
-      - "dave.icon=fa-brands:node"
-    develop:
-      watch:
-        - action: sync
-          path: ./packages/bff-graphql-poc/
-          target: /app/packages/bff-graphql-poc/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
 volumes:
   pgadmin_data:
   postgres_data:

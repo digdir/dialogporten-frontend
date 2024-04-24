@@ -7,6 +7,7 @@ param environment string
 @minLength(3)
 param location string
 param customDomain string?
+param port int = 80
 
 @minLength(3)
 @secure()
@@ -53,33 +54,33 @@ resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments
 var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets'
 
 var dbConnectionStringSecret = {
-  name: 'dbconnectionstring'
+  name: 'db-connection-string'
   keyVaultUrl: '${keyVaultUrl}/databaseConnectionString'
-  identity: 'system'
+  identity: 'System'
 }
 
 var redisConnectionStringSecret = {
-  name: 'redisconnectionstring'
+  name: 'redis-connection-string'
   keyVaultUrl: '${keyVaultUrl}/redisConnectionString'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenClientIdSecret = {
-  name: 'idPortenClientId'
+  name: 'id-porten-client-id'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientId'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenClientSecretSecret = {
-  name: 'idPortenClientSecret'
+  name: 'id-porten-client-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenClientSecret'
-  identity: 'system'
+  identity: 'System'
 }
 
 var idPortenSessionSecretSecret = {
-  name: 'idPortenSessionSecret'
+  name: 'id-porten-session-secret'
   keyVaultUrl: '${keyVaultUrl}/idPortenSessionSecret'
-  identity: 'system'
+  identity: 'System'
 }
 
 var secrets = [
@@ -106,6 +107,10 @@ var containerAppEnvVars = [
   {
     name: 'REDIS_CONNECTION_STRING'
     secretRef: redisConnectionStringSecret.name
+  }
+  {
+    name: 'PORT'
+    value: '${port}'
   }
   {
     name: 'HOSTNAME'
@@ -140,6 +145,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     secrets: secrets
     environmentVariables: containerAppEnvVars
     customDomain: customDomain
+    port: port
   }
 }
 
