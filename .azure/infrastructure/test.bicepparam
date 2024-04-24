@@ -18,3 +18,12 @@ param redisSku = {
   family: 'C'
   capacity: 1
 }
+
+@allowed([
+  'Standard_v2'
+  'WAF_v2'
+])
+param applicationGatewaySku = {
+  name: 'Standard_v2'
+  tier: 'Standard_v2'
+}

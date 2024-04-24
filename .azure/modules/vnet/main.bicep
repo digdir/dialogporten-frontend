@@ -17,9 +17,16 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
           addressPrefix: '10.0.0.0/24'
         }
       }
+      {
+        name: 'applicationGatewaySubnet'
+        properties: {
+          addressPrefix: '10.0.1.0/24'
+        }
+      }
     ]
   }
 }
 
 output virtualNetworkName string = virtualNetwork.name
-output subnetId string = virtualNetwork.properties.subnets[0].id
+output defaultSubnetId string = virtualNetwork.properties.subnets[0].id
+output applicationGatewaySubnetId string = virtualNetwork.properties.subnets[1].id
