@@ -18,15 +18,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
         }
       }
       {
-        name: 'containerAppEnvSubnet'
-        properties: {
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-      {
         name: 'applicationGatewaySubnet'
         properties: {
-          addressPrefix: '10.0.2.0/24'
+          addressPrefix: '10.0.1.0/24'
         }
       }
     ]
@@ -35,5 +29,4 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 
 output virtualNetworkName string = virtualNetwork.name
 output defaultSubnetId string = virtualNetwork.properties.subnets[0].id
-output containerAppEnvSubnetId string = virtualNetwork.properties.subnets[1].id
-output applicationGatewaySubnetId string = virtualNetwork.properties.subnets[2].id
+output applicationGatewaySubnetId string = virtualNetwork.properties.subnets[1].id
