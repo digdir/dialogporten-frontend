@@ -42,10 +42,12 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server
-      --save 20 1
-      --loglevel warning
-      --requirepass mysecretpassword
+      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - redis_cache:/data
   # GUI for checking whats in Redis
@@ -111,6 +113,7 @@ services:
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      PORT: 80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
@@ -119,8 +122,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    #      bff-migration:
-    #        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      # bff-migration:
+      #   condition: service_completed_successfully
     command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
