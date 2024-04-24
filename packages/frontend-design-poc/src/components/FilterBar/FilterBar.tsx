@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';

@@ -53,7 +53,7 @@ export const decompressQueryParams = (compressedString: string): SavedSearch => 
   return JSON.parse(decompressedString);
 };
 
-export const getFiltersFromQueryParams = (qc?: QueryClient): Filter[] => {
+export const getFiltersFromQueryParams = (): Filter[] => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const compressedData = urlSearchParams.get('data');
 
