@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
-import { Header } from 'frontend-design-poc';
 import { withRouter } from 'storybook-addon-react-router-v6';
+import { Header } from '../../../../frontend';
 
 const meta = {
   title: 'Components/Header',

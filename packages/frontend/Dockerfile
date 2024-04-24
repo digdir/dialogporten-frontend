@@ -7,17 +7,17 @@ WORKDIR /app
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm --filter frontend-design-poc run build
+RUN pnpm --filter frontend run build
 
 # `EXPOSE`, `ENV` and `CMD` in this stage is only used for dev
 EXPOSE 80
 ENV PORT=80
-CMD ["pnpm", "--filter", "frontend-design-poc", "run", "dev", "--host", "0.0.0.0"]
+CMD ["pnpm", "--filter", "frontend", "run", "dev", "--host", "0.0.0.0"]
 
 # ---
 
 FROM nginx:1.25-alpine
-COPY --from=build /app/packages/frontend-design-poc/dist/ /usr/share/nginx/html/
+COPY --from=build /app/packages/frontend/dist/ /usr/share/nginx/html/
 
 EXPOSE 80
 
