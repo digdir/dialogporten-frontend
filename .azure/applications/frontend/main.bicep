@@ -14,7 +14,7 @@ param containerAppEnvironmentName string
 
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
-var serviceName = 'frontend-design-poc'
+var serviceName = 'frontend'
 var containerAppName = '${namePrefix}-${serviceName}'
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {

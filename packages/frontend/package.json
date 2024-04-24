@@ -1,5 +1,5 @@
 {
-  "name": "frontend-design-poc",
+  "name": "frontend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
     "test:playwright": "playwright test",
     "install:browsers": "playwright install",
     "test:watch": "vitest watch",
-    "build:docker": "docker build -f ./Dockerfile -t frontend-design-poc ../..",
-    "run:docker": "docker run -it -p 80:80 frontend-design-poc"
+    "build:docker": "docker build -f ./Dockerfile -t frontend ../..",
+    "run:docker": "docker run -it -p 80:80 frontend"
   },
   "dependencies": {
     "@digdir/designsystemet-css": "0.1.1-alpha.0",

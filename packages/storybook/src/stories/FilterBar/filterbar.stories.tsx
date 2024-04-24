@@ -1,7 +1,7 @@
 import { FlagCrossIcon, HourglassIcon, PersonIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
-import { type Filter, FilterBar } from 'frontend-design-poc/src/components/FilterBar';
-import { FilterBarField } from 'frontend-design-poc/src/components/FilterBar/FilterBar.tsx';
+import { Filter, FilterBar } from 'frontend';
+import { FilterBarField } from 'frontend/src/components/FilterBar/FilterBar.tsx';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 

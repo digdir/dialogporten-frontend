@@ -27,8 +27,8 @@ jobs:
         include:
           - dockerfile: ./packages/bff/Dockerfile
             imageName: node-bff
-          - dockerfile: ./packages/frontend-design-poc/Dockerfile
-            imageName: frontend-design-poc
+          - dockerfile: ./packages/frontend/Dockerfile
+            imageName: frontend
 
     permissions:
       contents: read
