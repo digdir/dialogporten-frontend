@@ -1,15 +1,26 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
 import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import styles from './pageLayout.module.css';
+import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
+import { useQueryClient } from 'react-query';
+
+export const useUpdateOnLocationChange = (fn: () => void) => {
+  const location = useLocation();
+  useEffect(() => {
+    fn();
+  }, [location, fn]);
+};
 
 export const PageLayout: React.FC = () => {
+  const queryClient = useQueryClient();
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
   const isCompany = !!companyName;
   const isTestFeatureToggleEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.TestFeatureToggleEnabled);
   useAuthenticated();
+  useUpdateOnLocationChange(() => getSearchStringFromQueryParams(queryClient));
 
   return (
     <div className={isCompany ? `isCompany` : ''}>

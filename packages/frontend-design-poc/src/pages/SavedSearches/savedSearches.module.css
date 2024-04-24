@@ -1,0 +1,64 @@
+.savedSearchesWrapper {
+    background: var(--Saved-Searches-Background);
+    padding: 1rem;
+}
+
+.savedSearchesContainer {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.savedSearchItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    row-gap: 8px;
+    margin: 1rem 0;
+}
+
+.title {
+    color: #000;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 1rem 0;
+}
+
+.searchDetails {
+    text-align: center;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    align-self: center;
+}
+
+.searchString {
+    border-bottom: 1px solid black;
+}
+
+.filterElement {
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 0.25rem 0.625rem;
+}
+
+.lastUpdated {
+    color: var(--black-50, rgba(0, 0, 0, 0.50));
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 20px 0 0;
+}
+
+.linkButton {
+    border: none;
+    background-color: inherit;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}

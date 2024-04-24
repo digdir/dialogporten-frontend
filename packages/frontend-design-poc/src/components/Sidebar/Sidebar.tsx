@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
+import { useSavedSearches } from '../../pages/SavedSearches';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -23,6 +24,7 @@ export const HorizontalLine = () => <hr className={styles.horizontalLine} />;
 
 export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { t } = useTranslation();
+  const { data: savedSearches } = useSavedSearches();
   const { isMobile } = useWindowSize();
   if (isMobile) return <></>;
   return (
@@ -85,8 +87,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             displayText={t('sidebar.saved_searches')}
             label="Trykk her for å gå til lagrede søk"
             icon={<MagnifyingGlassIcon />}
-            count={8}
-            path="/Lagrede"
+            count={savedSearches?.length || 0}
+            path="/saved-searches"
             type="secondary"
             isCompany={isCompany}
           />
