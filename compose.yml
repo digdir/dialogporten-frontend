@@ -111,7 +111,7 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       OIDC_URL: test.idporten.no
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      # TYPEORM_SYNCHRONIZE_ENABLED: true
+      TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
       PORT: 80
     labels:
