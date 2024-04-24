@@ -4,6 +4,6 @@
   "packages/dialogporten-types-generated": "1.0.0",
   "packages/docs": "1.0.0",
   "packages/docusaurus-tldraw-plugin": "1.0.0",
-  "packages/frontend-design-poc": "1.0.0",
+  "packages/frontend": "1.0.0",
   "packages/storybook": "1.0.0"
 }

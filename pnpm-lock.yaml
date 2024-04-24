@@ -270,7 +270,7 @@ importers:
         specifier: ^5.15.0
         version: 5.15.0(graphql@16.8.1)
 
-  packages/frontend-design-poc:
+  packages/frontend:
     dependencies:
       '@digdir/designsystemet-css':
         specifier: 0.1.1-alpha.0
@@ -375,9 +375,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
-      frontend-design-poc:
+      frontend:
         specifier: workspace:*
-        version: link:../frontend-design-poc
+        version: link:../frontend
       i18next:
         specifier: ^23.8.2
         version: 23.8.2

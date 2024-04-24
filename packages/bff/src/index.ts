@@ -6,11 +6,10 @@ import startServer from './server.ts';
 
 try {
   if (config.migrationRun) {
-    runMigrationApp();
+    await runMigrationApp();
   } else {
-    startServer();
+    await startServer();
   }
 } catch (error) {
   console.error(error);
-  process.exit(1);
 }

@@ -42,10 +42,12 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server
-      --save 20 1
-      --loglevel warning
-      --requirepass mysecretpassword
+      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - redis_cache:/data
   # GUI for checking whats in Redis
@@ -111,6 +113,7 @@ services:
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      PORT: 80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
@@ -119,8 +122,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    #      bff-migration:
-    #        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      # bff-migration:
+      #   condition: service_completed_successfully
     command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
@@ -155,22 +160,22 @@ services:
       db:
         condition: service_healthy
 
-  frontend-design-poc:
-    container_name: frontend-design-poc
+  frontend:
+    container_name: frontend
     build:
       context: .
-      dockerfile: ./packages/frontend-design-poc/Dockerfile
+      dockerfile: packages/frontend/Dockerfile
       target: build
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-design-poc.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
       - "dave.relativeSubdomain=app"
       - "dave.icon=fluent-mdl2:react-logo"
     develop:
       watch:
         - action: sync
-          path: ./packages/frontend-design-poc/
-          target: /app/packages/frontend-design-poc/
+          path: ./packages/frontend/
+          target: /app/packages/frontend/
           ignore:
             - node_modules/
             - .azure/
@@ -197,8 +202,8 @@ services:
             - .azure/
             - .git/
         - action: sync
-          path: ./packages/frontend-design-poc/
-          target: /app/packages/frontend-design-poc/
+          path: ./packages/frontend/
+          target: /app/packages/frontend/
           ignore:
             - node_modules/
             - .azure/
