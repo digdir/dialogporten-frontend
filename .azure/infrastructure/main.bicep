@@ -93,6 +93,18 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    containerAppEnvName: containerAppEnv.outputs.name
+    subnetId: vnet.outputs.applicationGatewaySubnetId
+    sku: applicationGatewaySku
+  }
+}
+
+module applicationGateway '../modules/applicationGateway/main.bicep' = {
+  scope: resourceGroup
+  name: 'applicationGateway'
+  params: {
+    namePrefix: namePrefix
+    location: location
     sku: applicationGatewaySku
     containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.applicationGatewaySubnetId
