@@ -12,12 +12,12 @@ const plugin: FastifyPluginAsync<Props> = async (fastify, options) => {
 
   console.log(`${version} starting /api/readiness probe after ${secondsAfterStart} seconds`);
   fastify.get('/api/readiness', (req: FastifyRequest, reply: FastifyReply) => {
-    reply.status(200);
+    reply.status(200).send();
   });
 
   console.log(`${version} starting /api/liveness probe after ${secondsAfterStart} seconds`);
   fastify.get('/api/liveness', (req: FastifyRequest, reply: FastifyReply) => {
-    reply.status(200);
+    reply.status(200).send();
   });
 };
 
