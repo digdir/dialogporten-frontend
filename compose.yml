@@ -160,22 +160,22 @@ services:
       db:
         condition: service_healthy
 
-  frontend-design-poc:
-    container_name: frontend-design-poc
+  frontend:
+    container_name: frontend
     build:
       context: .
-      dockerfile: ./packages/frontend-design-poc/Dockerfile
+      dockerfile: packages/frontend/Dockerfile
       target: build
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend-design-poc.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
       - "dave.relativeSubdomain=app"
       - "dave.icon=fluent-mdl2:react-logo"
     develop:
       watch:
         - action: sync
-          path: ./packages/frontend-design-poc/
-          target: /app/packages/frontend-design-poc/
+          path: ./packages/frontend/
+          target: /app/packages/frontend/
           ignore:
             - node_modules/
             - .azure/
@@ -202,8 +202,8 @@ services:
             - .azure/
             - .git/
         - action: sync
-          path: ./packages/frontend-design-poc/
-          target: /app/packages/frontend-design-poc/
+          path: ./packages/frontend/
+          target: /app/packages/frontend/
           ignore:
             - node_modules/
             - .azure/

@@ -42,7 +42,7 @@ jobs:
               - '.azure/applications/**/*'
               - '.azure/modules/**/*'
               - 'packages/bff/**/*'
-              - 'packages/frontend-design-poc/**/*'
+              - 'packages/frontend/**/*'
               - 'packages/dialogporten-types-generated/**/*'
               - 'packages/storybook/**/*'
             migrations:

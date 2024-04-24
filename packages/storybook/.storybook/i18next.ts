@@ -1,4 +1,4 @@
-import { nbResources } from 'frontend-design-poc';
+import { nbResources } from '../../frontend';
 import i18n from 'i18next';
 import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';

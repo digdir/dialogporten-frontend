@@ -24,16 +24,16 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install Playwright Browsers
-        run: pnpm --filter frontend-design-poc install:browsers
+        run: pnpm --filter frontend install:browsers
 
       - name: Run Playwright tests
-        run: pnpm --filter frontend-design-poc test:playwright
+        run: pnpm --filter frontend test:playwright
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
-          path: packages/frontend-design-poc/playwright-report/
+          path: packages/frontend/playwright-report/
           retention-days: 7
 
       - name: Store artifacts
@@ -41,5 +41,5 @@ jobs:
         if: failure()
         with:
           name: playwright-screenshots
-          path: packages/frontend-design-poc/test-results
+          path: packages/frontend/test-results
           retention-days: 3

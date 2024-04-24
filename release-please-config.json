@@ -8,7 +8,7 @@
     "packages/dialogporten-types-generated": {},
     "packages/docs": {},
     "packages/docusaurus-tldraw-plugin": {},
-    "packages/frontend-design-poc": {},
+    "packages/frontend": {},
     "packages/storybook": {}
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"

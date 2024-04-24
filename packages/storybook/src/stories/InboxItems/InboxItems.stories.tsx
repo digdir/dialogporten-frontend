@@ -1,6 +1,6 @@
 import { CalendarIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
 import type { Meta } from '@storybook/react';
-import { InboxItem, InboxItems } from 'frontend-design-poc';
+import { InboxItem, InboxItems } from 'frontend';
 import { useState } from 'react';
 
 const meta = {
