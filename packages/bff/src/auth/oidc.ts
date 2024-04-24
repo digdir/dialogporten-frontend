@@ -138,13 +138,11 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
       if (token?.id_token) {
         const logoutRedirectUrl = `https://login.${oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${token.id_token}`;
-        reply.setCookie('token', '', {
-          expires: new Date('01-01-1970'),
-        });
+        await request.session.destroy();
         reply.redirect(logoutRedirectUrl);
+      } else {
+        reply.code(401);
       }
-
-      reply.status(401);
     },
   );
 };
