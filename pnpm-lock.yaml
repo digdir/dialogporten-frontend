@@ -393,6 +393,9 @@ importers:
       react-i18next:
         specifier: ^14.0.3
         version: 14.0.3(i18next@23.8.2)(react-dom@18.2.0)(react@18.2.0)
+      react-query:
+        specifier: ^3.39.3
+        version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
         specifier: ^6.16.0
         version: 6.21.3(react-dom@18.2.0)(react@18.2.0)
