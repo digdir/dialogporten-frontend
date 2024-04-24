@@ -38,7 +38,7 @@ module redisConnectionString '../keyvault/upsertSecret.bicep' = {
     destKeyVaultName: environmentKeyVaultName
     secretName: 'redisConnectionString'
     // disable public access? Use vnet here maybe?
-    secretValue: 'redis://:${redis.properties.accessKeys.primaryKey}@${redis.properties.hostName}:${redis.properties.sslPort}'
+    secretValue: 'rediss://:${redis.properties.accessKeys.primaryKey}@${redis.properties.hostName}:${redis.properties.sslPort}'
   }
 }
 
