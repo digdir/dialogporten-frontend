@@ -1,0 +1,78 @@
+@keyframes animateFromBottomLeft {
+    0% {
+        transform: scale(0.7);
+        bottom: -5px;
+    }
+    100% {
+        transform: scale(1);
+        bottom: 10px;
+    }
+}
+
+
+.snackbar {
+    display: flex;
+    flex-direction: column-reverse;
+    row-gap: 0.5rem;
+}
+
+.snackbarItem {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    color: #fff;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    @media (max-width: 600px) {
+        width: 100%;
+    }
+}
+
+.bottomLeft {
+    animation: animateFromBottomLeft 230ms cubic-bezier(.21,1.02,.73,1);
+    animation-iteration-count: 1;
+}
+
+.snackbarItemContent {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    font-size: 1rem;
+    width: 100%;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.leftIcon {
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.closeIcon {
+    cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+}
+
+.success {
+    background: var(--Person-Primary, #084826);
+}
+
+.error {
+    background: var(--Action-Danger, #861C2C);
+}
+
+.info {
+    background: #fff;
+    color: #000;
+}

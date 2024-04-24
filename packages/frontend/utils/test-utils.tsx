@@ -3,23 +3,28 @@ import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 
-import '../src/i18n/config.ts';
 import { FeatureFlagProvider, featureFlags } from '../src/featureFlags';
+import '../src/i18n/config.ts';
 
 interface IExtendedRenderOptions extends RenderOptions {
   initialEntries?: string[];
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
+export const createCustomWrapper = (
+  ownQueryClient?: QueryClient,
+  options?: Omit<IExtendedRenderOptions, 'wrapper'>,
+) => {
+  const queryClient =
+    ownQueryClient ||
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
 
-export const customRender = (ui: ReactElement, options?: Omit<IExtendedRenderOptions, 'wrapper'>) => {
-  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+  return ({ children }: { children: React.ReactNode }) => {
     return (
       <QueryClientProvider client={queryClient}>
         <FeatureFlagProvider flags={featureFlags}>
@@ -28,6 +33,10 @@ export const customRender = (ui: ReactElement, options?: Omit<IExtendedRenderOpt
       </QueryClientProvider>
     );
   };
+};
+
+export const customRender = (ui: ReactElement, options?: Omit<IExtendedRenderOptions, 'wrapper'>) => {
+  const Wrapper = createCustomWrapper(undefined, options);
 
   return render(ui, { wrapper: Wrapper, ...options });
 };

@@ -1,6 +1,6 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
-import { ActionPanel } from '../../../../frontend';
+import { ActionPanel } from 'frontend';
 
 export default {
   title: 'Components/ActionPanel',
