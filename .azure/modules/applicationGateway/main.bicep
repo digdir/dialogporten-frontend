@@ -26,7 +26,7 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
 
 var publicIpAddressId = publicIp.id
 
-var bffBackend = {
+var bffGatewayBackend = {
   pool: {
     name: '${gatewayName}-bffBackendPool'
     properties: {
@@ -40,14 +40,14 @@ var bffBackend = {
   httpSettings: {
     name: '${gatewayName}-bffBackendPool-backendHttpSettings'
     properties: {
-      port: 3000
+      port: 80
       protocol: 'Http'
       cookieBasedAffinity: 'Disabled'
     }
   }
 }
 
-var frontendBackend = {
+var frontendGatewayBackend = {
   pool: {
     name: '${gatewayName}-frontendPool'
     properties: {
@@ -124,34 +124,34 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
       }
     ]
     backendAddressPools: [
-      bffBackend.pool
-      frontendBackend.pool
+      bffGatewayBackend.pool
+      frontendGatewayBackend.pool
     ]
     backendHttpSettingsCollection: [
-      bffBackend.httpSettings
-      frontendBackend.httpSettings
+      bffGatewayBackend.httpSettings
+      frontendGatewayBackend.httpSettings
     ]
     urlPathMaps: [
       {
-        name: '${bffBackend.pool.name}.pathMap'
+        name: '${bffGatewayBackend.pool.name}.pathMap'
         properties: {
           defaultBackendAddressPool: {
             id: resourceId(
               'Microsoft.Network/applicationGateways/backendAddressPools',
               gatewayName,
-              frontendBackend.pool.name
+              frontendGatewayBackend.pool.name
             )
           }
           defaultBackendHttpSettings: {
             id: resourceId(
               'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
               gatewayName,
-              frontendBackend.httpSettings.name
+              frontendGatewayBackend.httpSettings.name
             )
           }
           pathRules: [
             {
-              name: bffBackend.pool.name
+              name: bffGatewayBackend.pool.name
               properties: {
                 paths: [
                   '/api*'
@@ -160,14 +160,14 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
                   id: resourceId(
                     'Microsoft.Network/applicationGateways/backendAddressPools',
                     gatewayName,
-                    bffBackend.pool.name
+                    bffGatewayBackend.pool.name
                   )
                 }
                 backendHttpSettings: {
                   id: resourceId(
                     'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
                     gatewayName,
-                    bffBackend.httpSettings.name
+                    bffGatewayBackend.httpSettings.name
                   )
                 }
               }
@@ -192,7 +192,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
             id: resourceId(
               'Microsoft.Network/applicationGateways/urlPathMaps',
               gatewayName,
-              '${bffBackend.pool.name}.pathMap'
+              '${bffGatewayBackend.pool.name}.pathMap'
             )
           }
         }
