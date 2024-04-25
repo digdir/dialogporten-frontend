@@ -6,16 +6,18 @@ const config: CodegenConfig = {
   documents: 'queries/**/*.graphql',
   generates: {
     './generated/sdk.ts': {
-      plugins: [{
-        'add': {
-          content: '/* eslint-disable */' + '\n' + '// @ts-nocheck'
-        }
-      }, 'typescript', 'typescript-operations', 'typescript-graphql-request'],
+      plugins: [
+        {
+          add: {
+            content: '/* eslint-disable */' + '\n' + '// @ts-nocheck',
+          },
+        },
+        'typescript',
+        'typescript-operations',
+        'typescript-graphql-request',
+      ],
     },
   },
 };
 
 export default config;
-
-
-

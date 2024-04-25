@@ -1,7 +1,6 @@
-import { GetDialogContentDtoSO, GetDialogDtoSO } from 'dialogporten-types-generated';
 import { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 
-export const dialogs: GetDialogDtoSO[] = [
+export const dialogs = [
   {
     id: '49608e01-0329-0572-aaaf-20fbb19d3b4a',
     revision: '75c6ce94-a81a-4e49-92b3-22f994b14bfd',
@@ -463,10 +462,10 @@ export const dialogs: GetDialogDtoSO[] = [
   },
 ];
 
-export function mapDialogDtoToInboxItem(input: GetDialogDtoSO[]): InboxItemInput[] {
+export function mapDialogDtoToInboxItem(input: typeof dialogs): InboxItemInput[] {
   return input.map((item) => {
-    const titleObj = item?.content?.find((c: GetDialogContentDtoSO) => c.type === 'Title');
-    const summaryObj = item?.content?.find((c: GetDialogContentDtoSO) => c.type === 'Summary');
+    const titleObj = item?.content?.find((c) => c.type === 'Title');
+    const summaryObj = item?.content?.find((c) => c.type === 'Summary');
     const sender = item.activities?.length
       ? item.activities[item.activities.length - 1]?.performedBy?.[0]?.value ?? 'Unknown'
       : 'Unknown';
