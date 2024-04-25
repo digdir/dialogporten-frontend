@@ -14,7 +14,7 @@ build-docker: ## Runs `pnpm turbo build:docker`
 	pnpm turbo build:docker
 
 dev: ## Runs Docker compose in watch mode for development
-	docker compose watch
+	./dev
 
 compose-down: ## Runs `docker compose down`
 	docker compose down
@@ -23,7 +23,7 @@ compose-down: ## Runs `docker compose down`
 # - Helper functions  -
 # ---------------------
 
-.PHONY: help select
+.PHONY: help select dev
 .DEFAULT_GOAL := select
 
 select:
