@@ -1,17 +1,17 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashIcon } from '@navikt/aksel-icons';
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QueryClient, useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import { getDialogs } from '../../api/queries.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
-import { type Filter, FilterBar } from '../../components/FilterBar';
+import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { mapDialogDtoToInboxItem } from '../../mocks/dialogs.tsx';
+import { SavedSearchData } from '../SavedSearches';
 import styles from './inbox.module.css';
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
-import { SavedSearchData } from '../SavedSearches/SavedSearches.tsx';
-import { useLocation } from 'react-router-dom';
 
 export interface InboxItemInput {
   id: string;
