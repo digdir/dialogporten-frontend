@@ -276,8 +276,8 @@ importers:
         specifier: 0.1.1-alpha.0
         version: 0.1.1-alpha.0
       '@digdir/designsystemet-react':
-        specifier: 0.52.0-alpha.0
-        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.59.0
+        version: 0.59.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 0.13.1-alpha.0
         version: 0.13.1-alpha.0
@@ -367,8 +367,8 @@ importers:
         specifier: 0.1.1-alpha.0
         version: 0.1.1-alpha.0
       '@digdir/designsystemet-react':
-        specifier: 0.52.0-alpha.0
-        version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.59.0
+        version: 0.59.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 0.13.1-alpha.0
         version: 0.13.1-alpha.0
@@ -2326,17 +2326,16 @@ packages:
     resolution: {integrity: sha512-1oqCS24OVjbRn7ulM7vBOMffSfX5rWlM39GucqqIdEX7KA8Ed7oulDmJsmbVPmt7Bj4Dvnr2FsHBiCneeRJfGA==}
     dev: false
 
-  /@digdir/designsystemet-react@0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-gOO3NlsQV/wyvkZNo6SqTmpg08ajnHpoBqB+Oz7j2K+dd8sEie39cIctj0GHI2vRkz169mwOtX3qdcAJE9/fnQ==}
+  /@digdir/designsystemet-react@0.59.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PP40slp+ZcMF1ZIF0SojygEv9jI3JCYoOHSLsB9Pp319Rb0wsXr0vzynEGB6d5rD1KZ/fswMs7qVYR4i7A097g==}
     peerDependencies:
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
-      '@digdir/designsystemet-theme': 0.13.1-alpha.0
       '@floating-ui/react': 0.26.4(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 5.18.0
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
-      '@tanstack/react-virtual': 3.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-virtual': 3.4.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
@@ -7429,19 +7428,19 @@ packages:
       defer-to-connect: 2.0.1
     dev: false
 
-  /@tanstack/react-virtual@3.0.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-9XbRLPKgnhMwwmuQMnJMv+5a9sitGNCSEtf/AZXzmJdesYk7XsjYHaEDny+IrJzvPNwZliIIDwCRiaUqR3zzCA==}
+  /@tanstack/react-virtual@3.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-GZN4xn/Tg5w7gvYeVcMVCeL4pEyUhvg+Cp6KX2Z01C4FRNxIWMgIQ9ibgMarNQfo+gt0PVLcEER4A9sNv/jlow==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@tanstack/virtual-core': 3.0.0
+      '@tanstack/virtual-core': 3.4.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/virtual-core@3.0.0:
-    resolution: {integrity: sha512-SYXOBTjJb05rXa2vl55TTwO40A6wKu0R5i1qQwhJYNDIqaIGF7D0HsLw+pJAyi2OvntlEIVusx3xtbbgSUi6zg==}
+  /@tanstack/virtual-core@3.4.0:
+    resolution: {integrity: sha512-75jXqXxqq5M5Veb9KP1STi8kA5u408uOOAefk2ftHDGCpUk3RP6zX++QqfbmHJTBiU72NQ+ghgCZVts/Wocz8Q==}
     dev: false
 
   /@testing-library/dom@9.3.4:
