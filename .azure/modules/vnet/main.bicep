@@ -14,7 +14,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
       {
         name: 'default'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: '10.0.0.0/23'
         }
       }
       {

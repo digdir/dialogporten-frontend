@@ -32,7 +32,7 @@ var bffGatewayBackend = {
     properties: {
       backendAddresses: [
         {
-          fqdn: 'https://${namePrefix}-bff.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+          fqdn: '${namePrefix}-bff.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
         }
       ]
     }
@@ -53,7 +53,7 @@ var frontendGatewayBackend = {
     properties: {
       backendAddresses: [
         {
-          fqdn: 'https://${namePrefix}-frontend-design-poc.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+          fqdn: '${namePrefix}-frontend-design-poc.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
         }
       ]
     }
@@ -198,6 +198,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
         }
       }
     ]
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 
