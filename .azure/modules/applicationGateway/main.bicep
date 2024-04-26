@@ -10,6 +10,8 @@ type Sku = {
 }
 param sku Sku
 
+param keyVaultCertificateId string // Parameter for Key Vault secret ID for the certificate. TODO
+
 var gatewayName = '${namePrefix}-applicationGateway'
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
@@ -26,46 +28,86 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
 
 var publicIpAddressId = publicIp.id
 
-var bffGatewayBackend = {
-  pool: {
-    name: '${gatewayName}-bffBackendPool'
-    properties: {
-      backendAddresses: [
-        {
-          fqdn: 'https://${namePrefix}-bff.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
-        }
-      ]
+var bffPool = {
+  name: '${gatewayName}-bffBackendPool'
+  properties: {
+    backendAddresses: [
+      {
+        fqdn: '${namePrefix}-bff.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+      }
+    ]
+  }
+}
+
+var bffHttpSettings = {
+  name: '${gatewayName}-bffBackendPool-backendHttpSettings'
+  properties: {
+    port: 80
+    protocol: 'Http'
+    cookieBasedAffinity: 'Disabled'
+    probe: {
+      id: resourceId('Microsoft.Network/applicationGateways/probes', gatewayName, bffProbe.name)
     }
   }
-  httpSettings: {
-    name: '${gatewayName}-bffBackendPool-backendHttpSettings'
-    properties: {
-      port: 80
-      protocol: 'Http'
-      cookieBasedAffinity: 'Disabled'
+}
+
+var bffProbe = {
+  name: '${gatewayName}-bffBackendPool-probe'
+  properties: {
+    host: bffPool.properties.backendAddresses[0].fqdn
+    protocol: 'Http'
+    path: '/api/liveness' // todo: create a separate endpoint for healthz?
+    interval: 30
+    timeout: 30
+    unhealthyThreshold: 3
+  }
+}
+
+var bffGatewayBackend = {
+  pool: bffPool
+  httpSettings: bffHttpSettings
+  probe: bffProbe
+}
+
+var frontendPool = {
+  name: '${gatewayName}-frontendPool'
+  properties: {
+    backendAddresses: [
+      {
+        fqdn: '${namePrefix}-frontend-design-poc.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+      }
+    ]
+  }
+}
+
+var frontendProbe = {
+  name: '${gatewayName}-frontendPool-probe'
+  properties: {
+    host: frontendPool.properties.backendAddresses[0].fqdn
+    protocol: 'Http'
+    path: '/' // todo: create a separate endpoint for healthz?
+    interval: 30
+    timeout: 30
+    unhealthyThreshold: 3
+  }
+}
+
+var frontendHttpSettings = {
+  name: '${gatewayName}-frontendPool-backendHttpSettings'
+  properties: {
+    port: 80
+    protocol: 'Http'
+    cookieBasedAffinity: 'Disabled'
+    probe: {
+      id: resourceId('Microsoft.Network/applicationGateways/probes', gatewayName, frontendProbe.name)
     }
   }
 }
 
 var frontendGatewayBackend = {
-  pool: {
-    name: '${gatewayName}-frontendPool'
-    properties: {
-      backendAddresses: [
-        {
-          fqdn: 'https://${namePrefix}-frontend-design-poc.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
-        }
-      ]
-    }
-  }
-  httpSettings: {
-    name: '${gatewayName}-frontendPool-backendHttpSettings'
-    properties: {
-      port: 80
-      protocol: 'Http'
-      cookieBasedAffinity: 'Disabled'
-    }
-  }
+  pool: frontendPool
+  httpSettings: frontendHttpSettings
+  probe: frontendProbe
 }
 
 resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' = {
@@ -119,7 +161,22 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
               '${gatewayName}-gatewayFrontendPort'
             )
           }
-          protocol: 'Http'
+          protocol: 'Https' // Changed to HTTPS to support SSL termination
+          sslCertificate: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/sslCertificates',
+              gatewayName,
+              '${gatewayName}-gatewaySslCertificate'
+            )
+          }
+        }
+      }
+    ]
+    sslCertificates: [
+      {
+        name: '${gatewayName}-gatewaySslCertificate'
+        properties: {
+          keyVaultSecretId: keyVaultCertificateId
         }
       }
     ]
@@ -130,6 +187,10 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     backendHttpSettingsCollection: [
       bffGatewayBackend.httpSettings
       frontendGatewayBackend.httpSettings
+    ]
+    probes: [
+      bffGatewayBackend.probe
+      frontendGatewayBackend.probe
     ]
     urlPathMaps: [
       {
@@ -198,6 +259,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
         }
       }
     ]
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 
