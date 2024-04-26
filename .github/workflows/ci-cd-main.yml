@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -43,11 +44,14 @@ jobs:
 
   build-and-test:
     uses: ./.github/workflows/workflow-build-and-test.yml
+    needs: [check-for-changes]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     with:
       environment: test
 
   docker-build-and-push:
     name: Build and publish docker images
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-docker-build-and-push.yml
     needs:
       [
@@ -69,7 +73,7 @@ jobs:
   deploy-infrastructure:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
     needs: [generate-git-short-sha, check-for-changes, get-current-version]
-    if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
+    if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' || github.event_name == 'workflow_dispatch' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
@@ -90,8 +94,10 @@ jobs:
         check-for-changes,
         generate-git-short-sha,
         docker-build-and-push,
+        deploy-infrastructure,
       ]
-    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+    # we want deployment of apps to be dependent on deployment of infrastructure, but if infrastructure is skipped, we still want to deploy the apps
+    if: ${{ always() && !failure() && !cancelled() && (needs.check-for-changes.outputs.hasApplicationChanges == 'true' || github.event_name == 'workflow_dispatch') }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -107,4 +113,4 @@ jobs:
       environment: test
       region: norwayeast
       version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      runMigration: ${{ needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
+      runMigration: ${{ needs.check-for-changes.outputs.hasMigrationChanges == 'true' || github.event_name == 'workflow_dispatch' }}
