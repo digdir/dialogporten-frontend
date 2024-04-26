@@ -73,7 +73,7 @@ jobs:
   deploy-infrastructure:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
     needs: [generate-git-short-sha, check-for-changes, get-current-version]
-    if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
@@ -97,7 +97,7 @@ jobs:
         deploy-infrastructure,
       ]
     # we want deployment of apps to be dependent on deployment of infrastructure, but if infrastructure is skipped, we still want to deploy the apps
-    if: ${{ always() && !failure() && !cancelled() && (needs.check-for-changes.outputs.hasApplicationChanges == 'true' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true') }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -113,4 +113,4 @@ jobs:
       environment: test
       region: norwayeast
       version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      runMigration: ${{ needs.check-for-changes.outputs.hasMigrationChanges == 'true' || github.event_name == 'workflow_dispatch' }}
+      runMigration: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
