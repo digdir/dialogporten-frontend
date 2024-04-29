@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSearchString } from '..';
+import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
+import { useSnackbar } from '../Snackbar/useSnackbar.ts';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
-import styles from './filterBar.module.css';
 import { SaveSearchButton } from './SaveSearchButton';
-import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
-import { useSearchString } from '..';
+import styles from './filterBar.module.css';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -92,9 +94,11 @@ type ListOpenTarget = 'none' | string | 'add_filter';
  * ```
  */
 export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: FilterBarProps) => {
+  const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters);
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
   const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
+  const { openSnackbar } = useSnackbar();
 
   const handleOnRemove = useCallback(
     (fieldName: string) => {
@@ -149,7 +153,12 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
     };
     searchHistory.push(newSearch);
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-    queryClient.invalidateQueries('savedSearches'); // Step 3: Invalidate the 'savedSearches' query
+    openSnackbar({
+      message: t('savedSearches.saved_success'),
+      variant: 'success',
+    });
+
+    void queryClient.invalidateQueries('savedSearches'); // Step 3: Invalidate the 'savedSearches' query
   };
 
   return (
