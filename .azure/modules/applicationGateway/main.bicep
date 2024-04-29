@@ -7,6 +7,10 @@ param containerAppEnvName string
 type Sku = {
   name: 'Standard_v2' | 'WAF_v2'
   tier: 'Standard_v2' | 'WAF_v2'
+  autoscaleConfiguration: {
+    minCapacity: int
+    maxCapacity: int
+  }
 }
 param sku Sku
 
