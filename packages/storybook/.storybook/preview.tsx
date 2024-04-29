@@ -3,7 +3,7 @@ import '@digdir/designsystemet-theme';
 import { A11yParameters } from '@storybook/addon-a11y';
 import type { Preview } from '@storybook/react';
 import { Rule, getRules } from 'axe-core';
-import 'frontend/src/globalColors.css';
+import 'frontend/src/globals.css';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import { QueryClient, QueryClientProvider } from 'react-query';
