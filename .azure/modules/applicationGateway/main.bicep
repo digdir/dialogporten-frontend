@@ -24,6 +24,11 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   }
 }
 
+resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: '${gatewayName}-identity'
+  location: location
+}
+
 var publicIpAddressId = publicIp.id
 
 var bffGatewayBackend = {
@@ -200,7 +205,10 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
   }
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${applicationGatewayAssignedIdentity.id}': {}
+    }
   }
 }
 
