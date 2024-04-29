@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { BackButton } from 'frontend';
 import { withRouter } from 'storybook-addon-react-router-v6';
-import { BackButton } from '../../../../frontend';
 
 export default {
   title: 'Components/BackButton',

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
 import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
-import styles from './pageLayout.module.css';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
-import { useQueryClient } from 'react-query';
+import { Snackbar } from '../Snackbar/Snackbar.tsx';
+import styles from './pageLayout.module.css';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
@@ -84,6 +85,7 @@ export const PageLayout: React.FC = () => {
         <Outlet />
         <Footer />
       </div>
+      <Snackbar />
     </div>
   );
 };

@@ -11,9 +11,9 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
+import { useSavedSearches } from '../../pages/SavedSearches';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
-import { useSavedSearches } from '../../pages/SavedSearches';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -26,7 +26,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { t } = useTranslation();
   const { data: savedSearches } = useSavedSearches();
   const { isMobile } = useWindowSize();
-  if (isMobile) return <></>;
+
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <aside className={styles.sidebar}>
       {children || (

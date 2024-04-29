@@ -7,6 +7,9 @@ export default defineConfig({
   test: {
     exclude: ['node_modules', 'tests'], // tests for Playwright
     environment: 'jsdom',
+    sequence: {
+      setupFiles: 'list',
+    },
     globals: true,
     css: {
       modules: {
