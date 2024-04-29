@@ -4,15 +4,18 @@ param subnetId string
 param containerAppEnvName string
 
 @export()
-type Sku = {
-  name: 'Standard_v2' | 'WAF_v2'
-  tier: 'Standard_v2' | 'WAF_v2'
+type Configuration = {
+  sku: {
+    name: 'Standard_v2' | 'WAF_v2'
+    tier: 'Standard_v2' | 'WAF_v2'
+    capacity: int?
+  }
   autoscaleConfiguration: {
     minCapacity: int
     maxCapacity: int
-  }
+  }?
 }
-param sku Sku
+param configuration Configuration
 
 var gatewayName = '${namePrefix}-applicationGateway'
 
@@ -23,8 +26,11 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: '${gatewayName}-publicIp'
   location: location
+  sku: {
+    name: 'Standard'
+  }
   properties: {
-    publicIPAllocationMethod: 'Dynamic'
+    publicIPAllocationMethod: 'Static'
   }
 }
 
@@ -81,7 +87,8 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
   name: gatewayName
   location: location
   properties: {
-    sku: sku
+    autoscaleConfiguration: configuration.autoscaleConfiguration
+    sku: configuration.sku
     gatewayIPConfigurations: [
       {
         name: '${gatewayName}-gatewayIpConfig'
@@ -189,6 +196,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
       {
         name: 'pathBasedRoutingRule'
         properties: {
+          priority: 100
           ruleType: 'PathBasedRouting'
           httpListener: {
             id: resourceId(

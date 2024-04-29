@@ -19,9 +19,11 @@ param redisSku = {
   capacity: 1
 }
 
-param applicationGatewaySku = {
-  name: 'Standard_v2'
-  tier: 'Standard_v2'
+param applicationGatewayConfiguration = {
+  sku: {
+    name: 'Standard_v2'
+    tier: 'Standard_v2'
+  }
   autoscaleConfiguration: {
     minCapacity: 1
     maxCapacity: 2
