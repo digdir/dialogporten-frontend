@@ -24,14 +24,17 @@
 
 .pageLayout>aside {
     grid-area: sidebar;
-    padding-left: 192px;
+    @media (min-width: 600px) {
+        margin-right: 192px;
+    }
 }
 
 .pageLayout>main {
     grid-area: main;
-    padding: 1.5rem;
+    padding: 0.5rem;
     @media (min-width: 600px) {
         margin-right: 192px;
+        padding: 1.5rem;
     }
 }
 
