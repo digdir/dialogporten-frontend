@@ -19,66 +19,70 @@ export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
   const isCompany = !!companyName;
-  const isTestFeatureToggleEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.TestFeatureToggleEnabled);
+  const isDebugHeaderScreenEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.EnableDebugHeaderScreen);
+
   useAuthenticated();
   useUpdateOnLocationChange(() => getSearchStringFromQueryParams(queryClient));
 
   return (
     <div className={isCompany ? `isCompany` : ''}>
-      <p>isTestFeatureToggleEnabled: {JSON.stringify(isTestFeatureToggleEnabled)}</p>
-      <button type="button" onClick={() => setCompanyName(companyName !== '' ? '' : 'Aker Solutions AS')}>
-        User/Company Switch
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          fetch('/api/user', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.json())
-            .then((d) => {
-              console.log(d);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
-        }}
-      >
-        Fetch
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          fetch('/api/test', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({
-              query: '{ dialogById(dialogId: "14f18e01-7ed5-0272-a810-a5683df6c64d") }',
-            }),
-          })
-            .then((response) => response.json())
-            .then((d) => {
-              console.log(d);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
-        }}
-      >
-        Test proxy
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          (window as Window).location = `/api/logout`;
-        }}
-      >
-        Logout
-      </button>
+      {isDebugHeaderScreenEnabled && (
+        <section>
+          <button type="button" onClick={() => setCompanyName(companyName !== '' ? '' : 'Aker Solutions AS')}>
+            User/Company Switch
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              fetch('/api/user', {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+                .then((response) => response.json())
+                .then((d) => {
+                  console.log(d);
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }}
+          >
+            Fetch
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              fetch('/api/test', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({
+                  query: '{ dialogById(dialogId: "14f18e01-7ed5-0272-a810-a5683df6c64d") }',
+                }),
+              })
+                .then((response) => response.json())
+                .then((d) => {
+                  console.log(d);
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }}
+          >
+            Test proxy
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              (window as Window).location = `/api/logout`;
+            }}
+          >
+            Logout
+          </button>
+        </section>
+      )}
       <div className={styles.pageLayout}>
         <Header name="John Doe" companyName={companyName} />
         <Sidebar isCompany={!!companyName} />
