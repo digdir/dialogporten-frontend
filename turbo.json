@@ -6,8 +6,13 @@
       "outputs": ["generated/**"],
       "cache": false
     },
+    "build:bff-types-generated": {
+      "dependsOn": ["^build"],
+      "outputs": ["generated/**"],
+      "cache": false
+    },
     "build": {
-      "dependsOn": ["build:dialogporten-types-generated"],
+      "dependsOn": ["build:dialogporten-types-generated", "build:bff-types-generated"],
       "cache": false
     },
     "test": {

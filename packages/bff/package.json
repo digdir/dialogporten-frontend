@@ -8,9 +8,9 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "dev": "mprocs 'pnpm dev:start' 'pnpm dev:types'",
-    "dev:start": "nodemon --watch 'src/**' --ext 'ts' --exec './src/index.ts'",
+    "dev:start": "nodemon --watch 'src/**' --ext 'ts' --exec './src/app.ts'",
     "dev:types": "pnpm typecheck --watch",
-    "docker": "concurrently \"npx tsc --watch\" \"nodemon --watch '/app/packages/bff/src/**/*.ts' --ext 'ts' --exec './src/index.ts'\"",
+    "docker": "concurrently \"npx tsc --watch\" \"nodemon --watch '/app/packages/bff/src/**/*.ts' --ext 'ts' --exec './src/app.ts'\"",
     "build:docker": "docker build -f ./Dockerfile -t bff ../..",
     "run:docker": "docker run -e -it -p 80:80 bff"
   },
