@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
+import { fetchDialogByIdExample, fetchHelloWorld } from '../../api/queries.ts';
 import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
@@ -34,6 +35,16 @@ export const PageLayout: React.FC = () => {
           <button
             type="button"
             onClick={() => {
+              fetchHelloWorld().then((response) => {
+                console.log(response);
+              });
+            }}
+          >
+            Hello World
+          </button>
+          <button
+            type="button"
+            onClick={() => {
               fetch('/api/user', {
                 method: 'GET',
                 credentials: 'include',
@@ -55,16 +66,9 @@ export const PageLayout: React.FC = () => {
           <button
             type="button"
             onClick={() => {
-              fetch('/api/test', {
-                method: 'POST',
-                credentials: 'include',
-                body: JSON.stringify({
-                  query: '{ dialogById(dialogId: "14f18e01-7ed5-0272-a810-a5683df6c64d") }',
-                }),
-              })
-                .then((response) => response.json())
+              fetchDialogByIdExample('14f18e01-7ed5-0272-a810-a5683df6c64d')
                 .then((d) => {
-                  console.log(d);
+                  console.log(d.dialog?.status);
                 })
                 .catch((error) => {
                   console.error('Error:', error);

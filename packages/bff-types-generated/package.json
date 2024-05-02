@@ -2,7 +2,8 @@
   "name": "bff-types-generated",
   "main": "src/index.ts",
   "scripts": {
-    "generate:types": "pnpm generate:types-gql",
+    "prepare": "pnpm generate:types-gql",
+    "build": "pnpm generate:types-gql",
     "generate:types-gql": "NODE_OPTIONS=\"--loader ts-node/esm --no-warnings=ExperimentalWarning\" graphql-codegen-esm --config codegen.ts",
     "test": "echo \"Error: no test specified\""
   },
@@ -12,11 +13,11 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@tsconfig/node20": "^20.1.2",
     "bff": "workspace:*",
-    "graphql": "^16.8.1"
+    "graphql": "^16.8.1",
+    "graphql-request": "^6.1.0",
+    "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
-    "@graphql-codegen/client-preset": "^4.2.5",
-    "@graphql-codegen/graphql-modules-preset": "^4.0.6",
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-resolvers": "^4.0.6",

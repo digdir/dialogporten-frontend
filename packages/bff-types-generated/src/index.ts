@@ -1,1 +1,1 @@
-export { * } from '../generated/sdk.ts';
+export * from '../generated/sdk.ts';
