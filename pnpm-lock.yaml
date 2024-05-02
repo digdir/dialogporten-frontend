@@ -71,6 +71,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      dialogporten-types-generated:
+        specifier: workspace:*
+        version: link:../dialogporten-types-generated
       dotenv:
         specifier: ^16.4.1
         version: 16.4.1
@@ -174,13 +177,13 @@ importers:
       graphql:
         specifier: ^16.8.1
         version: 16.8.1
+      graphql-request:
+        specifier: ^6.1.0
+        version: 6.1.0(graphql@16.8.1)
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.8.1)
     devDependencies:
-      '@graphql-codegen/client-preset':
-        specifier: ^4.2.5
-        version: 4.2.5(graphql@16.8.1)
-      '@graphql-codegen/graphql-modules-preset':
-        specifier: ^4.0.6
-        version: 4.0.6(graphql@16.8.1)
       '@graphql-codegen/typescript':
         specifier: ^4.0.6
         version: 4.0.6(graphql@16.8.1)
@@ -203,8 +206,8 @@ importers:
   packages/dialogporten-types-generated:
     dependencies:
       '@digdir/dialogporten-schema':
-        specifier: 1.0.7
-        version: 1.0.7
+        specifier: 1.0.9
+        version: 1.0.9
       '@graphql-codegen/cli':
         specifier: ^5.0.2
         version: 5.0.2(graphql@16.8.1)
@@ -342,6 +345,12 @@ importers:
       dialogporten-types-generated:
         specifier: workspace:*
         version: link:../dialogporten-types-generated
+      graphql:
+        specifier: ^16.8.1
+        version: 16.8.1
+      graphql-request:
+        specifier: ^6.1.0
+        version: 6.1.0(graphql@16.8.1)
       i18next:
         specifier: ^23.8.2
         version: 23.8.2
@@ -2396,8 +2405,8 @@ packages:
     resolution: {integrity: sha512-NgbcDqYf/3niVq98zteoRMbDERYhetoN6WPRcPtlpwJbOyUH1bsN6kFVpaNe9iiDb7JEqxCQXpUgMKi863IiTA==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.0.7:
-    resolution: {integrity: sha512-lzMb9BhHdH/XUn0SpVQVkfrDSznqK7pV//7OvCYht5SuDHBiUrO53lCjWncaTxFfkNDCoAkGrQJvfnE8JtSoLQ==}
+  /@digdir/dialogporten-schema@1.0.9:
+    resolution: {integrity: sha512-TbuZBlUFNmZwGi0PwJe0dmz4we0hRWoEKbqfG7hSIpY4Zd5Qg0Yp2ftQd+PFiPGJJH1y2EUftvs6ibrs5ue8bQ==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
@@ -3863,6 +3872,7 @@ packages:
       '@graphql-codegen/plugin-helpers': 5.0.3(graphql@16.8.1)
       graphql: 16.8.1
       tslib: 2.6.2
+    dev: false
 
   /@graphql-codegen/cli@5.0.2(@parcel/watcher@2.4.1)(@types/node@16.18.78)(graphql@16.8.1)(typescript@5.4.5):
     resolution: {integrity: sha512-MBIaFqDiLKuO4ojN6xxG9/xL9wmfD3ZjZ7RsPjwQnSHBCUXnEkdKvX+JVpx87Pq29Ycn8wTJUguXnTZ7Di0Mlw==}
@@ -4001,6 +4011,7 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
 
   /@graphql-codegen/core@4.0.2(graphql@16.8.1):
     resolution: {integrity: sha512-IZbpkhwVqgizcjNiaVzNAzm/xbWT6YnGgeOLwVjm4KbJn3V2jchVtuzHH09G5/WkkLSk2wgbXNdwjM41JxO6Eg==}
@@ -4028,6 +4039,7 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
 
   /@graphql-codegen/graphql-modules-preset@4.0.6(graphql@16.8.1):
     resolution: {integrity: sha512-Ok6bXa8F/RGWdWpPO5XLVKhXkMSGXQxKtw0p8vdaB2yXSTNDMxPteCMfsvCmSvfDqoZaiKDPtC1MWs2oscxJmA==}
@@ -4111,6 +4123,7 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
 
   /@graphql-codegen/typescript-graphql-request@6.2.0(graphql-request@6.1.0)(graphql-tag@2.12.6)(graphql@16.8.1):
     resolution: {integrity: sha512-nkp5tr4PrC/+2QkQqi+IB+bc7AavUnUvXPW8MC93HZRvwfMGy6m2Oo7b9JCPZ3vhNpqT2VDWOn/zIZXKz6zJAw==}
@@ -4146,6 +4159,7 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
 
   /@graphql-codegen/typescript-resolvers@4.0.6(graphql@16.8.1):
     resolution: {integrity: sha512-7OBFzZ2xSkYgMgcc1A3xNqbBHHSQXBesLrG86Sh+Jj0PQQB3Om8j1HSFs64PD/l5Kri2dXgm3oim/89l3Rl3lw==}
@@ -4288,6 +4302,7 @@ packages:
       graphql: 16.8.1
       lodash.sortby: 4.7.0
       tslib: 2.6.2
+    dev: false
 
   /@graphql-tools/executor-graphql-ws@1.1.2(graphql@16.8.1):
     resolution: {integrity: sha512-+9ZK0rychTH1LUv4iZqJ4ESbmULJMTsv3XlFooPUngpxZkk00q6LqHKJRrsLErmQrVaC7cwQCaRBJa0teK17Lg==}
@@ -15082,6 +15097,7 @@ packages:
 
   /lodash.sortby@4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}
+    dev: false
 
   /lodash.throttle@4.1.1:
     resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
