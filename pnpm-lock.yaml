@@ -83,12 +83,12 @@ importers:
       fastify-graphiql:
         specifier: workspace:*
         version: link:../fastify-graphiql
-      fastify-graphql:
-        specifier: workspace:*
-        version: link:../fastify-graphql
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
+      graphql-http:
+        specifier: ^1.22.0
+        version: 1.22.0(graphql@16.8.1)
       ioredis:
         specifier: ^5.4.0
         version: 5.4.0
@@ -300,24 +300,6 @@ importers:
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
-
-  packages/fastify-graphql:
-    dependencies:
-      '@fastify/websocket':
-        specifier: ^9.0.0
-        version: 9.0.0
-      fastify:
-        specifier: ^4.26.1
-        version: 4.26.1
-      fastify-plugin:
-        specifier: ^4.5.1
-        version: 4.5.1
-      graphql-http:
-        specifier: ^1.22.0
-        version: 1.22.0(graphql@16.8.1)
-      graphql-ws:
-        specifier: ^5.15.0
-        version: 5.15.0(graphql@16.8.1)
 
   packages/frontend:
     dependencies:
@@ -3776,17 +3758,6 @@ packages:
     dependencies:
       fastify-plugin: 4.5.1
       safe-stable-stringify: 2.4.3
-    dev: false
-
-  /@fastify/websocket@9.0.0:
-    resolution: {integrity: sha512-rpHDtDdTaAQ1GuN6VzOZaUEmegXR3HhSA2QAL2e8GgiNGo/cTyy+chwbu7OjDIWnq3HZisitln/0N8Xdn0Fc+w==}
-    dependencies:
-      duplexify: 4.1.2
-      fastify-plugin: 4.5.1
-      ws: 8.16.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
     dev: false
 
   /@floating-ui/core@1.6.0:
@@ -11464,15 +11435,6 @@ packages:
       readable-stream: 2.3.8
       stream-shift: 1.0.3
     dev: true
-
-  /duplexify@4.1.2:
-    resolution: {integrity: sha512-fz3OjcNCHmRP12MJoZMPglx8m4rrFP8rovnk4vT8Fs+aonZoCwGg10dSsQsfP/E62eZcPTMSMP6686fu9Qlqtw==}
-    dependencies:
-      end-of-stream: 1.4.4
-      inherits: 2.0.4
-      readable-stream: 3.6.2
-      stream-shift: 1.0.3
-    dev: false
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -19553,6 +19515,7 @@ packages:
 
   /stream-shift@1.0.3:
     resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
+    dev: true
 
   /streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
