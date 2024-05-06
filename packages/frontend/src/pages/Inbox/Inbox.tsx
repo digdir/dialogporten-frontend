@@ -10,7 +10,7 @@ import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.ts
 import { mapDialogDtoToInboxItem } from '../../mocks/dialogs.tsx';
 import styles from './inbox.module.css';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
-import { SavedSearch } from '../SavedSearches/SavedSearches.tsx';
+import { SavedSearchData } from '../SavedSearches/SavedSearches.tsx';
 import { useLocation } from 'react-router-dom';
 
 export interface InboxItemInput {
@@ -40,12 +40,12 @@ export interface QueryParams {
   [key: string]: string;
 }
 
-export const compressQueryParams = (params: SavedSearch): string => {
+export const compressQueryParams = (params: SavedSearchData): string => {
   const queryParamsString = JSON.stringify(params);
   return compressToEncodedURIComponent(queryParamsString);
 };
 
-export const decompressQueryParams = (compressedString: string): SavedSearch => {
+export const decompressQueryParams = (compressedString: string): SavedSearchData => {
   const decompressedString = decompressFromEncodedURIComponent(compressedString);
   if (!decompressedString) {
     throw new Error('Decompression failed');

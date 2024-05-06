@@ -321,6 +321,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
+      axios:
+        specifier: ^1.6.2
+        version: 1.6.7
       bff-types-generated:
         specifier: workspace:*
         version: link:../bff-types-generated
