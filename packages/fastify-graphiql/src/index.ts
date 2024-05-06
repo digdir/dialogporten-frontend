@@ -8,7 +8,6 @@ type Options = {
 
 const plugin: FastifyPluginAsync<Options> = async (fastify, opts) => {
   const { url, graphqlURL } = opts;
-
   fastify.get(url, (request, reply) => {
     reply.type('text/html');
     reply.send(

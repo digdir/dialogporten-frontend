@@ -12,7 +12,7 @@ const config: CodegenConfig = {
       plugins: [
         {
           add: {
-            content: '/* eslint-disable */',
+            content: '/* eslint-disable */' + '\n' + '// @ts-nocheck'
           },
         },
         'typescript',

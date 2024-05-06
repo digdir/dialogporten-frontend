@@ -1,11 +1,11 @@
 export enum FeatureFlagKeys {
-  TestFeatureToggleEnabled = 'TestFeatureToggleEnabled',
+  EnableDebugHeaderScreen = 'EnableDebugHeaderScreen',
 }
 
 export interface FeatureFlags {
-  [FeatureFlagKeys.TestFeatureToggleEnabled]: boolean;
+  [FeatureFlagKeys.EnableDebugHeaderScreen]: boolean;
 }
 
 export const featureFlags: FeatureFlags = {
-  [FeatureFlagKeys.TestFeatureToggleEnabled]: true,
+  [FeatureFlagKeys.EnableDebugHeaderScreen]: true,
 };
