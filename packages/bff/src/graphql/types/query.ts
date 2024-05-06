@@ -1,5 +1,5 @@
 import { objectType } from 'nexus';
-import { getOrCreateProfile } from '../../entities/Profile.js';
+import { getOrCreateProfile } from '../../entities.ts';
 export const Query = objectType({
   name: 'Query',
   definition(t) {

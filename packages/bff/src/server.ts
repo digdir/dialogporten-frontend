@@ -13,7 +13,7 @@ import { initAppInsights } from './azure/ApplicationInsightsInit.ts';
 import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
-import { graphqlApi } from './graphql/index.ts';
+import graphqlApi from './graphql/api.ts';
 
 const {
   version,
