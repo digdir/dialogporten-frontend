@@ -28,4 +28,5 @@ param applicationGatewayConfiguration = {
     minCapacity: 1
     maxCapacity: 2
   }
+  hostName: 'test.portal-pp.dialogporten.no'
 }

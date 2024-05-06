@@ -6,7 +6,6 @@ param imageTag string
 param environment string
 @minLength(3)
 param location string
-param customDomain string?
 param port int = 80
 
 @minLength(3)
@@ -37,18 +36,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 resource environmentKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: environmentKeyVaultName
 }
-
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2022-11-01-preview' =
-  if (customDomain != null) {
-    parent: containerAppEnvironment
-    name: '${containerAppEnvironment.name}-${containerAppName}-certificate'
-    location: location
-    // tags: tags
-    properties: {
-      subjectName: customDomain
-      domainControlValidation: 'CNAME'
-    }
-  }
 
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-deployment#example-1
 var keyVaultUrl = 'https://${environmentKeyVaultName}${az.environment().suffixes.keyvaultDns}/secrets'
@@ -144,7 +131,6 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     containerAppEnvId: containerAppEnvironment.id
     secrets: secrets
     environmentVariables: containerAppEnvVars
-    customDomain: customDomain
     port: port
   }
 }

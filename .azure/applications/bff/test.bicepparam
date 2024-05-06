@@ -3,7 +3,6 @@ using './main.bicep'
 param environment = 'test'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param customDomain = 'test.portal-pp.dialogporten.no'
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')

@@ -32,6 +32,12 @@ var secrets = {
   sourceKeyVaultName: sourceKeyVaultName
 }
 
+var srcKeyVault = {
+  name: secrets.sourceKeyVaultName
+  subscriptionId: secrets.sourceKeyVaultSubscriptionId
+  resourceGroupName: secrets.sourceKeyVaultResourceGroup
+}
+
 var namePrefix = 'dp-fe-${environment}'
 
 // Create resource groups
@@ -87,12 +93,24 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   }
 }
 
+module privateDnsZone '../modules/privateDnsZone/main.bicep' = {
+  scope: resourceGroup
+  name: 'privateDnsZone'
+  params: {
+    namePrefix: namePrefix
+    defaultDomain: containerAppEnv.outputs.defaultDomain
+    vnetId: vnet.outputs.virtualNetworkId
+    staticIp: containerAppEnv.outputs.staticIp
+  }
+}
+
 module applicationGateway '../modules/applicationGateway/main.bicep' = {
   scope: resourceGroup
   name: 'applicationGateway'
   params: {
     namePrefix: namePrefix
     location: location
+    srcKeyVault: srcKeyVault
     containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.applicationGatewaySubnetId
     configuration: applicationGatewayConfiguration
@@ -115,12 +133,6 @@ module redis '../modules/redis/main.bicep' = {
 resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: secrets.sourceKeyVaultName
   scope: az.resourceGroup(secrets.sourceKeyVaultSubscriptionId, secrets.sourceKeyVaultResourceGroup)
-}
-
-var srcKeyVault = {
-  name: secrets.sourceKeyVaultName
-  subscriptionId: secrets.sourceKeyVaultSubscriptionId
-  resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
 // Create resources with dependencies to other resources
