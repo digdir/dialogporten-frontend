@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import { fetchDialogByIdExample, fetchHelloWorld } from '../../api/queries.ts';
+import { fetchDialogByIdExample, fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
 import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
@@ -45,20 +45,9 @@ export const PageLayout: React.FC = () => {
           <button
             type="button"
             onClick={() => {
-              fetch('/api/user', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              })
-                .then((response) => response.json())
-                .then((d) => {
-                  console.log(d);
-                })
-                .catch((error) => {
-                  console.error('Error:', error);
-                });
+              fetchProfile().then((profile) => {
+                console.log(profile);
+              });
             }}
           >
             Fetch

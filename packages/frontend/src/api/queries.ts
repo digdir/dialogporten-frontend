@@ -1,4 +1,4 @@
-import { HelloQuery, getSdk } from 'bff-types-generated';
+import { HelloQuery, ProfileQuery, getSdk } from 'bff-types-generated';
 import { DialogByIdPayload, GetDialogDtoSO } from 'dialogporten-types-generated';
 import { GraphQLClient, gql } from 'graphql-request';
 import { SavedSearch } from '../pages/SavedSearches';
@@ -18,6 +18,9 @@ export const getSavedSearches = async (): Promise<SavedSearch[]> => {
 };
 
 export const fetchHelloWorld = (): Promise<HelloQuery> => graphQLSDK.hello();
+
+export const fetchProfile = (): Promise<ProfileQuery> => graphQLSDK.profile();
+
 /* This will be replaced as soon as both BFF and Dialogporten schemas er stichted together */
 export const fetchDialogByIdExample = (dialogId: string): Promise<DialogByIdPayload> => {
   /* temporary endpoint forwarding request to Dialogporten */

@@ -1,1 +1,1 @@
-export * from './schema.ts';
+export * from './graphql/schema.ts';
