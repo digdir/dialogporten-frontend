@@ -110,6 +110,10 @@ var containerAppEnvVars = [
     name: 'SESSION_SECRET'
     secretRef: idPortenSessionSecretSecret.name
   }
+  {
+    name: 'MIGRATION_RUN'
+    value: 'true'
+  }
 ]
 
 module containerAppJob '../../modules/containerAppJob/main.bicep' = {
@@ -121,7 +125,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
     containerAppEnvId: containerAppEnvironment.id
     environmentVariables: containerAppEnvVars
     secrets: secrets
-    command: ['pnpm', '--filter', 'bff', 'run', 'migration:run']
+    command: ['pnpm', '--filter', 'bff', 'run', 'start']
   }
 }
 
