@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "private": true,
   "scripts": {
-    "start": "./src/index.ts",
+    "start": "./src/app.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "dev": "mprocs 'pnpm dev:start' 'pnpm dev:types'",
