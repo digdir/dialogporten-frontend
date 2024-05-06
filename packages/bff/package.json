@@ -1,10 +1,10 @@
 {
   "name": "bff",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "src/app.ts",
   "private": true,
   "scripts": {
-    "start": "./src/index.ts",
+    "start": "./src/app.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "dev": "mprocs 'pnpm dev:start' 'pnpm dev:types'",
