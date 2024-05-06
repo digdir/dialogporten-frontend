@@ -1,10 +1,11 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';
 import { SaveSearchButton } from './SaveSearchButton';
-import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
+import { SavedSearch, SavedSearchDTO, SavedSearchData } from '../../pages/SavedSearches';
 import { useSearchString } from '..';
+import axios, { AxiosResponse } from 'axios';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -91,10 +92,14 @@ type ListOpenTarget = 'none' | string | 'add_filter';
  * />
  * ```
  */
-export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: FilterBarProps) => {
-  const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters);
+export const FilterBar = ({ onFilterChange, fields, initialFilters }: FilterBarProps) => {
+  const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters || []);
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
   const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
+
+  useEffect(() => {
+    setActiveFilters(initialFilters || []);
+  }, [initialFilters]);
 
   const handleOnRemove = useCallback(
     (fieldName: string) => {
@@ -139,17 +144,21 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
   );
 
   const handleSaveSearch = () => {
-    const searchHistory: SavedSearch[] = getSearchHistory();
-    const newSearch: SavedSearch = {
-      id: Date.now(),
+    const data: SavedSearchData = {
       filters: activeFilters,
-      timestamp: new Date().toISOString(),
-      name: '', // Needs functionality for saving a custom name
       searchString: searchString,
     };
-    searchHistory.push(newSearch);
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-    queryClient.invalidateQueries('savedSearches'); // Step 3: Invalidate the 'savedSearches' query
+    const newSearch: SavedSearch = {
+      data,
+      name: '', // Needs functionality for saving a custom name
+    };
+    axios
+      .post('/api/saved-search', {
+        data: newSearch,
+      })
+      .then((r: AxiosResponse<SavedSearchDTO>) => {
+        queryClient.invalidateQueries('savedSearches');
+      });
   };
 
   return (

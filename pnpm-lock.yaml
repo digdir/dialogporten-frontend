@@ -154,6 +154,8 @@ importers:
         specifier: ^5.4.4
         version: 5.4.4
 
+  packages/bff-frontend-poc: {}
+
   packages/dialogporten-types-generated:
     dependencies:
       '@digdir/dialogporten-schema':
@@ -287,6 +289,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
+      axios:
+        specifier: ^1.6.2
+        version: 1.6.7
       classnames:
         specifier: ^2.5.1
         version: 2.5.1

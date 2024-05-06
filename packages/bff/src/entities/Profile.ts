@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { SavedSearch } from './SavedSearch.ts';
 import { ProfileRepository } from '../db.ts';
 
 @Entity()
@@ -9,11 +18,17 @@ export class Profile {
   @Column({ length: 255, nullable: true })
   language: string;
 
+  @OneToMany('SavedSearch', 'profile')
+  savedSearches: SavedSearch[];
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
 
 export const getOrCreateProfile = async (sub: string, locale: string): Promise<Profile> => {

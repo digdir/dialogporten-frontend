@@ -4,56 +4,62 @@ import { useQuery, useQueryClient } from 'react-query';
 import { getSavedSearches } from '../../api/queries';
 import { Filter } from '../../components/FilterBar';
 import { SavedSearchesItem } from './SavedSearchesItem';
+import axios from 'axios';
 
 export const useSavedSearches = () => useQuery('savedSearches', getSavedSearches);
 
 interface LastUpdatedProps {
-  searches: SavedSearch[] | undefined;
+  searches: SavedSearchDTO[] | undefined;
 }
 
 const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => {
-  const now = new Date();
-  const diffInSeconds = (now.getTime() - date.getTime()) / 1000;
-  const absDiffInSeconds = Math.abs(diffInSeconds);
+  try {
+    const now = new Date();
+    const diffInSeconds = (now.getTime() - date.getTime()) / 1000;
+    const absDiffInSeconds = Math.abs(diffInSeconds);
 
-  let value: number;
-  let unit: Intl.RelativeTimeFormatUnit;
+    let value: number;
+    let unit: Intl.RelativeTimeFormatUnit;
 
-  if (absDiffInSeconds < 60) {
-    value = -Math.round(diffInSeconds);
-    unit = 'second';
-  } else if (absDiffInSeconds < 3600) {
-    value = -Math.round(diffInSeconds / 60);
-    unit = 'minute';
-  } else if (absDiffInSeconds < 86400) {
-    value = -Math.round(diffInSeconds / 3600);
-    unit = 'hour';
-  } else if (absDiffInSeconds < 2629800) {
-    value = -Math.round(diffInSeconds / 86400);
-    unit = 'day';
-  } else if (absDiffInSeconds < 31557600) {
-    value = -Math.round(diffInSeconds / 2629800);
-    unit = 'month';
-  } else {
-    value = -Math.round(diffInSeconds / 31557600);
-    unit = 'year';
+    if (absDiffInSeconds < 60) {
+      value = -Math.round(diffInSeconds);
+      unit = 'second';
+    } else if (absDiffInSeconds < 3600) {
+      value = -Math.round(diffInSeconds / 60);
+      unit = 'minute';
+    } else if (absDiffInSeconds < 86400) {
+      value = -Math.round(diffInSeconds / 3600);
+      unit = 'hour';
+    } else if (absDiffInSeconds < 2629800) {
+      value = -Math.round(diffInSeconds / 86400);
+      unit = 'day';
+    } else if (absDiffInSeconds < 31557600) {
+      value = -Math.round(diffInSeconds / 2629800);
+      unit = 'month';
+    } else {
+      value = -Math.round(diffInSeconds / 31557600);
+      unit = 'year';
+    }
+
+    const rtf = new Intl.RelativeTimeFormat(locale, {
+      numeric: 'auto',
+    });
+
+    return rtf.format(value, unit);
+  } catch (error) {
+    console.error('autoFormatRelativeTime Error: ', error);
+    return '';
   }
-
-  const rtf = new Intl.RelativeTimeFormat(locale, {
-    numeric: 'auto',
-  });
-
-  return rtf.format(value, unit);
 };
 
-function getMostRecentSearchDate(searches: SavedSearch[]): Date | null {
+function getMostRecentSearchDate(searches: SavedSearchDTO[]): Date | null {
   if (searches.length === 0) {
     return null;
   }
 
   const timestamp = searches.reduce((latest, search) => {
-    return search.timestamp > latest.timestamp ? search : latest;
-  }).timestamp;
+    return search.updatedAt > latest.updatedAt ? search : latest;
+  }).updatedAt;
 
   return new Date(timestamp);
 }
@@ -72,17 +78,24 @@ const LastUpdated = ({ searches }: LastUpdatedProps) => {
 };
 
 export interface SavedSearch {
-  id: number;
   name: string;
-  filters?: Filter[];
+  data?: SavedSearchData;
   searchString?: string;
-  timestamp: string;
 }
 
-export const getSearchHistory = (): SavedSearch[] => {
-  const historyJSON = localStorage.getItem('searchHistory');
-  return historyJSON ? JSON.parse(historyJSON) : [];
-};
+export interface SavedSearchDTO {
+  id: number;
+  name: string;
+  data?: SavedSearchData;
+  searchString?: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface SavedSearchData {
+  filters?: Filter[];
+  searchString?: string;
+}
 
 export const SavedSearches = () => {
   const queryClient = useQueryClient();
@@ -92,9 +105,13 @@ export const SavedSearches = () => {
   const handleDeleteSearch = (id: number) => {
     if (!savedSearches) return;
 
-    const newSearchHistory = savedSearches.filter((search) => search.id !== id);
-    localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory));
-    queryClient.invalidateQueries('savedSearches');
+    axios
+      .delete('/api/saved-search', {
+        headers: { savedsearchid: id },
+      })
+      .then((r) => {
+        queryClient.invalidateQueries('savedSearches');
+      });
   };
 
   return (
