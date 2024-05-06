@@ -4,6 +4,7 @@ param location string
 // https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure
 resource applicationGatewayNSG 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: '${namePrefix}-application-gateway-nsg'
+  location: location
   properties: {
     securityRules: [
       {
@@ -48,6 +49,7 @@ resource applicationGatewayNSG 'Microsoft.Network/networkSecurityGroups@2023-09-
 // https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=consumption-only
 resource containerAppEnvironmentNSG 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: '${namePrefix}-container-app-environment-nsg'
+  location: location
   properties: {
     securityRules: [
       {
