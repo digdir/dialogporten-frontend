@@ -10,8 +10,6 @@ param subnetId string
 @description('The name of the existing container app environment to be used.')
 param containerAppEnvName string
 
-@description('Custom hostname to be used for the Application Gateway.')
-// todo: create entry in the hosted zone programmatically
 @export()
 type Configuration = {
   sku: {
@@ -24,6 +22,7 @@ type Configuration = {
     maxCapacity: int
   }?
   hostName: string
+  sslCertificateKeyVaultSecretKey: string
 }
 @description('Configuration settings for the Application Gateway, including SKU, hostname and autoscale parameters.')
 param configuration Configuration
@@ -60,8 +59,7 @@ resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssig
 
 var publicIpAddressId = publicIp.id
 
-// todo: make this parameter
-var sslCertificateSecretId = 'https://${srcKeyVault.name}${environment().suffixes.keyvaultDns}/secrets/dialogporten-uploaded'
+var sslCertificateSecretId = 'https://${srcKeyVault.name}${environment().suffixes.keyvaultDns}/secrets/${configuration.sslCertificateKeyVaultSecretKey}'
 
 var bffPool = {
   name: '${gatewayName}-bffBackendPool'
@@ -94,7 +92,7 @@ var bffProbe = {
   properties: {
     host: bffPool.properties.backendAddresses[0].fqdn
     protocol: 'Http'
-    path: '/api/liveness' // todo: create a separate endpoint for healthz?
+    path: '/api/liveness'
     interval: 30
     timeout: 30
     unhealthyThreshold: 3
@@ -124,7 +122,7 @@ var frontendProbe = {
   properties: {
     host: frontendPool.properties.backendAddresses[0].fqdn
     protocol: 'Http'
-    path: '/' // todo: create a separate endpoint for healthz?
+    path: '/'
     interval: 30
     timeout: 30
     unhealthyThreshold: 3
@@ -156,9 +154,6 @@ var frontendGatewayBackend = {
 resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' = {
   name: gatewayName
   location: location
-  dependsOn: [
-    // addKeyVaultReaderRole
-  ]
   properties: {
     autoscaleConfiguration: configuration.autoscaleConfiguration
     enableHttp2: true

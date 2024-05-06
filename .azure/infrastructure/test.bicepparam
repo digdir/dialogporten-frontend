@@ -29,4 +29,5 @@ param applicationGatewayConfiguration = {
     maxCapacity: 2
   }
   hostName: 'test.portal-pp.dialogporten.no'
+  sslCertificateKeyVaultSecretKey: 'dialogporten-uploaded'
 }

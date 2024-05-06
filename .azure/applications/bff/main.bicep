@@ -7,6 +7,8 @@ param environment string
 @minLength(3)
 param location string
 param port int = 80
+@minLength(3)
+param hostName string
 
 @minLength(3)
 @secure()
@@ -101,8 +103,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'HOSTNAME'
-    // todo: should be replaced with application gateway URL
-    value: 'https://${containerAppName}.${containerAppEnvironment.properties.defaultDomain}.${location}.azurecontainerapps.io'
+    value: hostName
   }
   {
     name: 'CLIENT_ID'

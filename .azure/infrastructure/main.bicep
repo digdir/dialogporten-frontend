@@ -175,14 +175,5 @@ module appConfigDatabaseConnectionString '../modules/appConfiguration/upsertKeyV
   }
 }
 
-// module dnsZone 'dnsZones/create.bicep' = {
-//     scope: az.resourceGroup('dns-rg')
-
-//     name: 'dnsZones'
-//     params: {
-//         // customDomainVerificationId: cae.outputs.customDomainVerifictaionId
-//     }
-// }
-
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName
