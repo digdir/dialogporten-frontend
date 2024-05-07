@@ -22,14 +22,20 @@ param redisSku RedisSku
 @minLength(1)
 param redisVersion string
 
-import { Sku as ApplicationGatewaySku } from '../modules/applicationGateway/main.bicep'
-param applicationGatewaySku ApplicationGatewaySku
+import { Configuration as ApplicationGatewayConfiguration } from '../modules/applicationGateway/main.bicep'
+param applicationGatewayConfiguration ApplicationGatewayConfiguration
 
 var secrets = {
   dialogportenPgAdminPassword: dialogportenPgAdminPassword
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
   sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
   sourceKeyVaultName: sourceKeyVaultName
+}
+
+var srcKeyVault = {
+  name: secrets.sourceKeyVaultName
+  subscriptionId: secrets.sourceKeyVaultSubscriptionId
+  resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
 var namePrefix = 'dp-fe-${environment}'
@@ -83,7 +89,18 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
-    subnetId: vnet.outputs.defaultSubnetId
+    subnetId: vnet.outputs.containerAppEnvironmentSubnetId
+  }
+}
+
+module privateDnsZone '../modules/privateDnsZone/main.bicep' = {
+  scope: resourceGroup
+  name: 'privateDnsZone'
+  params: {
+    namePrefix: namePrefix
+    defaultDomain: containerAppEnv.outputs.defaultDomain
+    vnetId: vnet.outputs.virtualNetworkId
+    staticIp: containerAppEnv.outputs.staticIp
   }
 }
 
@@ -93,9 +110,11 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    srcKeyVault: srcKeyVault
     containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.applicationGatewaySubnetId
-    sku: applicationGatewaySku
+    targetSubnetId: vnet.outputs.containerAppEnvironmentSubnetId
+    configuration: applicationGatewayConfiguration
   }
 }
 
@@ -115,12 +134,6 @@ module redis '../modules/redis/main.bicep' = {
 resource srcKeyVaultResource 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: secrets.sourceKeyVaultName
   scope: az.resourceGroup(secrets.sourceKeyVaultSubscriptionId, secrets.sourceKeyVaultResourceGroup)
-}
-
-var srcKeyVault = {
-  name: secrets.sourceKeyVaultName
-  subscriptionId: secrets.sourceKeyVaultSubscriptionId
-  resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
 // Create resources with dependencies to other resources
@@ -162,15 +175,6 @@ module appConfigDatabaseConnectionString '../modules/appConfiguration/upsertKeyV
     keyValueType: 'keyVaultReference'
   }
 }
-
-// module dnsZone 'dnsZones/create.bicep' = {
-//     scope: az.resourceGroup('dns-rg')
-
-//     name: 'dnsZones'
-//     params: {
-//         // customDomainVerificationId: cae.outputs.customDomainVerifictaionId
-//     }
-// }
 
 output resourceGroupName string = resourceGroup.name
 output postgreServerName string = postgresql.outputs.serverName

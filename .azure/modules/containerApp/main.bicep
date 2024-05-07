@@ -4,7 +4,6 @@ param image string
 param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
-param customDomain string?
 param probes { periodSeconds: int, initialDelaySeconds: int, type: string, httpGet: { path: string, port: int } }[] = []
 
 param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
@@ -35,14 +34,6 @@ var healthProbes = empty(probes)
 var ingress = {
   targetPort: port
   external: true
-  customDomains: customDomain != null
-    ? [
-        {
-          name: customDomain!
-          bindingType: 'Disabled'
-        }
-      ]
-    : []
   allowInsecure: true
 }
 

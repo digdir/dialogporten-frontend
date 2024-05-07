@@ -19,11 +19,15 @@ param redisSku = {
   capacity: 1
 }
 
-@allowed([
-  'Standard_v2'
-  'WAF_v2'
-])
-param applicationGatewaySku = {
-  name: 'Standard_v2'
-  tier: 'Standard_v2'
+param applicationGatewayConfiguration = {
+  sku: {
+    name: 'Standard_v2'
+    tier: 'Standard_v2'
+  }
+  autoscaleConfiguration: {
+    minCapacity: 1
+    maxCapacity: 2
+  }
+  hostName: 'test.portal-pp.dialogporten.no'
+  sslCertificateKeyVaultSecretKey: 'dialogporten-uploaded'
 }
