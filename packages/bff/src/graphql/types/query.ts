@@ -1,5 +1,6 @@
-import { objectType } from 'nexus';
+import { list, objectType } from 'nexus';
 import { getOrCreateProfile } from '../../entities.ts';
+import { SavedSearchRepository } from '../../db.ts';
 export const Query = objectType({
   name: 'Query',
   definition(t) {
@@ -14,6 +15,18 @@ export const Query = objectType({
           language,
           updatedAt,
         };
+      },
+    });
+    t.field('savedSearches', {
+      type: list('SavedSearches'),
+      resolve: async (source, args, ctx, info) => {
+        const sub = ctx.session.get('sub');
+        if (SavedSearchRepository) {
+          return await SavedSearchRepository.find({
+            where: { profile: { sub } },
+          });
+        }
+        return [];
       },
     });
     t.field('hello', {

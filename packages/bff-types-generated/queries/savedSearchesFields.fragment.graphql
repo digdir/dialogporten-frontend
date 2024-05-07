@@ -1,0 +1,15 @@
+fragment SavedSearchesFields on SavedSearches {
+    id
+    name
+    createdAt
+    updatedAt
+    data {
+      searchString
+      filters {
+        fieldName
+        value
+        label
+        operationName
+      }
+    }
+}

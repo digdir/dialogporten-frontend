@@ -6,8 +6,8 @@ import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import { SaveSearchButton } from './SaveSearchButton';
 import styles from './filterBar.module.css';
-import axios from 'axios';
-import { SavedSearch, SavedSearchData } from '../../pages/SavedSearches';
+import { createSavedSearch } from '../../api/queries.ts';
+import { SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -149,24 +149,19 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
 
   const handleSaveSearch = () => {
     const data: SavedSearchData = {
-      filters: activeFilters,
+      filters: activeFilters as SearchDataValueFilter[],
       searchString: searchString,
     };
-    const newSearch: SavedSearch = {
-      data,
-      name: '', // Needs functionality for saving a custom name
-    };
-    axios
-      .post('/api/saved-search', {
-        data: newSearch,
+
+    createSavedSearch('', data).then(() => {
+      openSnackbar({
+        message: t('savedSearches.saved_success'),
+        variant: 'success',
       })
-      .then(() => {
-        openSnackbar({
-          message: t('savedSearches.saved_success'),
-          variant: 'success',
-        });
-        queryClient.invalidateQueries('savedSearches');
-      });
+      queryClient.invalidateQueries('savedSearches');
+    }).catch((error) => {
+      console.error("Error creating saved search: ", error)
+    });
   };
 
   return (
