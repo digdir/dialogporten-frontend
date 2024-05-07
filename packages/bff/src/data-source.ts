@@ -16,7 +16,7 @@ export const connectionOptions: DataSourceOptions = {
   url: config.postgresql.connectionString,
   synchronize: config.typeormSynchronizeEnabled,
   logging: false,
-  entities: ['src/entities/*{.ts,.js}'],
+  entities: ['src/entities.ts'],
   migrations: [__dirname + '/migrations/**/*.ts'],
   ...(config.enableHttps && {
     extra: {

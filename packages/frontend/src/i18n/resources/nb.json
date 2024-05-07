@@ -17,6 +17,7 @@
   "sidebar.saved_searches": "Lagrede søk",
   "savedSearches.title": "{count, plural, =0 {Ingen lagrede søk} one {# lagret søk} other {# lagrede søk}}",
   "savedSearches.saved_success": "Søk lagret!",
+  "savedSearches.deleted_success": "Søk slettet!",
   "savedSearches.lastUpdated": "Sist oppdatert: ",
   "sidebar.settings": "Innstillinger",
   "filter_bar.add_filter": "Legg til",

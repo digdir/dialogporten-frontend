@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchString } from '..';
-import { SavedSearch, getSearchHistory } from '../../pages/SavedSearches';
 import { useSnackbar } from '../Snackbar/useSnackbar.ts';
+import { useCallback, useEffect, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import { SaveSearchButton } from './SaveSearchButton';
 import styles from './filterBar.module.css';
+import axios from 'axios';
+import { SavedSearch, SavedSearchData } from '../../pages/SavedSearches';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -100,6 +101,10 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
   const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
   const { openSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    setActiveFilters(initialFilters || []);
+  }, [initialFilters]);
+
   const handleOnRemove = useCallback(
     (fieldName: string) => {
       const updatedFilters = activeFilters.filter((filter) => filter.fieldName !== fieldName);
@@ -143,22 +148,25 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
   );
 
   const handleSaveSearch = () => {
-    const searchHistory: SavedSearch[] = getSearchHistory();
-    const newSearch: SavedSearch = {
-      id: Date.now(),
+    const data: SavedSearchData = {
       filters: activeFilters,
-      timestamp: new Date().toISOString(),
-      name: '', // Needs functionality for saving a custom name
       searchString: searchString,
     };
-    searchHistory.push(newSearch);
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-    openSnackbar({
-      message: t('savedSearches.saved_success'),
-      variant: 'success',
-    });
-
-    void queryClient.invalidateQueries('savedSearches'); // Step 3: Invalidate the 'savedSearches' query
+    const newSearch: SavedSearch = {
+      data,
+      name: '', // Needs functionality for saving a custom name
+    };
+    axios
+      .post('/api/saved-search', {
+        data: newSearch,
+      })
+      .then(() => {
+        openSnackbar({
+          message: t('savedSearches.saved_success'),
+          variant: 'success',
+        });
+        queryClient.invalidateQueries('savedSearches');
+      });
   };
 
   return (

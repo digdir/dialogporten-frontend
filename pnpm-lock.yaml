@@ -20,6 +20,9 @@ importers:
       lint-staged:
         specifier: ^15.2.2
         version: 15.2.2
+      mprocs:
+        specifier: ^0.6.4
+        version: 0.6.4
       turbo:
         specifier: 1.12.2
         version: 1.12.2
@@ -318,6 +321,9 @@ importers:
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
+      axios:
+        specifier: ^1.6.2
+        version: 1.6.7
       bff-types-generated:
         specifier: workspace:*
         version: link:../bff-types-generated
