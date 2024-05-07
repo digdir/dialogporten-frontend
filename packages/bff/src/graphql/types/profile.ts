@@ -5,14 +5,14 @@ export const Profile = objectType({
   definition(t) {
     t.string('language', {
       description: 'Preferred language for the profile',
-      resolve: (source, args, ctx, info) => {
-        return source.language;
+      resolve: (profile, args, ctx, info) => {
+        return profile.language;
       },
     });
     t.string('updatedAt', {
       description: 'Last updated',
-      resolve: (source, args, ctx, info) => {
-        return source.updatedAt;
+      resolve: (profile, args, ctx, info) => {
+        return profile.updatedAt;
       },
     });
   },

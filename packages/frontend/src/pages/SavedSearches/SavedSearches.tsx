@@ -1,19 +1,20 @@
+import { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
-import styles from './savedSearches.module.css';
 import { useQuery, useQueryClient } from 'react-query';
-import { getSavedSearches } from '../../api/queries';
-import { Filter } from '../../components/FilterBar';
-import { SavedSearchesItem } from './SavedSearchesItem';
-import axios from 'axios';
+import { deleteSavedSearch, fetchSavedSearches } from '../../api/queries';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
+import { SavedSearchesItem } from './SavedSearchesItem';
+import styles from './savedSearches.module.css';
+import { useState } from 'react';
+import { EditSavedSearch } from './EditSearchesItem';
 
-export const useSavedSearches = () => useQuery('savedSearches', getSavedSearches);
+export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
 
 interface LastUpdatedProps {
-  searches: SavedSearchDTO[] | undefined;
+  searches?: SavedSearchesFieldsFragment[];
 }
 
-const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => {
+export const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => {
   try {
     const now = new Date();
     const diffInSeconds = (now.getTime() - date.getTime()) / 1000;
@@ -53,19 +54,22 @@ const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => {
   }
 };
 
-function getMostRecentSearchDate(searches: SavedSearchDTO[]): Date | null {
-  if (searches.length === 0) {
+function getMostRecentSearchDate(data: SavedSearchesFieldsFragment[]): Date | null {
+  try {
+    if (!data?.length) {
+      return null;
+    }
+    const timestamp = data?.reduce((latest, search) => {
+      return parseInt(search?.updatedAt!, 10) > parseInt(latest?.updatedAt!, 10) ? search : latest;
+    })!.updatedAt;
+    return new Date(parseInt(timestamp, 10));
+  } catch (error) {
+    console.error('getMostRecentSearchDate Error: ', error);
     return null;
   }
-
-  const timestamp = searches.reduce((latest, search) => {
-    return search.updatedAt > latest.updatedAt ? search : latest;
-  }).updatedAt;
-
-  return new Date(timestamp);
 }
 
-const LastUpdated = ({ searches }: LastUpdatedProps) => {
+export const LastUpdated = ({ searches }: LastUpdatedProps) => {
   const { t } = useTranslation();
   if (!searches || !searches?.length) return null;
   const lastUpdated = getMostRecentSearchDate(searches) as Date;
@@ -78,57 +82,45 @@ const LastUpdated = ({ searches }: LastUpdatedProps) => {
   );
 };
 
-export interface SavedSearch {
-  name: string;
-  data?: SavedSearchData;
-  searchString?: string;
-}
-
-export interface SavedSearchDTO {
-  id: number;
-  name: string;
-  data?: SavedSearchData;
-  searchString?: string;
-  updatedAt: string;
-  createdAt: string;
-}
-
-export interface SavedSearchData {
-  filters?: Filter[];
-  searchString?: string;
-}
-
 export const SavedSearches = () => {
   const queryClient = useQueryClient();
+  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
   const { t } = useTranslation();
-  const { data: savedSearches } = useSavedSearches();
+  const { data } = useSavedSearches();
+  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { openSnackbar } = useSnackbar();
 
-  const handleDeleteSearch = (id: number) => {
-    if (!savedSearches) return;
+  const handleDeleteSearch = async (id: number) => {
+    if (!id) return;
 
-    axios
-      .delete('/api/saved-search', {
-        headers: { savedsearchid: id },
-      })
-      .then(() => {
-        openSnackbar({
-          message: t('savedSearches.deleted_success'),
-          variant: 'success',
-        });
-        queryClient.invalidateQueries('savedSearches');
+    try {
+      await deleteSavedSearch(id)
+      openSnackbar({
+        message: t('savedSearches.deleted_success'),
+        variant: 'success',
       });
+      queryClient.invalidateQueries('savedSearches');
+    } catch (error) {
+      console.error('Failed to delete saved search:', error);
+      openSnackbar({
+        message: t('savedSearches.delete_failed'),
+        variant: 'error',
+      });
+    }
   };
 
   return (
     <main>
       <section className={styles.savedSearchesWrapper}>
+        <EditSavedSearch key={selectedSavedSearch?.id} isOpen={!!selectedSavedSearch} savedSearch={selectedSavedSearch} onDelete={handleDeleteSearch} onClose={() => setSelectedSavedSearch(undefined)} />
         <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        <div className={styles.savedSearchesContainer}>
-          {savedSearches?.map((search) => (
-            <SavedSearchesItem key={search.id} savedSearch={search} onDelete={handleDeleteSearch} />
-          ))}
-        </div>
+        {!!savedSearches?.length &&
+          <div className={styles.savedSearchesContainer}>
+            {savedSearches?.map((search) => (
+              <SavedSearchesItem key={search?.id} savedSearch={search} onDelete={handleDeleteSearch} setSelectedSavedSearch={setSelectedSavedSearch} />
+            ))}
+          </div>
+        }
         <LastUpdated searches={savedSearches} />
       </section>
     </main>

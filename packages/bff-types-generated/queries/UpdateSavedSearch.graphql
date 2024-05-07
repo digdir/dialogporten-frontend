@@ -1,0 +1,6 @@
+mutation UpdateSavedSearch($id: Int!, $name: String!) {
+    updateSavedSearch(id: $id, name: $name) {
+    success,
+    message
+  }
+}

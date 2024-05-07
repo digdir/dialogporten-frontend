@@ -22,7 +22,6 @@
     "@digdir/designsystemet-theme": "0.13.1-alpha.0",
     "@heroicons/react": "^2.1.3",
     "@navikt/aksel-icons": "^5.18.0",
-    "axios": "^1.6.2",
     "bff-types-generated": "workspace:*",
     "classnames": "^2.5.1",
     "dialogporten-types-generated": "workspace:*",

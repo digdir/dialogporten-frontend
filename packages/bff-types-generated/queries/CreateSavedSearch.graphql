@@ -1,0 +1,5 @@
+mutation CreateSavedSearch($name: String!, $data: SavedSearchInput!) {
+  createSavedSearch(name: $name, data: $data) {
+    ...SavedSearchesFields
+  }
+}

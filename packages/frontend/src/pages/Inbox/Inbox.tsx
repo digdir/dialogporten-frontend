@@ -10,7 +10,7 @@ import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '.
 import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
-import { SavedSearchData } from '../SavedSearches';
+import { SavedSearchData } from 'bff-types-generated';
 import styles from './inbox.module.css';
 
 export interface InboxItemInput {

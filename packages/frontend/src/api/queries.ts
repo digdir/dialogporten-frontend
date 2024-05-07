@@ -1,19 +1,21 @@
-import axios from 'axios';
-import { HelloQuery, ProfileQuery, getSdk } from 'bff-types-generated';
 import { DialogByIdPayload } from 'dialogporten-types-generated';
 import { GraphQLClient, gql } from 'graphql-request';
-import { SavedSearchDTO } from '../pages/SavedSearches';
+import { dialogs } from '../mocks/dialogs.tsx';
+import { HelloQuery, ProfileQuery, getSdk, SavedSearchesQuery, DeleteSavedSearchMutation, UpdateSavedSearchMutation, CreateSavedSearchMutation, SavedSearchInput } from 'bff-types-generated';
 
 const graphQLEndpoint = '/api/graphql';
 const graphQLClient = new GraphQLClient(graphQLEndpoint, { credentials: 'include' });
 export const graphQLSDK = getSdk(graphQLClient);
 
-export const getSavedSearches = (): Promise<SavedSearchDTO[]> =>
-  axios.get<SavedSearchDTO[]>('/api/saved-search').then((response) => response.data);
+export const getDialogs = (): Promise<typeof dialogs> => fetch('/dialogs').then((resp) => resp.json());
 
 export const fetchHelloWorld = (): Promise<HelloQuery> => graphQLSDK.hello();
 
 export const fetchProfile = (): Promise<ProfileQuery> => graphQLSDK.profile();
+export const fetchSavedSearches = (): Promise<SavedSearchesQuery> => graphQLSDK.savedSearches();
+export const deleteSavedSearch = (id: number): Promise<DeleteSavedSearchMutation> => graphQLSDK.DeleteSavedSearch({ id });
+export const updateSavedSearch = (id: number, name: string): Promise<UpdateSavedSearchMutation> => graphQLSDK.UpdateSavedSearch({ id, name });
+export const createSavedSearch = (name: string, data: SavedSearchInput): Promise<CreateSavedSearchMutation> => graphQLSDK.CreateSavedSearch({ name, data });
 
 /* This will be replaced as soon as both BFF and Dialogporten schemas er stichted together */
 export const fetchDialogByIdExample = (dialogId: string): Promise<DialogByIdPayload> => {
