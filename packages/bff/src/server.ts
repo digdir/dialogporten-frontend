@@ -7,18 +7,17 @@ import { FastifySessionOptions } from '@fastify/session';
 import RedisStore from 'connect-redis';
 import Fastify from 'fastify';
 import fastifyGraphiql from 'fastify-graphiql';
-import fastifyGraphql from 'fastify-graphql';
 import { default as Redis } from 'ioredis';
 import { oidc, userApi, verifyToken } from './auth/index.ts';
 import { initAppInsights } from './azure/ApplicationInsightsInit.ts';
 import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
-import { schema } from './schema.ts';
+import { graphqlApi } from './graphql/index.ts';
 
 const {
   version,
-	port,
+  port,
   isAppInsightsEnabled,
   applicationInsights,
   host,
@@ -106,10 +105,7 @@ const startServer = async (): Promise<void> => {
     },
   });
 
-  server.register(fastifyGraphql, {
-    schema,
-    url: '/api/graphql',
-  });
+  server.register(graphqlApi);
 
   server.register(fastifyGraphiql, {
     url: '/api/graphiql',

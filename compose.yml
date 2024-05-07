@@ -48,8 +48,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    volumes:
-      - redis_cache:/data
+
   # GUI for checking whats in Redis
   redisinsight:
     container_name: redisinsight
@@ -235,7 +234,5 @@ services:
 volumes:
   pgadmin_data:
   postgres_data:
-  redis_cache:
-    driver: local
   redisinsight_cache:
     driver: local
