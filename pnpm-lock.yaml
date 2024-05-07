@@ -20,6 +20,9 @@ importers:
       lint-staged:
         specifier: ^15.2.2
         version: 15.2.2
+      mprocs:
+        specifier: ^0.6.4
+        version: 0.6.4
       turbo:
         specifier: 1.12.2
         version: 1.12.2
