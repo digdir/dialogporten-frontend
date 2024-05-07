@@ -137,6 +137,30 @@ services:
             - node_modules/
             - .azure/
             - .git/
+        - action: sync+restart
+          path: ./packages/dialogporten-types-generated/
+          target: /app/packages/dialogporten-types-generated/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync+restart
+          path: ./packages/bff-types-generated/
+          target: /app/packages/bff-types-generated/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync+restart
+          path: ./packages/fastify-graphiql/
+          target: /app/packages/fastify-graphiql/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
 
   bff-migration:
     container_name: bff-migration
@@ -181,6 +205,16 @@ services:
             - node_modules/
             - .azure/
             - .git/
+        - action: sync+restart
+          path: ./packages/bff-types-generated/
+          target: /app/packages/bff-types-generated/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
 
   storybook:
     container_name: storybook
@@ -209,6 +243,9 @@ services:
             - node_modules/
             - .azure/
             - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
 
   docs:
     container_name: docs
@@ -230,6 +267,9 @@ services:
             - node_modules/
             - .azure/
             - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
 
 volumes:
   pgadmin_data:
