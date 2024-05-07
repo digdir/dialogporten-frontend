@@ -1,5 +1,10 @@
+@description('The geographic location where the resource will be deployed')
 param location string
+
+@description('The prefix used for naming resources to ensure unique names')
 param namePrefix string
+
+@description('The identifier for the subnet where the container app environment will be deployed')
 param subnetId string
 
 param appInsightWorkspaceName string

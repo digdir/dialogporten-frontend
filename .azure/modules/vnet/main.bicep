@@ -1,4 +1,7 @@
+@description('The prefix used for naming resources to ensure unique names')
 param namePrefix string
+
+@description('The location where the resources will be deployed')
 param location string
 
 // https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure
