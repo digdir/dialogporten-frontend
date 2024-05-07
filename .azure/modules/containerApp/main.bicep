@@ -53,7 +53,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     environmentId: containerAppEnvId
     configuration: {
       secrets: secrets
-      activeRevisionsMode: 'Multiple'
+      activeRevisionsMode: 'Single'
       ingress: ingress
     }
     template: {
