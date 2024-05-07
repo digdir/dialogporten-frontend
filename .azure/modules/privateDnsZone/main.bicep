@@ -17,14 +17,15 @@ param staticIp string
 @description('The time-to-live for DNS records in seconds')
 param ttl int = 3600
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: defaultDomain
   location: 'global'
   properties: {}
 }
 
-resource aRecord1 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
+resource aRecord1 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   name: defaultDomain
+  parent: privateDnsZone
   properties: {
     ttl: ttl
     aRecords: [
@@ -33,12 +34,9 @@ resource aRecord1 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
       }
     ]
   }
-  dependsOn: [
-    privateDnsZone
-  ]
 }
 
-resource aRecord2 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
+resource aRecord2 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   parent: privateDnsZone
   name: '@'
   properties: {
@@ -51,7 +49,7 @@ resource aRecord2 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
   }
 }
 
-resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateDnsZone
   name: '${namePrefix}-pdns-link'
   location: 'global'

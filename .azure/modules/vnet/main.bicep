@@ -182,6 +182,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
           networkSecurityGroup: {
             id: containerAppEnvironmentNSG.id
           }
+          privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }
     ]
@@ -192,3 +193,4 @@ output virtualNetworkName string = virtualNetwork.name
 output virtualNetworkId string = virtualNetwork.id
 output defaultSubnetId string = virtualNetwork.properties.subnets[0].id
 output applicationGatewaySubnetId string = virtualNetwork.properties.subnets[1].id
+output containerAppEnvironmentSubnetId string = virtualNetwork.properties.subnets[2].id

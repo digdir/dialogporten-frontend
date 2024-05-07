@@ -89,7 +89,7 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     namePrefix: namePrefix
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
-    subnetId: vnet.outputs.defaultSubnetId
+    subnetId: vnet.outputs.containerAppEnvironmentSubnetId
   }
 }
 
@@ -113,6 +113,7 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
     srcKeyVault: srcKeyVault
     containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.applicationGatewaySubnetId
+    targetSubnetId: vnet.outputs.containerAppEnvironmentSubnetId
     configuration: applicationGatewayConfiguration
   }
 }
