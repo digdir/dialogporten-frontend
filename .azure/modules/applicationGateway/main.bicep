@@ -197,6 +197,14 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
           publicIPAddress: {
             id: publicIpAddressId
           }
+          privateIPAllocationMethod: 'Dynamic'
+          privateLinkConfiguration: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/privateLinkConfigurations',
+              gatewayName,
+              '${gatewayName}-privateLinkConfiguration'
+            )
+          }
         }
       }
     ]
