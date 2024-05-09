@@ -24,8 +24,8 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 }
 
 resource aRecord1 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
-  name: defaultDomain
   parent: privateDnsZone
+  name: '*'
   properties: {
     ttl: ttl
     aRecords: [
