@@ -5,7 +5,7 @@
     "prepare": "pnpm generate:types-gql",
     "build": "pnpm generate:types-gql",
     "generate:types-gql": "NODE_OPTIONS=\"--loader ts-node/esm --no-warnings=ExperimentalWarning\" graphql-codegen-esm --config codegen.ts",
-    "test": "echo \"Error: no test specified\""
+    "test": "vitest run"
   },
   "dependencies": {
     "@graphql-codegen/cli": "^5.0.2",
@@ -23,7 +23,8 @@
     "@graphql-codegen/typescript-resolvers": "^4.0.6",
     "@parcel/watcher": "^2.4.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.2.2"
   },
   "type": "module"
 }
