@@ -229,6 +229,9 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
+      vitest:
+        specifier: ^1.2.2
+        version: 1.2.2(@types/node@16.18.78)(jsdom@24.0.0)
 
   packages/dialogporten-types-generated:
     dependencies:
@@ -250,9 +253,6 @@ importers:
       swagger-typescript-api:
         specifier: 13.0.3
         version: 13.0.3
-      vitest:
-        specifier: ^1.2.2
-        version: 1.2.2
     devDependencies:
       '@graphql-codegen/graphql-modules-preset':
         specifier: ^4.0.6
@@ -263,6 +263,9 @@ importers:
       '@graphql-codegen/typescript-resolvers':
         specifier: ^4.0.6
         version: 4.0.6(graphql@16.8.1)
+      vitest:
+        specifier: ^1.2.2
+        version: 1.2.2
 
   packages/docs:
     dependencies:
@@ -336,6 +339,10 @@ importers:
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
+    devDependencies:
+      vitest:
+        specifier: ^1.2.2
+        version: 1.2.2
 
   packages/frontend:
     dependencies:
@@ -21081,7 +21088,7 @@ packages:
       - sugarss
       - supports-color
       - terser
-    dev: false
+    dev: true
 
   /vitest@1.2.2(@types/node@16.18.78)(jsdom@24.0.0):
     resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}

@@ -41,6 +41,6 @@
     }
   },
   "files": {
-    "ignore": [".azure", ".github", "node_modules", "generated"]
+    "ignore": [".azure", ".github", "node_modules", "generated", "dist", "build", "storybook-static"]
   }
 }

@@ -3,6 +3,7 @@
   "main": "src/index.ts",
   "version": "1.0.0",
   "scripts": {
+		"test": "vitest run",
     "prepare": "pnpm run generate:types",
     "build": "pnpm run generate:types",
     "generate:types": "pnpm generate:types-gql && pnpm generate:raw-gql",
@@ -17,13 +18,13 @@
     "glob": "^10.3.12",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
-    "swagger-typescript-api": "13.0.3",
-    "vitest": "^1.2.2"
+    "swagger-typescript-api": "13.0.3"
   },
   "devDependencies": {
     "@graphql-codegen/graphql-modules-preset": "^4.0.6",
     "@graphql-codegen/typescript": "^4.0.6",
-    "@graphql-codegen/typescript-resolvers": "^4.0.6"
+    "@graphql-codegen/typescript-resolvers": "^4.0.6",
+    "vitest": "^1.2.2"
   },
   "type": "module"
 }
