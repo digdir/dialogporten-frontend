@@ -19,6 +19,9 @@ const envVariables = z.object({
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
   MIGRATION_RUN: z.coerce.boolean().default(false),
+  DIALOGPORTEN_URL: z
+    .string()
+    .default('https://dp-be-test-graphql-ca.lemonisland-e7641482.norwayeast.azurecontainerapps.io'),
 });
 
 const env = envVariables.parse(process.env);
@@ -44,6 +47,7 @@ const config = {
   redisConnectionString: env.REDIS_CONNECTION_STRING,
   typeormSynchronizeEnabled: env.TYPEORM_SYNCHRONIZE_ENABLED,
   migrationRun: env.MIGRATION_RUN,
+  dialogportenURL: env.DIALOGPORTEN_URL,
 };
 
 export default config;

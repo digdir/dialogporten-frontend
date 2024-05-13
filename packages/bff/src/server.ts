@@ -112,6 +112,11 @@ const startServer = async (): Promise<void> => {
     graphqlURL: '/api/graphql',
   });
 
+  server.register(fastifyGraphiql, {
+    url: '/api/graphiql2',
+    graphqlURL: '/api/graphql2',
+  });
+
   server.listen({ port, host }, (error, address) => {
     if (error) {
       throw error;

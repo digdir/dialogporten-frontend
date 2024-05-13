@@ -20,7 +20,7 @@ export const fetchProfile = (): Promise<ProfileQuery> => graphQLSDK.profile();
 /* This will be replaced as soon as both BFF and Dialogporten schemas er stichted together */
 export const fetchDialogByIdExample = (dialogId: string): Promise<DialogByIdPayload> => {
   /* temporary endpoint forwarding request to Dialogporten */
-  const graphQLEndpoint = '/api/test';
+  const graphQLEndpoint = '/api/graphql2';
   const graphQLClient = new GraphQLClient(graphQLEndpoint);
   const document = gql`
   query DialogById($id: UUID!) {
