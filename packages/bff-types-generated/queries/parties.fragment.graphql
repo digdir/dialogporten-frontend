@@ -1,0 +1,6 @@
+fragment partyFields on AuthorizedParty {
+      party
+      partyType
+      isAccessManager
+      isMainAdministrator
+}

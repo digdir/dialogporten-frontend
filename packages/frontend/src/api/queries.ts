@@ -1,9 +1,9 @@
-import { HelloQuery, ProfileQuery, getSdk } from 'bff-types-generated';
+import axios from 'axios';
+import { HelloQuery, PartiesQuery, ProfileQuery, getSdk } from 'bff-types-generated';
 import { DialogByIdPayload } from 'dialogporten-types-generated';
 import { GraphQLClient, gql } from 'graphql-request';
-import { SavedSearchDTO } from '../pages/SavedSearches';
-import axios from 'axios';
 import { dialogs } from '../mocks/dialogs.tsx';
+import { SavedSearchDTO } from '../pages/SavedSearches';
 
 const graphQLEndpoint = '/api/graphql';
 const graphQLClient = new GraphQLClient(graphQLEndpoint, { credentials: 'include' });
@@ -17,6 +17,8 @@ export const getSavedSearches = (): Promise<SavedSearchDTO[]> =>
 export const fetchHelloWorld = (): Promise<HelloQuery> => graphQLSDK.hello();
 
 export const fetchProfile = (): Promise<ProfileQuery> => graphQLSDK.profile();
+
+export const fetchParties = (): Promise<PartiesQuery> => graphQLSDK.parties();
 
 /* This will be replaced as soon as both BFF and Dialogporten schemas er stichted together */
 export const fetchDialogByIdExample = (dialogId: string): Promise<DialogByIdPayload> => {
