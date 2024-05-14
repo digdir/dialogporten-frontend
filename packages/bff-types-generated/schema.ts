@@ -1,3 +1,2 @@
-import { schema } from 'bff';
-
-export default schema;
+import { stichedSchema } from 'bff';
+export default stichedSchema;

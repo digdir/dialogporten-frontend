@@ -1,15 +1,12 @@
-import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { AsyncExecutor } from '@graphql-tools/utils';
 import axios from 'axios';
-import { schema_verified_graphql } from 'dialogporten-types-generated';
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { print } from 'graphql';
-import { buildSchema } from 'graphql';
 import { createHandler } from 'graphql-http/lib/use/fastify';
 import config from '../config.ts';
-import { schema } from './schema.ts';
+import { bffSchema, dialogportenSchema } from './schema.ts';
 
 const plugin: FastifyPluginAsync = async (fastify, options) => {
   const remoteExecutor: AsyncExecutor = async ({ document, variables, operationName, context }) => {
@@ -31,12 +28,12 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
   };
 
   const remoteExecutorSubschema = {
-    schema: buildSchema(schema_verified_graphql),
+    schema: dialogportenSchema,
     executor: remoteExecutor,
   };
 
   const stitchedSchema = stitchSchemas({
-    subschemas: [remoteExecutorSubschema, schema],
+    subschemas: [remoteExecutorSubschema, bffSchema],
   });
 
   fastify.post(

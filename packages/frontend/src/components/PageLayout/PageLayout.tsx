@@ -1,8 +1,9 @@
+import { PartiesQuery } from 'bff-types-generated';
 import React, { useEffect } from 'react';
-import { useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import { fetchDialogByIdExample, fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
+import { fetchDialogByIdExample, fetchHelloWorld, fetchParties, fetchProfile } from '../../api/queries.ts';
 import { useAuthenticated } from '../../auth';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
@@ -16,11 +17,16 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
   }, [location, fn]);
 };
 
+export const useParties = () => useQuery<PartiesQuery>('parties', fetchParties);
+
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const [companyName, setCompanyName] = React.useState<string>('Aker Solutions AS');
   const isCompany = !!companyName;
   const isDebugHeaderScreenEnabled = useFeatureFlag<boolean>(FeatureFlagKeys.EnableDebugHeaderScreen);
+  const { data: partiesData } = useParties();
+  const defaultParty = (partiesData?.parties ?? []).find((party) => party.partyType === 'Person')?.party;
+  console.log('Default party uri used for fetching dialogs: ', defaultParty);
 
   useAuthenticated();
   useUpdateOnLocationChange(() => getSearchStringFromQueryParams(queryClient));
