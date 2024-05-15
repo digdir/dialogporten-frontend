@@ -1,0 +1,32 @@
+fragment SearchDialogFields on SearchDialog {
+  id
+  party
+  progress
+  guiAttachmentCount
+  status
+  createdAt
+  updatedAt
+  extendedStatus
+  latestActivity {
+    description {
+      value
+      cultureCode
+    }
+    dialogElementId
+    performedBy {
+      value
+      cultureCode
+    }
+  }
+  content {
+    ...DialogContentFields
+  }
+}
+
+fragment DialogContentFields on Content {
+    type
+    value {
+      value
+      cultureCode
+    }
+}

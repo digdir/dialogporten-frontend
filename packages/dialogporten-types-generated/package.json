@@ -13,7 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@digdir/dialogporten-schema": "1.0.9",
+    "@digdir/dialogporten-schema": "1.0.10",
     "@graphql-codegen/cli": "^5.0.2",
     "glob": "^10.3.12",
     "graphql": "^16.8.1",

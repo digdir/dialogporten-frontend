@@ -1,5 +1,3 @@
-import { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
-
 export const dialogs = [
   {
     id: '49608e01-0329-0572-aaaf-20fbb19d3b4a',
@@ -461,25 +459,3 @@ export const dialogs = [
     ],
   },
 ];
-
-export function mapDialogDtoToInboxItem(input: typeof dialogs): InboxItemInput[] {
-  return input.map((item) => {
-    const titleObj = item?.content?.find((c) => c.type === 'Title');
-    const summaryObj = item?.content?.find((c) => c.type === 'Summary');
-    const sender = item.activities?.length
-      ? item.activities[item.activities.length - 1]?.performedBy?.[0]?.value ?? 'Unknown'
-      : 'Unknown';
-    return {
-      id: item.id ?? 'MISSING_ID', // Providing a default value for id if it's undefined
-      title: titleObj?.value?.[0]?.value || 'No Title',
-      description: summaryObj?.value?.[0]?.value ?? 'No Description',
-      sender: { label: sender },
-      receiver: { label: 'Static Receiver' },
-      tags: [],
-      linkTo: `/inbox/${item.id}`,
-      date: item.createdAt ?? '',
-      createdAt: item.createdAt ?? '',
-      status: item.status ?? 'UnknownStatus',
-    };
-  });
-}

@@ -1,0 +1,9 @@
+query getAllDialogsForParties($partyURIs: [String!]) {
+    searchDialogs(input: {
+      party: $partyURIs
+    }) {
+    items {
+      ...SearchDialogFields
+    }
+  }
+}
