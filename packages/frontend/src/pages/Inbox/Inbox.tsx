@@ -2,14 +2,14 @@ import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashI
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QueryClient, useQuery } from 'react-query';
+import { QueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
-import { getDialogs } from '../../api/queries.ts';
+import { useDialogs } from '../../api/useDialogs.ts';
+import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
-import { mapDialogDtoToInboxItem } from '../../mocks/dialogs.tsx';
 import { SavedSearchData } from '../SavedSearches';
 import styles from './inbox.module.css';
 
@@ -92,9 +92,9 @@ export const Inbox = () => {
     [key: string]: boolean;
   }>({});
   const location = useLocation();
-
-  const { data: dialogs } = useQuery('dialogs', getDialogs);
-  const dialogData = useMemo(() => mapDialogDtoToInboxItem(dialogs || []), [dialogs]);
+  const { parties } = useParties();
+  const partyURIs = parties?.map((p) => p.party) ?? [];
+  const { dialogs } = useDialogs(partyURIs);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
 
@@ -103,7 +103,7 @@ export const Inbox = () => {
   }, [location]);
 
   const filteredData = useMemo(() => {
-    return dialogData.filter((item) =>
+    return dialogs.filter((item) =>
       activeFilters.every((filter) => {
         if (Array.isArray(filter.value)) {
           return filter.value.includes(String(item[filter.fieldName as keyof InboxItemInput]));
@@ -118,7 +118,7 @@ export const Inbox = () => {
         return true;
       }),
     );
-  }, [dialogData, activeFilters]);
+  }, [dialogs, activeFilters]);
 
   const filterBarFields: FilterBarField[] = useMemo(() => {
     return [
