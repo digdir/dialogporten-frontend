@@ -14,3 +14,7 @@
   --background-color: #E9F5FF;
   --button-color: #111D46;
 }
+
+body, html {
+	margin: 0;
+}
