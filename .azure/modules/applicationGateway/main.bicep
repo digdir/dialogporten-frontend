@@ -173,11 +173,11 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-04-01' =
     ]
     privateLinkConfigurations: [
       {
-        name: '${gatewayName}-privateLinkConfiguration'
+        name: '${gatewayName}-plc'
         properties: {
           ipConfigurations: [
             {
-              name: '${gatewayName}-privateLinkServiceConnection'
+              name: 'default'
               properties: {
                 primary: true
                 privateIPAllocationMethod: 'Dynamic'
