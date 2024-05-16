@@ -121,6 +121,10 @@ var containerAppEnvVars = [
     name: 'SESSION_SECRET'
     secretRef: idPortenSessionSecretSecret.name
   }
+  {
+    name: 'TYPEORM_SYNCHRONIZE_ENABLED'
+    value: 'true'
+  }
 ]
 
 module containerApp '../../modules/containerApp/main.bicep' = {
