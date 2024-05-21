@@ -4,6 +4,18 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './actionPanel.module.css';
 
+const BulkHeader: React.FC = ({ children }) => {
+  return <div className={styles.bulkHeader}>{children}</div>;
+};
+
+const BulkFooter: React.FC = ({ children }) => {
+  return (
+    <div className={styles.bulkFooter}>
+      <div className={styles.actionPanel}>{children}</div>
+    </div>
+  );
+};
+
 interface ActionButton {
   label: string;
   icon: React.ReactElement;
@@ -37,36 +49,36 @@ interface ActionPanelProps {
 export function ActionPanel({ actionButtons, onUndoSelection, selectedItemCount = 0 }: ActionPanelProps) {
   const { t } = useTranslation();
   return (
-    <div className={styles.actionPanel}>
-      <div className={styles.actionButtons}>
-        {actionButtons
-          .filter((actionBtn) => actionBtn.hidden !== true)
-          .map(({ label, onClick, icon, disabled }) => {
-            return (
-              <Button
-                className={styles.actionButton}
-                key={label}
-                onClick={onClick}
-                disabled={disabled}
-                variant="tertiary"
-                size="small"
-              >
-                <span className={styles.actionButtonIcon}>{icon}</span>
-                <span className={styles.actionButtonLabel}>{label}</span>
-              </Button>
-            );
-          })}
-      </div>
-      {selectedItemCount > 0 && (
-        <div>
-          <Button className={styles.undoButton} onClick={onUndoSelection} variant="tertiary" size="small">
-            <span className={styles.undoButtonLabel}>{t('actionPanel.chosen', { count: selectedItemCount })}</span>
-            <span className={styles.undoButtonIcon}>
-              <XMarkIcon />
-            </span>
-          </Button>
+    <>
+      <BulkHeader>
+        <span className={styles.undoButtonLabel}>{t('actionPanel.chosen', { count: selectedItemCount })}</span>
+        <Button className={styles.undoButton} onClick={onUndoSelection} variant="tertiary" size="small">
+          <span className={styles.undoButtonIcon}>
+            <XMarkIcon />
+          </span>
+        </Button>
+      </BulkHeader>
+      <BulkFooter>
+        <div className={styles.actionButtons}>
+          {actionButtons
+            .filter((actionBtn) => actionBtn.hidden !== true)
+            .map(({ label, onClick, icon, disabled }) => {
+              return (
+                <Button
+                  className={styles.actionButton}
+                  key={label}
+                  onClick={onClick}
+                  disabled={disabled}
+                  variant="tertiary"
+                  size="small"
+                >
+                  <span className={styles.actionButtonIcon}>{icon}</span>
+                  <span className={styles.actionButtonLabel}>{label}</span>
+                </Button>
+              );
+            })}
         </div>
-      )}
-    </div>
+      </BulkFooter>
+    </>
   );
 }
