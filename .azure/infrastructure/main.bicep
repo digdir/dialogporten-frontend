@@ -93,14 +93,35 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   }
 }
 
-module privateDnsZone '../modules/privateDnsZone/main.bicep' = {
+module containerAppEnvPrivateDnsZone '../modules/privateDnsZone/main.bicep' = {
   scope: resourceGroup
-  name: 'privateDnsZone'
+  name: 'containerAppEnvPrivateDnsZone'
   params: {
     namePrefix: namePrefix
     defaultDomain: containerAppEnv.outputs.defaultDomain
     vnetId: vnet.outputs.virtualNetworkId
-    staticIp: containerAppEnv.outputs.staticIp
+    aRecords: [
+      {
+        ip: containerAppEnv.outputs.staticIp
+        name: '*'
+        ttl: 3600
+      }
+      {
+        ip: containerAppEnv.outputs.staticIp
+        name: '@'
+        ttl: 3600
+      }
+    ]
+  }
+}
+
+module postgresqlPrivateDnsZone '../modules/privateDnsZone/main.bicep' = {
+  scope: resourceGroup
+  name: 'postgresqlPrivateDnsZone'
+  params: {
+    namePrefix: namePrefix
+    defaultDomain: '${namePrefix}.postgres.database.azure.com'
+    vnetId: vnet.outputs.virtualNetworkId
   }
 }
 
@@ -142,6 +163,7 @@ module postgresql '../modules/postgreSql/create.bicep' = {
   name: 'postgresql'
   params: {
     namePrefix: namePrefix
+    subnetId: vnet.outputs.postgresqlSubnetId
     location: location
     keyVaultName: environmentKeyVault.outputs.name
     srcKeyVault: srcKeyVault
@@ -149,6 +171,7 @@ module postgresql '../modules/postgreSql/create.bicep' = {
     administratorLoginPassword: contains(keyVaultSourceKeys, 'dialogportenPgAdminPassword${environment}')
       ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
       : secrets.dialogportenPgAdminPassword
+    privateDnsZoneArmResourceId: postgresqlPrivateDnsZone.outputs.id
   }
 }
 
