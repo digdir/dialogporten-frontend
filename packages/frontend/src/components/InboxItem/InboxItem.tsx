@@ -99,13 +99,16 @@ export const InboxItem = ({
     <li
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
-        [styles.isUnread]: isUnread,
         [styles.hoverable]: linkTo,
       })}
       aria-selected={isChecked ? 'true' : 'false'}
     >
       <OptionalLinkContent linkTo={linkTo}>
-        <section className={styles.inboxItem}>
+        <section
+          className={classNames(styles.inboxItem, {
+            [styles.isUnread]: isUnread,
+          })}
+        >
           <header className={styles.header}>
             <h2 className={styles.title}>{title}</h2>
             {onCheckedChange && (
@@ -126,7 +129,7 @@ export const InboxItem = ({
           </header>
           <div className={styles.participants}>
             <div className={styles.sender}>
-              {sender?.icon && <div className={styles.icon}>{sender.icon}</div>}
+              {sender?.icon && <div className={styles.senderIcon}>{sender.icon}</div>}
               <span>{sender?.label}</span>
             </div>
             <span>{toLabel}</span>

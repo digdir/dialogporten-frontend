@@ -11,10 +11,14 @@ import App from './App.tsx';
 import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
 async function enableMocking() {
-  /*if (import.meta.env.MODE === 'development') {
-    const { worker } = await import('./mocks/browser');
-    return worker.start();
-  }*/
+  if (import.meta.env.MODE === 'development') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const enableMocking = urlParams.get('mock') === 'true';
+    if (enableMocking) {
+      const { worker } = await import('./mocks/browser');
+      return worker.start();
+    }
+  }
 }
 
 const element = document.getElementById('root');

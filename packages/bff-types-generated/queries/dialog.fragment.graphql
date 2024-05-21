@@ -1,6 +1,7 @@
 fragment SearchDialogFields on SearchDialog {
   id
   party
+  org
   progress
   guiAttachmentCount
   status

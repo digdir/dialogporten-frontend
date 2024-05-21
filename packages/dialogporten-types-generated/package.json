@@ -3,7 +3,6 @@
   "main": "src/index.ts",
   "version": "1.0.0",
   "scripts": {
-		"test": "vitest run",
     "prepare": "pnpm run generate:types",
     "build": "pnpm run generate:types",
     "generate:types": "pnpm generate:types-gql && pnpm generate:raw-gql",
@@ -13,7 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@digdir/dialogporten-schema": "1.0.10",
+    "@digdir/dialogporten-schema": "1.0.11",
     "@graphql-codegen/cli": "^5.0.2",
     "glob": "^10.3.12",
     "graphql": "^16.8.1",
