@@ -4,11 +4,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './actionPanel.module.css';
 
-const BulkHeader: React.FC = ({ children }) => {
+const BulkHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <div className={styles.bulkHeader}>{children}</div>;
 };
 
-const BulkFooter: React.FC = ({ children }) => {
+const BulkFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className={styles.bulkFooter}>
       <div className={styles.actionPanel}>{children}</div>
