@@ -2,9 +2,8 @@ import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashI
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
-import { useDialogs } from '../../api/useDialogs.ts';
+import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
 import { type Filter, FilterBar } from '../../components';
@@ -68,20 +67,17 @@ export const getFiltersFromQueryParams = (): Filter[] => {
   return [] as Filter[];
 };
 
-export const getSearchStringFromQueryParams = (queryClient: QueryClient): string => {
+export const getSearchStringFromQueryParams = (): string => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const compressedData = urlSearchParams.get('data');
 
   if (compressedData) {
     try {
       const queryParams = decompressQueryParams(compressedData);
-      queryClient.setQueryData(['search'], () => queryParams.searchString || '');
       return queryParams.searchString || '';
     } catch (error) {
       console.error('Failed to decompress query parameters:', error);
     }
-  } else {
-    queryClient.setQueryData(['search'], () => '');
   }
   return '';
 };
@@ -93,8 +89,7 @@ export const Inbox = () => {
   }>({});
   const location = useLocation();
   const { parties } = useParties();
-  const partyURIs = parties?.map((p) => p.party) ?? [];
-  const { dialogs } = useDialogs(partyURIs);
+  const { dialogs } = useDialogs(parties);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
 

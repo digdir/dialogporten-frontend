@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     row-gap: 8px;
-    background: #fff;
     /* Reset default ul styles */
     list-style: none;
     padding-left: 0;

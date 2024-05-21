@@ -3,4 +3,5 @@ fragment partyFields on AuthorizedParty {
       partyType
       isAccessManager
       isMainAdministrator
+      name
 }

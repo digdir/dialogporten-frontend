@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import { fetchDialogByIdExample, fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
+import { fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
 import { useAuthenticated } from '../../auth';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
 import { Snackbar } from '../Snackbar/Snackbar.tsx';
@@ -29,21 +29,16 @@ export const PageLayout: React.FC = () => {
       const profile = await fetchProfile();
       console.log(profile);
     }),
-    testProxyBtn: button(async () => {
-      try {
-        const d = await fetchDialogByIdExample('14f18e01-7ed5-0272-a810-a5683df6c64d');
-        console.log(d.dialog?.status);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }),
     logoutBtn: button(() => {
       (window as Window).location = `/api/logout`;
     }),
   });
 
   useAuthenticated();
-  useUpdateOnLocationChange(() => getSearchStringFromQueryParams(queryClient));
+  useUpdateOnLocationChange(() => {
+    const searchString = getSearchStringFromQueryParams();
+    queryClient.setQueryData(['search'], () => searchString || '');
+  });
 
   return (
     <div className={isCompany ? `isCompany` : ''}>
