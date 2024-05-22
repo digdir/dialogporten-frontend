@@ -227,7 +227,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
         properties: {
           addressPrefix: '10.0.4.0/24'
           networkSecurityGroup: {
-            id: containerAppEnvironmentNSG.id
+            id: postgresqlNSG.id
           }
           delegations: [
             {
