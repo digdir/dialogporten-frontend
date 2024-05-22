@@ -73,7 +73,6 @@ resource containerAppEnvironmentNSG 'Microsoft.Network/networkSecurityGroups@202
           destinationAddressPrefixes: []
         }
       }
-      // remove once we want a more fine grained control over the ports
       {
         name: 'container-app'
         type: 'Microsoft.Network/networkSecurityGroups/securityRules'
@@ -149,6 +148,44 @@ resource containerAppEnvironmentNSG 'Microsoft.Network/networkSecurityGroups@202
   }
 }
 
+resource postgresqlNSG 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: '${namePrefix}-postgresql-nsg'
+  location: location
+  properties: {
+    securityRules: [
+      // todo: restrict the ports furter: https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-networking-private#virtual-network-concepts
+      {
+        name: 'AllowAnyCustomAnyInbound'
+        type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          access: 'Allow'
+          priority: 100
+          direction: 'Inbound'
+        }
+      }
+      {
+        name: 'AllowAnyCustomAnyOutbound'
+        type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          access: 'Allow'
+          priority: 100
+          direction: 'Outbound'
+        }
+      }
+    ]
+  }
+}
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: '${namePrefix}-vnet'
   location: location
@@ -185,6 +222,29 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
           privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }
+      {
+        name: 'postgresqlSubnet'
+        properties: {
+          addressPrefix: '10.0.4.0/24'
+          networkSecurityGroup: {
+            id: postgresqlNSG.id
+          }
+          delegations: [
+            {
+              name: 'postgresql'
+              properties: {
+                serviceName: 'Microsoft.DBforPostgreSQL/flexibleServers'
+              }
+            }
+          ]
+          serviceEndpoints: [
+            {
+              service: 'Microsoft.Storage'
+              locations: [location]
+            }
+          ]
+        }
+      }
     ]
   }
 }
@@ -194,3 +254,4 @@ output virtualNetworkId string = virtualNetwork.id
 output defaultSubnetId string = virtualNetwork.properties.subnets[0].id
 output applicationGatewaySubnetId string = virtualNetwork.properties.subnets[1].id
 output containerAppEnvironmentSubnetId string = virtualNetwork.properties.subnets[2].id
+output postgresqlSubnetId string = virtualNetwork.properties.subnets[3].id

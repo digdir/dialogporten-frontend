@@ -11,11 +11,13 @@ param defaultDomain string
 @description('The ID of the virtual network linked to the private DNS zone')
 param vnetId string
 
-@description('The static IP address for the A record in the DNS zone')
-param staticIp string
-
-@description('The time-to-live for DNS records in seconds')
-param ttl int = 3600
+type ARecord = {
+  name: string
+  ip: string
+  ttl: int
+}
+@description('Array of A records to be created in the DNS zone')
+param aRecords ARecord[] = []
 
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: defaultDomain
@@ -23,31 +25,20 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   properties: {}
 }
 
-resource aRecord1 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
-  parent: privateDnsZone
-  name: '*'
-  properties: {
-    ttl: ttl
-    aRecords: [
-      {
-        ipv4Address: staticIp
-      }
-    ]
+resource aRecordResources 'Microsoft.Network/privateDnsZones/A@2020-06-01' = [
+  for record in aRecords: {
+    parent: privateDnsZone
+    name: record.name
+    properties: {
+      ttl: record.ttl
+      aRecords: [
+        {
+          ipv4Address: record.ip
+        }
+      ]
+    }
   }
-}
-
-resource aRecord2 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
-  parent: privateDnsZone
-  name: '@'
-  properties: {
-    ttl: ttl
-    aRecords: [
-      {
-        ipv4Address: staticIp
-      }
-    ]
-  }
-}
+]
 
 resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: privateDnsZone
@@ -60,3 +51,5 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
     }
   }
 }
+
+output id string = privateDnsZone.id
