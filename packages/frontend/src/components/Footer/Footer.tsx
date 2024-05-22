@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import styles from './footer.module.css';
+import { AltinnLogoSvg } from '../Header/AltinnLogo';
 
 const footerLinks = [
   {
@@ -21,22 +22,27 @@ const footerLinks = [
 ];
 export const Footer = () => {
   const { t } = useTranslation();
-  const address = 'Digitaliseringsdirektoratet, Postboks 1382 Vika, 0114 Oslo. Org.nr. 991 825 827';
 
   return (
     <footer className={styles.footer}>
       <div className={styles.content}>
-        <p>{address}</p>
-        <ul className={styles.links}>
-          {footerLinks.map((link) => (
-            <li key={link.resourceId}>
-              <a href={link.href} className={styles.link}>
-                {t(link.resourceId)}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <p className={styles.company}><AltinnLogoSvg small /> {t('footer.company')}</p>
+          <p className={styles.addressLineOne}>{t('footer.address.line1')}</p>
+          <p className={styles.addressLineTwo} >{t('footer.address.line2')}</p>
+        </div>
+        <div>
+          <ul className={styles.links}>
+            {footerLinks.map((link) => (
+              <li key={link.resourceId}>
+                <a href={link.href} className={styles.link}>
+                  {t(link.resourceId)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </footer>
+    </footer >
   );
 };
