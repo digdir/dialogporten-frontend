@@ -1,6 +1,8 @@
-export function AltinnLogoSvg() {
+import styles from './altinnLogo.module.css';
+
+export function AltinnLogoSvg({ small }: { small?: boolean }) {
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={small ? styles.altinnLogoSmall : styles.altinnLogo} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>Altinn logo</title>
       <g id="SVG" clipPath="url(#clip0_272_15462)">
         <path
@@ -11,7 +13,7 @@ export function AltinnLogoSvg() {
       </g>
       <defs>
         <clipPath id="clip0_272_15462">
-          <rect width="32" height="32" fill="white" />
+          <rect className={small ? styles.altinnLogoSmall : styles.altinnLogo} fill="white" />
         </clipPath>
       </defs>
     </svg>

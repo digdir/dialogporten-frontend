@@ -1,51 +1,82 @@
+.bulkHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #111D46;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.bulkHeader > * {
+  margin: 1rem;
+}
+
+.bulkHeader > span {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2rem;
+}
+
+.bulkFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
 .actionPanel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    flex-shrink: 0;
-    border-radius: 20px;
-    border: 1px solid #00315D;
-    background: #E6EFF8;
-    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.10);
-    min-height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #111D46;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -4px rgba(0, 0, 0, 0.10);
+  min-height: 30px;
+  margin: 1rem;
 }
 
 .actionButtons {
-    display: flex;
-    column-gap: 0.5rem;
+  display: flex;
+  column-gap: 0.5rem;
 }
 
 .actionButton {
-    display: flex;
-    align-items: center;
-    .actionButtonLabel, .actionButtonIcon {
-        color: #000;
+  display: flex;
+  align-items: center;
+  .actionButtonLabel, .actionButtonIcon {
+    color: white;
+  }
+  .actionButtonIcon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 5px;
+    svg {
+      height: 100%;
+      width: 100%;
     }
-    .actionButtonIcon {
-        height: 1.5rem;
-        width: 1.5rem;
-        margin-right: 5px;
-        svg {
-            height: 100%;
-            width: 100%;
-        }
-    }
+  }
 }
 
 .undoButton {
-    display: flex;
-    align-items: center;
-    .undoButtonLabel, .undoButtonIcon {
-        color: #000;
+  display: flex;
+  align-items: center;
+  .undoButtonLabel, .undoButtonIcon {
+    color: white;
+  }
+  .undoButtonIcon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: 5px;
+    svg {
+      height: 100%;
+      width: 100%;
     }
-    .undoButtonIcon {
-        height: 1.5rem;
-        width: 1.5rem;
-        margin-left: 5px;
-        svg {
-            height: 100%;
-            width: 100%;
-        }
-    }
+  }
 }

@@ -14,6 +14,7 @@ import { useWindowSize } from '../../../utils/useWindowSize';
 import { useSavedSearches } from '../../pages/SavedSearches';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
+import { SavedSearchesFieldsFragment } from 'bff-types-generated';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -24,7 +25,8 @@ export const HorizontalLine = () => <hr className={styles.horizontalLine} />;
 
 export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { t } = useTranslation();
-  const { data: savedSearches } = useSavedSearches();
+  const { data } = useSavedSearches();
+  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { isMobile } = useWindowSize();
 
   if (isMobile) {
