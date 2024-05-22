@@ -42,13 +42,6 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   resource database 'databases' = {
     name: databaseName
   }
-  resource allowAzureAccess 'firewallRules' = {
-    name: 'AllowAccessFromAzure'
-    properties: {
-      startIpAddress: '0.0.0.0'
-      endIpAddress: '0.0.0.0'
-    }
-  }
 }
 
 var secretName = 'databaseConnectionString'
