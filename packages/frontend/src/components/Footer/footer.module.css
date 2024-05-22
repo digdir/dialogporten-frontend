@@ -1,16 +1,41 @@
 .footer {
     color: #333;
     font-size: 1rem;
-    display: flex;
     align-items: flex-start;
     position: relative;
     padding: 1.5rem 1rem 1rem;
     background-color: var(--background-color, #EAF7EF);
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    margin: 2rem;
 }
 
 .content {
+    display: flex;
     width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, 0.25)
+}
+
+@media (max-width: 768px) {
+    .footer {
+        margin: 1rem;
+        padding: 0;
+    }
+
+    .content {
+        flex-direction: column;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.content div {
+    width: 50%;
 }
 
 .links {
@@ -19,4 +44,26 @@
     list-style: none;
     padding: 0;
     margin: 0.5rem 0;
+    color: #000;
+}
+
+.links a {
+    color: #000;
+}
+
+.logo {
+    width: 1rem;
+    height: 1rem;
+}
+
+.company {
+    margin-bottom: 1rem;
+}
+
+.addressLineOne {
+    margin-bottom: 0;
+}
+
+.addressLineTwo {
+    margin-top: 0;
 }
