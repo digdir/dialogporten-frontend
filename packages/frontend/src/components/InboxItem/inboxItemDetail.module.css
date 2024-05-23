@@ -1,7 +1,6 @@
 .inboxItemDetail {
     display: flex;
     flex-direction: column;
-    padding: 0 1.0625rem 1.0625rem;
     margin-top: 1rem;
     background: #fff;
 }
@@ -32,6 +31,16 @@
     flex-shrink: 0;
 }
 
+.additionalInfo {
+    padding: 1rem 0.5rem;
+}
+
+.activities {
+    padding: 2rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
 .participants {
     display: flex;
     align-items: center;
@@ -52,6 +61,19 @@
     color: #000;
     font-size: 1rem;
     font-weight: 400;
+}
+
+.participantIcon {
+    margin-right: 0.375em;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    > svg, img {
+        min-width: 100%;
+        min-height: 100%;
+        max-width: 40px;
+        max-height: 40px;
+    }
 }
 
 .icon {
@@ -91,11 +113,6 @@
 }
 
 .attachments {
-    width: 100%;
-    padding: 1.5em;
-    background: #E6EFF8;
-    margin: 1.5rem 0;
-
     > ul {
         list-style: none;
         padding: 0;
@@ -108,9 +125,10 @@
     margin: 0;
     line-height: 2;
 
-    > a {
+    > li {
         display: flex;
         align-items: center;
+        column-gap: 0.5rem;
     }
 }
 
@@ -121,6 +139,7 @@
 }
 
 .attachmentTitle {
+    padding-top: 1rem;
     font-size: 1.125rem;
     font-style: normal;
     font-weight: 500;

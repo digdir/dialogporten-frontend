@@ -1,4 +1,4 @@
-import { ClockIcon, PaperclipIcon } from '@navikt/aksel-icons';
+import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import {
   ContentType,
   GetAllDialogsForPartiesQuery,
@@ -41,6 +41,14 @@ const getTags = (item: SearchDialogFieldsFragment) => {
       icon: <PaperclipIcon />,
     });
   }
+
+  if (item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser)) {
+    tags.push({
+      label: i18n.t('word.seen'),
+      icon: <EyeIcon />,
+    });
+  }
+
   return tags;
 };
 
