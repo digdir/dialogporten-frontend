@@ -350,8 +350,8 @@ importers:
   packages/frontend:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.1.1-alpha.0
-        version: 0.1.1-alpha.0
+        specifier: 0.8.0
+        version: 0.8.0
       '@digdir/designsystemet-react':
         specifier: 0.52.0-alpha.0
         version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
@@ -453,8 +453,8 @@ importers:
   packages/storybook:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.1.1-alpha.0
-        version: 0.1.1-alpha.0
+        specifier: 0.8.0
+        version: 0.8.0
       '@digdir/designsystemet-react':
         specifier: 0.52.0-alpha.0
         version: 0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
@@ -2450,8 +2450,8 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  /@digdir/designsystemet-css@0.1.1-alpha.0:
-    resolution: {integrity: sha512-1oqCS24OVjbRn7ulM7vBOMffSfX5rWlM39GucqqIdEX7KA8Ed7oulDmJsmbVPmt7Bj4Dvnr2FsHBiCneeRJfGA==}
+  /@digdir/designsystemet-css@0.8.0:
+    resolution: {integrity: sha512-kmDhK+Co56xh+vNaxD1OlfcBOfy+aknMpF8xC87Hi6MTn9Z+I6+k1Sd//7ighPkMEv6OOVFc6tZHbIuuMCHCIQ==}
     dev: false
 
   /@digdir/designsystemet-react@0.52.0-alpha.0(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
