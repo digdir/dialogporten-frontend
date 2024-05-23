@@ -1,72 +1,41 @@
-import { FilePdfIcon } from '@navikt/aksel-icons';
+import { Link } from '@digdir/designsystemet-react';
+import { FileIcon } from '@navikt/aksel-icons';
+import { ElementUrlConsumer } from 'bff-types-generated';
+import { format } from 'date-fns';
+import { nb } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
-interface Attachment {
-  label: string;
-  href: string;
-  mime?: string;
-}
-
-interface Participant {
-  label: string;
-  icon?: JSX.Element;
-}
-
-interface InboxItemTag {
-  label: string;
-  icon?: JSX.Element;
-  className?: string;
-}
-
-interface InboxItemDetailProps {
-  checkboxValue: string;
-  title: string;
-  toLabel: string;
-  description: string | React.ReactNode;
-  sender: Participant;
-  receiver: Participant;
-  attachment: Attachment[];
-  tags?: InboxItemTag[];
-}
-
 /**
- * Displays detailed information about an inbox item, including title, description, sender, receiver, attachments, and tags.
+ * Displays detailed information about an inbox item, including title, description, sender, receiver, attachments, tags, and GUI actions.
  * This component is intended to be used for presenting a full view of an inbox item, with comprehensive details not shown in the summary view.
  * It supports rendering both text and React node descriptions, and dynamically lists attachments with links.
- * Dynamically rendered action button are at the moment intentionally not implemented.
+ * Dynamically rendered action buttons are implemented through the `GuiActions` component.
  *
  * @component
- * @param {InboxItemDetailProps} props - The properties passed to the component.
- * @param {string} props.title - The title of the inbox item.
- * @param {string | React.ReactNode} props.description - The detailed description of the inbox item. Can be a string or any React node.
- * @param {Participant} props.sender - The sender of the inbox item, including label and optional icon.
- * @param {Participant} props.receiver - The receiver of the inbox item, including label and optional icon.
- * @param {string} props.toLabel - The label indicating the receiver, supports full i18n integration.
- * @param {InboxItemTag[]} [props.tags=[]] - Optional array of tags associated with the inbox item, each with a label, optional icon, and optional className.
- * @param {Attachment[]} [props.attachment=[]] - An array of attachments associated with the inbox item, each with a label and href. Mime type is optional.
+ * @param {object} props - The properties passed to the component.
+ * @param {DialogByIdDetails} props.dialog - The dialog details containing all the necessary information.
  * @returns {JSX.Element} The InboxItemDetail component.
  *
  * @example
  * <InboxItemDetail
- *   title="Project Update"
- *   description={<p>Here's the latest update on the project...</p>}
- *   sender={{ label: "Alice", icon: <PersonIcon /> }}
- *   receiver={{ label: "Bob", icon: <PersonIcon /> }}
- *   toLabel="to"
- *   attachment={[{ label: "Project Plan", href: "/path/to/document", mime: "application/pdf" }]}
- *   tags={[{ label: "Important", icon: <FlagIcon />, className: "important" }]}
+ *   dialog={{
+ *     title: "Project Update",
+ *     description: <p>Here's the latest update on the project...</p>,
+ *     sender: { label: "Alice", icon: <PersonIcon /> },
+ *     receiver: { label: "Bob", icon: <PersonIcon /> },
+ *     toLabel: "to",
+ *     attachment: [{ label: "Project Plan", href: "/path/to/document", mime: "application/pdf" }],
+ *     tags: [{ label: "Important", icon: <FlagIcon />, className: "important" }],
+ *     guiActions: [{ label: "Approve", onClick: () => alert('Approved') }]
+ *   }}
  * />
  */
 export const InboxItemDetail = ({
-  title,
-  description,
-  sender,
-  receiver,
-  toLabel,
-  tags = [],
-  attachment = [],
-}: InboxItemDetailProps): JSX.Element => {
+  dialog: { title, description, sender, receiver, toLabel, guiActions, tags = [], additionalInfo, activities },
+}: { dialog: DialogByIdDetails }): JSX.Element => {
   const { t } = useTranslation();
   return (
     <section className={styles.inboxItemDetail}>
@@ -75,12 +44,12 @@ export const InboxItemDetail = ({
       </header>
       <div className={styles.participants}>
         <div className={styles.sender}>
-          {sender?.icon && <div className={styles.icon}>{sender.icon}</div>}
+          {sender?.icon && <div className={styles.participantIcon}>{sender.icon}</div>}
           <span>{sender?.label}</span>
         </div>
         <span>{toLabel}</span>
         <div className={styles.receiver}>
-          {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
+          {receiver?.icon && <div className={styles.participantIcon}>{receiver.icon}</div>}
           <span>{receiver?.label}</span>
         </div>
       </div>
@@ -90,28 +59,7 @@ export const InboxItemDetail = ({
         ) : (
           <div>{description}</div>
         )}
-        {attachment.length > 0 && (
-          <div className={styles.attachments} aria-labelledby="attachmentTitle">
-            <h2 id="attachmentTitle" className={styles.attachmentTitle}>
-              {t('inbox.attachment.count', { count: attachment.length })}
-            </h2>
-            <ul>
-              {attachment.map((entry) => (
-                <li key={entry.label} className={styles.attachmentItem}>
-                  <a
-                    href={entry.href}
-                    aria-label={t('inbox.attachment.link', {
-                      label: entry.label,
-                    })}
-                  >
-                    <FilePdfIcon className={styles.attachmentItemIcon} />
-                    {entry.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <GuiActions actions={guiActions} />
         <div className={styles.tags}>
           {tags.map((tag) => (
             <div key={tag.label} className={styles.tag}>
@@ -121,6 +69,59 @@ export const InboxItemDetail = ({
           ))}
         </div>
       </section>
+      <section className={styles.activities}>
+        <h2>{t('inbox.heading.events', { count: activities.length })}</h2>
+        {activities
+          .slice()
+          .reverse()
+          .map((activity) => {
+            /* cf. https://github.com/digdir/dialogporten/issues/760 for performedBy */
+            const attachmentCount = activity.elements.reduce((tail, element) => tail + element.urls.length, 0);
+            return (
+              <section key={activity.id}>
+                <span>{getPropertyByCultureCode(activity.performedBy)}</span>
+                <div className={styles.elements}>
+                  <h2 id="attachmentTitle" className={styles.attachmentTitle}>
+                    {t('inbox.attachment.count', {
+                      count: attachmentCount,
+                    })}
+                  </h2>
+                  {activity.elements.map((element) => {
+                    return (
+                      <div key={element.id}>
+                        {element.urls.length > 0 && (
+                          <div className={styles.attachments} aria-labelledby="attachmentTitle">
+                            <ul className={styles.attachmentItem}>
+                              {element.urls
+                                /* Urls per element are same content in formats */
+                                .filter((url) => url.consumerType === ElementUrlConsumer.Gui)
+                                .map((url) => (
+                                  <li key={url.id}>
+                                    {/* TODO: Icon should render differently depending on url.mimeType */}
+                                    <FileIcon />
+                                    <Link
+                                      href={url.url}
+                                      aria-label={t('inbox.attachment.link', {
+                                        label: url.url,
+                                      })}
+                                    >
+                                      {getPropertyByCultureCode(element.displayName) || url.url}
+                                    </Link>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  <span>{format(activity.createdAt, 'P', { locale: nb })}</span>
+                </div>
+              </section>
+            );
+          })}
+      </section>
+      {additionalInfo && <section className={styles.additionalInfo}>{additionalInfo}</section>}
     </section>
   );
 };

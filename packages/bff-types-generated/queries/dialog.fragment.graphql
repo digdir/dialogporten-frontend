@@ -8,6 +8,9 @@ fragment SearchDialogFields on SearchDialog {
   createdAt
   updatedAt
   extendedStatus
+  seenSinceLastUpdate {
+    ...SeenLogFields
+  }
   latestActivity {
     description {
       value
@@ -24,10 +27,81 @@ fragment SearchDialogFields on SearchDialog {
   }
 }
 
+fragment DialogByIdFields on Dialog {
+  id
+  party
+  org
+  progress
+  elements {
+    ...DialogElement
+  }
+  activities {
+  	...DialogActivity
+  }
+  guiActions {
+    ...GuiActionFields
+  }
+  seenSinceLastUpdate {
+    ...SeenLogFields
+  }
+  status
+  createdAt
+  updatedAt
+  extendedStatus
+  content {
+    ...DialogContentFields
+  }
+}
+
+fragment GuiActionFields on GuiAction {
+    id
+    action
+    url
+    isAuthorized
+    title {
+       value
+       cultureCode
+    }
+   priority
+}
+
 fragment DialogContentFields on Content {
     type
     value {
       value
       cultureCode
     }
+}
+
+fragment DialogElement on Element {
+    id
+    urls {
+      id
+      mimeType
+      consumerType
+      url
+    }
+    type
+    displayName {
+            value
+      cultureCode
+    }
+}
+
+fragment DialogActivity on Activity {
+    id
+    type
+    createdAt
+    dialogElementId
+    performedBy {
+      value
+      cultureCode
+    }
+}
+
+fragment SeenLogFields on SeenLog {
+    id
+    seenAt
+    endUserName
+    isCurrentEndUser
 }

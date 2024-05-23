@@ -5,6 +5,7 @@
   "inbox.attachment.count": "{count, plural, =0 {Ingen vedlegg} one {# vedlegg} other {# vedlegg}}",
   "inbox.attachment.link": "Lenke som vedlegg",
   "inbox.heading.choose_all": "Velg alle",
+  "inbox.heading.events": "{count, plural, =0 {Ingen hendelser} one {# hendelse} other {# hendelser}}",
   "word.back": "Tilbake",
   "word.to": "til",
   "word.private": "Privat",
@@ -12,6 +13,7 @@
   "word.menu": "Meny",
   "word.change": "Endre",
   "word.delete": "Slett",
+  "word.seen": "Sett",
   "sidebar.drafts": "Utkast",
   "sidebar.sent": "Sendt",
   "sidebar.archived": "Arkiv",
@@ -48,8 +50,9 @@
   "header.searchPlaceholder": "Søk i personlig innboks",
   "link.goToMain": "Gå til hovedsiden",
   "link.goToInbox": "Gå til innboks",
+  "dialog.error_message": "Feil ved lasting av dialog",
+  "dialogs.attachment_count": "{count, plural, one {# vedlegg} other {# vedlegg}}",
   "link.goToAllServices": "Gå til alle tjenester",
   "link.goToSettings": "Gå til innstillinger",
-  "dialogs.attachment_count": "{count, plural, one {# vedlegg} other {# vedlegg}}",
   "menuBar.all_services": "Alle tjenester"
 }
