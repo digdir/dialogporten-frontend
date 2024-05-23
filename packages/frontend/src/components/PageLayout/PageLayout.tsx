@@ -18,6 +18,8 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
+	const urlParams = new URLSearchParams(window.location.search);
+	const debug = urlParams.get('debug') === "true";
 
   const { isCompany } = useControls({
     isCompany: false,
@@ -54,7 +56,7 @@ export const PageLayout: React.FC = () => {
         <Footer />
       </div>
       <Snackbar />
-      <Leva />
+      <Leva hidden={!debug} />
     </div>
   );
 };
