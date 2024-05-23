@@ -1,3 +1,23 @@
+@keyframes animateFromBottom {
+  0% {
+    transform: scale(0.7);
+    bottom: -50px;
+  }
+  100% {
+    transform: scale(1);
+    bottom: 0px;
+  }
+}
+
+@keyframes animateFromTop {
+  0% {
+    top: -50px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+
 .bulkHeader {
   position: fixed;
   top: 0;
@@ -7,6 +27,8 @@
   color: white;
   display: flex;
   justify-content: space-between;
+  animation: animateFromTop 230ms cubic-bezier(.21,1.02,.73,1);
+  animation-iteration-count: 1;
 }
 
 .bulkHeader > * {
@@ -23,6 +45,8 @@
 .bulkFooter {
   position: fixed;
   bottom: 0;
+  animation: animateFromBottom 230ms cubic-bezier(.21,1.02,.73,1);
+  animation-iteration-count: 1;
   left: 0;
   right: 0;
   display: flex;
