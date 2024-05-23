@@ -6,6 +6,8 @@
     margin:0;
     text-indent: 0;
     list-style-type: none;
+    background: #fff;
+    min-width: 300px;
 }
 
 .link {
@@ -26,9 +28,10 @@
 .inboxItem {
     display: flex;
     flex-direction: column;
-    padding: 0 1.0625rem 1.0625rem;
+    margin: 1rem 1.0625rem 1.0625rem 1rem;
+    padding-left: 1rem;
     border-left: 4px solid rgba(0, 0, 0, 0.10);
-    margin-left: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .isUnread {
@@ -43,6 +46,7 @@
 
 .title {
     color: #000;
+    margin-top: 0.25rem;
     font-size: 1.25rem;
     font-weight: 500;
     line-height: 1.25;
@@ -64,10 +68,23 @@
     font-weight: 500;
 }
 
+.senderIcon {
+    margin-right: 0.375em;
+    height: 32px;
+    width: 32px;
+    flex-shrink: 0;
+    > svg, img {
+        min-width: 100%;
+        min-height: 100%;
+        max-width: 32px;
+        max-height: 32px;
+    }
+}
+
 .icon {
     margin-right: 0.375em;
-    height: 18px;
-    width: 18px;
+    height: 16px;
+    width: 16px;
     flex-shrink: 0;
     > svg {
         min-width: 100%;
@@ -79,6 +96,10 @@
     color: #000;
     font-size: 1rem;
     font-weight: 400;
+    max-width: 600px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 

@@ -29,7 +29,7 @@ export const InboxItemsHeader = ({ title, onSelectAll, hideSelectAll = false }: 
     <header className={styles.inboxItemsHeader}>
       <h2>{title}</h2>
       {typeof onSelectAll === 'function' && !hideSelectAll && (
-        <Button size="small" onClick={onSelectAll} variant="secondary" color="second">
+        <Button size="small" onClick={onSelectAll} variant="tertiary" color="second">
           <CheckmarkIcon />
           {t('inbox.heading.choose_all')}
         </Button>

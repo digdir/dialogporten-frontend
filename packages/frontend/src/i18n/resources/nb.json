@@ -45,5 +45,6 @@
   "notifications.count": "{count, plural, one {# ulest melding} other {# uleste meldinger}}",
   "header.searchPlaceholder": "Søk i personlig innboks",
   "link.goToMain": "Gå til hovedsiden",
-  "link.goToInbox": "Gå til innboks"
+  "link.goToInbox": "Gå til innboks",
+  "dialogs.attachment_count": "{count, plural, one {# vedlegg} other {# vedlegg}}"
 }

@@ -2,7 +2,8 @@ export const dialogs = [
   {
     id: '49608e01-0329-0572-aaaf-20fbb19d3b4a',
     revision: '75c6ce94-a81a-4e49-92b3-22f994b14bfd',
-    org: 'digdir',
+    org: 'ttd',
+    guiAttachmentCount: 4,
     serviceResource: 'urn:altinn:resource:ttd-dialogporten-automated-tests',
     party: 'urn:altinn:organization:identifier-no::212475912',
     createdAt: '2024-03-21T08:55:42.5906890Z',
@@ -10,7 +11,7 @@ export const dialogs = [
     status: 'New',
     content: [
       {
-        type: 'Title',
+        type: 'TITLE',
         value: [
           {
             value: 'Skjema for rapportering av et eller annet',
@@ -19,7 +20,7 @@ export const dialogs = [
         ],
       },
       {
-        type: 'Summary',
+        type: 'SUMMARY',
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
@@ -28,7 +29,7 @@ export const dialogs = [
         ],
       },
       {
-        type: 'AdditionalInfo',
+        type: 'ADDITIONALINFO',
         value: [
           {
             value:
@@ -155,7 +156,7 @@ export const dialogs = [
   {
     id: '59608e01-0329-0572-aaaf-20fbb19d3b4a',
     revision: '75c6ce94-a81a-4e49-92b3-22f994b14bfd',
-    org: 'digdir',
+    org: 'ttd',
     serviceResource: 'urn:altinn:resource:ttd-dialogporten-automated-tests',
     party: 'urn:altinn:organization:identifier-no::212475912',
     createdAt: '2024-03-21T08:55:42.5906890Z',
@@ -163,7 +164,7 @@ export const dialogs = [
     status: 'New',
     content: [
       {
-        type: 'Title',
+        type: 'TITLE',
         value: [
           {
             value: 'Skjema for rapportering av noe viktig',
@@ -172,7 +173,7 @@ export const dialogs = [
         ],
       },
       {
-        type: 'Summary',
+        type: 'SUMMARY',
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
@@ -308,7 +309,7 @@ export const dialogs = [
   {
     id: '39608e01-0329-0572-aaaf-20fbb19d3b4a',
     revision: '75c6ce94-a81a-4e49-92b3-22f994b14bfd',
-    org: 'digdir',
+    org: 'ttd',
     serviceResource: 'urn:altinn:resource:ttd-dialogporten-automated-tests',
     party: 'urn:altinn:organization:identifier-no::212475912',
     createdAt: '2023-03-21T08:55:42.5906890Z',
@@ -316,7 +317,7 @@ export const dialogs = [
     status: 'New',
     content: [
       {
-        type: 'Title',
+        type: 'TITLE',
         value: [
           {
             value: 'Skjema for rapportering av noe sånt som det',
@@ -325,7 +326,7 @@ export const dialogs = [
         ],
       },
       {
-        type: 'Summary',
+        type: 'SUMMARY',
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',

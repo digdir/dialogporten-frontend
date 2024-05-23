@@ -1,7 +1,6 @@
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
-import proxy from '@fastify/http-proxy';
 import session from '@fastify/session';
 import { FastifySessionOptions } from '@fastify/session';
 import RedisStore from 'connect-redis';
@@ -90,21 +89,6 @@ const startServer = async (): Promise<void> => {
     client_secret,
   });
   server.register(userApi);
-  server.register(proxy, {
-    upstream: 'https://altinn-dev-api.azure-api.net',
-    prefix: '/api/proxy/',
-    preValidation: server.verifyToken,
-    replyOptions: {
-      rewriteRequestHeaders: (originalReq, headers) => {
-        const token = originalReq.session.get('token');
-        return {
-          Authorization: `Bearer ${token!.access_token}`,
-          accept: 'application/json',
-        };
-      },
-    },
-  });
-
   server.register(graphqlApi);
 
   server.register(fastifyGraphiql, {

@@ -17,3 +17,5 @@ const i18nInitConfig = {
 };
 
 i18n.use(ICU).use(initReactI18next).init(i18nInitConfig);
+
+export { i18n };
