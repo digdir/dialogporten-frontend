@@ -168,30 +168,28 @@ export const Inbox = () => {
         />
       </div>
       {selectedItemCount > 0 && (
-        <div className={styles.actionPanelWrapper}>
-          <ActionPanel
-            actionButtons={[
-              {
-                label: t('actionPanel.buttons.share'),
-                icon: <ArrowForwardIcon />,
-              },
-              {
-                label: t('actionPanel.buttons.mark_as_read'),
-                icon: <EnvelopeOpenIcon />,
-              },
-              {
-                label: t('actionPanel.buttons.archive'),
-                icon: <ClockDashedIcon />,
-              },
-              {
-                label: t('actionPanel.buttons.delete'),
-                icon: <TrashIcon />,
-              },
-            ]}
-            selectedItemCount={selectedItemCount}
-            onUndoSelection={() => setSelectedItems({})}
-          />
-        </div>
+        <ActionPanel
+          actionButtons={[
+            {
+              label: t('actionPanel.buttons.share'),
+              icon: <ArrowForwardIcon />,
+            },
+            {
+              label: t('actionPanel.buttons.mark_as_read'),
+              icon: <EnvelopeOpenIcon />,
+            },
+            {
+              label: t('actionPanel.buttons.archive'),
+              icon: <ClockDashedIcon />,
+            },
+            {
+              label: t('actionPanel.buttons.delete'),
+              icon: <TrashIcon />,
+            },
+          ]}
+          selectedItemCount={selectedItemCount}
+          onUndoSelection={() => setSelectedItems({})}
+        />
       )}
       <section>
         {Object.entries(dataGroupedByYear)
