@@ -125,6 +125,10 @@ var containerAppEnvVars = [
     name: 'TYPEORM_SYNCHRONIZE_ENABLED'
     value: 'true'
   }
+  {
+    name: 'DIALOGPORTEN_URL'
+    value: 'https://altinn-dev-api.azure-api.net/dialogporten/graphql'
+  }
 ]
 
 module containerApp '../../modules/containerApp/main.bicep' = {
