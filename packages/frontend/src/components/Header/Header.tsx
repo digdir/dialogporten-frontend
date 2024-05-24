@@ -1,12 +1,9 @@
 import { Search } from '@digdir/designsystemet-react';
-import { DogIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { MenuBar } from '../MenuBar';
-import { MenuBarItemProps } from '../MenuBar/MenuBarItem';
-import { AltinnLogoSvg } from './AltinnLogo';
+import { AltinnLogo } from './AltinnLogo';
 import styles from './header.module.css';
 import { useQuery, useQueryClient } from 'react-query';
 
@@ -25,19 +22,7 @@ export const useSearchString = () => {
   return { searchString, queryClient };
 };
 
-const AltinnLogo = () => {
-  const { t } = useTranslation();
-  return (
-    <div className={styles.logo}>
-      <Link to="/" aria-label={t('link.goToMain')}>
-        <AltinnLogoSvg aria-label="Altinn logo" />
-        <span className={styles.logoText}>Altinn</span>
-      </Link>
-    </div>
-  );
-};
-
-const HeaderSearchBar = () => {
+export const HeaderSearchBar = () => {
   const { t } = useTranslation();
   const { queryClient, searchString } = useSearchString();
 
@@ -78,16 +63,14 @@ const HeaderSearchBar = () => {
  * />
  */
 
-const menuItemsMock: MenuBarItemProps[] = [{ title: 'Hjem', href: '/', icon: <DogIcon /> }];
-
 export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationCount }) => {
   const { isMobile } = useWindowSize();
   return (
     <header>
       <nav className={styles.navigation} aria-label="Navigasjon">
-        <AltinnLogo />
+        <AltinnLogo className={styles.logo} />
         {!isMobile && <HeaderSearchBar />}
-        <MenuBar items={menuItemsMock} notificationCount={notificationCount} name={name} companyName={companyName} />
+        <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
       {isMobile && <HeaderSearchBar />}
     </header>

@@ -9,6 +9,10 @@
   border: 1px solid white;
 }
 
+.darkCircle {
+  border: 1px solid var(--avatar-color, #111D46);
+}
+
 .initialsCircle.isOrganization {
   border-radius: 0.25em;
 }

@@ -28,6 +28,17 @@
     align-items: center;
     width: 2.75rem;
     height: 2.75rem;
+    border-radius: 4px;
+    color: #000;
+}
+
+.arrowIcon {
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     color: #000;
 }
@@ -39,6 +50,11 @@
 .icon.isInbox {
     background: var(--button-color);
     color: #fff;
+}
+
+.icon.isMenuItem {
+    background: var(--Neutral-Paper, #F3F4F6);
+    color: #000;
 }
 
 .icon svg {
@@ -80,4 +96,10 @@
 a:hover,
 a:focus {
     text-decoration: underline;
+}
+
+.counterAndIcon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
