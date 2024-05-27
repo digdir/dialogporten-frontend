@@ -28,6 +28,6 @@ param applicationGatewayConfiguration = {
     minCapacity: 1
     maxCapacity: 2
   }
-  hostName: 'test.portal-pp.dialogporten.no'
+  hostName: 'af.at.altinn.cloud'
   sslCertificateKeyVaultSecretKey: 'dialogporten-uploaded'
 }
