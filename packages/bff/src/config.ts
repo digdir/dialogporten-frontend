@@ -21,7 +21,7 @@ const envVariables = z.object({
   MIGRATION_RUN: z.coerce.boolean().default(false),
   DIALOGPORTEN_URL: z
     .string()
-    .default('https://dp-be-test-graphql-ca.delightfulsea-adf7d8b0.norwayeast.azurecontainerapps.io/graphql'),
+    .default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
 });
 
 const env = envVariables.parse(process.env);

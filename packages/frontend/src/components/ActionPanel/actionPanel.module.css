@@ -29,6 +29,7 @@
   justify-content: space-between;
   animation: animateFromTop 230ms cubic-bezier(.21,1.02,.73,1);
   animation-iteration-count: 1;
+  z-index: 100;
 }
 
 .bulkHeader > * {
@@ -51,6 +52,7 @@
   right: 0;
   display: flex;
   justify-content: center;
+  z-index: 100;
 }
 
 .actionPanel {
@@ -64,10 +66,12 @@
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -4px rgba(0, 0, 0, 0.10);
   min-height: 30px;
   margin: 1rem;
+  max-width: calc(100vw - 4rem);
 }
 
 .actionButtons {
   display: flex;
+  flex-direction: row;
   column-gap: 0.5rem;
 }
 
@@ -102,5 +106,22 @@
       height: 100%;
       width: 100%;
     }
+  }
+}
+
+@media (max-width: 600px /* todo: what is mobile breakpoint */) {
+  .actionPanel {
+    width: calc(100vw - 4rem);
+    padding: 0.5rem;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .actionButton {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
