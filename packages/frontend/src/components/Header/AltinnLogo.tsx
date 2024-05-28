@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import styles from './altinnLogo.module.css';
+import { Link } from 'react-router-dom';
 
 export function AltinnLogoSvg({ small }: { small?: boolean }) {
   return (
@@ -19,3 +21,20 @@ export function AltinnLogoSvg({ small }: { small?: boolean }) {
     </svg>
   );
 }
+
+
+interface AltinnLogoProps {
+  className?: string;
+}
+
+export const AltinnLogo = ({ className }: AltinnLogoProps) => {
+  const { t } = useTranslation();
+  return (
+    <div className={className}>
+      <Link to="/" aria-label={t('link.goToMain')}>
+        <AltinnLogoSvg aria-label="Altinn logo" />
+        <span>Altinn</span>
+      </Link>
+    </div>
+  );
+};

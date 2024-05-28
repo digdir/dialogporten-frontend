@@ -7,8 +7,10 @@
   "inbox.heading.choose_all": "Velg alle",
   "word.back": "Tilbake",
   "word.to": "til",
+  "word.private": "Privat",
   "word.search": "Søk",
   "word.menu": "Meny",
+  "word.change": "Endre",
   "word.delete": "Slett",
   "sidebar.drafts": "Utkast",
   "sidebar.sent": "Sendt",
@@ -46,5 +48,8 @@
   "header.searchPlaceholder": "Søk i personlig innboks",
   "link.goToMain": "Gå til hovedsiden",
   "link.goToInbox": "Gå til innboks",
-  "dialogs.attachment_count": "{count, plural, one {# vedlegg} other {# vedlegg}}"
+  "link.goToAllServices": "Gå til alle tjenester",
+  "link.goToSettings": "Gå til innstillinger",
+  "dialogs.attachment_count": "{count, plural, one {# vedlegg} other {# vedlegg}}",
+  "menuBar.all_services": "Alle tjenester"
 }

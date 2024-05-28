@@ -2,6 +2,7 @@ import cx from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './sidebarItem.module.css';
+import { ChevronRightIcon } from '@navikt/aksel-icons';
 
 export type SidebarItemProps = {
   displayText: string;
@@ -12,7 +13,8 @@ export type SidebarItemProps = {
   isInbox?: boolean;
   isButton?: boolean;
   isCompany?: boolean;
-  type?: 'primary' | 'secondary';
+  type?: 'primary' | 'secondary' | 'menuItem';
+  className?: string;
 };
 
 /**
@@ -62,17 +64,20 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   isButton,
   isCompany,
   type = 'primary',
+  className,
 }) => {
   const ariaTextCounter = count
     ? `${count} uleste ${isInbox ? 'meldinger' : 'elementer'} i ${displayText}`
     : displayText;
+  const isMenuItem = type === 'menuItem'
   return (
     <Link to={path} className={styles.link} aria-label={label}>
       <div
         className={cx(styles.sidebarItem, {
           [styles.isButton]: isButton,
           [styles.isCompany]: isCompany,
-        })}
+
+        }, className)}
       >
         <div className={styles.iconAndText}>
           <span
@@ -80,6 +85,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
               [styles.isInbox]: isInbox,
               [styles.isCompany]: isCompany,
               [styles.isPrimary]: type === 'primary',
+              [styles.isMenuItem]: isMenuItem,
             })}
             aria-hidden="true"
           >
@@ -87,17 +93,19 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
           </span>
           <span className={styles.displayText}>{displayText}</span>
         </div>
-
-        {!!count && (
-          <div
-            className={cx(styles.counter, {
-              [styles.redCounter]: isInbox,
-            })}
-            aria-label={ariaTextCounter}
-          >
-            {count}
-          </div>
-        )}
+        <div className={styles.counterAndIcon}>
+          {!!count && (
+            <span
+              className={cx(styles.counter, {
+                [styles.redCounter]: isInbox,
+              })}
+              aria-label={ariaTextCounter}
+            >
+              {count}
+            </span>
+          )}
+          {isMenuItem && <ChevronRightIcon className={styles.arrowIcon} />}
+        </div>
       </div>
     </Link>
   );

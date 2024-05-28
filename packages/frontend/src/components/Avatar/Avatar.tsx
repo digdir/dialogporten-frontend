@@ -13,12 +13,13 @@ interface AvatarProps {
   name: string;
   companyName?: string;
   className?: string;
+  darkCircle?: boolean;
 }
 
-export const Avatar = ({ name, companyName, className }: AvatarProps) => {
+export const Avatar = ({ name, companyName, className, darkCircle }: AvatarProps) => {
   return (
     <div
-      className={cx(styles.initialsCircle, className, { [styles.isOrganization]: !!companyName })}
+      className={cx(styles.initialsCircle, className, { [styles.isOrganization]: !!companyName, [styles.darkCircle]: darkCircle })}
       aria-hidden="true"
     >
       {getInitials(name, companyName)}
