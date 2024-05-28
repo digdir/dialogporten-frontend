@@ -5,3 +5,4 @@ export * from './Sidebar';
 export * from './Footer';
 export * from './ActionPanel';
 export * from './FilterBar';
+export * from './BottomDrawer';

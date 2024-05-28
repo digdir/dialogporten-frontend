@@ -6,6 +6,7 @@ import { Footer, Header, Sidebar } from '..';
 import { fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
 import { useAuthenticated } from '../../auth';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
+import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar/Snackbar.tsx';
 import styles from './pageLayout.module.css';
 
@@ -18,8 +19,8 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
-	const urlParams = new URLSearchParams(window.location.search);
-	const debug = urlParams.get('debug') === "true";
+  const urlParams = new URLSearchParams(window.location.search);
+  const debug = urlParams.get('debug') === 'true';
 
   const { isCompany } = useControls({
     isCompany: false,
@@ -30,7 +31,7 @@ export const PageLayout: React.FC = () => {
     fetchBtn: button(async () => {
       const profile = await fetchProfile();
       console.log(profile);
-    })
+    }),
   });
 
   useAuthenticated();
@@ -41,12 +42,14 @@ export const PageLayout: React.FC = () => {
 
   return (
     <div className={isCompany ? `isCompany` : ''}>
-      <div className={styles.pageLayout}>
-        <Header name="John Doe" companyName={isCompany ? 'ACME Corp' : ''} />
-        <Sidebar isCompany={isCompany} />
-        <Outlet />
-        <Footer />
-      </div>
+      <BottomDrawerContainer>
+        <div className={styles.pageLayout}>
+          <Header name="John Doe" companyName={isCompany ? 'ACME Corp' : ''} />
+          <Sidebar isCompany={isCompany} />
+          <Outlet />
+          <Footer />
+        </div>
+      </BottomDrawerContainer>
       <Snackbar />
       <Leva hidden={!debug} />
     </div>

@@ -1,6 +1,6 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
-import { ActionPanel } from 'frontend';
+import { ActionPanel, BottomDrawerContainer } from 'frontend';
 
 export default {
   title: 'Components/ActionPanel',
@@ -8,6 +8,13 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+	decorators: [
+		(Story) => (
+			<BottomDrawerContainer>
+				<Story />
+			</BottomDrawerContainer>
+		)
+	],
 } as Meta<typeof ActionPanel>;
 
 export const Default: StoryObj<typeof ActionPanel> = {
