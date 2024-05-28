@@ -30,10 +30,7 @@ export const PageLayout: React.FC = () => {
     fetchBtn: button(async () => {
       const profile = await fetchProfile();
       console.log(profile);
-    }),
-    logoutBtn: button(() => {
-      (window as Window).location = `/api/logout`;
-    }),
+    })
   });
 
   useAuthenticated();
