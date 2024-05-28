@@ -4,7 +4,7 @@ import fp from 'fastify-plugin';
 import config from '../config.ts';
 import { SessionStorageToken } from './oidc.ts';
 
-const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
+export const validateOrRefreshToken = async (request: FastifyRequest): Promise<boolean> => {
   const token: SessionStorageToken = request.session.get('token');
 
   if (!token) {
@@ -75,7 +75,7 @@ const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
 
 const plugin: FastifyPluginAsync = async (fastify, _) => {
   fastify.decorate('verifyToken', (request: FastifyRequest, reply: FastifyReply, done) => {
-    getIsTokenValid(request)
+    validateOrRefreshToken(request)
       .then((isValid) => {
         if (isValid) {
           done();

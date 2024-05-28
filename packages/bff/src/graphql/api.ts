@@ -1,3 +1,4 @@
+import session from '@fastify/session';
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { AsyncExecutor } from '@graphql-tools/utils';
 import axios from 'axios';
@@ -5,13 +6,16 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { print } from 'graphql';
 import { createHandler } from 'graphql-http/lib/use/fastify';
+import { validateOrRefreshToken } from '../auth/verifyToken.js';
 import config from '../config.ts';
 import { bffSchema, dialogportenSchema } from './schema.ts';
 
 const plugin: FastifyPluginAsync = async (fastify, options) => {
   const remoteExecutor: AsyncExecutor = async ({ document, variables, operationName, context }) => {
-    const token = context!.session.get('token');
+    const request = context!.request;
+    await validateOrRefreshToken(request);
 
+    const token = request.session.get('token');
     const query = print(document);
 
     const response = await axios({
@@ -43,6 +47,10 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
       schema: stitchedSchema,
       context(request) {
         return {
+          request: {
+            ...request,
+            session: request.raw.session,
+          },
           session: request.raw.session,
         };
       },
