@@ -44,15 +44,8 @@
 }
 
 .bulkFooter {
-  position: fixed;
-  bottom: 0;
   animation: animateFromBottom 230ms cubic-bezier(.21,1.02,.73,1);
   animation-iteration-count: 1;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 100;
 }
 
 .actionPanel {

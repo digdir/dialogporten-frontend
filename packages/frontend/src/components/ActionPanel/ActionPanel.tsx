@@ -2,6 +2,7 @@ import { Button } from '@digdir/designsystemet-react';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { BottomDrawer } from '../BottomDrawer';
 import styles from './actionPanel.module.css';
 
 const BulkHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -10,9 +11,9 @@ const BulkHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const BulkFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className={styles.bulkFooter}>
-      <div className={styles.actionPanel}>{children}</div>
-    </div>
+    <BottomDrawer>
+      <div className={styles.bulkFooter}>{children}</div>
+    </BottomDrawer>
   );
 };
 
@@ -59,24 +60,26 @@ export function ActionPanel({ actionButtons, onUndoSelection, selectedItemCount 
         </Button>
       </BulkHeader>
       <BulkFooter>
-        <div className={styles.actionButtons}>
-          {actionButtons
-            .filter((actionBtn) => actionBtn.hidden !== true)
-            .map(({ label, onClick, icon, disabled }) => {
-              return (
-                <Button
-                  className={styles.actionButton}
-                  key={label}
-                  onClick={onClick}
-                  disabled={disabled}
-                  variant="tertiary"
-                  size="small"
-                >
-                  <span className={styles.actionButtonIcon}>{icon}</span>
-                  <span className={styles.actionButtonLabel}>{label}</span>
-                </Button>
-              );
-            })}
+        <div className={styles.actionPanel}>
+          <div className={styles.actionButtons}>
+            {actionButtons
+              .filter((actionBtn) => actionBtn.hidden !== true)
+              .map(({ label, onClick, icon, disabled }) => {
+                return (
+                  <Button
+                    className={styles.actionButton}
+                    key={label}
+                    onClick={onClick}
+                    disabled={disabled}
+                    variant="tertiary"
+                    size="small"
+                  >
+                    <span className={styles.actionButtonIcon}>{icon}</span>
+                    <span className={styles.actionButtonLabel}>{label}</span>
+                  </Button>
+                );
+              })}
+          </div>
         </div>
       </BulkFooter>
     </>
