@@ -18,6 +18,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
   const { t } = useTranslation();
   const { isMobile } = useWindowSize();
   if (!showDropdownMenu) return <></>;
+
+	const onLogoutClick = () => {
+		(window as Window).location = `/api/logout`;
+	};
+
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
@@ -81,7 +86,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
         </li>
         <Hr />
         <li className={styles.menuItem}>
-          <Button variant="secondary" className={styles.logoutButton}>
+          <Button variant="secondary" className={styles.logoutButton} onClick={onLogoutClick}>
             Logg ut
           </Button>
         </li>
