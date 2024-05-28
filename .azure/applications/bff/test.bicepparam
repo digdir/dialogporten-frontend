@@ -3,7 +3,7 @@ using './main.bicep'
 param environment = 'test'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param hostName = 'https://test.portal-pp.dialogporten.no'
+param hostName = 'https://af.at.altinn.cloud'
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')
