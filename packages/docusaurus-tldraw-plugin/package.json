@@ -12,6 +12,6 @@
   "dependencies": {
     "@docusaurus/core": "3.1.1",
     "react": "^18.2.0",
-    "tldraw": "2.2.0-canary.e474f51745ec"
+    "tldraw": "2.2.0-canary.ffe3e7602c71"
   }
 }
