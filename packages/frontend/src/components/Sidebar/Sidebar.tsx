@@ -5,16 +5,15 @@ import {
   FolderMinusIcon,
   InboxFillIcon,
   MagnifyingGlassIcon,
-  PlusIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
+import { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { useSavedSearches } from '../../pages/SavedSearches';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
-import { SavedSearchesFieldsFragment } from 'bff-types-generated';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -48,19 +47,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           />
           <HorizontalLine />
           <SidebarItem
-            displayText={t('sidebar.new_form')}
-            label="Trykk her for å lage nytt skjema"
-            icon={<PlusIcon />}
-            path="/Nytt"
-            isButton
-            isCompany={isCompany}
-          />
-          <SidebarItem
             displayText={t('sidebar.drafts')}
-            label="Trykk her for å gå til Utkast"
+            label="Trykk her for å gå til Under arbeid"
             icon={<FileTextIcon />}
             count={8}
-            path="/Utkast"
+            path="/drafts"
             isCompany={isCompany}
           />
           <SidebarItem
@@ -68,24 +59,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             label="Trykk her for å gå til Sendt"
             icon={<FileCheckmarkIcon />}
             count={8}
-            path="/Sendt"
+            path="/sent"
             isCompany={isCompany}
           />
           <HorizontalLine />
           <SidebarItem
+            disabled
             displayText={t('sidebar.archived')}
             label="Trykk her for å gå til Arkiv"
             icon={<FolderMinusIcon />}
             count={8}
-            path="/Arkiv"
+            path="/archive"
             isCompany={isCompany}
           />
           <SidebarItem
+            disabled
             displayText={t('sidebar.deleted')}
-            label="Trykk her for å gå til Slettet"
+            label="Trykk her for å gå til Papirkurv"
             icon={<TrashIcon />}
             count={8}
-            path="/Slettet"
+            path="/deleted"
             isCompany={isCompany}
           />
           <HorizontalLine />
@@ -99,6 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             isCompany={isCompany}
           />
           <SidebarItem
+            disabled
             displayText={t('sidebar.settings')}
             label="Trykk her for å gå til innstillinger"
             icon={<CogIcon />}

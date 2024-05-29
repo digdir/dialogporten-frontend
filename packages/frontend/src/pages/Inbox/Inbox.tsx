@@ -1,17 +1,20 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashIcon } from '@navikt/aksel-icons';
+import { DialogStatus, SavedSearchData } from 'bff-types-generated';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useDialogs } from '../../api/useDialogs.tsx';
+import { InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
-import { SavedSearchData } from 'bff-types-generated';
 import styles from './inbox.module.css';
 
+interface InboxProps {
+  viewType: InboxViewType;
+}
 export interface InboxItemInput {
   id: string;
   title: string;
@@ -22,7 +25,7 @@ export interface InboxItemInput {
   linkTo: string;
   date: string;
   createdAt: string;
-  status: string;
+  status: DialogStatus;
 }
 
 function countOccurrences(array: string[]): Record<string, number> {
@@ -82,14 +85,15 @@ export const getSearchStringFromQueryParams = (): string => {
   return '';
 };
 
-export const Inbox = () => {
+export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<{
     [key: string]: boolean;
   }>({});
   const location = useLocation();
   const { parties } = useParties();
-  const { dialogs } = useDialogs(parties);
+  const { dialogsByView } = useDialogs(parties);
+  const dialogs = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
 
