@@ -1,6 +1,7 @@
 import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import {
   ContentType,
+  DialogStatus,
   GetAllDialogsForPartiesQuery,
   PartyFieldsFragment,
   SearchDialogFieldsFragment,
@@ -12,8 +13,13 @@ import { i18n } from '../i18n/config.ts';
 import { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
+
+export type InboxViewType = 'inbox' | 'draft' | 'sent';
 interface UseDialogsOutput {
   dialogs: InboxItemInput[];
+  dialogsByView: {
+    [key in InboxViewType]: InboxItemInput[];
+  };
   isSuccess: boolean;
   isLoading: boolean;
 }
@@ -92,9 +98,18 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
+  const dialogInboxItems = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
   return {
     isLoading,
     isSuccess,
-    dialogs: mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties),
+    dialogs: dialogInboxItems,
+    /* TODO: As soon as logic for performedBy in lastActivity has changed,
+     *  checking if service owner is last modifier for inbox items and end user is last modifier for draft, must be added
+     */
+    dialogsByView: {
+      inbox: dialogInboxItems.filter((dii) => dii.status === DialogStatus.New),
+      draft: dialogInboxItems.filter((dii) => [DialogStatus.InProgress, DialogStatus.Signing].includes(dii.status)),
+      sent: dialogInboxItems.filter((dii) => dii.status === DialogStatus.Completed),
+    },
   };
 };
