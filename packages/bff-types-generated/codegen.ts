@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   schema: './schema.ts',
   require: ['ts-node/register'],
-  documents: 'queries/**/*.graphql',
+  documents: ['queries/**/*.graphql'],
   generates: {
     './generated/sdk.ts': {
       plugins: [
@@ -16,6 +16,12 @@ const config: CodegenConfig = {
         'typescript-operations',
         'typescript-graphql-request',
       ],
+    },
+    './generated/schema.graphql': {
+      plugins: ['schema-ast'],
+      config: {
+        includeIntrospectionTypes: false,
+      },
     },
   },
 };
