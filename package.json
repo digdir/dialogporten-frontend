@@ -16,7 +16,12 @@
     "jackspeak": "2.1.1"
   },
   "lint-staged": {
-    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
+    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": [
+      "biome check --apply --no-errors-on-unmatched"
+    ]
   },
-  "packageManager": "pnpm@8.15.1"
+  "packageManager": "pnpm@8.15.1",
+  "dependencies": {
+    "@playlyfe/gql": "^2.6.2"
+  }
 }

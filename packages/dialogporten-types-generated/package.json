@@ -17,6 +17,7 @@
     "glob": "^10.3.12",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
+    "schema-ast": "^2.0.0",
     "swagger-typescript-api": "13.0.3"
   },
   "devDependencies": {

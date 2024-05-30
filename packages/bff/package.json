@@ -6,7 +6,6 @@
   "scripts": {
     "start": "./src/app.ts",
     "build": "tsc",
-    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "dev": "mprocs 'pnpm dev:start' 'pnpm dev:types'",
