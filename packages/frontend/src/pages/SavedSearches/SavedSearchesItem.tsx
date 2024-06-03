@@ -1,10 +1,10 @@
-import styles from './savedSearches.module.css';
-import { compressQueryParams } from '../Inbox/Inbox';
-import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { DropdownMenu } from '@digdir/designsystemet-react';
-import { useTranslation } from 'react-i18next';
+import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@navikt/aksel-icons';
+import { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { useTranslation } from 'react-i18next';
+import { compressQueryParams } from '../Inbox/Inbox';
+import styles from './savedSearches.module.css';
 
 interface SavedSearchesItemProps {
   savedSearch?: SavedSearchesFieldsFragment;
@@ -16,17 +16,24 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
   const { t } = useTranslation();
   if (!savedSearch?.data) return null;
   const handleOpenEditModal = () => {
-    console.log("Opening edit modal...", { savedSearch, onDelete, setSelectedSavedSearch });
-    setSelectedSavedSearch?.(savedSearch)
-  }
+    console.log('Opening edit modal...', { savedSearch, onDelete, setSelectedSavedSearch });
+    setSelectedSavedSearch?.(savedSearch);
+  };
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DropdownMenu>
-        <DropdownMenu.Trigger className={styles.linkButton} ><EllipsisHorizontalIcon className={styles.icon} /></DropdownMenu.Trigger>
+        <DropdownMenu.Trigger className={styles.linkButton}>
+          <EllipsisHorizontalIcon className={styles.icon} />
+        </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Group>
-            <DropdownMenu.Item onClick={handleOpenEditModal}><PencilIcon fontSize="1.5rem" aria-hidden="true" /> {t('savedSearches.change_name')}</DropdownMenu.Item>
-            <DropdownMenu.Item onClick={() => onDelete?.(savedSearch.id)}><TrashIcon className={styles.icon} aria-hidden="true" />{t('savedSearches.delete_search')}</DropdownMenu.Item>
+            <DropdownMenu.Item onClick={handleOpenEditModal}>
+              <PencilIcon fontSize="1.5rem" aria-hidden="true" /> {t('savedSearches.change_name')}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onClick={() => onDelete?.(savedSearch.id)}>
+              <TrashIcon className={styles.icon} aria-hidden="true" />
+              {t('savedSearches.delete_search')}
+            </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu>
@@ -46,7 +53,11 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
       <>
         <div className={styles.savedSearchItem} key={savedSearch.id}>
           <div className={styles.searchDetails}>{savedSearch.name}</div>
-          <RenderButtons setSelectedSavedSearch={setSelectedSavedSearch} savedSearch={savedSearch} onDelete={onDelete} />
+          <RenderButtons
+            setSelectedSavedSearch={setSelectedSavedSearch}
+            savedSearch={savedSearch}
+            onDelete={onDelete}
+          />
         </div>
         <hr />
       </>
@@ -59,14 +70,18 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
           <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
           {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
           {searchData?.filters?.map((search, index) => {
-            const fieldName = search?.fieldName;
+            const id = search?.id;
             return (
-              <span key={`${fieldName}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'
-                } ${fieldName}`}</span>
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${id}`}</span>
             );
           })}
         </div>
-        <RenderButtons key={savedSearch.id} setSelectedSavedSearch={setSelectedSavedSearch} savedSearch={savedSearch} onDelete={onDelete} />
+        <RenderButtons
+          key={savedSearch.id}
+          setSelectedSavedSearch={setSelectedSavedSearch}
+          savedSearch={savedSearch}
+          onDelete={onDelete}
+        />
       </div>
       <hr />
     </>

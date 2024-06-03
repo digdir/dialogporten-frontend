@@ -17,10 +17,7 @@ fragment SearchDialogFields on SearchDialog {
       cultureCode
     }
     dialogElementId
-    performedBy {
-      value
-      cultureCode
-    }
+    performedBy
   }
   content {
     ...DialogContentFields
@@ -76,14 +73,13 @@ fragment DialogContentFields on Content {
 fragment DialogElement on Element {
     id
     urls {
-      id
-      mimeType
+      mediaType
       consumerType
       url
     }
     type
     displayName {
-            value
+      value
       cultureCode
     }
 }
@@ -93,10 +89,7 @@ fragment DialogActivity on Activity {
     type
     createdAt
     dialogElementId
-    performedBy {
-      value
-      cultureCode
-    }
+    performedBy
 }
 
 fragment SeenLogFields on SeenLog {

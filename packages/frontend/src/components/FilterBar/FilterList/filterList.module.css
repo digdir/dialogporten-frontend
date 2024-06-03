@@ -4,6 +4,6 @@
     border-radius: 0.375rem;
     padding: 0.5rem 0;
     position: absolute;
-    z-index: 2;
-    background: white;
+    z-index: 1001;
+    background: #fff;
 }

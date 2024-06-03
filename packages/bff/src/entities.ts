@@ -33,23 +33,10 @@ export class ProfileTable {
   deletedAt: Date;
 }
 
-export type FieldOptionOperation = 'equals' | 'includes';
-
-interface ValueFilter {
-  fieldName: string | ((item: Record<string, string | number | boolean>) => string);
-  operation: FieldOptionOperation;
+export interface Filter {
+  id: string;
   value: string;
-  label: string;
 }
-
-export interface UnsetValueFilter {
-  fieldName: string;
-  operation: 'unset';
-  label: string;
-  value?: string | string[];
-}
-
-export type Filter = ValueFilter | UnsetValueFilter;
 
 export interface SavedSearchData {
   filters?: Filter[];

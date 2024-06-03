@@ -79,7 +79,7 @@ export const InboxItemDetail = ({
             const attachmentCount = activity.elements.reduce((tail, element) => tail + element.urls.length, 0);
             return (
               <section key={activity.id}>
-                <span>{getPropertyByCultureCode(activity.performedBy)}</span>
+                <span>{activity.performedBy}</span>
                 <div className={styles.elements}>
                   <h2 id="attachmentTitle" className={styles.attachmentTitle}>
                     {t('inbox.attachment.count', {
@@ -96,8 +96,8 @@ export const InboxItemDetail = ({
                                 /* Urls per element are same content in formats */
                                 .filter((url) => url.consumerType === ElementUrlConsumer.Gui)
                                 .map((url) => (
-                                  <li key={url.id}>
-                                    {/* TODO: Icon should render differently depending on url.mimeType */}
+                                  <li key={url.url}>
+                                    {/* TODO: Icon should render differently depending on url.mediaType */}
                                     <FileIcon />
                                     <Link
                                       href={url.url}
