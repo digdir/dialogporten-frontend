@@ -24,6 +24,7 @@
   "savedSearches.delete_search": "Slett lagret søk",
   "savedSearches.change_name": "Endre navn",
   "savedSearches.saved_success": "Søk lagret",
+  "savedSearches.saved_error": "Feil oppsto: Søk ikke lagret",
   "savedSearches.update_success": "Søk oppdatert",
   "savedSearches.deleted_success": "Søk slettet",
   "savedSearches.deleted_failed": "Sletting av søk feilet",
