@@ -1,50 +1,40 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Backdrop } from '../Backdrop';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
-interface ValueFilter {
-  fieldName: string | ((item: Record<string, string | number | boolean>) => string);
-  operation: FieldOptionOperation;
-  value: string;
-  label: string;
-}
+export type FilterValueType = string | string[] | number | boolean | undefined;
 
-export interface UnsetValueFilter {
-  fieldName: string;
-  operation: 'unset';
-  label: string;
-  value?: string | string[];
-}
-
-export type Filter = ValueFilter | UnsetValueFilter;
-
-export interface FilterBarFieldOption {
+export interface Filter {
   id: string;
-  label: string;
-  operation: FieldOptionOperation;
-  value: string;
-  count: number;
+  value: FilterValueType;
+}
+export interface FilterBarFieldOption {
+  value: FilterValueType;
+  displayLabel: string;
+  count?: number;
+  leftIcon?: React.ReactNode;
 }
 
-export interface FilterBarField {
+export interface FilterSetting {
   label: string;
   unSelectedLabel: string;
   id: string;
+  operation: FieldOptionOperation;
   options: FilterBarFieldOption[];
-  chosenOptionId?: string | string[];
   leftIcon?: React.ReactNode;
 }
 
 interface FilterBarProps {
-  fields: FilterBarField[];
-  onFilterChange: (filters: Filter[]) => void;
+  settings: FilterSetting[];
+  onFilterChange: (newFilters: Filter[]) => void;
   initialFilters?: Filter[];
 }
 
-type ListOpenTarget = 'none' | string | 'add_filter';
+type ListOpenTarget = 'none' | 'add_filter' | string;
 
 /**
  * `FilterBar` is a component that renders a dynamic filter UI, allowing users to add, remove, and modify filters based on predefined field options. It supports both value-based filters and unset filters, where the former applies a specific condition (e.g., equals, includes) to a field, and the latter signifies the absence of a filter on that field.
@@ -52,11 +42,11 @@ type ListOpenTarget = 'none' | string | 'add_filter';
  * The component is designed to be flexible, accommodating a variety of filter types through its configuration props. It manages its own state for active filters and the visibility of filter option lists, providing a callback for when the active filters change, enabling parent components to react to updates in the filter state.
  *
  * Props:
- * - `fields`: Array of `FilterBarField` objects that define the available filters and their options. Each field includes a label, an ID, options (each with a label, value, and count), and optionally a chosen option ID and a left icon.
+ * - `settings`: Array of `FilterSetting` objects that define the available filters and their options. Each setting includes a label, an ID, options (each with a value and display label), and optionally a count and a left icon.
  * - `onFilterChange`: Function called with the current array of active `Filter` objects whenever the active filters change, allowing parent components to respond to filter changes.
  * - `initialFilters`: (Optional) Array of `Filter` objects representing the initial state of active filters when the component mounts.
  *
- * The component renders a list of `FilterButton` components for each active filter, allowing users to remove filters or change their values. An `AddFilterButton` is also rendered, enabling the addition of new filters from the available `fields`.
+ * The component renders a list of `FilterButton` components for each active filter, allowing users to remove filters or change their values. An `AddFilterButton` is also rendered, enabling the addition of new filters from the available `settings`.
  *
  * Usage:
  * The `FilterBar` is intended to be used in applications requiring dynamic filtering capabilities, such as data tables or lists that need to be filtered based on various criteria. It is designed to be integrated into a larger UI, where it can be positioned as needed to provide filtering functionality.
@@ -64,136 +54,133 @@ type ListOpenTarget = 'none' | string | 'add_filter';
  * Example:
  * ```
  * <FilterBar
- *   fields={[
+ *   settings={[
  *     {
  *       label: 'Country',
  *       unSelectedLabel: 'All Countries',
  *       id: 'country',
+ *       operation: 'equals',
  *       options: [
- *         { id: 'us', label: 'United States', value: 'United States', count: 10, operation: 'equals' },
- *         { id: 'ca', label: 'Canada', value: 'Canada', count: 5, operation: 'equals' }
+ *         { value: 'United States', displayLabel: 'United States', count: 10 },
+ *         { value: 'Canada', displayLabel: 'Canada', count: 5 }
  *       ]
  *     },
  *     {
  *       label: 'Gender',
  *       unSelectedLabel: 'All Genders',
  *       id: 'gender',
+ *       operation: 'equals',
  *       options: [
- *         { id: 'male', label: 'Male', value: 'Male', count: 15, operation: 'equals' },
- *         { id: 'female', label: 'Female', value: 'Female', count: 20, operation: 'equals' }
+ *         { value: 'Male', displayLabel: 'Male', count: 15 },
+ *         { value: 'Female', displayLabel: 'Female', count: 20 }
  *       ]
  *     }
  *   ]}
  *   onFilterChange={(filters) => console.log('Active filters:', filters)}
+ *   initialFilters={[
+ *     { id: 'country', value: 'United States' },
+ *     { id: 'gender', value: 'Female' }
+ *   ]}
  * />
  * ```
  */
-export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: FilterBarProps) => {
-  const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters);
+
+export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: FilterBarProps) => {
+  const [selectedFilters, setSelectedFilters] = useState<Filter[]>(initialFilters);
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
 
   useEffect(() => {
     if (initialFilters?.length) {
-      setActiveFilters(initialFilters || []);
+      setSelectedFilters(initialFilters);
     }
   }, [initialFilters]);
 
   const handleOnRemove = useCallback(
-    (fieldName: string) => {
-      const updatedFilters = activeFilters.filter((filter) => filter.fieldName !== fieldName);
-      setActiveFilters(updatedFilters);
+    (filterId: string) => {
+      const updatedFilters = selectedFilters.filter((filter) => filter.id !== filterId);
+      setSelectedFilters(updatedFilters);
       onFilterChange(updatedFilters);
     },
-    [activeFilters, onFilterChange],
+    [selectedFilters, onFilterChange],
   );
 
-  const handleFilterUpdate = useCallback(
-    (fieldName: string, option?: FilterBarFieldOption) => {
-      const filterFound = !!activeFilters.find((filter) => filter.fieldName === fieldName);
-      let newFilters = activeFilters.slice();
-      if (!filterFound && !option) {
-        newFilters = [
-          ...activeFilters,
-          {
-            fieldName,
-            operation: 'unset',
-            label: '',
-          },
-        ];
-      } else if (filterFound && option) {
-        newFilters = activeFilters.map((filter) => {
-          if (filter.fieldName === fieldName) {
-            return {
-              fieldName,
-              value: option.value,
-              label: option.label,
-              operation: option.operation,
-            };
-          }
-          return filter;
-        });
+  const getFilterSetting = (id: string): FilterSetting | undefined => {
+    return settings.find((setting) => setting.id === id);
+  };
+
+  const onToggleFilter = (id: string, value: FilterValueType) => {
+    const existingFiltersForId = selectedFilters.filter((filter) => filter.id === id);
+    const thisFilterAlreadyExists = selectedFilters.some((filter) => filter.id === id && filter.value === value);
+
+    const settingForFilter = getFilterSetting(id);
+    const allowMultiselect = settingForFilter?.operation === 'includes';
+
+    let nextFilters: Filter[] = [];
+
+    // Remove filter if it already exists
+    if (thisFilterAlreadyExists) {
+      nextFilters = selectedFilters.filter((filter) => !(filter.id === id && filter.value === value));
+      if (existingFiltersForId.length === 1) {
+        // Add undefined filter if no values are left for the field
+        nextFilters.push({ id, value: undefined });
       }
+    } else {
+      nextFilters = [...selectedFilters, { id, value }];
+    }
 
-      setActiveFilters(newFilters);
-      onFilterChange(newFilters);
-    },
-    [activeFilters, onFilterChange],
-  );
+    setSelectedFilters(nextFilters);
+    onFilterChange(nextFilters);
+
+    // Selection is not done, keep the menu open
+    if (allowMultiselect || !value) {
+      setListOpenTarget(id);
+    } else {
+      setListOpenTarget(existingFiltersForId ? 'none' : id);
+    }
+  };
+
+  const filtersById = selectedFilters.reduce((tail: Record<string, Filter[]>, current: Filter) => {
+    if (!tail[current.id]) {
+      tail[current.id] = [];
+    }
+    tail[current.id].push(current);
+    return tail;
+  }, {});
 
   return (
     <section className={styles.filterBar}>
-      {activeFilters.map((filter) => {
-        const filterOption = fields.find((field) => field.id === filter.fieldName);
-        if (!filterOption) {
+      {Object.keys(filtersById).map((id) => {
+        const settingForFilter = getFilterSetting(id);
+        if (!settingForFilter) {
           return null;
         }
 
-        const displayLabel = Array.isArray(filter.value) ? `${filter.value.length} selected` : filter.label;
+        const isMenuOpen = listOpenTarget === id;
 
         return (
           <FilterButton
-            onRemove={() => handleOnRemove(filterOption.id)}
-            isOpen={listOpenTarget === filterOption.id}
+            key={id}
+            isOpen={isMenuOpen}
+            filterFieldData={settingForFilter}
             onBtnClick={() => {
-              setListOpenTarget(listOpenTarget === filterOption.id ? 'none' : filterOption.id);
+              setListOpenTarget(isMenuOpen ? 'none' : id);
             }}
-            key={filterOption.id}
-            filterOption={filterOption}
-            onListItemClick={(id, option) => {
-              handleFilterUpdate(id, option);
-              setListOpenTarget('none');
-            }}
-            displayLabel={displayLabel}
+            onRemove={() => handleOnRemove(id)}
+            onListItemClick={onToggleFilter}
+            selectedFilters={selectedFilters}
           />
         );
       })}
       <AddFilterButton
         isOpen={listOpenTarget === 'add_filter'}
-        onBtnClick={() => {
+        onAddBtnClick={() => {
           setListOpenTarget(listOpenTarget === 'add_filter' ? 'none' : 'add_filter');
         }}
-        filterOptions={fields}
-        filters={activeFilters}
-        onListItemClick={(filterOpt) => {
-          const chosenOption =
-            typeof filterOpt?.chosenOptionId !== 'undefined'
-              ? filterOpt.options.find((option: FilterBarFieldOption) => option.id === filterOpt?.chosenOptionId)
-              : undefined;
-          handleFilterUpdate(filterOpt.id, chosenOption);
-          setListOpenTarget(filterOpt.id);
-        }}
+        settings={settings}
+        selectedFilters={selectedFilters}
+        onListItemClick={onToggleFilter}
       />
-      {listOpenTarget !== 'none' && (
-        <div
-          className={styles.background}
-          onKeyUp={(e) => {
-            if (e.key === 'Enter') {
-              setListOpenTarget('none');
-            }
-          }}
-          onClick={() => setListOpenTarget('none')}
-        />
-      )}
+      <Backdrop show={listOpenTarget !== 'none'} onClick={() => setListOpenTarget('none')} />
     </section>
   );
 };

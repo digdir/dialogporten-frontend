@@ -1,4 +1,4 @@
-import { extendType, intArg, list, nonNull, objectType, stringArg, arg, inputObjectType } from 'nexus';
+import { arg, extendType, inputObjectType, intArg, list, nonNull, objectType, stringArg } from 'nexus';
 import { SavedSearchRepository } from '../../db.ts';
 import { SavedSearch, getOrCreateProfile } from '../../entities.ts';
 
@@ -14,8 +14,7 @@ export const Mutation = extendType({
         const { id } = args;
         try {
           const result = await SavedSearchRepository!.delete({ id });
-          return { success: result?.affected && result?.affected > 0, message: "Saved search deleted successfully" };
-
+          return { success: result?.affected && result?.affected > 0, message: 'Saved search deleted successfully' };
         } catch (error) {
           console.error('Failed to delete saved search:', error);
           return { success: false, message: 'Failed to delete saved search' };
@@ -46,7 +45,7 @@ export const UpdateSavedSearch = extendType({
         const { id, name } = args;
         try {
           await SavedSearchRepository!.update(id, { name });
-          return { success: true, message: "Saved search updated successfully" };
+          return { success: true, message: 'Saved search updated successfully' };
         } catch (error) {
           console.error('Failed to updated saved search:', error);
           return { success: false, message: 'Failed to updated saved search' };
@@ -93,10 +92,8 @@ export const SavedSearchInput = inputObjectType({
 export const SearchDataValueFilterInput = inputObjectType({
   name: 'SearchDataValueFilterInput',
   definition(t) {
-    t.string('fieldName');
+    t.string('id');
     t.string('value');
-    t.string('label');
-    t.string('operation');
   },
 });
 
@@ -163,10 +160,10 @@ export const SavedSearchData = objectType({
 export const SearchDataValueFilter = objectType({
   name: 'SearchDataValueFilter',
   definition(t) {
-    t.string('fieldName', {
-      description: 'fieldName',
+    t.string('id', {
+      description: 'id',
       resolve: (source, args, ctx, info) => {
-        return source.fieldName;
+        return source.id;
       },
     });
     t.string('value', {
@@ -175,19 +172,5 @@ export const SearchDataValueFilter = objectType({
         return source.value;
       },
     });
-    t.string('label', {
-      description: 'label',
-      resolve: (source, args, ctx, info) => {
-        return source.label;
-      },
-    });
-    t.string('operationName', {
-      description: 'operation',
-      resolve: (source, args, ctx, info) => {
-        return source.operation;
-      },
-    });
   },
 });
-
-

@@ -20,8 +20,5 @@
       "biome check --apply --no-errors-on-unmatched"
     ]
   },
-  "packageManager": "pnpm@8.15.1",
-  "dependencies": {
-    "@playlyfe/gql": "^2.6.2"
-  }
+  "packageManager": "pnpm@8.15.1"
 }

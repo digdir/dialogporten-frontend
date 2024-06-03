@@ -1,8 +1,8 @@
 import { FlagCrossIcon, HourglassIcon, PersonIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
 import { Filter, FilterBar } from 'frontend';
-import { FilterBarField } from 'frontend/src/components/FilterBar/FilterBar.tsx';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FilterSetting } from 'frontend/src/components/FilterBar/FilterBar.tsx';
+import { useCallback, useEffect, useState } from 'react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 type Person = {
@@ -86,6 +86,59 @@ const historicalPeople: Person[] = [
   },
 ];
 
+const getFilterSettings = (persons: Person[]): FilterSetting[] => {
+  return [
+    {
+      id: 'country',
+      label: 'Country',
+      unSelectedLabel: 'All Countries',
+      operation: 'equals',
+      leftIcon: <FlagCrossIcon />,
+      options: (() => {
+        const countries = persons.map((p) => p.country);
+        const countryCounts = countOccurrences(countries);
+        return Array.from(new Set(countries)).map((country) => ({
+          displayLabel: country,
+          value: country,
+          count: countryCounts[country],
+        }));
+      })(),
+    },
+    {
+      id: 'gender',
+      label: 'Gender',
+      unSelectedLabel: 'All Genders',
+      operation: 'includes',
+      leftIcon: <PersonIcon />,
+      options: (() => {
+        const genders = persons.map((p) => p.gender);
+        const genderCounts = countOccurrences(genders);
+        return Array.from(new Set(genders)).map((gender) => ({
+          displayLabel: gender,
+          value: gender,
+          count: genderCounts[gender],
+        }));
+      })(),
+    },
+    {
+      id: 'yearOfBirth',
+      label: 'Century',
+      unSelectedLabel: 'All Centuries',
+      operation: 'equals',
+      leftIcon: <HourglassIcon />,
+      options: (() => {
+        const centuries = persons.map((person) => String(Math.ceil(person.yearOfBirth / 100)));
+        const centuryCounts = countOccurrences(centuries);
+        return Array.from(new Set(centuries)).map((century) => ({
+          displayLabel: `${century}th Century`,
+          value: `${century}th Century`,
+          count: centuryCounts[century],
+        }));
+      })(),
+    },
+  ];
+};
+
 export default {
   title: 'Components/FilterBar',
   component: FilterBar,
@@ -124,14 +177,14 @@ const Template: StoryObj<typeof FilterBar> = {
         historicalPeople.filter((person) => {
           return filters.every((filter) => {
             if (Array.isArray(filter.value)) {
-              return filter.value.includes(String(person[filter.fieldName as keyof Person]));
+              return filter.value.includes(String(person[filter.id as keyof Person]));
             }
             if (typeof filter.value === 'string') {
-              if (filter.fieldName === 'yearOfBirth') {
+              if (filter.id === 'yearOfBirth') {
                 const personCentury = `${Math.ceil(person.yearOfBirth / 100)}th Century`;
                 return filter.value === personCentury;
               }
-              return filter.value === person[filter.fieldName as keyof Person];
+              return filter.value === person[filter.id as keyof Person];
             }
             return true;
           });
@@ -139,65 +192,11 @@ const Template: StoryObj<typeof FilterBar> = {
       );
     }, []);
 
-    const fields: FilterBarField[] = useMemo(() => {
-      return [
-        {
-          id: 'country',
-          label: 'Country',
-          unSelectedLabel: 'All Countries',
-          leftIcon: <FlagCrossIcon />,
-          options: (() => {
-            const countries = filteredPeople.map((p) => p.country);
-            const countryCounts = countOccurrences(countries);
-            return Array.from(new Set(countries)).map((country) => ({
-              id: country,
-              label: country,
-              value: country,
-              count: countryCounts[country],
-              operation: 'equals',
-            }));
-          })(),
-        },
-        {
-          id: 'gender',
-          label: 'Gender',
-          unSelectedLabel: 'All Genders',
-          leftIcon: <PersonIcon />,
-          options: (() => {
-            const genders = filteredPeople.map((p) => p.gender);
-            const genderCounts = countOccurrences(genders);
-            return Array.from(new Set(genders)).map((gender) => ({
-              id: gender,
-              label: gender,
-              value: gender,
-              count: genderCounts[gender],
-              operation: 'equals',
-            }));
-          })(),
-        },
-        {
-          id: 'yearOfBirth',
-          label: 'Century',
-          unSelectedLabel: 'All Centuries',
-          leftIcon: <HourglassIcon />,
-          options: (() => {
-            const centuries = filteredPeople.map((person) => String(Math.ceil(person.yearOfBirth / 100)));
-            const centuryCounts = countOccurrences(centuries);
-            return Array.from(new Set(centuries)).map((century) => ({
-              id: String(century),
-              label: `${century}th Century`,
-              value: `${century}th Century`,
-              count: centuryCounts[century],
-              operation: 'equals',
-            }));
-          })(),
-        },
-      ];
-    }, [filteredPeople]);
+    const filterBarSettings = getFilterSettings(historicalPeople);
 
     return (
       <div>
-        <FilterBar {...args} fields={fields} onFilterChange={handleFilterChange} />
+        <FilterBar {...args} settings={filterBarSettings} onFilterChange={handleFilterChange} />
         <ul>
           {filteredPeople.map((person) => (
             <li key={person.id}>
@@ -211,7 +210,7 @@ const Template: StoryObj<typeof FilterBar> = {
     );
   },
   args: {
-    fields: [],
+    settings: [],
   },
 };
 
@@ -219,10 +218,8 @@ export const Default = Template;
 
 const initialState: Filter[] = [
   {
-    fieldName: 'country',
-    operation: 'equals',
+    id: 'country',
     value: 'Poland',
-    label: 'Poland',
   },
 ];
 export const InitialState: StoryObj<typeof FilterBar> = {
@@ -232,10 +229,10 @@ export const InitialState: StoryObj<typeof FilterBar> = {
       return historicalPeople.filter((person) => {
         return filters.every((filter) => {
           if (Array.isArray(filter.value)) {
-            return filter.value.includes(String(person[filter.fieldName as keyof Person]));
+            return filter.value.includes(String(person[filter.id as keyof Person]));
           }
           if (typeof filter.value === 'string') {
-            return filter.value === person[filter.fieldName as keyof Person];
+            return filter.value === person[filter.id as keyof Person];
           }
           return true;
         });
@@ -249,48 +246,16 @@ export const InitialState: StoryObj<typeof FilterBar> = {
       setFilteredPeople(filterPeople(initialState));
     }, [filterPeople]);
 
-    const fields: FilterBarField[] = useMemo(() => {
-      return [
-        {
-          id: 'country',
-          label: 'Country',
-          unSelectedLabel: 'All Countries',
-          leftIcon: <FlagCrossIcon />,
-          options: (() => {
-            const countries = filteredPeople.map((p) => p.country);
-            const countryCounts = countOccurrences(countries);
-            return Array.from(new Set(countries)).map((country) => ({
-              id: country,
-              label: country,
-              value: country,
-              count: countryCounts[country],
-              operation: 'equals',
-            }));
-          })(),
-        },
-        {
-          id: 'gender',
-          label: 'Gender',
-          unSelectedLabel: 'All Genders',
-          leftIcon: <PersonIcon />,
-          options: (() => {
-            const genders = filteredPeople.map((p) => p.gender);
-            const genderCounts = countOccurrences(genders);
-            return Array.from(new Set(genders)).map((gender) => ({
-              id: gender,
-              label: gender,
-              value: gender,
-              count: genderCounts[gender],
-              operation: 'equals',
-            }));
-          })(),
-        },
-      ];
-    }, [filteredPeople]);
+    const filterBarSettings = getFilterSettings(historicalPeople);
 
     return (
       <div>
-        <FilterBar {...args} fields={fields} initialFilters={initialState} onFilterChange={handleFilterChange} />
+        <FilterBar
+          {...args}
+          settings={filterBarSettings}
+          initialFilters={initialState}
+          onFilterChange={handleFilterChange}
+        />
         <ul>
           {filteredPeople.map((person) => (
             <li key={person.id}>
@@ -304,6 +269,6 @@ export const InitialState: StoryObj<typeof FilterBar> = {
     );
   },
   args: {
-    fields: [],
+    settings: [],
   },
 };

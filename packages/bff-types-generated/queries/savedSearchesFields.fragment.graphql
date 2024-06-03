@@ -6,10 +6,8 @@ fragment SavedSearchesFields on SavedSearches {
     data {
       searchString
       filters {
-        fieldName
+        id
         value
-        label
-        operationName
       }
     }
 }

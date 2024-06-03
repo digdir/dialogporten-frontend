@@ -9,10 +9,10 @@ import { InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant, useSearchString } from '../../components';
 import { type Filter, FilterBar } from '../../components';
-import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
+import { useSelectedDialogs } from '../../components';
+import { FilterSetting } from '../../components/FilterBar/FilterBar.tsx';
 import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
-import { useSelectedDialogs } from '../../components/PageLayout/SelectedDialogs.tsx';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import styles from './inbox.module.css';
 
@@ -31,6 +31,60 @@ export interface InboxItemInput {
   createdAt: string;
   status: DialogStatus;
 }
+
+const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
+  return [
+    {
+      id: 'sender',
+      label: 'Avsender',
+      unSelectedLabel: 'Alle avsendere',
+      leftIcon: <PersonIcon />,
+      operation: 'includes',
+      options: (() => {
+        const senders = dialogs.map((p) => p.sender.label);
+        const senderCounts = countOccurrences(senders);
+        return Array.from(new Set(senders)).map((sender) => ({
+          displayLabel: sender,
+          value: sender,
+          count: senderCounts[sender],
+        }));
+      })(),
+    },
+    {
+      id: 'receiver',
+      label: 'Mottaker',
+      unSelectedLabel: 'Alle mottakere',
+      leftIcon: <PersonIcon />,
+      operation: 'includes',
+      options: (() => {
+        const receivers = dialogs.map((p) => p.receiver.label);
+        const receiversCount = countOccurrences(receivers);
+        return Array.from(new Set(receivers)).map((receiver) => ({
+          displayLabel: receiver,
+          value: receiver,
+          count: receiversCount[receiver],
+        }));
+      })(),
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      unSelectedLabel: 'Alle statuser',
+      leftIcon: <PersonIcon />,
+      operation: 'includes',
+      options: (() => {
+        const status = dialogs.map((p) => p.status);
+        const statusCount = countOccurrences(status);
+        return Array.from(new Set(status)).map((statusLabel) => ({
+          fieldName: statusLabel,
+          displayLabel: statusLabel,
+          value: statusLabel,
+          count: statusCount[statusLabel],
+        }));
+      })(),
+    },
+  ];
+};
 
 function countOccurrences(array: string[]): Record<string, number> {
   return array.reduce(
@@ -94,10 +148,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { selectedItems, setSelectedItems, selectedItemCount } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
-  const { dialogsByView } = useDialogs(parties);
+  const { dialogsByView, dialogs } = useDialogs(parties);
   const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
   const { openSnackbar } = useSnackbar();
-  const dialogs = dialogsByView[viewType];
+  const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   useEffect(() => {
@@ -125,48 +179,26 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }
   };
 
-  const filteredData = useMemo(() => {
-    return dialogs.filter((item) =>
+  const filteredDialogsForView = useMemo(() => {
+    return dialogsForView.filter((item) =>
       activeFilters.every((filter) => {
         if (Array.isArray(filter.value)) {
-          return filter.value.includes(String(item[filter.fieldName as keyof InboxItemInput]));
+          return filter.value.includes(String(item[filter.id as keyof InboxItemInput]));
         }
         if (typeof filter.value === 'string') {
-          if (filter.fieldName === 'sender') {
-            const sender = item[filter.fieldName as keyof InboxItemInput] as Participant;
+          if (filter.id === 'sender') {
+            const sender = item[filter.id as keyof InboxItemInput] as Participant;
             return filter.value === sender.label;
           }
-          return filter.value === item[filter.fieldName as keyof InboxItemInput];
+          return filter.value === item[filter.id as keyof InboxItemInput];
         }
         return true;
       }),
     );
-  }, [dialogs, activeFilters]);
-
-  const filterBarFields: FilterBarField[] = useMemo(() => {
-    return [
-      {
-        id: 'sender',
-        label: 'Avsender',
-        unSelectedLabel: 'Alle avsendere',
-        leftIcon: <PersonIcon />,
-        options: (() => {
-          const senders = filteredData.map((p) => p.sender.label);
-          const senderCounts = countOccurrences(senders);
-          return Array.from(new Set(senders)).map((sender) => ({
-            id: sender,
-            label: sender,
-            value: sender,
-            count: senderCounts[sender],
-            operation: 'equals',
-          }));
-        })(),
-      },
-    ];
-  }, [filteredData]);
+  }, [dialogsForView, activeFilters]);
 
   const dataGroupedByYear = useMemo(() => {
-    return filteredData.reduce(
+    return filteredDialogsForView.reduce(
       (acc: Record<string, InboxItemInput[]>, item) => {
         const year = String(new Date(item.date).getFullYear());
         if (!acc[year]) {
@@ -177,7 +209,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       },
       {} as Record<string, InboxItemInput[]>,
     );
-  }, [filteredData]);
+  }, [filteredDialogsForView]);
 
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
@@ -186,12 +218,15 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
+  const filterBarSettings = getFilterBarSettings(dialogs);
   return (
     <main>
       <section className={styles.filtersArea}>
         <FilterBar
-          fields={filterBarFields}
-          onFilterChange={(filters) => setActiveFilters(filters)}
+          settings={filterBarSettings}
+          onFilterChange={(filters) => {
+            setActiveFilters(filters);
+          }}
           initialFilters={activeFilters}
         />
         <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
