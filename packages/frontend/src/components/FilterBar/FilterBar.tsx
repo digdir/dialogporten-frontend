@@ -1,13 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import { useSearchString } from '..';
-import { useSnackbar } from '../Snackbar/useSnackbar.ts';
 import { useCallback, useEffect, useState } from 'react';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
-import { SaveSearchButton } from './SaveSearchButton';
 import styles from './filterBar.module.css';
-import { createSavedSearch } from '../../api/queries.ts';
-import { SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 
 export type FieldOptionOperation = 'equals' | 'includes';
 
@@ -95,14 +89,13 @@ type ListOpenTarget = 'none' | string | 'add_filter';
  * ```
  */
 export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: FilterBarProps) => {
-  const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<Filter[]>(initialFilters);
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
-  const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
-  const { openSnackbar } = useSnackbar();
 
   useEffect(() => {
-    setActiveFilters(initialFilters || []);
+    if (initialFilters?.length) {
+      setActiveFilters(initialFilters || []);
+    }
   }, [initialFilters]);
 
   const handleOnRemove = useCallback(
@@ -147,23 +140,6 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
     [activeFilters, onFilterChange],
   );
 
-  const handleSaveSearch = () => {
-    const data: SavedSearchData = {
-      filters: activeFilters as SearchDataValueFilter[],
-      searchString: searchString,
-    };
-
-    createSavedSearch('', data).then(() => {
-      openSnackbar({
-        message: t('savedSearches.saved_success'),
-        variant: 'success',
-      })
-      queryClient.invalidateQueries('savedSearches');
-    }).catch((error) => {
-      console.error("Error creating saved search: ", error)
-    });
-  };
-
   return (
     <section className={styles.filterBar}>
       {activeFilters.map((filter) => {
@@ -207,7 +183,6 @@ export const FilterBar = ({ onFilterChange, fields, initialFilters = [] }: Filte
           setListOpenTarget(filterOpt.id);
         }}
       />
-      <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
       {listOpenTarget !== 'none' && (
         <div
           className={styles.background}

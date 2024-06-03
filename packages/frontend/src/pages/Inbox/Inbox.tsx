@@ -1,15 +1,18 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashIcon } from '@navikt/aksel-icons';
-import { DialogStatus, SavedSearchData } from 'bff-types-generated';
+import { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { createSavedSearch } from '../../api/queries.ts';
 import { InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant } from '../../components';
+import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant, useSearchString } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
+import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
+import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import styles from './inbox.module.css';
 
 interface InboxProps {
@@ -93,6 +96,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const location = useLocation();
   const { parties } = useParties();
   const { dialogsByView } = useDialogs(parties);
+  const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
+  const { openSnackbar } = useSnackbar();
   const dialogs = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
@@ -100,6 +105,27 @@ export const Inbox = ({ viewType }: InboxProps) => {
   useEffect(() => {
     setActiveFilters(getFiltersFromQueryParams());
   }, [location]);
+
+  const handleSaveSearch = async () => {
+    try {
+      const data: SavedSearchData = {
+        filters: activeFilters as SearchDataValueFilter[],
+        searchString,
+      };
+      await createSavedSearch('', data);
+      openSnackbar({
+        message: t('savedSearches.saved_success'),
+        variant: 'success',
+      });
+      await queryClient.invalidateQueries('savedSearches');
+    } catch (error) {
+      openSnackbar({
+        message: t('savedSearches.saved_error'),
+        variant: 'error',
+      });
+      console.error('Error creating saved search: ', error);
+    }
+  };
 
   const filteredData = useMemo(() => {
     return dialogs.filter((item) =>
@@ -164,13 +190,14 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   return (
     <main>
-      <div className={styles.filterBarWrapper}>
+      <section className={styles.filtersArea}>
         <FilterBar
           fields={filterBarFields}
           onFilterChange={(filters) => setActiveFilters(filters)}
           initialFilters={activeFilters}
         />
-      </div>
+        <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
+      </section>
       {selectedItemCount > 0 && (
         <ActionPanel
           actionButtons={[
