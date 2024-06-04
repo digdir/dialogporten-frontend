@@ -3,12 +3,10 @@ import { useWindowSize } from "../../../utils/useWindowSize";
 import { Avatar } from "../Avatar";
 import styles from './menubar.module.css';
 import { Footer } from '..';
-import { ChevronRightIcon, CogIcon, InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
+import { ChevronRightIcon, InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
 import { Button } from '@digdir/designsystemet-react';
 import { Hr } from ".";
-import cx from 'classnames';
-import { useState } from "react";
-import { DropdownSubMenu, SubeMenuSelection } from "./DropDownSubMenu";
+import { DropdownSubMenu, SubMenuSelection } from "./DropDownSubMenu";
 import { DropDownMenuItem } from "./DropDownMenuItem";
 
 interface DropdownMenuProps {
@@ -16,12 +14,15 @@ interface DropdownMenuProps {
   name: string,
   companyName?: string
   onClose: () => void
+  showSubMenu: SubMenuSelection
+  setShowSubMenu: (showSubMenu: SubMenuSelection) => void
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, name, companyName, onClose }) => {
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, name, companyName, onClose, showSubMenu, setShowSubMenu }) => {
   const { t } = useTranslation();
   const { isMobile } = useWindowSize();
-  const [showSubMenu, setShowSubMenu] = useState<SubeMenuSelection>('none')
+  const companyNameTitleCase = toTitleCase(companyName)
+  const nameTitleCase = toTitleCase(name)
 
   const handleClose = () => {
     onClose?.()
@@ -31,32 +32,30 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
   if (showSubMenu !== 'none') return (
     <DropdownSubMenu showDropdownSubMenu={showSubMenu} onClose={handleClose} onBack={() => setShowSubMenu('none')} />
   )
-  if (!showDropdownMenu) return <></>;
 
+  if (!showDropdownMenu) return null;
 
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <div className={cx(styles.sidebarMenuItem)}>
-            <div className={styles.menuColumn} onClick={() => setShowSubMenu('profile')} role="button" tabIndex={0}>
-              <Avatar name={name} companyName={companyName} darkCircle />
+          <div className={styles.sidebarMenuItem} onClick={() => setShowSubMenu('profile')} role="button" tabIndex={0}>
+            <div className={styles.menuColumn} title={name}>
+              <Avatar name={name} companyName={companyNameTitleCase} darkCircle />
               <div>
-                <div className={styles.primaryName}>{companyName || name}</div>
-                <div className={styles.secondaryName}>{companyName ? name : t('word.private')}</div>
+                <div className={styles.primaryName}>{companyNameTitleCase || nameTitleCase}</div>
+                <div className={styles.secondaryName}>{companyNameTitleCase ? nameTitleCase : t('word.private')}</div>
               </div>
             </div>
-            <div role="button" tabIndex={0} className={styles.menuColumn}  >
+            <div role="button" tabIndex={0} className={styles.menuColumn} title={t('word.change')}>
               {t('word.change')}<ChevronRightIcon className={styles.arrowIcon} />
             </div>
           </div>
           <Hr />
         </li>
         <DropDownMenuItem displayText={t('sidebar.inbox')} label={t('sidebar.inbox.label')} icon={<InboxFillIcon />} onClose={handleClose} onClick={() => setShowSubMenu('inbox')} />
-        <DropDownMenuItem displayText={t("menuBar.all_services")} label={t('link.goToAllServices')} icon={<MenuGridIcon />} onClose={handleClose} onClick={() => setShowSubMenu('all_services')} />
-        <DropDownMenuItem displayText={t("sidebar.settings")} label={t('link.goToSettings')} icon={<CogIcon />} onClose={handleClose} onClick={() => setShowSubMenu('settings')} />
-        <DropDownMenuItem displayText={t("menuBar.chat")} label={t('menuBar.chat.label')} icon={<PersonChatIcon />} onClick={() => setShowSubMenu('help')} />
-
+        <DropDownMenuItem displayText={t("menuBar.all_services")} label={t('link.goToAllServices')} icon={<MenuGridIcon />} onClose={handleClose} path='https://info.altinn.no/skjemaoversikt/' isExternalLink />
+        <DropDownMenuItem displayText={t("menuBar.chat")} label={t('menuBar.chat.label')} icon={<PersonChatIcon />} onClose={handleClose} path='https://info.altinn.no/hjelp/' isExternalLink />
         <Hr />
         <MenuLogoutButton />
         {isMobile && <Footer />}
@@ -65,11 +64,23 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
   )
 }
 
+export const toTitleCase = (str: string | undefined) => {
+  if (!str) return ''
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word !== 'as' ? word.charAt(0).toUpperCase() + word.slice(1) : word.toUpperCase())
+    .join(' ');
+}
+
 export const MenuLogoutButton = () => {
   const { t } = useTranslation();
+  const logOut = () => {
+    (window as Window).location = `/api/logout`
+  }
   return (
     <li className={styles.menuItem}>
-      <Button variant="secondary" className={styles.logoutButton} onClick={() => (window as Window).location = `/api/logout`}>
+      <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
         {t('word.log_out')}
       </Button>
     </li>

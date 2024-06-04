@@ -9,6 +9,8 @@ import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar/Snackbar.tsx';
 import styles from './pageLayout.module.css';
+import { useParties } from '../../api/useParties.ts';
+import { useDialogs } from '../../api/useDialogs.tsx';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
@@ -20,9 +22,14 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
-  const debug = urlParams.get('debug') === 'true';
+  const debug = urlParams.get('debug') === "true";
+  const { parties, selectedParties } = useParties()
+  const name = parties.find(party => party.partyType === 'Person')?.name || '';
+  const { dialogsByView } = useDialogs(parties);
+  const dialogs = dialogsByView['inbox'];
+  const notificationCount = dialogs.length;
 
-  const { isCompany } = useControls({
+  const { isCompany: isCompanyControl } = useControls({
     isCompany: false,
     helloWorld: button(async () => {
       const response = await fetchHelloWorld();
@@ -34,6 +41,9 @@ export const PageLayout: React.FC = () => {
     }),
   });
 
+  const isCompany = isCompanyControl || selectedParties?.some((party) => party.partyType === 'Organization');
+  const companyName = selectedParties?.some((party) => party.partyType === 'Organization') ? selectedParties?.find((party) => party.partyType === 'Organization')?.name : '';
+
   useAuthenticated();
   useUpdateOnLocationChange(() => {
     const searchString = getSearchStringFromQueryParams();
@@ -44,7 +54,7 @@ export const PageLayout: React.FC = () => {
     <div className={isCompany ? `isCompany` : ''}>
       <BottomDrawerContainer>
         <div className={styles.pageLayout}>
-          <Header name="John Doe" companyName={isCompany ? 'ACME Corp' : ''} />
+          <Header name={name} companyName={companyName} notificationCount={notificationCount} />
           <Sidebar isCompany={isCompany} />
           <Outlet />
           <Footer />

@@ -46,25 +46,29 @@
   border-radius: 4px;
 }
 
-.counter {
+.counterWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border-radius: 24px;
   background-color: var(--action-important, #E02E49);
   margin-right: 0.5rem;
   color: #fff;
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1rem;
   position: absolute;
   transform: translate(50%, -50%);
   top: 0;
   margin-top: 0.25rem;
   right: 0;
+}
+
+.counter {
+  padding: 4px 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1rem;
 }
 
 .nameWithInitials {
@@ -124,15 +128,10 @@
 
 @media screen and (max-width: 768px) {
   .menuItems {
-    position: absolute;
-    top: 100%;
     left: 0;
     width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
     position: fixed;
     top: 9.375rem;
-    left: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1001;
   }
@@ -249,9 +248,9 @@
 }
 
 .counterAndIcon {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  margin-right: 8px;
 }
 
 .arrowIcon {
@@ -266,16 +265,11 @@
 }
 
 .menuItemCounter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
+  padding: 4px 8px;
+  border-radius: 24px;
   background-color: rgba(0, 0, 0, 0.05);
-  margin-right: 8px;
   color: #000;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-style: normal;
   font-weight: 600;
   line-height: 1rem;

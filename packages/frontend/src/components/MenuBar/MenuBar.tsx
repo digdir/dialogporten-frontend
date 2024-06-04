@@ -5,16 +5,17 @@ import { useWindowSize } from '../../../utils/useWindowSize';
 import { Avatar } from '../Avatar';
 import styles from './menubar.module.css';
 import { XMarkIcon } from '@navikt/aksel-icons';
-import { Backdrop } from './Backdrop';
+import { Backdrop } from '../Backdrop/Backdrop';
 import { DropdownMenu } from './DropDownMenu';
+import { SubMenuSelection } from './DropDownSubMenu';
 
 const NotificationCount: React.FC<{ count: number }> = ({ count }) => {
   const { t } = useTranslation();
   if (!count) return <></>;
   return (
-    <span className={cx(styles.counter)} aria-label={t('notifications.count', { count })}>
-      {count}
-    </span>
+    <div className={cx(styles.counterWrapper)} aria-label={t('notifications.count', { count })}>
+      <span className={styles.counter}>{count}</span>
+    </div>
   )
 };
 
@@ -27,37 +28,38 @@ interface MenuBarProps {
   notificationCount?: number;
 }
 
-export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificationCount = 4, className }) => {
+export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificationCount = 0, className }) => {
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState<SubMenuSelection>('none')
+
   const { t } = useTranslation();
   const { isMobile } = useWindowSize();
 
-  const handleOpen = () => {
-    setShowDropdownMenu((showDropdownMenu) => !showDropdownMenu);
-  };
+  const handleToggle = () => {
+    setShowDropdownMenu(prev => !prev)
+  }
 
   const handleClose = () => {
     setShowDropdownMenu(false);
+    setShowSubMenu('none')
   }
 
   if (isMobile)
     return (
-      <>
-        <div className={styles.menuContainer} onClick={handleOpen} onKeyDown={(e) => e.key === 'Enter' && handleOpen()}>
-          <p className={styles.menuText}>{t('word.menu')}</p>
-          <div className={cx(styles.menuCircle, className)} aria-hidden="true">
-            <Avatar name={name} companyName={companyName} />
-          </div>
-          <NotificationCount count={notificationCount} />
-          <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} />
+      <div className={styles.menuContainer} onClick={handleToggle} onKeyDown={(e) => e.key === 'Enter' && handleToggle()}>
+        <p className={styles.menuText}>{t('word.menu')}</p>
+        <div className={cx(styles.menuCircle, className)} aria-hidden="true">
+          <Avatar name={name} companyName={companyName} />
         </div>
-      </>
+        <NotificationCount count={notificationCount} />
+        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
+      </div>
     );
 
   return (
     <>
       <div className={styles.menuContainer}>
-        <div onClick={handleOpen} onKeyDown={(e) => e.key === 'Enter' && handleOpen()} >
+        <div onClick={handleToggle} onKeyDown={(e) => e.key === 'Enter' && handleToggle()} >
           <div className={cx(styles.menuText, className)} aria-hidden="true">
             <div className={styles.nameWithInitials}>
               {t('word.menu')}
@@ -71,7 +73,7 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
           </div>
           <NotificationCount count={notificationCount} />
         </div >
-        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} />
+        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
       </div>
       <Backdrop show={showDropdownMenu} onClick={handleClose} />
     </>

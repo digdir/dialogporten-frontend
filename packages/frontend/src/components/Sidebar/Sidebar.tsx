@@ -14,6 +14,8 @@ import { useWindowSize } from '../../../utils/useWindowSize';
 import { useSavedSearches } from '../../pages/SavedSearches';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
+import { useParties } from '../../api/useParties';
+import { useDialogs } from '../../api/useDialogs';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -27,6 +29,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { data } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { isMobile } = useWindowSize();
+  const { parties } = useParties();
+  const { dialogsByView } = useDialogs(parties);
 
   if (isMobile) {
     return null;
@@ -37,10 +41,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
       {children || (
         <>
           <SidebarItem
-            displayText={t('inbox.title')}
-            label="Trykk her for å gå til innboks"
+            displayText={t('sidebar.inbox')}
+            label={t('sidebar.inbox.label')}
             icon={<InboxFillIcon />}
-            count={3}
+            count={dialogsByView['inbox'].length}
             path="/inbox"
             isInbox
             isCompany={isCompany}
@@ -48,17 +52,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <HorizontalLine />
           <SidebarItem
             displayText={t('sidebar.drafts')}
-            label="Trykk her for å gå til Under arbeid"
+            label={t('sidebar.drafts.label')}
             icon={<FileTextIcon />}
-            count={8}
+            count={dialogsByView['draft'].length}
             path="/drafts"
             isCompany={isCompany}
           />
           <SidebarItem
             displayText={t('sidebar.sent')}
-            label="Trykk her for å gå til Sendt"
+            label={t('sidebar.sent.label')}
             icon={<FileCheckmarkIcon />}
-            count={8}
+            count={dialogsByView['sent'].length}
             path="/sent"
             isCompany={isCompany}
           />
@@ -66,7 +70,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <SidebarItem
             disabled
             displayText={t('sidebar.archived')}
-            label="Trykk her for å gå til Arkiv"
+            label={t('sidebar.archived.label')}
             icon={<FolderMinusIcon />}
             count={8}
             path="/archive"
@@ -75,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <SidebarItem
             disabled
             displayText={t('sidebar.deleted')}
-            label="Trykk her for å gå til Papirkurv"
+            label={t('sidebar.deleted.label')}
             icon={<TrashIcon />}
             count={8}
             path="/deleted"
@@ -84,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <HorizontalLine />
           <SidebarItem
             displayText={t('sidebar.saved_searches')}
-            label="Trykk her for å gå til lagrede søk"
+            label={t('sidebar.saved_searches.label')}
             icon={<MagnifyingGlassIcon />}
             count={savedSearches?.length || 0}
             path="/saved-searches"
@@ -94,7 +98,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <SidebarItem
             disabled
             displayText={t('sidebar.settings')}
-            label="Trykk her for å gå til innstillinger"
+            label={t('sidebar.settings.label')}
             icon={<CogIcon />}
             path="/innstillinger"
             type="secondary"
