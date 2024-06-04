@@ -1,4 +1,4 @@
-﻿name: Dispatch infrastructure
+﻿name: Dispatch Deploy Infrastructure
 
 on:
   workflow_dispatch:

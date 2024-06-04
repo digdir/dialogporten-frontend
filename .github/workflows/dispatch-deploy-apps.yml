@@ -1,4 +1,4 @@
-name: Dispatch Apps
+name: Dispatch Deploy Apps
 
 on:
   workflow_dispatch:
