@@ -46,22 +46,6 @@
   border-radius: 4px;
 }
 
-
-.icon {
-  flex-shrink: 0;
-  font-size: 1.5rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: 0.25rem;
-
-  >svg {
-    min-width: 100%;
-    min-height: 100%;
-  }
-}
-
 .counter {
   display: flex;
   justify-content: center;
@@ -171,23 +155,13 @@
     min-width: 100%;
     min-height: 100%;
   }
-
-}
-
-.menuProfileInfo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.625rem;
-  justify-content: space-between;
-  padding-left: 0.625rem;
-  margin-bottom: 1rem;
 }
 
 .menuColumn {
   display: flex;
   align-items: center;
   gap: 0.625rem;
+  padding: 10px;
 }
 
 .crossSquare {
@@ -201,8 +175,16 @@
   border: 1px solid #fff;
 }
 
-.sidebarMenuItem {
+.sidebarMenuItem.sidebarMenuItem {
   margin: 0;
+  color: #000;
+}
+
+.sidebarMenuItem {
+  margin: 0.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #000;
 }
 
@@ -220,4 +202,86 @@
 
 .logoutButton {
   width: 100%;
+}
+
+.backButtonIcon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.subMenuTitle {
+  color: var(--black-100, #000);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.iconAndText {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  color: #000;
+}
+
+.icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.displayText {
+  font-size: 1.25rem;
+}
+
+.counterAndIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.arrowIcon {
+  margin-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  color: #000;
+}
+
+.menuItemCounter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-right: 8px;
+  color: #000;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
 }

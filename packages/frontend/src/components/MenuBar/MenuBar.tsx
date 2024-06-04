@@ -36,6 +36,10 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
     setShowDropdownMenu((showDropdownMenu) => !showDropdownMenu);
   };
 
+  const handleClose = () => {
+    setShowDropdownMenu(false);
+  }
+
   if (isMobile)
     return (
       <>
@@ -45,29 +49,31 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
             <Avatar name={name} companyName={companyName} />
           </div>
           <NotificationCount count={notificationCount} />
-          <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} />
+          <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} />
         </div>
       </>
     );
 
   return (
     <>
-      <div className={styles.menuContainer} onClick={handleOpen} onKeyDown={(e) => e.key === 'Enter' && handleOpen()}>
-        <div className={cx(styles.menuText, className)} aria-hidden="true">
-          <div className={styles.nameWithInitials}>
-            {t('word.menu')}
-            {showDropdownMenu ? <div
-              className={cx(styles.crossSquare, className, { [styles.isOrganization]: !!companyName })}
-              aria-hidden="true"
-            >
-              <XMarkIcon />
-            </div> : <Avatar name={name} companyName={companyName} />}
+      <div className={styles.menuContainer}>
+        <div onClick={handleOpen} onKeyDown={(e) => e.key === 'Enter' && handleOpen()} >
+          <div className={cx(styles.menuText, className)} aria-hidden="true">
+            <div className={styles.nameWithInitials}>
+              {t('word.menu')}
+              {showDropdownMenu ? <div
+                className={cx(styles.crossSquare, className, { [styles.isOrganization]: !!companyName })}
+                aria-hidden="true"
+              >
+                <XMarkIcon />
+              </div> : <Avatar name={name} companyName={companyName} />}
+            </div>
           </div>
-        </div>
-        <NotificationCount count={notificationCount} />
-        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} />
-      </div >
-      <Backdrop show={showDropdownMenu} clicked={() => setShowDropdownMenu(false)} />
+          <NotificationCount count={notificationCount} />
+        </div >
+        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} />
+      </div>
+      <Backdrop show={showDropdownMenu} onClick={handleClose} />
     </>
   );
 };
