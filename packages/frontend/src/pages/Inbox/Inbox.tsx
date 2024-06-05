@@ -12,6 +12,7 @@ import { type Filter, FilterBar } from '../../components';
 import { FilterBarField } from '../../components/FilterBar/FilterBar.tsx';
 import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.tsx';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
+import { useSelectedDialogs } from '../../components/PageLayout/SelectedDialogs.tsx';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import styles from './inbox.module.css';
 
@@ -90,9 +91,7 @@ export const getSearchStringFromQueryParams = (): string => {
 
 export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
-  const [selectedItems, setSelectedItems] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const { selectedItems, setSelectedItems, selectedItemCount } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
   const { dialogsByView } = useDialogs(parties);
@@ -100,7 +99,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { openSnackbar } = useSnackbar();
   const dialogs = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
-  const selectedItemCount = Object.values(selectedItems).filter(Boolean).length;
 
   useEffect(() => {
     setActiveFilters(getFiltersFromQueryParams());
