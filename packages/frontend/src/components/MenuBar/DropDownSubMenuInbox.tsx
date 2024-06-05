@@ -7,12 +7,16 @@ import { DropdownSubMenuProps } from "./DropDownSubMenu";
 import { useSavedSearches } from "../../pages/SavedSearches";
 import { SavedSearchesFieldsFragment } from "bff-types-generated";
 import { DropDownMenuItem } from "./DropDownMenuItem";
+import { useParties } from "../../api/useParties";
+import { useDialogs } from "../../api/useDialogs";
 
 
 export const DropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();
   const { data } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
+  const { parties } = useParties();
+  const { dialogsByView } = useDialogs(parties);
 
   return (
     <div className={styles.menuItems}>
@@ -23,10 +27,10 @@ export const DropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({ onClose, 
           </div>
         </li>
         <Hr />
-        <DropDownMenuItem displayText={t('sidebar.inbox')} label={t('sidebar.inbox.label')} icon={<InboxFillIcon />} count={3} path="/inbox" />
+        <DropDownMenuItem displayText={t('sidebar.inbox')} label={t('sidebar.inbox.label')} icon={<InboxFillIcon />} count={dialogsByView['inbox'].length} path="/inbox" />
         <Hr />
-        <DropDownMenuItem displayText={t('sidebar.drafts')} label={t('sidebar.drafts.label')} icon={<FileTextIcon />} count={8} path="/drafts" onClick={onClose} />
-        <DropDownMenuItem displayText={t('sidebar.sent')} label={t('sidebar.sent.label')} icon={<FileCheckmarkIcon />} count={8} path="/sent" onClick={onClose} />
+        <DropDownMenuItem displayText={t('sidebar.drafts')} label={t('sidebar.drafts.label')} icon={<FileTextIcon />} count={dialogsByView['draft'].length} path="/drafts" onClick={onClose} />
+        <DropDownMenuItem displayText={t('sidebar.sent')} label={t('sidebar.sent.label')} icon={<FileCheckmarkIcon />} count={dialogsByView['sent'].length} path="/sent" onClick={onClose} />
         <DropDownMenuItem displayText={t('sidebar.archived')} label={t('sidebar.archived.label')} icon={<FolderMinusIcon />} count={8} path="/archive" onClick={onClose} />
         <DropDownMenuItem displayText={t('sidebar.deleted')} label={t('sidebar.deleted.label')} icon={<TrashIcon />} count={8} path="/deleted" />
         <Hr />
