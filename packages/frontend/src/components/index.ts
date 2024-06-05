@@ -6,3 +6,4 @@ export * from './Footer';
 export * from './ActionPanel';
 export * from './FilterBar';
 export * from './BottomDrawer';
+export * from './PageLayout';

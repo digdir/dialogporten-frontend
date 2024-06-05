@@ -2,7 +2,7 @@ import { RenderOptions, render } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
-
+import { SelectedDialogsContainer } from '..';
 import { FeatureFlagProvider, featureFlags } from '../src/featureFlags';
 import '../src/i18n/config.ts';
 
@@ -28,7 +28,9 @@ export const createCustomWrapper = (
     return (
       <QueryClientProvider client={queryClient}>
         <FeatureFlagProvider flags={featureFlags}>
-          <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>{children}</MemoryRouter>
+          <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>
+            <SelectedDialogsContainer>{children}</SelectedDialogsContainer>
+          </MemoryRouter>
         </FeatureFlagProvider>
       </QueryClientProvider>
     );
