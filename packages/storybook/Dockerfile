@@ -15,7 +15,7 @@ CMD ["pnpm", "--filter", "storybook", "run", "start:storybook", "--port", "80"]
 
 # ---
 
-FROM nginx:1.25-alpine
+FROM nginx:1.27-alpine
 COPY --from=build /app/packages/storybook/storybook-static/ /usr/share/nginx/html/
 
 EXPOSE 80
