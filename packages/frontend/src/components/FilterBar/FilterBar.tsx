@@ -90,7 +90,7 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
   const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
 
   useEffect(() => {
-    if (initialFilters?.length) {
+    if (initialFilters?.length && !selectedFilters.length) {
       setSelectedFilters(initialFilters);
     }
   }, [initialFilters]);
@@ -99,45 +99,48 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
     (filterId: string) => {
       const updatedFilters = selectedFilters.filter((filter) => filter.id !== filterId);
       setSelectedFilters(updatedFilters);
-      onFilterChange(updatedFilters);
+      onFilterChange(updatedFilters.filter((filter) => typeof filter.value !== 'undefined'));
     },
-    [selectedFilters, onFilterChange],
+    [selectedFilters],
   );
 
   const getFilterSetting = (id: string): FilterSetting | undefined => {
     return settings.find((setting) => setting.id === id);
   };
 
-  const onToggleFilter = (id: string, value: FilterValueType) => {
-    const existingFiltersForId = selectedFilters.filter((filter) => filter.id === id);
-    const thisFilterAlreadyExists = selectedFilters.some((filter) => filter.id === id && filter.value === value);
+  const onToggleFilter = useCallback(
+    (id: string, value: FilterValueType) => {
+      const existingFiltersForId = selectedFilters.filter((filter) => filter.id === id);
+      const thisFilterAlreadyExists = selectedFilters.some((filter) => filter.id === id && filter.value === value);
 
-    const settingForFilter = getFilterSetting(id);
-    const allowMultiselect = settingForFilter?.operation === 'includes';
+      const settingForFilter = getFilterSetting(id);
+      const allowMultiselect = settingForFilter?.operation === 'includes';
 
-    let nextFilters: Filter[] = [];
+      let nextFilters: Filter[] = [];
 
-    // Remove filter if it already exists
-    if (thisFilterAlreadyExists) {
-      nextFilters = selectedFilters.filter((filter) => !(filter.id === id && filter.value === value));
-      if (existingFiltersForId.length === 1) {
-        // Add undefined filter if no values are left for the field
-        nextFilters.push({ id, value: undefined });
+      // Remove filter if it already exists
+      if (thisFilterAlreadyExists) {
+        nextFilters = selectedFilters.filter((filter) => !(filter.id === id && filter.value === value));
+        if (nextFilters.filter((filter) => filter.id === id).length === 0) {
+          // Add undefined filter if no values are left for the field
+          nextFilters.push({ id, value: undefined });
+        }
+      } else {
+        nextFilters = [...selectedFilters, { id, value }];
       }
-    } else {
-      nextFilters = [...selectedFilters, { id, value }];
-    }
 
-    setSelectedFilters(nextFilters);
-    onFilterChange(nextFilters);
+      setSelectedFilters(nextFilters);
+      onFilterChange(nextFilters.filter((filter) => typeof filter.value !== 'undefined'));
 
-    // Selection is not done, keep the menu open
-    if (allowMultiselect || !value) {
-      setListOpenTarget(id);
-    } else {
-      setListOpenTarget(existingFiltersForId ? 'none' : id);
-    }
-  };
+      // Selection is not done, keep the menu open
+      if (allowMultiselect || !value) {
+        setListOpenTarget(id);
+      } else {
+        setListOpenTarget(existingFiltersForId ? 'none' : id);
+      }
+    },
+    [selectedFilters, onFilterChange, getFilterSetting],
+  );
 
   const filtersById = selectedFilters.reduce((tail: Record<string, Filter[]>, current: Filter) => {
     if (!tail[current.id]) {
