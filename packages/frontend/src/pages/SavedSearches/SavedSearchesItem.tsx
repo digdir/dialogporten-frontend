@@ -1,7 +1,7 @@
 import { DropdownMenu } from '@digdir/designsystemet-react';
 import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@navikt/aksel-icons';
-import { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { compressQueryParams } from '../Inbox/Inbox';
 import styles from './savedSearches.module.css';
@@ -46,7 +46,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
 
 export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedSearchesItemProps) => {
   if (!savedSearch?.data) return null;
-  const searchData = savedSearch.data as SavedSearchData;
+  const searchData = savedSearch.data;
 
   if (savedSearch.name)
     return (
@@ -63,6 +63,8 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
       </>
     );
 
+  console.log(savedSearch);
+
   return (
     <>
       <div className={styles.savedSearchItem} key={savedSearch.id}>
@@ -72,7 +74,9 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
           {searchData?.filters?.map((search, index) => {
             const id = search?.id;
             return (
-              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${id}`}</span>
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${
+                search?.value
+              }`}</span>
             );
           })}
         </div>

@@ -1,12 +1,12 @@
 import { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { deleteSavedSearch, fetchSavedSearches } from '../../api/queries';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
+import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
 import styles from './savedSearches.module.css';
-import { useState } from 'react';
-import { EditSavedSearch } from './EditSearchesItem';
 
 export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
 
@@ -94,12 +94,12 @@ export const SavedSearches = () => {
     if (!id) return;
 
     try {
-      await deleteSavedSearch(id)
+      await deleteSavedSearch(id);
       openSnackbar({
         message: t('savedSearches.deleted_success'),
         variant: 'success',
       });
-      queryClient.invalidateQueries('savedSearches');
+      await queryClient.invalidateQueries('savedSearches');
     } catch (error) {
       console.error('Failed to delete saved search:', error);
       openSnackbar({
@@ -112,15 +112,26 @@ export const SavedSearches = () => {
   return (
     <main>
       <section className={styles.savedSearchesWrapper}>
-        <EditSavedSearch key={selectedSavedSearch?.id} isOpen={!!selectedSavedSearch} savedSearch={selectedSavedSearch} onDelete={handleDeleteSearch} onClose={() => setSelectedSavedSearch(undefined)} />
+        <EditSavedSearch
+          key={selectedSavedSearch?.id}
+          isOpen={!!selectedSavedSearch}
+          savedSearch={selectedSavedSearch}
+          onDelete={handleDeleteSearch}
+          onClose={() => setSelectedSavedSearch(undefined)}
+        />
         <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        {!!savedSearches?.length &&
+        {!!savedSearches?.length && (
           <div className={styles.savedSearchesContainer}>
             {savedSearches?.map((search) => (
-              <SavedSearchesItem key={search?.id} savedSearch={search} onDelete={handleDeleteSearch} setSelectedSavedSearch={setSelectedSavedSearch} />
+              <SavedSearchesItem
+                key={search?.id}
+                savedSearch={search}
+                onDelete={handleDeleteSearch}
+                setSelectedSavedSearch={setSelectedSavedSearch}
+              />
             ))}
           </div>
-        }
+        )}
         <LastUpdated searches={savedSearches} />
       </section>
     </main>
