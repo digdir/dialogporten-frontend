@@ -2,6 +2,7 @@ import { Checkbox } from '@digdir/designsystemet-react';
 import classNames from 'classnames';
 import { JSX } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelectedDialogs } from '../PageLayout/SelectedDialogs.tsx';
 
 import styles from './inboxItem.module.css';
 
@@ -95,15 +96,25 @@ export const InboxItem = ({
   isUnread = false,
   linkTo,
 }: InboxItemProps): JSX.Element => {
+  const { inSelectionMode } = useSelectedDialogs();
+
+  const onClick = () => {
+    if (inSelectionMode && onCheckedChange) {
+      onCheckedChange(!checkboxValue);
+    }
+  };
+
   return (
     <li
       className={classNames(styles.inboxItemWrapper, {
         [styles.active]: isChecked,
         [styles.hoverable]: linkTo,
+        [styles.pointer]: inSelectionMode,
       })}
       aria-selected={isChecked ? 'true' : 'false'}
+      onClick={onClick}
     >
-      <OptionalLinkContent linkTo={linkTo}>
+      <OptionalLinkContent linkTo={!inSelectionMode ? linkTo : undefined}>
         <section
           className={classNames(styles.inboxItem, {
             [styles.isUnread]: isUnread,

@@ -29,12 +29,12 @@ interface PageLayoutContentProps {
 
 const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
   ({ name, companyName, isCompany, notificationCount }) => {
-    const { selectedItemCount } = useSelectedDialogs();
+    const { inSelectionMode } = useSelectedDialogs();
 
     return (
       <div className={styles.pageLayout}>
         <Header name={name} companyName={companyName} notificationCount={notificationCount} />
-        {selectedItemCount === 0 && <Sidebar isCompany={isCompany} />}
+        {!inSelectionMode && <Sidebar isCompany={isCompany} />}
         <Outlet />
         <Footer />
       </div>
