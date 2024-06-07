@@ -145,7 +145,7 @@ export const getSearchStringFromQueryParams = (): string => {
 
 export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
-  const { selectedItems, setSelectedItems, selectedItemCount } = useSelectedDialogs();
+  const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
   const { dialogsByView, dialogs } = useDialogs(parties);
@@ -231,7 +231,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
         <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
       </section>
-      {selectedItemCount > 0 && (
+      {inSelectionMode && (
         <ActionPanel
           actionButtons={[
             {
