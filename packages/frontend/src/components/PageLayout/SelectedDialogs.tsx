@@ -16,8 +16,9 @@ const SelectedContext = createContext<ContextType | {}>({});
 export const useSelectedDialogs = () => {
   const { selectedItems, setSelectedItems } = useContext(SelectedContext) as ContextType;
   const selectedItemCount = Object.values(selectedItems || []).filter(Boolean).length;
+  const inSelectionMode = selectedItemCount > 0;
 
-  return { selectedItems, setSelectedItems, selectedItemCount };
+  return { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode };
 };
 
 /*
