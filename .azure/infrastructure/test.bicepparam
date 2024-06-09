@@ -30,7 +30,7 @@ param applicationGatewayConfiguration = {
   }
   hostName: 'af.at.altinn.cloud'
   sslCertificate: {
-    keyVaultName: readEnvironmentVariable('AZURE_CERTIFICATE_KEY_VAULT_NAME')
+    keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
     secretKey: 'star-at-altinn-cloud'
   }
 }
