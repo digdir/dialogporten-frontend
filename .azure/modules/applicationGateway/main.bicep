@@ -25,16 +25,14 @@ type Configuration = {
     maxCapacity: int
   }?
   hostName: string
-  sslCertificateKeyVaultSecretKey: string
+  sslCertificate: {
+    @secure()
+    keyVaultName: string
+    secretKey: string
+  }
 }
 @description('Configuration settings for the Application Gateway, including SKU, hostname and autoscale parameters.')
 param configuration Configuration
-type SrcKeyVault = {
-  name: string
-  subscriptionId: string
-  resourceGroupName: string
-}
-param srcKeyVault SrcKeyVault
 
 var gatewayName = '${namePrefix}-applicationGateway'
 
@@ -62,7 +60,7 @@ resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssig
 
 var publicIpAddressId = publicIp.id
 
-var sslCertificateSecretId = 'https://${srcKeyVault.name}${environment().suffixes.keyvaultDns}/secrets/${configuration.sslCertificateKeyVaultSecretKey}'
+var sslCertificateSecretId = 'https://${configuration.sslCertificate.keyVaultName}${environment().suffixes.keyvaultDns}/secrets/${configuration.sslCertificate.secretKey}'
 
 var bffPool = {
   name: '${gatewayName}-bffBackendPool'

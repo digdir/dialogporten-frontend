@@ -131,7 +131,6 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
-    srcKeyVault: srcKeyVault
     containerAppEnvName: containerAppEnv.outputs.name
     subnetId: vnet.outputs.applicationGatewaySubnetId
     targetSubnetId: vnet.outputs.containerAppEnvironmentSubnetId
