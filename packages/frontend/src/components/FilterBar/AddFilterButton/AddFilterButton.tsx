@@ -1,5 +1,5 @@
 import { Button } from '@digdir/designsystemet-react';
-import { PlusIcon } from '@navikt/aksel-icons';
+import { ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
 import { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 import { FilterList, FilterListItem } from '../FilterList';
@@ -11,7 +11,7 @@ type AddFilterButtonProps = {
   selectedFilters: Filter[];
   onListItemClick: (id: string, value: FilterValueType) => void;
   onAddBtnClick: () => void;
-  isOpen: boolean;
+  isMenuOpen: boolean;
   disabled?: boolean;
 };
 export const AddFilterButton = ({
@@ -20,7 +20,7 @@ export const AddFilterButton = ({
   disabled,
   selectedFilters,
   onAddBtnClick,
-  isOpen,
+  isMenuOpen,
 }: AddFilterButtonProps) => {
   const { t } = useTranslation();
   return (
@@ -28,7 +28,7 @@ export const AddFilterButton = ({
       <Button size="small" onClick={onAddBtnClick} disabled={disabled} variant="secondary" color="first">
         <PlusIcon /> {t('filter_bar.add_filter')}
       </Button>
-      {isOpen && (
+      {isMenuOpen && (
         <FilterList>
           {settings.map((setting: FilterSetting) => {
             const isUsed = !!selectedFilters.find((filter) => filter.id === setting.id);
@@ -41,9 +41,8 @@ export const AddFilterButton = ({
                 }}
               >
                 <div className={styles.addFilterButtonContent}>
-                  {setting.leftIcon}
                   <span className={styles.addFilterItemLabel}>{setting.label}</span>
-                  <span className={styles.addFilterItemCount}>{setting.options.length}</span>
+                  <ChevronRightIcon fontSize="1.5rem" />
                 </div>
               </FilterListItem>
             );

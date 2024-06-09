@@ -16,7 +16,6 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
   const { t } = useTranslation();
   if (!savedSearch?.data) return null;
   const handleOpenEditModal = () => {
-    console.log('Opening edit modal...', { savedSearch, onDelete, setSelectedSavedSearch });
     setSelectedSavedSearch?.(savedSearch);
   };
   return (
@@ -62,8 +61,6 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
         <hr />
       </>
     );
-
-  console.log(savedSearch);
 
   return (
     <>

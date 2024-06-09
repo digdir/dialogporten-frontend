@@ -6,7 +6,6 @@
 
 .buttons {
     display: flex;
-    align-items: center;
 }
 
 .xed {
@@ -18,6 +17,14 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 1em;
+}
+
+.filterDateContent {
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    row-gap: 1rem;
 }
 
 .filterListLabel {
@@ -36,5 +43,5 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(243, 244, 246);
-    color: rgba(0,0,0);
+    color: #000;
 }
