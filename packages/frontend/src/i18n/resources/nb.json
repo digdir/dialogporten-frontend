@@ -1,6 +1,8 @@
 {
   "example.hello": "Hei, {person}",
   "example.your_inbox": "Din innboks",
+  "dialog.status.in_progress": "Under arbeid",
+  "dialog.status.new": "Nye",
   "inbox.title": "Innboks",
   "inbox.attachment.count": "{count, plural, =0 {Ingen vedlegg} one {# vedlegg} other {# vedlegg}}",
   "inbox.attachment.link": "Lenke som vedlegg",
@@ -45,6 +47,23 @@
   "sidebar.settings": "Innstillinger",
   "filter_bar.add_filter": "Legg til",
   "filter_bar.save_search": "Lagre søk",
+  "filter_bar.items_chosen": "{count, plural, =0 {Ingen valgt} one {# valgt} other {# valgt}}",
+  "filter_bar.choose_date": "Bruk dato",
+  "filter_bar.from_date_label": "Fra dato:",
+  "filter_bar.to_date_label": "Til dato:",
+  "filter_bar.range.today": "I dag",
+  "filter_bar.range.yesterday": "I går",
+  "filter_bar.range.this_week": "Denne uken",
+  "filter_bar.range.this_month": "Denne måneden",
+  "filter_bar.range.this_year": "I år",
+  "filter_bar.range.custom": "Velg periode",
+  "filter_bar.label.sender": "Avsender",
+  "filter_bar.label.recipient": "Mottaker",
+  "filter_bar.label.all_recipients": "Alle mottakere",
+  "filter_bar.label.status": "Status",
+  "filter_bar.label.all_statuses": "Alle statuser",
+  "filter_bar.label.created": "Opprettet",
+  "filter_bar.label.all_dates": "Alle datoer",
   "footer.nav.about_altinn": "Om Altinn",
   "footer.company": "Digdir",
   "footer.address.line1": "Postboks 1382 Vika, 0114 Oslo.",
@@ -69,3 +88,4 @@
   "menuBar.chat": "Få hjelp på chat",
   "menuBar.chat.label": "Trykk her for å gå til chat"
 }
+

@@ -5,18 +5,21 @@ import { FilterButton } from './FilterButton';
 import styles from './filterBar.module.css';
 
 export type FieldOptionOperation = 'equals' | 'includes';
-
-export type FilterValueType = string | string[] | number | boolean | undefined;
+export enum CustomFilterValueType {
+  '$startTime/$endTime' = '$startTime/$endTime',
+}
+export type FilterValueType = string | string[] | number | boolean | undefined | typeof CustomFilterValueType;
 
 export interface Filter {
   id: string;
   value: FilterValueType;
 }
+
 export interface FilterBarFieldOption {
   value: FilterValueType;
   displayLabel: string;
+  options?: FilterBarFieldOption[];
   count?: number;
-  leftIcon?: React.ReactNode;
 }
 
 export interface FilterSetting {
@@ -25,13 +28,18 @@ export interface FilterSetting {
   id: string;
   operation: FieldOptionOperation;
   options: FilterBarFieldOption[];
-  leftIcon?: React.ReactNode;
 }
 
 interface FilterBarProps {
   settings: FilterSetting[];
   onFilterChange: (newFilters: Filter[]) => void;
   initialFilters?: Filter[];
+}
+
+export interface SubLevelState {
+  id: string;
+  parentOptionValue: FilterValueType;
+  level: number;
 }
 
 type ListOpenTarget = 'none' | 'add_filter' | string;
@@ -84,13 +92,13 @@ type ListOpenTarget = 'none' | 'add_filter' | string;
  * />
  * ```
  */
-
 export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: FilterBarProps) => {
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>(initialFilters);
-  const [listOpenTarget, setListOpenTarget] = useState<ListOpenTarget>('none');
+  const [listOpenForTarget, setListOpenForTarget] = useState<ListOpenTarget>('none');
+  const [currentSubLevelMenu, setCurrentSubLevelMenu] = useState<SubLevelState | undefined>();
 
   useEffect(() => {
-    if (initialFilters?.length && !selectedFilters.length) {
+    if (initialFilters.length && !selectedFilters.length) {
       setSelectedFilters(initialFilters);
     }
   }, [initialFilters]);
@@ -101,89 +109,89 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
       setSelectedFilters(updatedFilters);
       onFilterChange(updatedFilters.filter((filter) => typeof filter.value !== 'undefined'));
     },
-    [selectedFilters],
+    [selectedFilters, onFilterChange],
   );
 
-  const getFilterSetting = (id: string): FilterSetting | undefined => {
-    return settings.find((setting) => setting.id === id);
-  };
+  const getFilterSetting = (id: string) => settings.find((setting) => setting.id === id);
 
+  /**
+   * Toggles the filter value for a given filter ID. If `overrideValue` is `true`,
+   * it updates the existing filter with the new value. Otherwise, it adds or removes
+   * the filter based on its current state. Manages the visibility of the filter list
+   * and resets sub-level menu state accordingly.
+   */
   const onToggleFilter = useCallback(
-    (id: string, value: FilterValueType) => {
-      const existingFiltersForId = selectedFilters.filter((filter) => filter.id === id);
-      const thisFilterAlreadyExists = selectedFilters.some((filter) => filter.id === id && filter.value === value);
+    (id: string, value: FilterValueType, overrideValue?: boolean) => {
+      const existingFilters = selectedFilters.filter((filter) => filter.id === id);
+      const filterExists = existingFilters.some((filter) => filter.value === value);
+      const setting = getFilterSetting(id);
+      const allowMultiselect = setting?.operation === 'includes';
 
-      const settingForFilter = getFilterSetting(id);
-      const allowMultiselect = settingForFilter?.operation === 'includes';
+      let updatedFilters: Filter[];
 
-      let nextFilters: Filter[] = [];
+      if (overrideValue) {
+        updatedFilters = selectedFilters.map((filter) => (filter.id === id ? { ...filter, value } : filter));
+      } else {
+        updatedFilters = filterExists
+          ? selectedFilters.filter((filter) => !(filter.id === id && filter.value === value))
+          : [...selectedFilters, { id, value }];
 
-      // Remove filter if it already exists
-      if (thisFilterAlreadyExists) {
-        nextFilters = selectedFilters.filter((filter) => !(filter.id === id && filter.value === value));
-        if (nextFilters.filter((filter) => filter.id === id).length === 0) {
-          // Add undefined filter if no values are left for the field
-          nextFilters.push({ id, value: undefined });
+        if (!updatedFilters.some((filter) => filter.id === id)) {
+          updatedFilters.push({ id, value: undefined });
         }
-      } else {
-        nextFilters = [...selectedFilters, { id, value }];
       }
 
-      setSelectedFilters(nextFilters);
-      onFilterChange(nextFilters.filter((filter) => typeof filter.value !== 'undefined'));
+      setSelectedFilters(updatedFilters);
+      onFilterChange(updatedFilters.filter((filter) => typeof filter.value !== 'undefined'));
+      const shouldNotDismiss = allowMultiselect || !value;
 
-      // Selection is not done, keep the menu open
-      if (allowMultiselect || !value) {
-        setListOpenTarget(id);
+      if (shouldNotDismiss) {
+        setListOpenForTarget(id);
       } else {
-        setListOpenTarget(existingFiltersForId ? 'none' : id);
+        setListOpenForTarget('none');
       }
+      setCurrentSubLevelMenu(undefined);
     },
-    [selectedFilters, onFilterChange, getFilterSetting],
+    [selectedFilters, onFilterChange],
   );
-
-  const filtersById = selectedFilters.reduce((tail: Record<string, Filter[]>, current: Filter) => {
-    if (!tail[current.id]) {
-      tail[current.id] = [];
-    }
-    tail[current.id].push(current);
-    return tail;
-  }, {});
+  const filtersById = selectedFilters.reduce(
+    (acc, filter) => {
+      if (!acc[filter.id]) acc[filter.id] = [];
+      acc[filter.id].push(filter);
+      return acc;
+    },
+    {} as Record<string, Filter[]>,
+  );
 
   return (
     <section className={styles.filterBar}>
-      {Object.keys(filtersById).map((id) => {
-        const settingForFilter = getFilterSetting(id);
-        if (!settingForFilter) {
-          return null;
-        }
-
-        const isMenuOpen = listOpenTarget === id;
-
-        return (
-          <FilterButton
-            key={id}
-            isOpen={isMenuOpen}
-            filterFieldData={settingForFilter}
-            onBtnClick={() => {
-              setListOpenTarget(isMenuOpen ? 'none' : id);
-            }}
-            onRemove={() => handleOnRemove(id)}
-            onListItemClick={onToggleFilter}
-            selectedFilters={selectedFilters}
-          />
-        );
-      })}
+      <div className={styles.filterButtons}>
+        {Object.keys(filtersById).map((id) => {
+          const setting = getFilterSetting(id)!;
+          const isMenuOpen = listOpenForTarget === id;
+          return (
+            <FilterButton
+              key={id}
+              isOpen={isMenuOpen}
+              filterFieldData={setting}
+              onBtnClick={() => setListOpenForTarget(isMenuOpen ? 'none' : id)}
+              onRemove={() => handleOnRemove(id)}
+              onListItemClick={onToggleFilter}
+              selectedFilters={selectedFilters}
+              currentSubMenuLevel={currentSubLevelMenu}
+              onSubMenuLevelClick={setCurrentSubLevelMenu}
+            />
+          );
+        })}
+      </div>
       <AddFilterButton
-        isOpen={listOpenTarget === 'add_filter'}
-        onAddBtnClick={() => {
-          setListOpenTarget(listOpenTarget === 'add_filter' ? 'none' : 'add_filter');
-        }}
+        isMenuOpen={listOpenForTarget === 'add_filter'}
+        onAddBtnClick={() => setListOpenForTarget(listOpenForTarget === 'add_filter' ? 'none' : 'add_filter')}
         settings={settings}
         selectedFilters={selectedFilters}
         onListItemClick={onToggleFilter}
       />
-      <Backdrop show={listOpenTarget !== 'none'} onClick={() => setListOpenTarget('none')} />
+      <Backdrop show={listOpenForTarget !== 'none'} onClick={() => setListOpenForTarget('none')} />
     </section>
   );
 };

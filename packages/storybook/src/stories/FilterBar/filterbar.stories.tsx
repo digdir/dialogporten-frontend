@@ -1,7 +1,6 @@
-import { FlagCrossIcon, HourglassIcon, PersonIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
 import { Filter, FilterBar } from 'frontend';
-import { FilterSetting } from 'frontend/src/components/FilterBar/FilterBar.tsx';
+import { CustomFilterValueType, FilterSetting } from 'frontend/src/components/FilterBar/FilterBar.tsx';
 import { useCallback, useEffect, useState } from 'react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
@@ -12,6 +11,30 @@ type Person = {
   gender: 'Male' | 'Female';
   yearOfBirth: number;
 };
+
+type Document = {
+  id: string;
+  created: string;
+  title: string;
+};
+
+const importantDocs: Document[] = [
+  {
+    id: '1',
+    created: new Date(new Date().getTime() - 48 * 60 * 60 * 1000).toISOString(),
+    title: 'Important Document 1',
+  },
+  {
+    id: '2',
+    created: new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(),
+    title: 'Important Document 2',
+  },
+  {
+    id: '3',
+    created: new Date().toISOString(),
+    title: 'Important Document 3',
+  },
+];
 
 const historicalPeople: Person[] = [
   {
@@ -86,14 +109,13 @@ const historicalPeople: Person[] = [
   },
 ];
 
-const getFilterSettings = (persons: Person[]): FilterSetting[] => {
+const getPeopleSettings = (persons: Person[]): FilterSetting[] => {
   return [
     {
       id: 'country',
       label: 'Country',
       unSelectedLabel: 'All Countries',
       operation: 'equals',
-      leftIcon: <FlagCrossIcon />,
       options: (() => {
         const countries = persons.map((p) => p.country);
         const countryCounts = countOccurrences(countries);
@@ -109,7 +131,6 @@ const getFilterSettings = (persons: Person[]): FilterSetting[] => {
       label: 'Gender',
       unSelectedLabel: 'All Genders',
       operation: 'includes',
-      leftIcon: <PersonIcon />,
       options: (() => {
         const genders = persons.map((p) => p.gender);
         const genderCounts = countOccurrences(genders);
@@ -125,7 +146,6 @@ const getFilterSettings = (persons: Person[]): FilterSetting[] => {
       label: 'Century',
       unSelectedLabel: 'All Centuries',
       operation: 'equals',
-      leftIcon: <HourglassIcon />,
       options: (() => {
         const centuries = persons.map((person) => String(Math.ceil(person.yearOfBirth / 100)));
         const centuryCounts = countOccurrences(centuries);
@@ -174,25 +194,19 @@ const Template: StoryObj<typeof FilterBar> = {
 
     const handleFilterChange = useCallback((filters: Filter[]) => {
       setFilteredPeople(
-        historicalPeople.filter((person) => {
-          return filters.every((filter) => {
-            if (Array.isArray(filter.value)) {
-              return filter.value.includes(String(person[filter.id as keyof Person]));
+        historicalPeople.filter((person) =>
+          filters.every((filter) => {
+            if (filter.id === 'yearOfBirth') {
+              const personCentury = `${Math.ceil(person.yearOfBirth / 100)}th Century`;
+              return filter.value === personCentury;
             }
-            if (typeof filter.value === 'string') {
-              if (filter.id === 'yearOfBirth') {
-                const personCentury = `${Math.ceil(person.yearOfBirth / 100)}th Century`;
-                return filter.value === personCentury;
-              }
-              return filter.value === person[filter.id as keyof Person];
-            }
-            return true;
-          });
-        }),
+            return filter.value === person[filter.id as keyof Person];
+          }),
+        ),
       );
     }, []);
 
-    const filterBarSettings = getFilterSettings(historicalPeople);
+    const filterBarSettings = getPeopleSettings(historicalPeople);
 
     return (
       <div>
@@ -226,17 +240,9 @@ export const InitialState: StoryObj<typeof FilterBar> = {
   render: (args) => {
     const [filteredPeople, setFilteredPeople] = useState<Person[]>(historicalPeople);
     const filterPeople = useCallback((filters: Filter[]) => {
-      return historicalPeople.filter((person) => {
-        return filters.every((filter) => {
-          if (Array.isArray(filter.value)) {
-            return filter.value.includes(String(person[filter.id as keyof Person]));
-          }
-          if (typeof filter.value === 'string') {
-            return filter.value === person[filter.id as keyof Person];
-          }
-          return true;
-        });
-      });
+      return historicalPeople.filter((person) =>
+        filters.every((filter) => filter.value === person[filter.id as keyof Person]),
+      );
     }, []);
     const handleFilterChange = (filters: Filter[]) => {
       setFilteredPeople(filterPeople(filters));
@@ -246,7 +252,7 @@ export const InitialState: StoryObj<typeof FilterBar> = {
       setFilteredPeople(filterPeople(initialState));
     }, [filterPeople]);
 
-    const filterBarSettings = getFilterSettings(historicalPeople);
+    const filterBarSettings = getPeopleSettings(historicalPeople);
 
     return (
       <div>
@@ -262,6 +268,93 @@ export const InitialState: StoryObj<typeof FilterBar> = {
               <strong>Name:</strong> {person.name}, <strong>Country:</strong> {person.country}, <strong>Gender:</strong>
               {person.gender}, <strong>yearOfBirth:</strong>
               {person.yearOfBirth}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  },
+  args: {
+    settings: [],
+  },
+};
+
+export const DateFilter: StoryObj<typeof FilterBar> = {
+  render: (args) => {
+    const [filteredDocs, setFilteredDocs] = useState<Document[]>(importantDocs);
+    const dayBeforeYesterday = new Date(new Date().getTime() - 48 * 60 * 60 * 1000).toISOString();
+    const yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString();
+    const today = new Date().toISOString();
+    const filterBarSettings: FilterSetting[] = [
+      {
+        id: 'created',
+        label: 'Created',
+        unSelectedLabel: 'All Dates',
+        operation: 'equals',
+        options: [
+          {
+            value: dayBeforeYesterday,
+            displayLabel: 'Day before yesterday',
+            count: 1,
+          },
+          {
+            value: yesterday,
+            displayLabel: 'Yesterday',
+            count: 1,
+          },
+          {
+            value: today,
+            displayLabel: 'Today',
+            count: 1,
+          },
+          {
+            value: `${dayBeforeYesterday}/${today}`,
+            displayLabel: 'Select date',
+            count: 1,
+            options: [
+              {
+                value: CustomFilterValueType['$startTime/$endTime'],
+                displayLabel: 'Velg dato selv',
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const docsFilter = useCallback((filters: Filter[]) => {
+      return importantDocs.filter((doc) => {
+        return filters.every((filter) => {
+          if (filter.id === 'created') {
+            // Section ~ 3.2.6 of ISO 8601-1:2019 specifies that the date and time components are separated by a solidus (/).
+            if ((filter.value as string).includes('/')) {
+              const [startDate, endDate] = (filter.value as string).split('/');
+              if (startDate && endDate) {
+                return new Date(doc.created) >= new Date(startDate) && new Date(doc.created) <= new Date(endDate);
+              }
+              return new Date(doc.created) >= new Date(startDate);
+            }
+            return new Date(filter.value as string).toDateString() === new Date(doc.created).toDateString();
+          }
+          return filter.value === doc[filter.id as keyof Document];
+        });
+      });
+    }, []);
+
+    return (
+      <div>
+        <FilterBar
+          {...args}
+          settings={filterBarSettings}
+          onFilterChange={(filters) => {
+            setFilteredDocs(docsFilter(filters));
+          }}
+        />
+        <ul>
+          {filteredDocs.map((doc) => (
+            <li key={doc.id}>
+              <strong>Id:</strong> {doc.id}, <strong>Title:</strong> {doc.title}, <strong>Created:</strong>
+              {doc.created}
             </li>
           ))}
         </ul>

@@ -1,5 +1,6 @@
-import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, PersonIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
+import { t } from 'i18next';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,11 @@ import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
 import { FilterSetting } from '../../components/FilterBar/FilterBar.tsx';
 import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.tsx';
+import {
+  countOccurrences,
+  generateDateOptions,
+  isCombinedDateAndInterval,
+} from '../../components/FilterBar/dateInfo.ts';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import styles from './inbox.module.css';
@@ -36,9 +42,8 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
   return [
     {
       id: 'sender',
-      label: 'Avsender',
-      unSelectedLabel: 'Alle avsendere',
-      leftIcon: <PersonIcon />,
+      label: t('filter_bar.label.sender'),
+      unSelectedLabel: t('filter_bar.label.all_senders'),
       operation: 'includes',
       options: (() => {
         const senders = dialogs.map((p) => p.sender.label);
@@ -52,9 +57,8 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
     },
     {
       id: 'receiver',
-      label: 'Mottaker',
-      unSelectedLabel: 'Alle mottakere',
-      leftIcon: <PersonIcon />,
+      label: t('filter_bar.label.recipient'),
+      unSelectedLabel: t('filter_bar.label.all_recipients'),
       operation: 'includes',
       options: (() => {
         const receivers = dialogs.map((p) => p.receiver.label);
@@ -68,33 +72,28 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
     },
     {
       id: 'status',
-      label: 'Status',
-      unSelectedLabel: 'Alle statuser',
-      leftIcon: <PersonIcon />,
+      label: t('filter_bar.label.status'),
+      unSelectedLabel: t('filter_bar.label.all_statuses'),
       operation: 'includes',
       options: (() => {
         const status = dialogs.map((p) => p.status);
         const statusCount = countOccurrences(status);
         return Array.from(new Set(status)).map((statusLabel) => ({
-          fieldName: statusLabel,
-          displayLabel: statusLabel,
+          displayLabel: t(`dialog.status.${statusLabel.toLowerCase()}`),
           value: statusLabel,
           count: statusCount[statusLabel],
         }));
       })(),
     },
+    {
+      id: 'created',
+      label: t('filter_bar.label.created'),
+      unSelectedLabel: t('filter_bar.label.all_dates'),
+      operation: 'equals',
+      options: generateDateOptions(dialogs),
+    },
   ];
 };
-
-function countOccurrences(array: string[]): Record<string, number> {
-  return array.reduce(
-    (acc, item) => {
-      acc[item] = (acc[item] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-}
 
 export interface QueryParams {
   [key: string]: string;
@@ -183,17 +182,25 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const filteredDialogsForView = useMemo(() => {
     return dialogsForView.filter((item) =>
       activeFilters.every((filter) => {
-        if (Array.isArray(filter.value)) {
-          return filter.value.includes(String(item[filter.id as keyof InboxItemInput]));
+        const { isDate, endDate, startDate } = isCombinedDateAndInterval(filter.value as string);
+        if (filter.id === 'sender' || filter.id === 'receiver') {
+          const participant = item[filter.id as keyof InboxItemInput] as Participant;
+          return filter.value === participant.label;
         }
-        if (typeof filter.value === 'string') {
-          if (filter.id === 'sender') {
-            const sender = item[filter.id as keyof InboxItemInput] as Participant;
-            return filter.value === sender.label;
+        if (filter.id === 'created') {
+          // Section ~ 3.2.6 of ISO 8601-1:2019 specifies that the date and time components are separated by a solidus (/).
+          if (isDate) {
+            if (startDate && endDate) {
+              return new Date(item.createdAt) >= startDate && new Date(item.createdAt) <= endDate;
+            }
+            if (startDate) {
+              return new Date(item.createdAt) >= startDate;
+            }
+            return true;
           }
-          return filter.value === item[filter.id as keyof InboxItemInput];
+          return new Date(filter.value as string).toDateString() === new Date(item.createdAt).toDateString();
         }
-        return true;
+        return filter.value === item[filter.id as keyof InboxItemInput];
       }),
     );
   }, [dialogsForView, activeFilters]);
