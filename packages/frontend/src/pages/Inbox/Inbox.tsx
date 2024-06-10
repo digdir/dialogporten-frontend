@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
-import { InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
+import { InboxViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant, useSearchString } from '../../components';
 import { type Filter, FilterBar } from '../../components';
@@ -150,6 +150,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { parties } = useParties();
   const { dialogsByView, dialogs } = useDialogs(parties);
   const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
+  const { searchResults, isLoading: isLoadingSearchResults } = useSearchDialogs({ parties, search: searchString });
   const { openSnackbar } = useSnackbar();
   const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
@@ -198,7 +199,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }, [dialogsForView, activeFilters]);
 
   const dataGroupedByYear = useMemo(() => {
-    return filteredDialogsForView.reduce(
+    const items = searchResults?.length ? searchResults : filteredDialogsForView;
+    return items.reduce(
       (acc: Record<string, InboxItemInput[]>, item) => {
         const year = String(new Date(item.date).getFullYear());
         if (!acc[year]) {
@@ -217,6 +219,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
       [checkboxValue]: checked,
     }));
   };
+
+  if (isLoadingSearchResults) {
+    return <div>Loading...</div>; // TODO: Add loading spinner / Skeleton
+  }
 
   const filterBarSettings = getFilterBarSettings(dialogs);
   return (
