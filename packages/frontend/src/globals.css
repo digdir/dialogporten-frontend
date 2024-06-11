@@ -1,6 +1,10 @@
 /* GLOBAL VARIABLES */
 
 :root {
+  /* Layer 0 - Raw colors */
+  --dark-blue: #111D46;
+
+  /* Layer 1 - Semantic colors */
   --background-color: #EAF7EF;
   --button-color: #084826;
   --avatar-color: #111D46;

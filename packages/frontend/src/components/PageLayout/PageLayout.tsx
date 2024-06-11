@@ -86,8 +86,8 @@ export const PageLayout: React.FC = () => {
             notificationCount={notificationCount}
           />
         </SelectedDialogsContainer>
+        <Snackbar />
       </BottomDrawerContainer>
-      <Snackbar />
       <Leva hidden={!debug} />
     </div>
   );

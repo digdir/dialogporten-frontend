@@ -1,5 +1,6 @@
 import { BellIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
+import { BottomDrawer } from '../BottomDrawer';
 import styles from './snackbar.module.css';
 import { SnackbarStoreRecord, useSnackbar } from './useSnackbar';
 
@@ -14,11 +15,9 @@ import { SnackbarStoreRecord, useSnackbar } from './useSnackbar';
 const SnackbarItem = ({
   item,
   closeSnackbarItem,
-  index,
 }: {
   item: SnackbarStoreRecord;
   closeSnackbarItem: (id: string) => void;
-  index: number;
 }): JSX.Element => {
   return (
     <div
@@ -26,7 +25,6 @@ const SnackbarItem = ({
       key={item.id}
       role="status"
       aria-live="polite"
-      style={{ marginBottom: `${70 * index}px` }}
     >
       <div className={styles.snackbarItemContent}>
         <span className={styles.leftIcon} onClick={() => closeSnackbarItem(item.id)}>
@@ -48,15 +46,12 @@ const SnackbarItem = ({
  * @returns {JSX.Element|null} The JSX element representing the snackbar or null if no messages are present.
  */
 export const Snackbar = (): JSX.Element | null => {
-  const { isOpen, storedMessages, closeSnackbarItem } = useSnackbar();
-  if (isOpen) {
-    return (
-      <div className={styles.snackbar}>
-        {storedMessages.map((item, index) => (
-          <SnackbarItem key={item.id} item={item} closeSnackbarItem={closeSnackbarItem} index={index} />
-        ))}
-      </div>
-    );
-  }
-  return null;
+  const { storedMessages, closeSnackbarItem } = useSnackbar();
+  return (
+    <BottomDrawer>
+      {(storedMessages || []).map((item) => (
+        <SnackbarItem key={item.id} item={item} closeSnackbarItem={closeSnackbarItem} />
+      ))}
+    </BottomDrawer>
+  );
 };
