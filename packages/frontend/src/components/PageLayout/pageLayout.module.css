@@ -15,7 +15,15 @@
     grid-template-rows: auto 1fr auto;
     max-width: 1920px;
     margin: 0 auto;
+}
+
+.background {
     background: var(--background-color);
+		min-height: 100vh;
+}
+
+.inSelectionMode.background {
+    background: var(--grey);
 }
 
 .pageLayout>header {

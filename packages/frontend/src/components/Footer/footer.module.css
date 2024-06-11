@@ -4,7 +4,6 @@
     align-items: flex-start;
     position: relative;
     padding: 1.5rem 1rem 1rem;
-    background-color: var(--background-color, #EAF7EF);
     border-top: 1px solid rgba(0, 0, 0, 0.25);
     margin: 2rem;
 }
