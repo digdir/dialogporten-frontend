@@ -1,9 +1,7 @@
-import { Leva, button, useControls } from 'leva';
 import React, { memo, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
-import { fetchHelloWorld, fetchProfile } from '../../api/queries.ts';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
@@ -44,27 +42,13 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
-  const urlParams = new URLSearchParams(window.location.search);
-  const debug = urlParams.get('debug') === 'true';
   const { parties, selectedParties } = useParties();
   const name = parties.find((party) => party.partyType === 'Person')?.name || '';
   const { dialogsByView } = useDialogs(parties);
   const dialogs = dialogsByView['inbox'];
   const notificationCount = dialogs.length;
 
-  const { isCompany: isCompanyControl } = useControls({
-    isCompany: false,
-    helloWorld: button(async () => {
-      const response = await fetchHelloWorld();
-      console.log(response);
-    }),
-    fetchBtn: button(async () => {
-      const profile = await fetchProfile();
-      console.log(profile);
-    }),
-  });
-
-  const isCompany = isCompanyControl || selectedParties?.some((party) => party.partyType === 'Organization');
+  const isCompany = selectedParties?.some((party) => party.partyType === 'Organization');
   const companyName = selectedParties?.some((party) => party.partyType === 'Organization')
     ? selectedParties?.find((party) => party.partyType === 'Organization')?.name
     : '';
@@ -88,7 +72,6 @@ export const PageLayout: React.FC = () => {
         </SelectedDialogsContainer>
         <Snackbar />
       </BottomDrawerContainer>
-      <Leva hidden={!debug} />
     </div>
   );
 };
