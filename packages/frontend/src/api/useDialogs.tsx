@@ -24,10 +24,6 @@ interface UseDialogsOutput {
   isLoading: boolean;
 }
 
-export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForPartiesQuery> =>
-  graphQLSDK.getAllDialogsForParties({
-    partyURIs,
-  });
 
 const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): string => {
   const defaultCultureCode = 'nb-no'; // TODO: Will be changed to -1 iso in the future
@@ -75,8 +71,8 @@ export function mapDialogDtoToInboxItem(
         label: serviceOwner?.name ?? item.org,
         ...(serviceOwner?.logo
           ? {
-              icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
-            }
+            icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
+          }
           : {}),
       },
       receiver: {
@@ -90,6 +86,57 @@ export function mapDialogDtoToInboxItem(
     };
   });
 }
+
+export const searchDialogs = (
+  partyURIs: string[],
+  search: string | undefined,
+  org: string | undefined,
+  status: DialogStatus | undefined,
+): Promise<GetAllDialogsForPartiesQuery> => {
+  return graphQLSDK.getAllDialogsForParties({
+    partyURIs,
+    search,
+    org,
+    status,
+  })
+};
+
+export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForPartiesQuery> =>
+  graphQLSDK.getAllDialogsForParties({
+    partyURIs,
+  });
+
+interface searchDialogsProps {
+  parties: PartyFieldsFragment[];
+  search?: string;
+  org?: string;
+  status?: DialogStatus;
+}
+interface UseSearchDialogsOutput {
+  isLoading: boolean;
+  isSuccess: boolean;
+  searchResults: InboxItemInput[];
+}
+
+export const useSearchDialogs = ({
+  parties,
+  search,
+  org,
+  status,
+}: searchDialogsProps): UseSearchDialogsOutput => {
+  const partyURIs = parties.map((party) => party.party);
+  const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
+    queryKey: ['searchDialogs', partyURIs, search, org, status],
+    queryFn: () => searchDialogs(partyURIs, search, org, status),
+    enabled: partyURIs.length > 0,
+  });
+
+  return {
+    isLoading,
+    isSuccess,
+    searchResults: mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties)
+  };
+};
 
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);

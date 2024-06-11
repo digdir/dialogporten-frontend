@@ -1,6 +1,9 @@
-query getAllDialogsForParties($partyURIs: [String!]) {
+query getAllDialogsForParties($partyURIs: [String!], $search: String, $org: [String!], $status: [DialogStatus!]) {
     searchDialogs(input: {
-      party: $partyURIs
+      party: $partyURIs,
+      search: $search,
+      org: $org,
+      status: $status,
     }) {
     items {
       ...SearchDialogFields

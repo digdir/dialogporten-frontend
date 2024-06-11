@@ -8,6 +8,63 @@ import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
 import styles from './savedSearches.module.css';
 
+export const SavedSearches = () => {
+  const queryClient = useQueryClient();
+  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
+  const { t } = useTranslation();
+  const { data } = useSavedSearches();
+  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
+  const { openSnackbar } = useSnackbar();
+
+  const handleDeleteSearch = async (id: number) => {
+    if (!id) return;
+
+    try {
+      await deleteSavedSearch(id);
+      openSnackbar({
+        message: t('savedSearches.deleted_success'),
+        variant: 'success',
+      });
+      await queryClient.invalidateQueries('savedSearches');
+    } catch (error) {
+      console.error('Failed to delete saved search:', error);
+      openSnackbar({
+        message: t('savedSearches.delete_failed'),
+        variant: 'error',
+      });
+    }
+  };
+
+  return (
+    <main>
+      <section className={styles.savedSearchesWrapper}>
+        <EditSavedSearch
+          key={selectedSavedSearch?.id}
+          isOpen={!!selectedSavedSearch}
+          savedSearch={selectedSavedSearch}
+          onDelete={handleDeleteSearch}
+          onClose={() => setSelectedSavedSearch(undefined)}
+        />
+        <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
+        {!!savedSearches?.length && (
+          <div className={styles.savedSearchesContainer}>
+            {savedSearches?.map((search) => (
+              <SavedSearchesItem
+                key={search?.id}
+                savedSearch={search}
+                onDelete={handleDeleteSearch}
+                setSelectedSavedSearch={setSelectedSavedSearch}
+              />
+            ))}
+          </div>
+        )}
+        <LastUpdated searches={savedSearches} />
+      </section>
+    </main>
+  );
+};
+
+
 export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
 
 interface LastUpdatedProps {
@@ -79,61 +136,5 @@ export const LastUpdated = ({ searches }: LastUpdatedProps) => {
       {t('savedSearches.lastUpdated')}
       {autoFormatRelativeTime(lastUpdated)}
     </div>
-  );
-};
-
-export const SavedSearches = () => {
-  const queryClient = useQueryClient();
-  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
-  const { t } = useTranslation();
-  const { data } = useSavedSearches();
-  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
-  const { openSnackbar } = useSnackbar();
-
-  const handleDeleteSearch = async (id: number) => {
-    if (!id) return;
-
-    try {
-      await deleteSavedSearch(id);
-      openSnackbar({
-        message: t('savedSearches.deleted_success'),
-        variant: 'success',
-      });
-      await queryClient.invalidateQueries('savedSearches');
-    } catch (error) {
-      console.error('Failed to delete saved search:', error);
-      openSnackbar({
-        message: t('savedSearches.delete_failed'),
-        variant: 'error',
-      });
-    }
-  };
-
-  return (
-    <main>
-      <section className={styles.savedSearchesWrapper}>
-        <EditSavedSearch
-          key={selectedSavedSearch?.id}
-          isOpen={!!selectedSavedSearch}
-          savedSearch={selectedSavedSearch}
-          onDelete={handleDeleteSearch}
-          onClose={() => setSelectedSavedSearch(undefined)}
-        />
-        <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        {!!savedSearches?.length && (
-          <div className={styles.savedSearchesContainer}>
-            {savedSearches?.map((search) => (
-              <SavedSearchesItem
-                key={search?.id}
-                savedSearch={search}
-                onDelete={handleDeleteSearch}
-                setSelectedSavedSearch={setSelectedSavedSearch}
-              />
-            ))}
-          </div>
-        )}
-        <LastUpdated searches={savedSearches} />
-      </section>
-    </main>
   );
 };
