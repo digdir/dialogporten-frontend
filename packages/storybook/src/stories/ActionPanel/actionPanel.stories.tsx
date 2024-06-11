@@ -3,18 +3,18 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ActionPanel, BottomDrawerContainer } from 'frontend';
 
 export default {
-  title: 'Components/ActionPanel',
+  title: 'Components/BottomDrawer/ActionPanel',
   component: ActionPanel,
   parameters: {
     layout: 'fullscreen',
   },
-	decorators: [
-		(Story) => (
-			<BottomDrawerContainer>
-				<Story />
-			</BottomDrawerContainer>
-		)
-	],
+  decorators: [
+    (Story) => (
+      <BottomDrawerContainer>
+        <Story />
+      </BottomDrawerContainer>
+    ),
+  ],
 } as Meta<typeof ActionPanel>;
 
 export const Default: StoryObj<typeof ActionPanel> = {

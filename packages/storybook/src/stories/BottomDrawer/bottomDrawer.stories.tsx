@@ -3,7 +3,7 @@ import { BottomDrawer, BottomDrawerContainer } from 'frontend';
 import { useState } from 'react';
 
 export default {
-  title: 'Components/BottomDrawer',
+  title: 'Components/BottomDrawer/BottomDrawer',
   component: BottomDrawer,
   parameters: {
     layout: 'fullscreen',

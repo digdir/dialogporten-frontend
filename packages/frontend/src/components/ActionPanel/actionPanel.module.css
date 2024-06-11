@@ -23,7 +23,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background: #111D46;
+  background: var(--dark-blue);
   color: white;
   display: flex;
   justify-content: space-between;
@@ -55,7 +55,7 @@
   padding: 0.5rem 1rem;
   flex-shrink: 0;
   border-radius: 6px;
-  background: #111D46;
+  background: var(--dark-blue);
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -4px rgba(0, 0, 0, 0.10);
   min-height: 30px;
   margin: 1rem;
