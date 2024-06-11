@@ -18,6 +18,8 @@ on:
         required: true
       AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP:
         required: true
+      AZURE_CERTIFICATE_KEY_VAULT_NAME:
+        required: true
 
     inputs:
       region:
