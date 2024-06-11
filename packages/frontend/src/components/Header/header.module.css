@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     background: var(--background-color, #EAF7EF);
-    color: var(--avatar-color, #111D46);
+    color: var(--Company-Primary, #111D46);
     padding: 24px;
     max-height: 68px;
 }

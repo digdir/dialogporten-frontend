@@ -5,20 +5,35 @@
   --dark-blue: #111D46;
 
   /* Layer 1 - Semantic colors */
-  --background-color: #EAF7EF;
-  --button-color: #084826;
-  --avatar-color: #111D46;
+  --Person-Primary: #084826;
+  --Person-800: #076046;
+  --Person-Progress: #347659;
+  --Person-600: #079669;
+  --Person-Secondary: #10B981;
+  --Person-400: #34D399;
+  --Person-300: #6EE7B7;
+  --Person-200: #A8F3D0;
+  --Person-Paper: #EAF7EF;
+  --Company-Primary: #111D46;
+  --Company-800: #166AAC;
+  --Company-Progress: #4086D7;
+  --Company-600: #1E98F5;
+  --Company-Secondary: #4BADF7;
+  --Company-400: #78C1F9;
+  --Company-300: #A5D6FB;
+  --Company-200: #D3EAFD;
+  --Company-Paper: #E9F5FF;
+  --background-color: var(--Person-Paper);
+  --button-color: var(--Person-Primary);
   --Action-Important: #E02E49;
   --Action-Danger: #861C2C;
-  --Person-Primary: #084826;
-  --Saved-Searches-Background: rgba(75, 173, 247, 0.25);
 }
 
 .isCompany {
-  --background-color: #E9F5FF;
-  --button-color: #111D46;
+  --background-color: var(--Company-Paper);
+  --button-color: var(--Company-Primary);
 }
 
 body, html {
-	margin: 0;
+  margin: 0;
 }

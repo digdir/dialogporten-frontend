@@ -77,7 +77,7 @@
   "actionPanel.buttons.share": "Del",
   "actionPanel.chosen": "{count, plural, =0 {Ingen valgt} one {# valgt} other {# valgt}}",
   "notifications.count": "{count, plural, one {# ulest melding} other {# uleste meldinger}}",
-  "header.searchPlaceholder": "Søk i personlig innboks",
+  "header.searchPlaceholder": "Søk i innboks",
   "link.goToMain": "Gå til hovedsiden",
   "link.goToInbox": "Gå til innboks",
   "dialog.error_message": "Feil ved lasting av dialog",
