@@ -29,5 +29,8 @@ param applicationGatewayConfiguration = {
     maxCapacity: 2
   }
   hostName: 'af.at.altinn.cloud'
-  sslCertificateKeyVaultSecretKey: 'dialogporten-uploaded'
+  sslCertificate: {
+    keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
+    secretKey: 'star-at-altinn-cloud'
+  }
 }
