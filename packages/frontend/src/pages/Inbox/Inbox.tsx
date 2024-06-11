@@ -16,6 +16,7 @@ import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.ts
 import {
   countOccurrences,
   generateDateOptions,
+  getPredefinedRange,
   isCombinedDateAndInterval,
 } from '../../components/FilterBar/dateInfo.ts';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
@@ -49,7 +50,7 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
         const senders = dialogs.map((p) => p.sender.label);
         const senderCounts = countOccurrences(senders);
         return Array.from(new Set(senders)).map((sender) => ({
-          displayLabel: sender,
+          displayLabel: `${t('filter_bar_fields.from')} ${sender}`,
           value: sender,
           count: senderCounts[sender],
         }));
@@ -64,7 +65,7 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
         const receivers = dialogs.map((p) => p.receiver.label);
         const receiversCount = countOccurrences(receivers);
         return Array.from(new Set(receivers)).map((receiver) => ({
-          displayLabel: receiver,
+          displayLabel: `${t('filter_bar_fields.to')} ${receiver}`,
           value: receiver,
           count: receiversCount[receiver],
         }));
@@ -94,11 +95,6 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
     },
   ];
 };
-
-export interface QueryParams {
-  [key: string]: string;
-}
-
 export const compressQueryParams = (params: SavedSearchData): string => {
   const queryParamsString = JSON.stringify(params);
   return compressToEncodedURIComponent(queryParamsString);
@@ -182,13 +178,17 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const filteredDialogsForView = useMemo(() => {
     return dialogsForView.filter((item) =>
       activeFilters.every((filter) => {
-        const { isDate, endDate, startDate } = isCombinedDateAndInterval(filter.value as string);
         if (filter.id === 'sender' || filter.id === 'receiver') {
           const participant = item[filter.id as keyof InboxItemInput] as Participant;
           return filter.value === participant.label;
         }
         if (filter.id === 'created') {
+          const rangeProperties = getPredefinedRange().find((range) => range.value === filter.value);
           // Section ~ 3.2.6 of ISO 8601-1:2019 specifies that the date and time components are separated by a solidus (/).
+          const { isDate, endDate, startDate } = isCombinedDateAndInterval(
+            rangeProperties?.range ?? (filter.value as string),
+          );
+
           if (isDate) {
             if (startDate && endDate) {
               return new Date(item.createdAt) >= startDate && new Date(item.createdAt) <= endDate;

@@ -2,10 +2,11 @@ import cx from 'classnames';
 import styles from './filterListItem.module.css';
 interface FilterListItemProps {
   onClick: () => void;
-  children?: React.ReactNode;
+  leftContent?: React.ReactNode;
+  rightContent?: React.ReactNode;
   disabled?: boolean;
 }
-export const FilterListItem = ({ children, onClick, disabled }: FilterListItemProps) => {
+export const FilterListItem = ({ leftContent, rightContent, onClick, disabled }: FilterListItemProps) => {
   const handleKeyUp = (event: React.KeyboardEvent<HTMLLIElement>) => {
     if (event.key === 'Enter' && !disabled) {
       onClick?.();
@@ -17,7 +18,10 @@ export const FilterListItem = ({ children, onClick, disabled }: FilterListItemPr
       className={cx(styles.filterListItem, { [styles.disabled]: disabled })}
       onKeyUp={disabled ? undefined : handleKeyUp}
     >
-      {children}
+      <div className={styles.content}>
+        <div className={styles.leftContent}>{leftContent}</div>
+        <div className={styles.rightContent}>{rightContent}</div>
+      </div>
     </li>
   );
 };

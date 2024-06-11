@@ -183,14 +183,14 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
             />
           );
         })}
+        <AddFilterButton
+          isMenuOpen={listOpenForTarget === 'add_filter'}
+          onAddBtnClick={() => setListOpenForTarget(listOpenForTarget === 'add_filter' ? 'none' : 'add_filter')}
+          settings={settings}
+          selectedFilters={selectedFilters}
+          onListItemClick={onToggleFilter}
+        />
       </div>
-      <AddFilterButton
-        isMenuOpen={listOpenForTarget === 'add_filter'}
-        onAddBtnClick={() => setListOpenForTarget(listOpenForTarget === 'add_filter' ? 'none' : 'add_filter')}
-        settings={settings}
-        selectedFilters={selectedFilters}
-        onListItemClick={onToggleFilter}
-      />
       <Backdrop show={listOpenForTarget !== 'none'} onClick={() => setListOpenForTarget('none')} />
     </section>
   );

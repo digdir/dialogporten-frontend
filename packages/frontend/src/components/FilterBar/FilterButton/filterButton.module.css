@@ -19,6 +19,12 @@
     column-gap: 1em;
 }
 
+.button {
+    white-space: nowrap;
+    background-color: var(--button-color);
+    color: var(--background-color);
+}
+
 .filterDateContent {
     min-width: 300px;
     display: flex;
@@ -27,21 +33,28 @@
     row-gap: 1rem;
 }
 
+.checkMarkHolder {
+    min-width: 1.5rem;
+    svg {
+        height: 1.5rem;
+        width: auto;
+    }
+}
+
 .filterListLabel {
     font-size: 1rem;
+    margin-left: 0.5rem;
 }
 
 .filterListCount {
-    padding: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.25;
-    border-radius: 50%;
-    height: 16px;
-    width: 16px;;
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    height: 24px;
+    min-width: 24px;
+    padding: 4px 8px;
     justify-content: center;
-    background-color: rgb(243, 244, 246);
-    color: #000;
+    align-items: center;
+    border-radius: 12px;
+    background: var(--black-5, rgba(0, 0, 0, 0.05));
 }
