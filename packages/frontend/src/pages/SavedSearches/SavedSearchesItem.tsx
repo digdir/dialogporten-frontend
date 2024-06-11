@@ -3,6 +3,7 @@ import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/
 import { PencilIcon } from '@navikt/aksel-icons';
 import { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
+import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
 import { compressQueryParams } from '../Inbox/Inbox';
 import styles from './savedSearches.module.css';
 
@@ -19,7 +20,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
     setSelectedSavedSearch?.(savedSearch);
   };
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className={styles.renderButtons}>
       <DropdownMenu>
         <DropdownMenu.Trigger className={styles.linkButton}>
           <EllipsisHorizontalIcon className={styles.icon} />
@@ -70,10 +71,12 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
           {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
           {searchData?.filters?.map((search, index) => {
             const id = search?.id;
+            const predefinedRange = getPredefinedRange().find((range) => range.value === search?.value);
+            const value = predefinedRange && search?.id === 'created' ? predefinedRange.label : search?.value;
             return (
-              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${
-                search?.value
-              }`}</span>
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${
+                index === 0 ? '' : ' +'
+              } ${value}`}</span>
             );
           })}
         </div>

@@ -1,5 +1,5 @@
 import { Button, Checkbox, Textfield } from '@digdir/designsystemet-react';
-import { ChevronRightIcon, TrashIcon } from '@navikt/aksel-icons';
+import { CheckmarkIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -69,6 +69,7 @@ const FilterButtonSection = ({
         }}
       />
       <Button
+        className={styles.button}
         onClick={() => {
           onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
         }}
@@ -93,18 +94,24 @@ export const FilterButton = ({
   const [hoveringDeleteBtn, setHoveringDeleteBtn] = useState(false);
   const { id, unSelectedLabel, options } = filterFieldData;
 
-  const valueLabels = selectedFilters.filter((filter) => filter.id === id && typeof filter.value !== 'undefined');
-  const valueLabel = (
-    valueLabels.length === 0
-      ? unSelectedLabel
-      : valueLabels.length === 1
-        ? valueLabels[0].value
-        : t('filter_bar.items_chosen', { count: valueLabels.length })
-  ) as string;
+  const filtersForButton = selectedFilters.filter((filter) => filter.id === id && filter.value !== undefined);
 
-  const dateInfo = isCombinedDateAndInterval(valueLabel);
-  const optionsValue = options.findIndex((option) => option.value === currentSubMenuLevel?.parentOptionValue);
-  const chosenOptions = optionsValue > -1 ? options[optionsValue].options! : options;
+  const valueLabels = filtersForButton.map(
+    (filter) => options.find((option) => option.value === filter.value)?.displayLabel ?? (filter.value as string),
+  );
+
+  const displayLabel = (() => {
+    if (valueLabels.length === 0) return unSelectedLabel;
+    if (valueLabels.length === 1) return valueLabels[0];
+    return t('filter_bar.items_chosen', { count: valueLabels.length });
+  })();
+
+  const dateInfo = isCombinedDateAndInterval(
+    filtersForButton.length === 1 ? (filtersForButton[0].value as string) : displayLabel,
+  );
+
+  const chosenOptions =
+    options.find((option) => option.value === currentSubMenuLevel?.parentOptionValue)?.options || options;
   const handleOnClick = (shouldNotDismiss: boolean, option: FilterBarFieldOption) => {
     if (option.options?.length) {
       onSubMenuLevelClick({
@@ -122,16 +129,17 @@ export const FilterButton = ({
   return (
     <div className={styles.filterButton}>
       <div className={styles.buttons}>
-        <Button onClick={onBtnClick} className={cx({ [styles.xed]: hoveringDeleteBtn })} size="small">
-          {dateInfo.isDate ? dateInfo.label : valueLabel}
+        <Button onClick={onBtnClick} className={cx(styles.button, { [styles.xed]: hoveringDeleteBtn })} size="small">
+          {dateInfo.isDate ? dateInfo.label : displayLabel}
         </Button>
         <Button
           size="small"
+          className={styles.button}
           onClick={() => onRemove(id)}
           onMouseEnter={() => setHoveringDeleteBtn(true)}
           onMouseLeave={() => setHoveringDeleteBtn(false)}
         >
-          <TrashIcon />
+          <XMarkIcon />
         </Button>
       </div>
       {isOpen && (
@@ -153,24 +161,36 @@ export const FilterButton = ({
             }
 
             return (
-              <FilterListItem key={option.displayLabel} onClick={() => handleOnClick(shouldNotDismiss, option)}>
-                <div className={styles.filterListContent}>
-                  {isMultiSelectable && (
-                    <Checkbox
-                      onChange={() => onListItemClick(id, option.value)}
-                      size="small"
-                      value={option.displayLabel}
-                      checked={isChecked}
-                    />
-                  )}
-                  <span className={styles.filterListLabel}>{option.displayLabel}</span>
-                  {option.options?.length ? (
+              <FilterListItem
+                key={option.displayLabel}
+                onClick={() => handleOnClick(shouldNotDismiss, option)}
+                leftContent={
+                  <div className={styles.filterListContent}>
+                    {isMultiSelectable ? (
+                      <Checkbox
+                        onChange={() => onListItemClick(id, option.value)}
+                        size="small"
+                        value={option.displayLabel}
+                        checked={isChecked}
+                      >
+                        <span className={styles.filterListLabel}>{option.displayLabel}</span>
+                      </Checkbox>
+                    ) : (
+                      <>
+                        <span className={styles.checkMarkHolder}>{isChecked && <CheckmarkIcon />}</span>
+                        <span className={styles.filterListLabel}>{option.displayLabel}</span>
+                      </>
+                    )}
+                  </div>
+                }
+                rightContent={
+                  option.options?.length ? (
                     <ChevronRightIcon />
                   ) : (
                     <span className={styles.filterListCount}>{option.count}</span>
-                  )}
-                </div>
-              </FilterListItem>
+                  )
+                }
+              />
             );
           })}
         </FilterList>
