@@ -41,6 +41,17 @@
     }
   },
   "files": {
-    "ignore": [".azure", ".github", "node_modules", "generated", "dist", "build", "storybook-static"]
+    "ignore": [
+      ".azure",
+      ".github",
+      "node_modules",
+      "generated",
+      "dist",
+      "build",
+      "storybook-static",
+      ".docusaurus",
+      ".storybook",
+      "mocks"
+    ]
   }
 }
