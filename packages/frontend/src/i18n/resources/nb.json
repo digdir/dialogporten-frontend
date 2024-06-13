@@ -68,6 +68,7 @@
   "filter_bar.label.all_statuses": "Alle statuser",
   "filter_bar.label.created": "Opprettet",
   "filter_bar.label.all_dates": "Alle datoer",
+  "search.search.results": "Ditt søk ga {count, plural, one {# treff} other {# treff}}",
   "footer.nav.about_altinn": "Om Altinn",
   "footer.company": "Digdir",
   "footer.address.line1": "Postboks 1382 Vika, 0114 Oslo.",

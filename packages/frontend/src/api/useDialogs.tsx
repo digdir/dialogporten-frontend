@@ -13,6 +13,7 @@ import { i18n } from '../i18n/config.ts';
 import { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
+import { useEffect, useState } from 'react';
 
 export type InboxViewType = 'inbox' | 'draft' | 'sent';
 interface UseDialogsOutput {
@@ -108,7 +109,7 @@ export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForParties
 
 interface searchDialogsProps {
   parties: PartyFieldsFragment[];
-  search?: string;
+  searchString?: string;
   org?: string;
   status?: DialogStatus;
 }
@@ -116,25 +117,34 @@ interface UseSearchDialogsOutput {
   isLoading: boolean;
   isSuccess: boolean;
   searchResults: InboxItemInput[];
+  isFetching: boolean;
 }
 
 export const useSearchDialogs = ({
   parties,
-  search,
+  searchString,
   org,
   status,
 }: searchDialogsProps): UseSearchDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
-  const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: ['searchDialogs', partyURIs, search, org, status],
-    queryFn: () => searchDialogs(partyURIs, search, org, status),
-    enabled: partyURIs.length > 0,
+  const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
+    queryKey: ['searchDialogs', partyURIs, searchString, org, status],
+    queryFn: () => searchDialogs(partyURIs, searchString, org, status),
+    enabled: partyURIs.length > 0 && !!searchString && searchString.length > 2,
   });
+  const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
+
+  useEffect(() => {
+    if (searchString && !isFetching) {
+      setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties))
+    }
+  }, [setSearchResults, searchString, isFetching]);
 
   return {
     isLoading,
     isSuccess,
-    searchResults: mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties)
+    searchResults,
+    isFetching
   };
 };
 

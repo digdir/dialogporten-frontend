@@ -144,8 +144,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const location = useLocation();
   const { parties } = useParties();
   const { dialogsByView, dialogs } = useDialogs(parties);
-  const { searchString, queryClient } = useSearchString(); // This search string needs to be sent to the backend
-  const { searchResults, isLoading: isLoadingSearchResults } = useSearchDialogs({ parties, search: searchString });
+  const { searchString, queryClient } = useSearchString();
+  const { searchResults, isFetching } = useSearchDialogs({ parties, searchString });
   const { openSnackbar } = useSnackbar();
   const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
@@ -206,7 +206,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }, [dialogsForView, activeFilters]);
 
   const dataGroupedByYear = useMemo(() => {
-    const items = searchResults?.length ? searchResults : filteredDialogsForView;
+    const items = (searchString?.length && searchResults) ? searchResults : filteredDialogsForView;
     return items.reduce(
       (acc: Record<string, InboxItemInput[]>, item) => {
         const year = String(new Date(item.date).getFullYear());
@@ -218,7 +218,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       },
       {} as Record<string, InboxItemInput[]>,
     );
-  }, [filteredDialogsForView]);
+  }, [filteredDialogsForView, searchResults, searchString]);
 
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
@@ -226,10 +226,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
       [checkboxValue]: checked,
     }));
   };
-
-  if (isLoadingSearchResults) {
-    return <div>Loading...</div>; // TODO: Add loading spinner / Skeleton
-  }
 
   const filterBarSettings = getFilterBarSettings(dialogs);
   return (
@@ -269,6 +265,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
+        {isFetching ?
+          <p>Spinner</p> :
+          !isFetching && !!searchString?.length && <h2>{t('search.search.results', { count: searchResults.length })}</h2>}
+        {/* TODO: Replace with actual spinner */}
         {Object.entries(dataGroupedByYear)
           .reverse()
           .map(([year, items]) => {
