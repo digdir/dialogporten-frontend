@@ -4,9 +4,18 @@ interface FilterListItemProps {
   onClick: () => void;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
+  hasBottomBorder?: boolean;
+  filterActive?: boolean;
   disabled?: boolean;
 }
-export const FilterListItem = ({ leftContent, rightContent, onClick, disabled }: FilterListItemProps) => {
+export const FilterListItem = ({
+  leftContent,
+  rightContent,
+  onClick,
+  hasBottomBorder,
+  disabled,
+  filterActive = false,
+}: FilterListItemProps) => {
   const handleKeyUp = (event: React.KeyboardEvent<HTMLLIElement>) => {
     if (event.key === 'Enter' && !disabled) {
       onClick?.();
@@ -15,7 +24,11 @@ export const FilterListItem = ({ leftContent, rightContent, onClick, disabled }:
   return (
     <li
       onClick={disabled ? undefined : onClick}
-      className={cx(styles.filterListItem, { [styles.disabled]: disabled })}
+      className={cx(styles.filterListItem, {
+        [styles.disabled]: disabled,
+        [styles.hasBottomBorder]: hasBottomBorder,
+        [styles.activeFilter]: filterActive,
+      })}
       onKeyUp={disabled ? undefined : handleKeyUp}
     >
       <div className={styles.content}>

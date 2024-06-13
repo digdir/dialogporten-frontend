@@ -114,6 +114,7 @@ const getPeopleSettings = (persons: Person[]): FilterSetting[] => {
     {
       id: 'country',
       label: 'Country',
+      mobileNavLabel: 'Choose country',
       unSelectedLabel: 'All Countries',
       operation: 'equals',
       options: (() => {
@@ -129,6 +130,7 @@ const getPeopleSettings = (persons: Person[]): FilterSetting[] => {
     {
       id: 'gender',
       label: 'Gender',
+      mobileNavLabel: 'Choose gender',
       unSelectedLabel: 'All Genders',
       operation: 'includes',
       options: (() => {
@@ -144,6 +146,7 @@ const getPeopleSettings = (persons: Person[]): FilterSetting[] => {
     {
       id: 'yearOfBirth',
       label: 'Century',
+      mobileNavLabel: 'Choose century',
       unSelectedLabel: 'All Centuries',
       operation: 'equals',
       options: (() => {
@@ -290,6 +293,7 @@ export const DateFilter: StoryObj<typeof FilterBar> = {
         id: 'created',
         label: 'Created',
         unSelectedLabel: 'All Dates',
+        mobileNavLabel: 'Choose dates',
         operation: 'equals',
         options: [
           {

@@ -10,3 +10,14 @@
     max-width: 390px;
     margin-block-start: 10px;
 }
+
+@media screen and (max-width: 996px) {
+    .filterList {
+        position: fixed;
+        left: 0;
+        top: 100px;
+        min-width: calc(100vw - 16px);
+        max-width: calc(100vw - 16px);
+        height: 100%;
+    }
+}

@@ -6,10 +6,19 @@
     padding: 0.375rem;
 }
 
+.activeFilter {
+    background: var(--background-color);
+}
+
 .disabled {
     opacity: 0.5;
     pointer-events: none;
 }
+
+.hasBottomBorder {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+}
+
 
 .leftContent {
     margin-left: 0.25rem;
