@@ -9,6 +9,11 @@
     border-radius: 0.5rem;
 }
 
+.renderButtons {
+    display: flex;
+    align-items: center;
+}
+
 .savedSearchItem {
     display: flex;
     flex-direction: row;

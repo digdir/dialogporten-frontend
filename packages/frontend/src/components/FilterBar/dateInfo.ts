@@ -1,6 +1,10 @@
-import { Locale, nb } from 'date-fns/locale';
 import {
-  endOfDay, endOfMonth, endOfToday, endOfWeek, endOfYear, endOfYesterday,
+  endOfDay,
+  endOfMonth,
+  endOfToday,
+  endOfWeek,
+  endOfYear,
+  endOfYesterday,
   format,
   formatISO,
   parseISO,
@@ -9,11 +13,12 @@ import {
   startOfToday,
   startOfWeek,
   startOfYear,
-  startOfYesterday
+  startOfYesterday,
 } from 'date-fns';
-import { InboxItemInput } from "../../pages/Inbox/Inbox.tsx";
-import { CustomFilterValueType } from './FilterBar.tsx';
+import { Locale, nb } from 'date-fns/locale';
 import { t } from 'i18next';
+import { InboxItemInput } from '../../pages/Inbox/Inbox.tsx';
+import { CustomFilterValueType } from './FilterBar.tsx';
 
 interface CombinedDateInfo {
   isDate: boolean;
@@ -58,8 +63,7 @@ export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale
     if (startMonth === endMonth) {
       if (startDay === endDay) {
         formattedLabel = `${startDay} ${startMonth} ${startYear}`;
-      }
-      else if (startYear === currentYear) {
+      } else if (startYear === currentYear) {
         formattedLabel = `${startDay}-${endDay} ${startMonth}`;
       } else if (startYear === endYear) {
         formattedLabel = `${startDay}-${endDay} ${startMonth} ${startYear}`;
@@ -78,7 +82,7 @@ export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale
       isDate: true,
       label: formattedLabel,
       startDate,
-      endDate
+      endDate,
     };
   } catch (e) {
     return {
@@ -87,27 +91,28 @@ export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale
   }
 };
 
-export const generateDateOptions = (dialogs: InboxItemInput[]) => {
-  const createdAt = dialogs.map((p) => parseISO(p.createdAt));
+export const getPredefinedRange = (): { range: string; label: string; value: string }[] => {
   const todayRange = `${formatISO(startOfToday())}/${formatISO(endOfToday())}`;
   const yesterdayRange = `${formatISO(startOfYesterday())}/${formatISO(endOfYesterday())}`;
   const thisWeekRange = `${formatISO(startOfWeek(new Date()))}/${formatISO(endOfWeek(new Date()))}`;
   const thisMonthRange = `${formatISO(startOfMonth(new Date()))}/${formatISO(endOfMonth(new Date()))}`;
   const thisYearRange = `${formatISO(startOfYear(new Date()))}/${formatISO(endOfYear(new Date()))}`;
+  return [
+    { label: t('filter_bar.range.today'), value: '$today', range: todayRange },
+    { label: t('filter_bar.range.yesterday'), value: '$yesterday', range: yesterdayRange },
+    { label: t('filter_bar.range.this_week'), value: '$thisWeek', range: thisWeekRange },
+    { label: t('filter_bar.range.this_month'), value: '$thisMonth', range: thisMonthRange },
+    { label: t('filter_bar.range.this_year'), value: '$thisYear', range: thisYearRange },
+  ];
+};
+export const generateDateOptions = (dialogs: InboxItemInput[]) => {
+  const createdAt = dialogs.map((p) => parseISO(p.createdAt));
   const firstDate = createdAt.sort((a, b) => a.getTime() - b.getTime())?.[0];
   const lastDate = createdAt.sort((a, b) => b.getTime() - a.getTime())?.[0];
 
-  const predefinedRanges = [
-    { label: t('filter_bar.range.today'), value: todayRange },
-    { label: t('filter_bar.range.yesterday'), value: yesterdayRange },
-    { label: t('filter_bar.range.this_week'), value: thisWeekRange },
-    { label: t('filter_bar.range.this_month'), value: thisMonthRange },
-    { label: t('filter_bar.range.this_year'), value: thisYearRange },
-  ];
-
-  const predefinedOptions =  predefinedRanges
-    .map(({ label, value }) => {
-      const { startDate, endDate } = isCombinedDateAndInterval(value);
+  const predefinedOptions = getPredefinedRange()
+    .map(({ label, value, range }) => {
+      const { startDate, endDate } = isCombinedDateAndInterval(range);
       const count = createdAt.filter((date) => date >= startDate! && date <= endDate!).length;
       return {
         displayLabel: label,
@@ -115,7 +120,7 @@ export const generateDateOptions = (dialogs: InboxItemInput[]) => {
         count,
       };
     })
-    .filter(option => option.count > 0);
+    .filter((option) => option.count > 0);
 
   if (firstDate && lastDate) {
     const customOption = {
@@ -128,7 +133,7 @@ export const generateDateOptions = (dialogs: InboxItemInput[]) => {
           displayLabel: t('filter_bar.range.custom'),
         },
       ],
-    }
+    };
     return [...predefinedOptions, customOption];
   }
   return predefinedOptions;
@@ -142,4 +147,4 @@ export const countOccurrences = (array: string[]): Record<string, number> => {
     },
     {} as Record<string, number>,
   );
-}
+};

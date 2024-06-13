@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--background-color, #EAF7EF);
     color: var(--Company-Primary, #111D46);
     padding: 24px;
     max-height: 68px;
@@ -30,7 +29,7 @@
     input {
         border-radius: 6px;
         border: 2px solid #000;
-        background-color: var(--background-color, #EAF7EF);
+        background-color: inherit;
     }
 }
 

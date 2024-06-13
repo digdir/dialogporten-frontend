@@ -3,6 +3,7 @@
 :root {
   /* Layer 0 - Raw colors */
   --dark-blue: #111D46;
+  --grey: #F4F5F6;
 
   /* Layer 1 - Semantic colors */
   --Person-Primary: #084826;

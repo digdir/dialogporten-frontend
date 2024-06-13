@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import React, { memo, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -40,6 +41,21 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
   },
 );
 
+const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = ({ children, isCompany }) => {
+  const { inSelectionMode } = useSelectedDialogs();
+
+  return (
+    <div
+      className={cx(styles.background, {
+        isCompany: isCompany,
+        [styles.inSelectionMode]: inSelectionMode,
+      })}
+    >
+      {children}
+    </div>
+  );
+};
+
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { parties, selectedParties } = useParties();
@@ -60,18 +76,18 @@ export const PageLayout: React.FC = () => {
   });
 
   return (
-    <div className={isCompany ? `isCompany` : ''}>
-      <BottomDrawerContainer>
-        <SelectedDialogsContainer>
+    <SelectedDialogsContainer>
+      <Background isCompany={isCompany}>
+        <BottomDrawerContainer>
           <PageLayoutContent
             name={name}
             companyName={companyName}
             isCompany={isCompany}
             notificationCount={notificationCount}
           />
-        </SelectedDialogsContainer>
-        <Snackbar />
-      </BottomDrawerContainer>
-    </div>
+          <Snackbar />
+        </BottomDrawerContainer>
+      </Background>
+    </SelectedDialogsContainer>
   );
 };

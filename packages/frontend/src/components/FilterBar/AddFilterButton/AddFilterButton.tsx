@@ -25,7 +25,14 @@ export const AddFilterButton = ({
   const { t } = useTranslation();
   return (
     <div>
-      <Button size="small" onClick={onAddBtnClick} disabled={disabled} variant="secondary" color="first">
+      <Button
+        size="small"
+        onClick={onAddBtnClick}
+        disabled={disabled}
+        variant="secondary"
+        color="first"
+        className={styles.addFilterButton}
+      >
         <PlusIcon /> {t('filter_bar.add_filter')}
       </Button>
       {isMenuOpen && (
@@ -39,12 +46,9 @@ export const AddFilterButton = ({
                 onClick={() => {
                   onListItemClick(setting.id, undefined);
                 }}
-              >
-                <div className={styles.addFilterButtonContent}>
-                  <span className={styles.addFilterItemLabel}>{setting.label}</span>
-                  <ChevronRightIcon fontSize="1.5rem" />
-                </div>
-              </FilterListItem>
+                leftContent={<span className={styles.addFilterItemLabel}>{setting.label}</span>}
+                rightContent={<ChevronRightIcon fontSize="1.5rem" />}
+              />
             );
           })}
         </FilterList>
