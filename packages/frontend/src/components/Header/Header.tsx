@@ -1,5 +1,5 @@
 import { Search } from '@digdir/designsystemet-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { MenuBar } from '../MenuBar';
@@ -25,18 +25,24 @@ export const useSearchString = () => {
 export const HeaderSearchBar = () => {
   const { t } = useTranslation();
   const { queryClient, searchString } = useSearchString();
+  const [searchValue, setSearchValue] = useState(searchString);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    queryClient.setQueryData(['search'], () => e.target.value || '');
-  };
   return (
     <div className={styles.searchBar}>
       <Search
         size="small"
         aria-label={t('header.searchPlaceholder')}
         placeholder={t('header.searchPlaceholder')}
-        onChange={handleSearch}
-        value={searchString}
+        onChange={(e) => {
+          setSearchValue(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            const inputTarget = e.target as HTMLInputElement;
+            queryClient.setQueryData(['search'], () => inputTarget.value || '');
+          }
+        }}
+        value={searchValue}
         onClear={() => {
           queryClient.setQueryData(['search'], () => '');
         }}
