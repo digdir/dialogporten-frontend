@@ -12,7 +12,7 @@ import {
 
 import { ProfileRepository } from './db.ts';
 
-@Entity({ name: 'Profile' })
+@Entity({ name: 'profile' })
 export class ProfileTable {
   @PrimaryColumn()
   sub: string;
@@ -20,7 +20,7 @@ export class ProfileTable {
   @Column({ length: 255, nullable: true })
   language: string;
 
-  @OneToMany('SavedSearch', 'profile')
+  @OneToMany('saved_search', 'profile')
   savedSearches: SavedSearch[];
 
   @CreateDateColumn()
@@ -42,7 +42,8 @@ export interface SavedSearchData {
   filters?: Filter[];
   searchString?: string;
 }
-@Entity()
+
+@Entity({ name: 'saved_search' })
 export class SavedSearch {
   @PrimaryGeneratedColumn()
   id: number;
@@ -53,7 +54,7 @@ export class SavedSearch {
   @Column({ length: 255, nullable: true })
   name: string;
 
-  @ManyToOne('Profile', 'savedSearches')
+  @ManyToOne('profile', 'saved_search')
   profile: ProfileTable;
 
   @CreateDateColumn()
