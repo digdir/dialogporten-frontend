@@ -236,8 +236,8 @@ importers:
   packages/dialogporten-types-generated:
     dependencies:
       '@digdir/dialogporten-schema':
-        specifier: 1.7.1-18101c1
-        version: 1.7.1-18101c1
+        specifier: 1.7.1
+        version: 1.7.1
       '@graphql-codegen/cli':
         specifier: ^5.0.2
         version: 5.0.2(graphql@16.8.1)
@@ -2474,8 +2474,8 @@ packages:
     resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.7.1-18101c1:
-    resolution: {integrity: sha512-+j8wLyaFdwKEylB3pN9uDS9GUxwpOMZhRUIFepcUyl0/BGoR6gfIN9amp9GToXv92ohkrFCp0qG/7sJDwoipHQ==}
+  /@digdir/dialogporten-schema@1.7.1:
+    resolution: {integrity: sha512-QVCOpEwrQ7feCS/tIl4sQZtyOxibY08xQmk1x8hb2WUIBxzszgBryk0IMDPSmG//5fPialVYHidy2SKUM1KQmg==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
