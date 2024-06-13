@@ -14,6 +14,9 @@ export const connectToDB = async () => {
   if (!ProfileRepository) {
     throw new Error('ProfileRepository not initialized');
   }
+  if (!SavedSearchRepository) {
+    throw new Error('SavedSearchRepository not initialized');
+  }
 
-  return { ProfileRepository, SavedSearchRepository };
+  return { ProfileRepository, SavedSearchRepository, dataSource };
 };
