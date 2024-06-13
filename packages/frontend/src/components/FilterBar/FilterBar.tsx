@@ -20,14 +20,17 @@ export interface FilterBarFieldOption {
   displayLabel: string;
   options?: FilterBarFieldOption[];
   count?: number;
+  hasBottomBorder?: boolean;
 }
 
 export interface FilterSetting {
   label: string;
   unSelectedLabel: string;
+  mobileNavLabel: string;
   id: string;
   operation: FieldOptionOperation;
   options: FilterBarFieldOption[];
+  hasBottomBorder?: boolean;
 }
 
 interface FilterBarProps {
@@ -175,6 +178,7 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
               isOpen={isMenuOpen}
               filterFieldData={setting}
               onBtnClick={() => setListOpenForTarget(isMenuOpen ? 'none' : id)}
+              onBackBtnClick={() => setListOpenForTarget('add_filter')}
               onRemove={() => handleOnRemove(id)}
               onListItemClick={onToggleFilter}
               selectedFilters={selectedFilters}
@@ -189,6 +193,7 @@ export const FilterBar = ({ onFilterChange, settings, initialFilters = [] }: Fil
           settings={settings}
           selectedFilters={selectedFilters}
           onListItemClick={onToggleFilter}
+          onClose={() => setListOpenForTarget('none')}
         />
       </div>
       <Backdrop show={listOpenForTarget !== 'none'} onClick={() => setListOpenForTarget('none')} />

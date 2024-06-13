@@ -1,5 +1,5 @@
 import { Button, Checkbox, Textfield } from '@digdir/designsystemet-react';
-import { CheckmarkIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
+import { CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ import {
   SubLevelState,
 } from '../FilterBar';
 import { FilterList, FilterListItem } from '../FilterList';
+import { FilterListMobileHeader } from '../FilterListMobileHeader';
 import { isCombinedDateAndInterval } from '../dateInfo.ts';
 import styles from './filterButton.module.css';
 
@@ -23,8 +24,9 @@ export interface BaseFilterButtonProps {
   onBtnClick: () => void;
   onRemove: (fieldName: string) => void;
   selectedFilters: Filter[];
-  currentSubMenuLevel?: SubLevelState;
   onSubMenuLevelClick: (state: SubLevelState) => void;
+  onBackBtnClick: () => void;
+  currentSubMenuLevel?: SubLevelState;
 }
 
 const FilterButtonSection = ({
@@ -89,10 +91,11 @@ export const FilterButton = ({
   selectedFilters,
   currentSubMenuLevel,
   onSubMenuLevelClick,
+  onBackBtnClick,
 }: BaseFilterButtonProps) => {
   const { t } = useTranslation();
   const [hoveringDeleteBtn, setHoveringDeleteBtn] = useState(false);
-  const { id, unSelectedLabel, options } = filterFieldData;
+  const { id, unSelectedLabel, options, mobileNavLabel } = filterFieldData;
 
   const filtersForButton = selectedFilters.filter((filter) => filter.id === id && filter.value !== undefined);
 
@@ -144,6 +147,11 @@ export const FilterButton = ({
       </div>
       {isOpen && (
         <FilterList>
+          <FilterListMobileHeader
+            buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
+            onClickButton={onBackBtnClick}
+            buttonText={mobileNavLabel}
+          />
           {chosenOptions.map((option) => {
             const isMultiSelectable = filterFieldData.operation === 'includes';
             const isChecked = selectedFilters.some((filter) => filter.id === id && filter.value === option.value);
@@ -164,6 +172,7 @@ export const FilterButton = ({
               <FilterListItem
                 key={option.displayLabel}
                 onClick={() => handleOnClick(shouldNotDismiss, option)}
+                hasBottomBorder={option.hasBottomBorder}
                 leftContent={
                   <div className={styles.filterListContent}>
                     {isMultiSelectable ? (

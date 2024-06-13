@@ -12,7 +12,6 @@ import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant, useSearc
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
 import { FilterSetting } from '../../components/FilterBar/FilterBar.tsx';
-import { SaveSearchButton } from '../../components/FilterBar/SaveSearchButton.tsx';
 import {
   countOccurrences,
   generateDateOptions,
@@ -20,6 +19,7 @@ import {
   isCombinedDateAndInterval,
 } from '../../components/FilterBar/dateInfo.ts';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
+import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import styles from './inbox.module.css';
 
@@ -45,6 +45,7 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
       id: 'sender',
       label: t('filter_bar.label.sender'),
       unSelectedLabel: t('filter_bar.label.all_senders'),
+      mobileNavLabel: t('filter_bar.label.choose_sender'),
       operation: 'includes',
       options: (() => {
         const senders = dialogs.map((p) => p.sender.label);
@@ -60,6 +61,7 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
       id: 'receiver',
       label: t('filter_bar.label.recipient'),
       unSelectedLabel: t('filter_bar.label.all_recipients'),
+      mobileNavLabel: t('filter_bar.label.choose_recipient'),
       operation: 'includes',
       options: (() => {
         const receivers = dialogs.map((p) => p.receiver.label);
@@ -75,7 +77,9 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
       id: 'status',
       label: t('filter_bar.label.status'),
       unSelectedLabel: t('filter_bar.label.all_statuses'),
+      mobileNavLabel: t('filter_bar.label.choose_status'),
       operation: 'includes',
+      hasBottomBorder: true,
       options: (() => {
         const status = dialogs.map((p) => p.status);
         const statusCount = countOccurrences(status);
@@ -89,6 +93,7 @@ const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
     {
       id: 'created',
       label: t('filter_bar.label.created'),
+      mobileNavLabel: t('filter_bar.label.choose_date'),
       unSelectedLabel: t('filter_bar.label.all_dates'),
       operation: 'equals',
       options: generateDateOptions(dialogs),
@@ -206,7 +211,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }, [dialogsForView, activeFilters]);
 
   const dataGroupedByYear = useMemo(() => {
-    const items = (searchString?.length && searchResults) ? searchResults : filteredDialogsForView;
+    const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
     return items.reduce(
       (acc: Record<string, InboxItemInput[]>, item) => {
         const year = String(new Date(item.date).getFullYear());
@@ -265,9 +270,12 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
-        {isFetching ?
-          <p>Spinner</p> :
-          !isFetching && !!searchString?.length && <h2>{t('search.search.results', { count: searchResults.length })}</h2>}
+        {isFetching ? (
+          <p>Spinner</p>
+        ) : (
+          !isFetching &&
+          !!searchString?.length && <h2>{t('search.search.results', { count: searchResults.length })}</h2>
+        )}
         {/* TODO: Replace with actual spinner */}
         {Object.entries(dataGroupedByYear)
           .reverse()
