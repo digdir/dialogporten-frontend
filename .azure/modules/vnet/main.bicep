@@ -49,6 +49,43 @@ resource applicationGatewayNSG 'Microsoft.Network/networkSecurityGroups@2023-09-
   }
 }
 
+resource defaultNSG 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: '${namePrefix}-default-nsg'
+  location: location
+  properties: {
+    securityRules: [
+      {
+        name: 'AllowAnyCustomAnyInbound'
+        type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          access: 'Allow'
+          priority: 100
+          direction: 'Inbound'
+        }
+      }
+      {
+        name: 'AllowAnyCustomAnyOutbound'
+        type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+        properties: {
+          protocol: '*'
+          sourcePortRange: '*'
+          destinationPortRange: '*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          access: 'Allow'
+          priority: 100
+          direction: 'Outbound'
+        }
+      }
+    ]
+  }
+}
+
 // https://learn.microsoft.com/en-us/azure/container-apps/firewall-integration?tabs=consumption-only
 resource containerAppEnvironmentNSG 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: '${namePrefix}-container-app-environment-nsg'
@@ -200,6 +237,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
         name: 'default'
         properties: {
           addressPrefix: '10.0.0.0/24'
+          networkSecurityGroup: {
+            id: defaultNSG.id
+          }
         }
       }
       {
