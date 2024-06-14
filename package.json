@@ -7,7 +7,7 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "mprocs": "^0.6.4",
-    "turbo": "1.12.2"
+    "turbo": "2.0.5"
   },
   "engines": {
     "node": ">=20.0"
@@ -16,9 +16,7 @@
     "jackspeak": "2.1.1"
   },
   "lint-staged": {
-    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": [
-      "biome check --apply --no-errors-on-unmatched"
-    ]
+    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
   },
-  "packageManager": "pnpm@8.15.1"
+  "packageManager": "pnpm@8.15.4"
 }
