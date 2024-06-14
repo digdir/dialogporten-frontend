@@ -155,6 +155,12 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
+  /*
+      Todo: There are now many competing lists for dialogs as data source for the output of this component. This needs to be cleaned up.
+      items, searchResults, filteredDialogsForView, dialogsForView, dialogs, ...
+      Search should include filters, update of filters should refetch search results.
+   */
+
   useEffect(() => {
     setActiveFilters(getFiltersFromQueryParams());
   }, [location]);
@@ -181,7 +187,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
   };
 
   const filteredDialogsForView = useMemo(() => {
-    return dialogsForView.filter((item) =>
+    if (!activeFilters.length) {
+      return dialogsForView;
+    }
+    return dialogs.filter((item) =>
       activeFilters.every((filter) => {
         if (filter.id === 'sender' || filter.id === 'receiver') {
           const participant = item[filter.id as keyof InboxItemInput] as Participant;
@@ -208,10 +217,11 @@ export const Inbox = ({ viewType }: InboxProps) => {
         return filter.value === item[filter.id as keyof InboxItemInput];
       }),
     );
-  }, [dialogsForView, activeFilters]);
+  }, [dialogsForView, activeFilters, dialogs]);
+
+  const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
 
   const dataGroupedByYear = useMemo(() => {
-    const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
     return items.reduce(
       (acc: Record<string, InboxItemInput[]>, item) => {
         const year = String(new Date(item.date).getFullYear());
@@ -223,7 +233,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       },
       {} as Record<string, InboxItemInput[]>,
     );
-  }, [filteredDialogsForView, searchResults, searchString]);
+  }, [filteredDialogsForView, items]);
 
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
@@ -233,17 +243,14 @@ export const Inbox = ({ viewType }: InboxProps) => {
   };
 
   const filterBarSettings = getFilterBarSettings(dialogs);
+  const savedSearchDisabled = !activeFilters?.length && !searchString;
+  const filteredView = !isFetching && ((searchString ?? []).length > 0 || activeFilters.length > 0);
+
   return (
     <main>
       <section className={styles.filtersArea}>
-        <FilterBar
-          settings={filterBarSettings}
-          onFilterChange={(filters) => {
-            setActiveFilters(filters);
-          }}
-          initialFilters={activeFilters}
-        />
-        <SaveSearchButton onBtnClick={handleSaveSearch} disabled={!activeFilters?.length && !searchString} />
+        <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
+        <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
       </section>
       {inSelectionMode && (
         <ActionPanel
@@ -270,12 +277,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
-        {isFetching ? (
-          <p>Spinner</p>
-        ) : (
-          !isFetching &&
-          !!searchString?.length && <h2>{t('search.search.results', { count: searchResults.length })}</h2>
-        )}
+        {isFetching ? <p>Spinner</p> : filteredView && <h2>{t('search.search.results', { count: items.length })}</h2>}
         {/* TODO: Replace with actual spinner */}
         {Object.entries(dataGroupedByYear)
           .reverse()
