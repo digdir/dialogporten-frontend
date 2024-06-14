@@ -1,4 +1,4 @@
-# Automated tests for Team Arbeidsflate
+# Automated testing
 
 Read this first:
 
