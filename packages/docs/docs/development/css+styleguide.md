@@ -1,4 +1,5 @@
-# CSS styleguide for Team Arbeidsflate
+# CSS Styleguide
+
 This minimalistic style guide is designed to ensure consistency and scalability in our frontend projects.
 
 ## Class naming conventions
