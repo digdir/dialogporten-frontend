@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { PageLayout } from './components/PageLayout';
-import { Home } from './pages/Home';
+import { PageLayout } from './components';
 import { Inbox } from './pages/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
 import { PageNotFound } from './pages/PageNotFound';
@@ -13,8 +12,7 @@ function App() {
     <div className="app">
       <Routes>
         <Route element={<PageLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/inbox" element={<Inbox viewType={'inbox'} />} />
+          <Route path="/" element={<Inbox viewType={'inbox'} />} />
           <Route path="/drafts" element={<Inbox viewType={'draft'} />} />
           <Route path="/sent" element={<Inbox viewType={'sent'} />} />
           <Route path="/saved-searches" element={<SavedSearches />} />
