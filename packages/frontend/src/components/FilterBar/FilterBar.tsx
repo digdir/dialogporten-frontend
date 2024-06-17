@@ -20,7 +20,7 @@ export interface FilterBarFieldOption {
   displayLabel: string;
   options?: FilterBarFieldOption[];
   count?: number;
-  hasBottomBorder?: boolean;
+  horizontalRule?: boolean;
 }
 
 export interface FilterSetting {
@@ -30,7 +30,7 @@ export interface FilterSetting {
   id: string;
   operation: FieldOptionOperation;
   options: FilterBarFieldOption[];
-  hasBottomBorder?: boolean;
+  horizontalRule?: boolean;
 }
 
 interface FilterBarProps {

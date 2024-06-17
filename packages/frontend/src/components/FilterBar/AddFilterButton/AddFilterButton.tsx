@@ -1,10 +1,10 @@
 import { Button } from '@digdir/designsystemet-react';
 import { ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
-import { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
-import { FilterList, FilterListItem } from '../FilterList';
+import { DropdownList, DropdownListItem } from '../../DropdownMenu';
+import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 
-import { FilterListMobileHeader } from '../FilterListMobileHeader';
+import { DropdownMobileHeader } from '../../DropdownMenu';
 import styles from './addFilterButton.module.css';
 
 type AddFilterButtonProps = {
@@ -39,8 +39,8 @@ export const AddFilterButton = ({
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
       </Button>
       {isMenuOpen && (
-        <FilterList>
-          <FilterListMobileHeader
+        <DropdownList>
+          <DropdownMobileHeader
             buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
             onClickButton={onClose}
             buttonText={t('filter_bar.add_filter')}
@@ -50,19 +50,19 @@ export const AddFilterButton = ({
               (filter) => filter.id === setting.id && filter.value !== undefined,
             );
             return (
-              <FilterListItem
+              <DropdownListItem
                 key={setting.id}
                 onClick={() => {
                   onListItemClick(setting.id, undefined);
                 }}
                 leftContent={<span className={styles.addFilterItemLabel}>{setting.label}</span>}
                 rightContent={<ChevronRightIcon fontSize="1.5rem" />}
-                hasBottomBorder={setting.hasBottomBorder}
-                filterActive={filterActive}
+                hasHorizontalRule={setting.horizontalRule}
+                isActive={filterActive}
               />
             );
           })}
-        </FilterList>
+        </DropdownList>
       )}
     </div>
   );

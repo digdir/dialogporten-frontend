@@ -1,4 +1,4 @@
-.filterListItem {
+.dropdownListItem {
     cursor: pointer;
     &:hover:not(.disabled){
         background: var(--background-color);
@@ -6,7 +6,7 @@
     padding: 0.375rem;
 }
 
-.activeFilter {
+.active {
     background: var(--background-color);
 }
 
@@ -14,11 +14,6 @@
     opacity: 0.5;
     pointer-events: none;
 }
-
-.hasBottomBorder {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.20);
-}
-
 
 .leftContent {
     margin-left: 0.25rem;
