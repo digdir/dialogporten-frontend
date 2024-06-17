@@ -106,7 +106,7 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[]
       unSelectedLabel: t('filter_bar.label.all_statuses'),
       mobileNavLabel: t('filter_bar.label.choose_status'),
       operation: 'includes',
-      hasBottomBorder: true,
+      horizontalRule: true,
       options: (() => {
         const status = dialogs.map((p) => p.status);
         const statusCount = countOccurrences(status);

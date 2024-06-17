@@ -4,16 +4,16 @@ import cx from 'classnames';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DropdownList, DropdownListItem } from '../../DropdownMenu';
+import { DropdownMobileHeader } from '../../DropdownMenu';
 import {
   CustomFilterValueType,
-  Filter,
-  FilterBarFieldOption,
-  FilterSetting,
-  FilterValueType,
-  SubLevelState,
+  type Filter,
+  type FilterBarFieldOption,
+  type FilterSetting,
+  type FilterValueType,
+  type SubLevelState,
 } from '../FilterBar';
-import { FilterList, FilterListItem } from '../FilterList';
-import { FilterListMobileHeader } from '../FilterListMobileHeader';
 import { isCombinedDateAndInterval } from '../dateInfo.ts';
 import styles from './filterButton.module.css';
 
@@ -146,8 +146,8 @@ export const FilterButton = ({
         </Button>
       </div>
       {isOpen && (
-        <FilterList>
-          <FilterListMobileHeader
+        <DropdownList>
+          <DropdownMobileHeader
             buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
             onClickButton={onBackBtnClick}
             buttonText={mobileNavLabel}
@@ -169,10 +169,10 @@ export const FilterButton = ({
             }
 
             return (
-              <FilterListItem
+              <DropdownListItem
                 key={option.displayLabel}
                 onClick={() => handleOnClick(shouldNotDismiss, option)}
-                hasBottomBorder={option.hasBottomBorder}
+                hasHorizontalRule={option.horizontalRule}
                 leftContent={
                   <div className={styles.filterListContent}>
                     {isMultiSelectable ? (
@@ -202,7 +202,7 @@ export const FilterButton = ({
               />
             );
           })}
-        </FilterList>
+        </DropdownList>
       )}
     </div>
   );

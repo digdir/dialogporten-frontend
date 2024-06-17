@@ -1,4 +1,4 @@
-.filterList {
+.dropdownList {
     list-style: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
@@ -12,7 +12,7 @@
 }
 
 @media screen and (max-width: 996px) {
-    .filterList {
+    .dropdownList {
         position: fixed;
         left: 0;
         top: 100px;
