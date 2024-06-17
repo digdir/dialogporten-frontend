@@ -7,7 +7,6 @@ import {
   endOfYesterday,
   format,
   formatISO,
-  parseISO,
   startOfDay,
   startOfMonth,
   startOfToday,
@@ -15,9 +14,8 @@ import {
   startOfYear,
   startOfYesterday,
 } from 'date-fns';
-import { Locale, nb } from 'date-fns/locale';
+import { type Locale, nb } from 'date-fns/locale';
 import { t } from 'i18next';
-import { InboxItemInput } from '../../pages/Inbox/Inbox.tsx';
 import { CustomFilterValueType } from './FilterBar.tsx';
 
 interface CombinedDateInfo {
@@ -91,12 +89,20 @@ export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale
   }
 };
 
+const generateRange = (
+  startFn: (date: Date | number | string) => Date,
+  endFn: (date: Date | number | string) => Date,
+) => {
+  const now = new Date();
+  return `${formatISO(startFn(now))}/${formatISO(endFn(now))}`;
+};
 export const getPredefinedRange = (): { range: string; label: string; value: string }[] => {
-  const todayRange = `${formatISO(startOfToday())}/${formatISO(endOfToday())}`;
-  const yesterdayRange = `${formatISO(startOfYesterday())}/${formatISO(endOfYesterday())}`;
-  const thisWeekRange = `${formatISO(startOfWeek(new Date()))}/${formatISO(endOfWeek(new Date()))}`;
-  const thisMonthRange = `${formatISO(startOfMonth(new Date()))}/${formatISO(endOfMonth(new Date()))}`;
-  const thisYearRange = `${formatISO(startOfYear(new Date()))}/${formatISO(endOfYear(new Date()))}`;
+  const todayRange = generateRange(startOfToday, endOfToday);
+  const yesterdayRange = generateRange(startOfYesterday, endOfYesterday);
+  const thisWeekRange = generateRange(startOfWeek, endOfWeek);
+  const thisMonthRange = generateRange(startOfMonth, endOfMonth);
+  const thisYearRange = generateRange(startOfYear, endOfYear);
+
   return [
     { label: t('filter_bar.range.today'), value: '$today', range: todayRange },
     { label: t('filter_bar.range.yesterday'), value: '$yesterday', range: yesterdayRange },
@@ -105,8 +111,8 @@ export const getPredefinedRange = (): { range: string; label: string; value: str
     { label: t('filter_bar.range.this_year'), value: '$thisYear', range: thisYearRange },
   ];
 };
-export const generateDateOptions = (dialogs: InboxItemInput[]) => {
-  const createdAt = dialogs.map((p) => parseISO(p.createdAt));
+
+export const generateDateOptions = (createdAt: Date[]) => {
   const firstDate = createdAt.sort((a, b) => a.getTime() - b.getTime())?.[0];
   const lastDate = createdAt.sort((a, b) => b.getTime() - a.getTime())?.[0];
 
