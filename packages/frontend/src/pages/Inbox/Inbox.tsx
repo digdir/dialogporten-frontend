@@ -1,26 +1,26 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
-import { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
-import { t } from 'i18next';
+import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
-import { InboxViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
+import { type InboxViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import { ActionPanel, InboxItem, InboxItemTag, InboxItems, Participant, useSearchString } from '../../components';
+import {
+  ActionPanel,
+  InboxItem,
+  type InboxItemTag,
+  InboxItems,
+  type Participant,
+  useSearchString,
+} from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
-import { FilterSetting } from '../../components/FilterBar/FilterBar.tsx';
-import {
-  countOccurrences,
-  generateDateOptions,
-  getPredefinedRange,
-  isCombinedDateAndInterval,
-} from '../../components/FilterBar/dateInfo.ts';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
+import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
 
 interface InboxProps {
@@ -39,67 +39,6 @@ export interface InboxItemInput {
   status: DialogStatus;
 }
 
-const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
-  return [
-    {
-      id: 'sender',
-      label: t('filter_bar.label.sender'),
-      unSelectedLabel: t('filter_bar.label.all_senders'),
-      mobileNavLabel: t('filter_bar.label.choose_sender'),
-      operation: 'includes',
-      options: (() => {
-        const senders = dialogs.map((p) => p.sender.label);
-        const senderCounts = countOccurrences(senders);
-        return Array.from(new Set(senders)).map((sender) => ({
-          displayLabel: `${t('filter_bar_fields.from')} ${sender}`,
-          value: sender,
-          count: senderCounts[sender],
-        }));
-      })(),
-    },
-    {
-      id: 'receiver',
-      label: t('filter_bar.label.recipient'),
-      unSelectedLabel: t('filter_bar.label.all_recipients'),
-      mobileNavLabel: t('filter_bar.label.choose_recipient'),
-      operation: 'includes',
-      options: (() => {
-        const receivers = dialogs.map((p) => p.receiver.label);
-        const receiversCount = countOccurrences(receivers);
-        return Array.from(new Set(receivers)).map((receiver) => ({
-          displayLabel: `${t('filter_bar_fields.to')} ${receiver}`,
-          value: receiver,
-          count: receiversCount[receiver],
-        }));
-      })(),
-    },
-    {
-      id: 'status',
-      label: t('filter_bar.label.status'),
-      unSelectedLabel: t('filter_bar.label.all_statuses'),
-      mobileNavLabel: t('filter_bar.label.choose_status'),
-      operation: 'includes',
-      hasBottomBorder: true,
-      options: (() => {
-        const status = dialogs.map((p) => p.status);
-        const statusCount = countOccurrences(status);
-        return Array.from(new Set(status)).map((statusLabel) => ({
-          displayLabel: t(`dialog.status.${statusLabel.toLowerCase()}`),
-          value: statusLabel,
-          count: statusCount[statusLabel],
-        }));
-      })(),
-    },
-    {
-      id: 'created',
-      label: t('filter_bar.label.created'),
-      mobileNavLabel: t('filter_bar.label.choose_date'),
-      unSelectedLabel: t('filter_bar.label.all_dates'),
-      operation: 'equals',
-      options: generateDateOptions(dialogs),
-    },
-  ];
-};
 export const compressQueryParams = (params: SavedSearchData): string => {
   const queryParamsString = JSON.stringify(params);
   return compressToEncodedURIComponent(queryParamsString);
@@ -150,7 +89,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { parties } = useParties();
   const { dialogsByView, dialogs } = useDialogs(parties);
   const { searchString, queryClient } = useSearchString();
-  const { searchResults, isFetching } = useSearchDialogs({ parties, searchString });
+  const { searchResults, isFetching } = useSearchDialogs({
+    parties,
+    searchString,
+  });
   const { openSnackbar } = useSnackbar();
   const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
@@ -187,37 +129,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   };
 
   const filteredDialogsForView = useMemo(() => {
-    if (!activeFilters.length) {
-      return dialogsForView;
-    }
-    return dialogs.filter((item) =>
-      activeFilters.every((filter) => {
-        if (filter.id === 'sender' || filter.id === 'receiver') {
-          const participant = item[filter.id as keyof InboxItemInput] as Participant;
-          return filter.value === participant.label;
-        }
-        if (filter.id === 'created') {
-          const rangeProperties = getPredefinedRange().find((range) => range.value === filter.value);
-          // Section ~ 3.2.6 of ISO 8601-1:2019 specifies that the date and time components are separated by a solidus (/).
-          const { isDate, endDate, startDate } = isCombinedDateAndInterval(
-            rangeProperties?.range ?? (filter.value as string),
-          );
-
-          if (isDate) {
-            if (startDate && endDate) {
-              return new Date(item.createdAt) >= startDate && new Date(item.createdAt) <= endDate;
-            }
-            if (startDate) {
-              return new Date(item.createdAt) >= startDate;
-            }
-            return true;
-          }
-          return new Date(filter.value as string).toDateString() === new Date(item.createdAt).toDateString();
-        }
-        return filter.value === item[filter.id as keyof InboxItemInput];
-      }),
-    );
-  }, [dialogsForView, activeFilters, dialogs]);
+    return filterDialogs(dialogsForView, activeFilters);
+  }, [dialogsForView, activeFilters]);
 
   const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
 

@@ -1,9 +1,21 @@
 import { isCombinedDateAndInterval } from './dateInfo.ts';
 import { startOfDay, endOfDay } from 'date-fns';
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeAll, afterAll, vi } from 'vitest';
 import { enUS } from 'date-fns/locale';
 
+(globalThis as unknown as any).jest = vi;
+
 describe('isCombinedDateAndInterval', () => {
+  beforeAll(() => {
+    const fakeDate = new Date('2024-06-15T12:00:00Z');
+    vi.useFakeTimers();
+    vi.setSystemTime(fakeDate);
+  });
+
+  afterAll(() => {
+    vi.useRealTimers();
+  });
+
   const currentYear = new Date().getFullYear();
 
   test('should return valid date range for same day within current year', () => {
