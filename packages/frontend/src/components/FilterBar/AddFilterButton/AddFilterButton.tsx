@@ -1,10 +1,10 @@
-import { Button } from '@digdir/designsystemet-react';
 import { ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 
 import { DropdownMobileHeader } from '../../DropdownMenu';
+import { ProfileButton } from '../../ProfileButton';
 import styles from './addFilterButton.module.css';
 
 type AddFilterButtonProps = {
@@ -28,7 +28,7 @@ export const AddFilterButton = ({
   const { t } = useTranslation();
   return (
     <div>
-      <Button
+      <ProfileButton
         size="small"
         onClick={onAddBtnClick}
         disabled={disabled}
@@ -37,7 +37,7 @@ export const AddFilterButton = ({
         className={styles.addFilterButton}
       >
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
-      </Button>
+      </ProfileButton>
       {isMenuOpen && (
         <DropdownList>
           <DropdownMobileHeader

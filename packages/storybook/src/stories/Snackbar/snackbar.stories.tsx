@@ -1,14 +1,11 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
-import { Meta } from '@storybook/react';
-import { ActionPanel, BottomDrawerContainer } from 'frontend';
-import { Snackbar } from 'frontend/src/components/Snackbar/Snackbar.tsx';
-import { SnackbarDuration, SnackbarMessageVariant, useSnackbar } from 'frontend/src/components/Snackbar/useSnackbar.ts';
-import { withRouter } from 'storybook-addon-react-router-v6';
+import type { Meta } from '@storybook/react';
+import { ActionPanel, BottomDrawerContainer, Snackbar } from 'frontend';
+import { SnackbarDuration, type SnackbarMessageVariant, useSnackbar } from 'frontend';
 
 export default {
   title: 'Components/BottomDrawer/Snackbar',
   component: Snackbar,
-  decorators: [withRouter],
   parameters: {
     layout: 'fullscreen',
     docs: { source: { type: 'code' } },

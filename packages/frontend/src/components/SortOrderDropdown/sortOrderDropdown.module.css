@@ -1,0 +1,22 @@
+
+.checkMarkHolder {
+  min-width: 1.5rem;
+  svg {
+    height: 1.5rem;
+    width: auto;
+  }
+}
+
+.positionedRight {
+  right: 0;
+}
+
+.filterListLabel {
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}

@@ -36,7 +36,7 @@ export const DropdownListItem = ({
           <div className={styles.rightContent}>{rightContent}</div>
         </div>
       </li>
-      {hasHorizontalRule && <hr />}
+      {hasHorizontalRule && <hr className={styles.ruler} />}
     </>
   );
 };

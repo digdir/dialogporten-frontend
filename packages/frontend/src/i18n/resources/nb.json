@@ -59,7 +59,7 @@
   "filter_bar.range.this_week": "Denne uken",
   "filter_bar.range.this_month": "Denne måneden",
   "filter_bar.range.this_year": "I år",
-  "filter_bar.range.custom": "Velg periode",
+  "filter_bar.range.custom": "Spesifer dato",
   "filter_bar.label.sender": "Avsender",
   "filter_bar.label.recipient": "Mottaker",
   "filter_bar.label.all_recipients": "Alle mottakere",
@@ -96,5 +96,8 @@
   "link.goToSettings": "Gå til innstillinger",
   "menuBar.all_services": "Alle tjenester",
   "menuBar.chat": "Få hjelp på chat",
-  "menuBar.chat.label": "Trykk her for å gå til chat"
+  "menuBar.chat.label": "Trykk her for å gå til chat",
+  "sort_order.choose.label": "Sorter etter",
+  "sort_order.created_desc": "Nyeste først",
+  "sort_order.created_asc": "Eldste først"
 }
