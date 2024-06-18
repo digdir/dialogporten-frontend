@@ -7,15 +7,15 @@ import {
   MagnifyingGlassIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
-import { SavedSearchesFieldsFragment } from 'bff-types-generated';
-import React from 'react';
+import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
+import { useDialogs } from '../../api/useDialogs';
+import { useParties } from '../../api/useParties';
 import { useSavedSearches } from '../../pages/SavedSearches';
 import { SidebarItem } from './';
 import styles from './sidebar.module.css';
-import { useParties } from '../../api/useParties';
-import { useDialogs } from '../../api/useDialogs';
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -44,8 +44,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             displayText={t('sidebar.inbox')}
             label={t('sidebar.inbox.label')}
             icon={<InboxFillIcon />}
-            count={dialogsByView['inbox'].length}
-            path="/inbox"
+            count={dialogsByView.inbox.length}
+            path="/"
             isInbox
             isCompany={isCompany}
           />
@@ -54,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             displayText={t('sidebar.drafts')}
             label={t('sidebar.drafts.label')}
             icon={<FileTextIcon />}
-            count={dialogsByView['draft'].length}
+            count={dialogsByView.draft.length}
             path="/drafts"
             isCompany={isCompany}
           />
@@ -62,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             displayText={t('sidebar.sent')}
             label={t('sidebar.sent.label')}
             icon={<FileCheckmarkIcon />}
-            count={dialogsByView['sent'].length}
+            count={dialogsByView.sent.length}
             path="/sent"
             isCompany={isCompany}
           />

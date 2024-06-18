@@ -1,8 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { PageLayout } from './components';
 import { Inbox } from './pages/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
-import { PageNotFound } from './pages/PageNotFound';
 import { SavedSearches } from './pages/SavedSearches';
 
 import './app.css';
@@ -17,7 +16,7 @@ function App() {
           <Route path="/sent" element={<Inbox viewType={'sent'} />} />
           <Route path="/saved-searches" element={<SavedSearches />} />
           <Route path="/inbox/:id" element={<InboxItemPage />} />
-          <Route path="*" element={<PageNotFound />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
         <Route
           path="/loggedout"
