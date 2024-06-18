@@ -5,7 +5,7 @@ import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { print } from 'graphql';
 import { createHandler } from 'graphql-http/lib/use/fastify';
-import config from '../config.ts';
+import { dialogportenURL } from '../config.ts';
 import { bffSchema, dialogportenSchema } from './schema.ts';
 
 const plugin: FastifyPluginAsync = async (fastify, options) => {
@@ -16,7 +16,7 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
 
     const response = await axios({
       method: 'POST',
-      url: config.dialogportenURL,
+      url: dialogportenURL,
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token!.access_token}`,
