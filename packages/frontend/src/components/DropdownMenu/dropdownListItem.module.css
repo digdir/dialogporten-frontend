@@ -15,9 +15,19 @@
     pointer-events: none;
 }
 
-.leftContent {
+.leftContent, .rightContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1em;
     margin-left: 0.25rem;
     margin-right: 0.25rem;
+}
+
+.rightContent {
+  max-width: 1.5rem;
+  min-width: 1.5rem;
+  justify-content: center;
 }
 
 .content {
@@ -28,4 +38,11 @@
     position: relative;
     z-index: 1001;
     font-weight: 500;
+}
+
+.ruler {
+  display: flex;
+  align-items: center;
+  width: 95%;
+  color: rgba(0, 0, 0, 0.20);
 }

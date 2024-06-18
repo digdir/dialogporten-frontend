@@ -1,4 +1,4 @@
-import { Button, Checkbox, Textfield } from '@digdir/designsystemet-react';
+import { Checkbox, Textfield } from '@digdir/designsystemet-react';
 import { CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { format } from 'date-fns';
@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
+import { ProfileButton } from '../../ProfileButton';
 import {
   CustomFilterValueType,
   type Filter,
@@ -70,15 +71,14 @@ const FilterButtonSection = ({
           setEndDate(format(new Date(e.target.value), 'yyyy-MM-dd'));
         }}
       />
-      <Button
-        className={styles.button}
+      <ProfileButton
         onClick={() => {
           onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
         }}
         variant="secondary"
       >
         {t('filter_bar.choose_date')}
-      </Button>
+      </ProfileButton>
     </section>
   );
 };
@@ -132,10 +132,10 @@ export const FilterButton = ({
   return (
     <div className={styles.filterButton}>
       <div className={styles.buttons}>
-        <Button onClick={onBtnClick} className={cx(styles.button, { [styles.xed]: hoveringDeleteBtn })} size="small">
+        <ProfileButton onClick={onBtnClick} className={cx({ [styles.xed]: hoveringDeleteBtn })} size="small">
           {dateInfo.isDate ? dateInfo.label : displayLabel}
-        </Button>
-        <Button
+        </ProfileButton>
+        <ProfileButton
           size="small"
           className={styles.button}
           onClick={() => onRemove(id)}
@@ -143,7 +143,7 @@ export const FilterButton = ({
           onMouseLeave={() => setHoveringDeleteBtn(false)}
         >
           <XMarkIcon />
-        </Button>
+        </ProfileButton>
       </div>
       {isOpen && (
         <DropdownList>
@@ -194,7 +194,7 @@ export const FilterButton = ({
                 }
                 rightContent={
                   option.options?.length ? (
-                    <ChevronRightIcon />
+                    <ChevronRightIcon fontSize="1.5rem" />
                   ) : (
                     <span className={styles.filterListCount}>{option.count}</span>
                   )

@@ -19,12 +19,6 @@
     column-gap: 1em;
 }
 
-.button {
-    white-space: nowrap;
-    background-color: var(--button-color);
-    color: var(--background-color);
-}
-
 .filterDateContent {
     min-width: 300px;
     display: flex;

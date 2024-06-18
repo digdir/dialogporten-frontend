@@ -1,5 +1,6 @@
 import cx from 'classnames';
-import React, { memo, useEffect } from 'react';
+import type React from 'react';
+import { memo, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
@@ -8,7 +9,7 @@ import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
 import { BottomDrawerContainer } from '../BottomDrawer';
-import { Snackbar } from '../Snackbar/Snackbar.tsx';
+import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
 import styles from './pageLayout.module.css';
 

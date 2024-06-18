@@ -1,6 +1,6 @@
-import { Button } from '@digdir/designsystemet-react';
-import { PlusIcon } from '@navikt/aksel-icons';
+import { BookmarkIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
+import { ProfileButton } from '../ProfileButton';
 
 type SaveSearchButtonProps = {
   onBtnClick: () => void;
@@ -15,8 +15,8 @@ export const SaveSearchButton = ({ disabled, onBtnClick }: SaveSearchButtonProps
   }
 
   return (
-    <Button size="small" onClick={onBtnClick} variant="secondary" color="first">
-      <PlusIcon /> {t('filter_bar.save_search')}
-    </Button>
+    <ProfileButton size="small" onClick={onBtnClick} variant="secondary">
+      <BookmarkIcon fontSize="1.5rem" /> {t('filter_bar.save_search')}
+    </ProfileButton>
   );
 };

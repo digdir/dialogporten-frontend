@@ -13,13 +13,14 @@ import {
   type InboxItemTag,
   InboxItems,
   type Participant,
+  SortOrderDropdown,
   useSearchString,
 } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
+import { useSnackbar } from '../../components';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
-import { useSnackbar } from '../../components/Snackbar/useSnackbar.ts';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
 
@@ -84,6 +85,7 @@ export const getSearchStringFromQueryParams = (): string => {
 
 export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
+  const [selectedSortOrder, setSelectedSortOrder] = useState<string>('created_desc');
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
@@ -158,12 +160,31 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const filterBarSettings = getFilterBarSettings(dialogs);
   const savedSearchDisabled = !activeFilters?.length && !searchString;
   const filteredView = !isFetching && ((searchString ?? []).length > 0 || activeFilters.length > 0);
+  const sortOrderOptions = [
+    {
+      id: 'created_desc',
+      label: t('sort_order.created_desc'),
+    },
+    {
+      id: 'created_asc',
+      label: t('sort_order.created_asc'),
+    },
+  ];
 
   return (
     <main>
       <section className={styles.filtersArea}>
-        <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
-        <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
+        <div className={styles.leftArea}>
+          <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
+          <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
+        </div>
+        <div className={styles.rightArea}>
+          <SortOrderDropdown
+            onSelect={setSelectedSortOrder}
+            selectedSortOrder={selectedSortOrder}
+            options={sortOrderOptions}
+          />
+        </div>
       </section>
       {inSelectionMode && (
         <ActionPanel

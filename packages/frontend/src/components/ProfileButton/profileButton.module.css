@@ -1,0 +1,14 @@
+.profileButton {
+  white-space: nowrap;
+}
+
+.primary {
+  background-color: var(--button-color);
+  color: var(--background-color);
+}
+
+.secondary {
+  background: var(--background-color);
+  border: 1px dashed var(--button-color);
+  color: 1px dashed var(--button-color);
+}
