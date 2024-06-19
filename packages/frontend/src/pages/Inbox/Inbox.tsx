@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
@@ -19,9 +19,11 @@ import {
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
 import { useSnackbar } from '../../components';
+import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
+import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
-import type { SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
+import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
 
@@ -97,6 +99,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { openSnackbar } = useSnackbar();
   const dialogsForView = dialogsByView[viewType];
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+  const filterBarRef = useRef<FilterBarRef>(null);
+  const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
 
   /*
       Todo: There are now many competing lists for dialogs as data source for the output of this component. This needs to be cleaned up.
@@ -185,18 +189,40 @@ export const Inbox = ({ viewType }: InboxProps) => {
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
-            <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
-            <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
+            <FilterBar
+              ref={filterBarRef}
+              settings={filterBarSettings}
+              onFilterChange={setActiveFilters}
+              initialFilters={activeFilters}
+              addFilterBtnClassNames={styles.hideForSmallScreens}
+            />
+            <SaveSearchButton
+              onBtnClick={handleSaveSearch}
+              className={styles.hideForSmallScreens}
+              disabled={savedSearchDisabled}
+            />
           </div>
           <div className={styles.sortOrderContainer}>
             <SortOrderDropdown
+              ref={sortOrderDropdownRef}
               onSelect={setSelectedSortOrder}
               selectedSortOrder={selectedSortOrder}
               options={sortOrderOptions}
+              btnClassName={styles.hideForSmallScreens}
             />
           </div>
         </div>
       </section>
+      <FosToolbar
+        onFilterBtnClick={() => {
+          filterBarRef?.current?.openFilter();
+        }}
+        onSortBtnClick={() => {
+          sortOrderDropdownRef?.current?.openSortOrder();
+        }}
+        onSaveBtnClick={handleSaveSearch}
+        hideSaveButton={savedSearchDisabled}
+      />
       {inSelectionMode && (
         <ActionPanel
           actionButtons={[

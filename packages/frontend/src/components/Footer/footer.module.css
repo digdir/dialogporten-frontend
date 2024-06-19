@@ -48,6 +48,7 @@ li:not(:first-child) {
 
 .links {
     display: flex;
+    align-items: baseline;
     gap: 8px;
     list-style: none;
     padding: 0;

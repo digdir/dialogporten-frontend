@@ -99,5 +99,8 @@
   "menuBar.chat.label": "Trykk her for å gå til chat",
   "sort_order.choose.label": "Sorter etter",
   "sort_order.created_desc": "Nyeste først",
-  "sort_order.created_asc": "Eldste først"
+  "sort_order.created_asc": "Eldste først",
+  "fos.buttons.save_search": "Lagre",
+  "fos.buttons.filter": "Filter",
+  "fos.buttons.sort": "Sorter"
 }
