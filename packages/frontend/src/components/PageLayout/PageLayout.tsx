@@ -2,12 +2,12 @@ import cx from 'classnames';
 import type React from 'react';
 import { memo, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { Footer, Header, Sidebar } from '..';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
-import { getSearchStringFromQueryParams } from '../../pages/Inbox/Inbox';
+import { decompressQueryParams } from '../../pages/Inbox/Inbox';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
@@ -18,6 +18,20 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
   useEffect(() => {
     fn();
   }, [location, fn]);
+};
+
+const getSearchStringFromQueryParams = (searchParams: URLSearchParams): string => {
+  const compressedData = searchParams.get('data');
+
+  if (compressedData) {
+    try {
+      const queryParams = decompressQueryParams(compressedData);
+      return queryParams.searchString || '';
+    } catch (error) {
+      console.error('Failed to decompress query parameters:', error);
+    }
+  }
+  return '';
 };
 
 interface PageLayoutContentProps {
@@ -59,6 +73,7 @@ const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = 
 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
   const { parties, selectedParties } = useParties();
   const name = parties.find((party) => party.partyType === 'Person')?.name || '';
   const { dialogsByView } = useDialogs(parties);
@@ -72,7 +87,7 @@ export const PageLayout: React.FC = () => {
 
   useAuthenticated();
   useUpdateOnLocationChange(() => {
-    const searchString = getSearchStringFromQueryParams();
+    const searchString = getSearchStringFromQueryParams(searchParams);
     queryClient.setQueryData(['search'], () => searchString || '');
   });
 

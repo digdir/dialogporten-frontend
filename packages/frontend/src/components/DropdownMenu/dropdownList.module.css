@@ -6,9 +6,17 @@
     position: absolute;
     z-index: 1001;
     background: #fff;
-    min-width: 390px;
-    max-width: 390px;
     margin-block-start: 10px;
+}
+
+.long {
+  min-width: 390px;
+  max-width: 390px;
+}
+
+.short {
+  min-width: 195px;
+  max-width: 195px;
 }
 
 @media screen and (max-width: 996px) {

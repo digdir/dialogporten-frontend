@@ -28,18 +28,11 @@ export const AddFilterButton = ({
   const { t } = useTranslation();
   return (
     <div>
-      <ProfileButton
-        size="small"
-        onClick={onAddBtnClick}
-        disabled={disabled}
-        variant="secondary"
-        color="first"
-        className={styles.addFilterButton}
-      >
+      <ProfileButton size="small" onClick={onAddBtnClick} disabled={disabled} variant="secondary" color="first">
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
       {isMenuOpen && (
-        <DropdownList>
+        <DropdownList variant="long">
           <DropdownMobileHeader
             buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
             onClickButton={onClose}
