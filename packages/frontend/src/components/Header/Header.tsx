@@ -1,11 +1,10 @@
-import { Search } from '@digdir/designsystemet-react';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { MenuBar } from '../MenuBar';
 import { AltinnLogo } from './AltinnLogo';
 import styles from './header.module.css';
 import { useQuery, useQueryClient } from 'react-query';
+import { SearchBar } from './SearchBar';
 
 type HeaderProps = {
   name: string;
@@ -22,52 +21,23 @@ export const useSearchString = () => {
   return { searchString, queryClient };
 };
 
-export const HeaderSearchBar = () => {
-  const { t } = useTranslation();
-  const { queryClient, searchString } = useSearchString();
-  const [searchValue, setSearchValue] = useState(searchString);
-
-  return (
-    <div className={styles.searchBar}>
-      <Search
-        size="small"
-        aria-label={t('header.searchPlaceholder')}
-        placeholder={t('header.searchPlaceholder')}
-        onChange={(e) => {
-          setSearchValue(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            const inputTarget = e.target as HTMLInputElement;
-            queryClient.setQueryData(['search'], () => inputTarget.value || '');
-          }
-        }}
-        value={searchValue}
-        onClear={() => {
-          queryClient.setQueryData(['search'], () => '');
-        }}
-      />
-    </div>
-  );
-};
-
 /**
  * Renders a header with Altinn logo, search bar, and a menu bar. The menu includes user details,
  * company association, and an optional notification count. The search bar is hidden on mobile.
- *
- * @component
- * @param {string} props.name - User's name.
- * @param {string} [props.companyName] - Associated company name, if applicable.
- * @param {number} [props.notificationCount] - Optional count of notifications to display.
- * @returns {JSX.Element} The Header component.
- *
- * @example
- * <Header
- *  name="Ola Nordmann"
- *  companyName="Aker Solutions AS"
- *  notificationCount={3}
- * />
- */
+*
+* @component
+* @param {string} props.name - User's name.
+* @param {string} [props.companyName] - Associated company name, if applicable.
+* @param {number} [props.notificationCount] - Optional count of notifications to display.
+* @returns {JSX.Element} The Header component.
+*
+* @example
+* <Header
+*  name="Ola Nordmann"
+*  companyName="Aker Solutions AS"
+*  notificationCount={3}
+* />
+*/
 
 export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationCount }) => {
   const { isMobile } = useWindowSize();
@@ -75,10 +45,10 @@ export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationC
     <header>
       <nav className={styles.navigation} aria-label="Navigasjon">
         <AltinnLogo className={styles.logo} />
-        {!isMobile && <HeaderSearchBar />}
+        {!isMobile && <SearchBar />}
         <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
-      {isMobile && <HeaderSearchBar />}
+      {isMobile && <SearchBar />}
     </header>
   );
 };
