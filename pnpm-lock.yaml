@@ -338,8 +338,8 @@ importers:
         specifier: 1.0.0-rc.3
         version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3
+        specifier: 1.0.0-rc.6
+        version: 1.0.0-rc.6
       '@heroicons/react':
         specifier: ^2.1.3
         version: 2.1.3(react@18.2.0)
@@ -438,8 +438,8 @@ importers:
         specifier: 1.0.0-rc.3
         version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3
+        specifier: 1.0.0-rc.6
+        version: 1.0.0-rc.6
       '@navikt/aksel-icons':
         specifier: ^5.18.0
         version: 5.18.0
@@ -2449,8 +2449,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@digdir/designsystemet-theme@1.0.0-rc.3:
-    resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
+  /@digdir/designsystemet-theme@1.0.0-rc.6:
+    resolution: {integrity: sha512-bbCl7TH8m22LoUKusCNwYvfBHqI1fDyILwIwnZXXnS6LXA4M1w79BxGAVKKs9X4Qe8OErJ2Xg1QJSQJQbsujMQ==}
     dev: false
 
   /@digdir/dialogporten-schema@1.7.1-18101c1:
