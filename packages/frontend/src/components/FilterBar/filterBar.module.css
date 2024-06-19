@@ -4,7 +4,6 @@
     align-items: flex-start;
     column-gap: 1em;
     position: relative;
-    z-index: 1001;
 }
 
 .filterButtons {

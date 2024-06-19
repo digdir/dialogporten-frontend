@@ -5,13 +5,16 @@ import { ProfileButton } from '../ProfileButton';
 
 import { useTranslation } from 'react-i18next';
 import styles from './sortOrderDropdown.module.css';
+
+export type SortingOrder = 'created_desc' | 'created_asc';
+
 interface SortOrderDropdownOption {
   label: string;
-  id: string;
+  id: SortingOrder;
 }
 interface SortOrderDropdownProps {
-  onSelect: (selectedSortOrder: string) => void;
-  selectedSortOrder: string;
+  onSelect: (selectedSortOrder: SortingOrder) => void;
+  selectedSortOrder: SortingOrder;
   options: SortOrderDropdownOption[];
 }
 export const SortOrderDropdown = ({ onSelect, selectedSortOrder, options }: SortOrderDropdownProps): JSX.Element => {

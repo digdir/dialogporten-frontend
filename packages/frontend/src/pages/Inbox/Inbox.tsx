@@ -3,7 +3,7 @@ import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-t
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
 import { type InboxViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
@@ -21,12 +21,14 @@ import { useSelectedDialogs } from '../../components';
 import { useSnackbar } from '../../components';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
+import type { SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
 
 interface InboxProps {
   viewType: InboxViewType;
 }
+
 export interface InboxItemInput {
   id: string;
   title: string;
@@ -45,6 +47,15 @@ export const compressQueryParams = (params: SavedSearchData): string => {
   return compressToEncodedURIComponent(queryParamsString);
 };
 
+export const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxItemInput[] => {
+  return dialogs.sort((a, b) => {
+    if (sortOrder === 'created_desc') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  });
+};
+
 export const decompressQueryParams = (compressedString: string): SavedSearchData => {
   const decompressedString = decompressFromEncodedURIComponent(compressedString);
   if (!decompressedString) {
@@ -53,10 +64,8 @@ export const decompressQueryParams = (compressedString: string): SavedSearchData
   return JSON.parse(decompressedString);
 };
 
-export const getFiltersFromQueryParams = (): Filter[] => {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const compressedData = urlSearchParams.get('data');
-
+export const getFiltersFromQueryParams = (searchParams: URLSearchParams): Filter[] => {
+  const compressedData = searchParams.get('data');
   if (compressedData) {
     try {
       const queryParams = decompressQueryParams(compressedData);
@@ -68,24 +77,14 @@ export const getFiltersFromQueryParams = (): Filter[] => {
   return [] as Filter[];
 };
 
-export const getSearchStringFromQueryParams = (): string => {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const compressedData = urlSearchParams.get('data');
-
-  if (compressedData) {
-    try {
-      const queryParams = decompressQueryParams(compressedData);
-      return queryParams.searchString || '';
-    } catch (error) {
-      console.error('Failed to decompress query parameters:', error);
-    }
-  }
-  return '';
+const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): SortingOrder => {
+  return searchParams.get('sortBy') as SortingOrder;
 };
 
 export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
-  const [selectedSortOrder, setSelectedSortOrder] = useState<string>('created_desc');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
@@ -106,8 +105,18 @@ export const Inbox = ({ viewType }: InboxProps) => {
    */
 
   useEffect(() => {
-    setActiveFilters(getFiltersFromQueryParams());
-  }, [location]);
+    setActiveFilters(getFiltersFromQueryParams(searchParams));
+    const sortBy = getSortingOrderFromQueryParams(searchParams);
+    if (sortBy && sortBy !== selectedSortOrder) {
+      setSelectedSortOrder(getSortingOrderFromQueryParams(searchParams));
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('sortBy', selectedSortOrder);
+    setSearchParams(newSearchParams);
+  }, [selectedSortOrder]);
 
   const handleSaveSearch = async () => {
     try {
@@ -131,8 +140,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   };
 
   const filteredDialogsForView = useMemo(() => {
-    return filterDialogs(dialogsForView, activeFilters);
-  }, [dialogsForView, activeFilters]);
+    return sortDialogs(filterDialogs(dialogsForView, activeFilters), selectedSortOrder);
+  }, [dialogsForView, activeFilters, selectedSortOrder]);
 
   const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
 
@@ -162,11 +171,11 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const filteredView = !isFetching && ((searchString ?? []).length > 0 || activeFilters.length > 0);
   const sortOrderOptions = [
     {
-      id: 'created_desc',
+      id: 'created_desc' as SortingOrder,
       label: t('sort_order.created_desc'),
     },
     {
-      id: 'created_asc',
+      id: 'created_asc' as SortingOrder,
       label: t('sort_order.created_asc'),
     },
   ];
@@ -174,16 +183,18 @@ export const Inbox = ({ viewType }: InboxProps) => {
   return (
     <main>
       <section className={styles.filtersArea}>
-        <div className={styles.leftArea}>
-          <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
-          <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
-        </div>
-        <div className={styles.rightArea}>
-          <SortOrderDropdown
-            onSelect={setSelectedSortOrder}
-            selectedSortOrder={selectedSortOrder}
-            options={sortOrderOptions}
-          />
+        <div className={styles.gridContainer}>
+          <div className={styles.filterSaveContainer}>
+            <FilterBar settings={filterBarSettings} onFilterChange={setActiveFilters} initialFilters={activeFilters} />
+            <SaveSearchButton onBtnClick={handleSaveSearch} disabled={savedSearchDisabled} />
+          </div>
+          <div className={styles.sortOrderContainer}>
+            <SortOrderDropdown
+              onSelect={setSelectedSortOrder}
+              selectedSortOrder={selectedSortOrder}
+              options={sortOrderOptions}
+            />
+          </div>
         </div>
       </section>
       {inSelectionMode && (

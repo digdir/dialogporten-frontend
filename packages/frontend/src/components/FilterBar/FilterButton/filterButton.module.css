@@ -1,10 +1,11 @@
 .filterButton {
-    button {
+  button {
         border-radius: 0;
     }
 }
 
 .buttons {
+    z-index: 1001;
     display: flex;
 }
 
@@ -13,7 +14,8 @@
 }
 
 .filterListContent {
-    display: flex;
+  z-index: 1002;
+  display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 1em;

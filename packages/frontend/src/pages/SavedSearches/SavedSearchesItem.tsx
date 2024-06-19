@@ -1,7 +1,7 @@
 import { DropdownMenu } from '@digdir/designsystemet-react';
 import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@navikt/aksel-icons';
-import { SavedSearchesFieldsFragment } from 'bff-types-generated';
+import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
 import { compressQueryParams } from '../Inbox/Inbox';
@@ -37,7 +37,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu>
-      <a href={`inbox?data=${compressQueryParams(savedSearch.data)}`}>
+      <a href={`/?data=${compressQueryParams(savedSearch.data)}`}>
         <ChevronRightIcon className={styles.icon} />
       </a>
     </div>
