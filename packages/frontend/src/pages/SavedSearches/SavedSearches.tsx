@@ -71,7 +71,7 @@ interface LastUpdatedProps {
   searches?: SavedSearchesFieldsFragment[];
 }
 
-export const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => {
+export const autoFormatRelativeTime = (date: Date, locale = 'nb-NO', isMinimalistic = false): string => {
   try {
     const now = new Date();
     const diffInSeconds = (now.getTime() - date.getTime()) / 1000;
@@ -101,17 +101,19 @@ export const autoFormatRelativeTime = (date: Date, locale = 'nb-NO'): string => 
     }
 
     const rtf = new Intl.RelativeTimeFormat(locale, {
-      numeric: 'auto',
+      numeric: 'always',
     });
 
-    return rtf.format(value, unit);
+    let formattedTime = rtf.format(value, unit);
+    formattedTime = isMinimalistic ? formattedTime.replace(/\bfor\b/g, '').trim() : formattedTime;
+    return formattedTime;
   } catch (error) {
     console.error('autoFormatRelativeTime Error: ', error);
     return '';
   }
 };
 
-function getMostRecentSearchDate(data: SavedSearchesFieldsFragment[]): Date | null {
+export const getMostRecentSearchDate = (data: SavedSearchesFieldsFragment[]): Date | null => {
   try {
     if (!data?.length) {
       return null;
@@ -124,7 +126,7 @@ function getMostRecentSearchDate(data: SavedSearchesFieldsFragment[]): Date | nu
     console.error('getMostRecentSearchDate Error: ', error);
     return null;
   }
-}
+};
 
 export const LastUpdated = ({ searches }: LastUpdatedProps) => {
   const { t } = useTranslation();

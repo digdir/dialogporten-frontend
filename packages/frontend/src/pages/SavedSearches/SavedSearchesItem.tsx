@@ -74,9 +74,8 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
             const predefinedRange = getPredefinedRange().find((range) => range.value === search?.value);
             const value = predefinedRange && search?.id === 'created' ? predefinedRange.label : search?.value;
             return (
-              <span key={`${id}${index}`} className={styles.filterElement}>{`${
-                index === 0 ? '' : ' +'
-              } ${value}`}</span>
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'
+                } ${value}`}</span>
             );
           })}
         </div>

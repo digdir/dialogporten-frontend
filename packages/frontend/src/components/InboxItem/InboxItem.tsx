@@ -29,6 +29,8 @@ interface InboxItemProps {
   tags?: InboxItemTag[];
   isUnread?: boolean;
   linkTo?: string;
+  isMinimalistic?: boolean;
+  onClose?: () => void;
 }
 
 export const OptionalLinkContent = ({
@@ -95,6 +97,8 @@ export const InboxItem = ({
   checkboxValue,
   isUnread = false,
   linkTo,
+  isMinimalistic = false,
+  onClose,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
 
@@ -102,7 +106,52 @@ export const InboxItem = ({
     if (inSelectionMode && onCheckedChange) {
       onCheckedChange(!checkboxValue);
     }
+    if (isMinimalistic) {
+      onClose?.();
+    }
   };
+
+  if (isMinimalistic) {
+    return (
+      <div
+        className={classNames(styles.inboxItemWrapper, {
+          [styles.active]: isChecked,
+          [styles.pointer]: inSelectionMode,
+          [styles.minimalistic]: isMinimalistic,
+        })}
+        aria-selected={isChecked ? 'true' : 'false'}
+        onClick={onClick}
+      >
+        <OptionalLinkContent linkTo={!inSelectionMode ? linkTo : undefined}>
+          <section
+            className={classNames(styles.inboxItem, {
+              [styles.isUnread]: isUnread,
+            })}
+          >
+            <header className={styles.header}>
+              <h2 className={styles.title}>{title}</h2>
+              {onCheckedChange && (
+                <Checkbox
+                  checked={isChecked}
+                  value={checkboxValue}
+                  onClick={(e) => {
+                    if (e.currentTarget === e.target) {
+                      e.stopPropagation();
+                    }
+                  }}
+                  onChange={(e) => {
+                    onCheckedChange?.(e.target.checked);
+                  }}
+                  size="small"
+                />
+              )}
+            </header>
+            <p className={styles.description}>{description}</p>
+          </section>
+        </OptionalLinkContent>
+      </div>
+    );
+  }
 
   return (
     <li
