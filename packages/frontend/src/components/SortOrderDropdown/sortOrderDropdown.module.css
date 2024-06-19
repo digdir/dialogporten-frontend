@@ -1,6 +1,6 @@
-
 .checkMarkHolder {
   min-width: 1.5rem;
+
   svg {
     height: 1.5rem;
     width: auto;
@@ -19,4 +19,8 @@
 .content {
   display: flex;
   align-items: center;
+}
+
+.isOpen button {
+  z-index: 999;
 }

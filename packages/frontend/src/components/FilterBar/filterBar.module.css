@@ -1,17 +1,16 @@
 .filterBar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    column-gap: 1em;
-    position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 1em;
+  position: relative;
 }
 
 .filterButtons {
-    display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    column-gap: 1em;
-    row-gap: 1em;
-    position: relative;
-    z-index: 1001;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  row-gap: 1em;
+  position: relative;
 }

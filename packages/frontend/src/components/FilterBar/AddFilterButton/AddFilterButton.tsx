@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons
 import { useTranslation } from 'react-i18next';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
+import cx from 'classnames';
 
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
@@ -27,7 +28,7 @@ export const AddFilterButton = ({
 }: AddFilterButtonProps) => {
   const { t } = useTranslation();
   return (
-    <div>
+    <div className={cx({ [styles.filterOpen]: isMenuOpen })}>
       <ProfileButton size="small" onClick={onAddBtnClick} disabled={disabled} variant="secondary" color="first">
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
