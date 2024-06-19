@@ -1,15 +1,15 @@
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "../../../utils/useWindowSize";
 import { Avatar } from "../Avatar";
-import styles from './menubar.module.css';
+import styles from './navigationMenu.module.css';
 import { Footer } from '..';
 import { ChevronRightIcon, InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
 import { Button } from '@digdir/designsystemet-react';
 import { Hr } from ".";
-import { DropdownSubMenu, SubMenuSelection } from "./DropDownSubMenu";
-import { DropDownMenuItem } from "./DropDownMenuItem";
+import { NavigationDropdownSubMenu, SubMenuSelection } from "./NavigationDropdownSubMenu";
+import { NavigationDropdownMenuItem } from "./NavigationDropdownMenuItem";
 
-interface DropdownMenuProps {
+interface NavigationDropdownMenuProps {
   showDropdownMenu: boolean,
   name: string,
   companyName?: string
@@ -18,7 +18,7 @@ interface DropdownMenuProps {
   setShowSubMenu: (showSubMenu: SubMenuSelection) => void
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, name, companyName, onClose, showSubMenu, setShowSubMenu }) => {
+export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({ showDropdownMenu, name, companyName, onClose, showSubMenu, setShowSubMenu }) => {
   const { t } = useTranslation();
   const { isMobile } = useWindowSize();
   const companyNameTitleCase = toTitleCase(companyName)
@@ -30,7 +30,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
   }
 
   if (showSubMenu !== 'none') return (
-    <DropdownSubMenu showDropdownSubMenu={showSubMenu} onClose={handleClose} onBack={() => setShowSubMenu('none')} />
+    <NavigationDropdownSubMenu showDropdownSubMenu={showSubMenu} onClose={handleClose} onBack={() => setShowSubMenu('none')} />
   )
 
   if (!showDropdownMenu) return null;
@@ -53,9 +53,9 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ showDropdownMenu, na
           </div>
           <Hr />
         </li>
-        <DropDownMenuItem displayText={t('sidebar.inbox')} label={t('sidebar.inbox.label')} icon={<InboxFillIcon />} onClose={handleClose} onClick={() => setShowSubMenu('inbox')} />
-        <DropDownMenuItem displayText={t("menuBar.all_services")} label={t('link.goToAllServices')} icon={<MenuGridIcon />} onClose={handleClose} path='https://info.altinn.no/skjemaoversikt/' isExternalLink />
-        <DropDownMenuItem displayText={t("menuBar.chat")} label={t('menuBar.chat.label')} icon={<PersonChatIcon />} onClose={handleClose} path='https://info.altinn.no/hjelp/' isExternalLink />
+        <NavigationDropdownMenuItem displayText={t('sidebar.inbox')} label={t('sidebar.inbox.label')} icon={<InboxFillIcon />} onClose={handleClose} onClick={() => setShowSubMenu('inbox')} />
+        <NavigationDropdownMenuItem displayText={t("menuBar.all_services")} label={t('link.goToAllServices')} icon={<MenuGridIcon />} onClose={handleClose} path='https://info.altinn.no/skjemaoversikt/' isExternalLink />
+        <NavigationDropdownMenuItem displayText={t("menuBar.chat")} label={t('menuBar.chat.label')} icon={<PersonChatIcon />} onClose={handleClose} path='https://info.altinn.no/hjelp/' isExternalLink />
         <Hr />
         <MenuLogoutButton />
         {isMobile && <Footer />}
