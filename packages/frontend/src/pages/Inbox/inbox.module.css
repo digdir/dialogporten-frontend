@@ -40,3 +40,9 @@
     justify-self: start;
   }
 }
+
+@media screen and (max-width: 996px) {
+  .hideForSmallScreens {
+    display: none;
+  }
+}

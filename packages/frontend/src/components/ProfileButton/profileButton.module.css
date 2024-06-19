@@ -12,3 +12,8 @@
   border: 1px dashed var(--button-color);
   color: 1px dashed var(--button-color);
 }
+
+.tertiary {
+  background: var(--background-color);
+  color: 1px dashed var(--button-color);
+}

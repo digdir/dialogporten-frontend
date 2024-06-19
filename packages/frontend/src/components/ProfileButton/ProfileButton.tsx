@@ -8,6 +8,7 @@ export const ProfileButton = (props: ButtonProps) => {
   const classes = cx(className, styles.profileButton, {
     [styles.primary]: variant === 'primary',
     [styles.secondary]: variant === 'secondary',
+    [styles.tertiary]: variant === 'tertiary',
   });
   return <Button className={classes} {...restProps} />;
 };

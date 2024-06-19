@@ -37,6 +37,7 @@
 
 .pageLayout>main {
     grid-area: main;
+    overflow: auto;
     padding: 0.5rem;
     @media (min-width: 600px) {
         margin-right: 192px;

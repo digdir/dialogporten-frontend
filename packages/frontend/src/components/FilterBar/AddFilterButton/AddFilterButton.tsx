@@ -1,8 +1,8 @@
 import { ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons';
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
-import cx from 'classnames';
 
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
@@ -16,6 +16,7 @@ type AddFilterButtonProps = {
   onClose: () => void;
   isMenuOpen: boolean;
   disabled?: boolean;
+  className?: string;
 };
 export const AddFilterButton = ({
   settings,
@@ -25,11 +26,19 @@ export const AddFilterButton = ({
   onAddBtnClick,
   isMenuOpen,
   onClose,
+  className,
 }: AddFilterButtonProps) => {
   const { t } = useTranslation();
   return (
     <div className={cx({ [styles.filterOpen]: isMenuOpen })}>
-      <ProfileButton size="small" onClick={onAddBtnClick} disabled={disabled} variant="secondary" color="first">
+      <ProfileButton
+        size="small"
+        onClick={onAddBtnClick}
+        className={className}
+        disabled={disabled}
+        variant="secondary"
+        color="first"
+      >
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
       {isMenuOpen && (
