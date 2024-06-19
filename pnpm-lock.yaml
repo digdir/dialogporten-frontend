@@ -335,8 +335,8 @@ importers:
         specifier: 0.9.1-alpha.3
         version: 0.9.1-alpha.3
       '@digdir/designsystemet-react':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.0.0-rc.6
+        version: 1.0.0-rc.6(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 1.0.0-rc.3
         version: 1.0.0-rc.3
@@ -435,8 +435,8 @@ importers:
         specifier: 0.9.1-alpha.3
         version: 0.9.1-alpha.3
       '@digdir/designsystemet-react':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.0.0-rc.6
+        version: 1.0.0-rc.6(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
         specifier: 1.0.0-rc.3
         version: 1.0.0-rc.3
@@ -2433,8 +2433,8 @@ packages:
     resolution: {integrity: sha512-QDKtEqul9ty7t/rMbJ95WQcAG2w9JjRGGXx10ZDXiB1wuUGzuLv/IpKKHwUBucc01xLz+7G7OEiwG/A58U7xLA==}
     dev: false
 
-  /@digdir/designsystemet-react@1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ebhOHl5gCkCj8puJ908QNVp7cqoQNB5q4tqI1CWaPQxmUfBiItPpf69xuae7lS6wg19TueA9+GzjcX9JM7Ehgw==}
+  /@digdir/designsystemet-react@1.0.0-rc.6(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-rmvRYvrkVPfnIQLGGzVVImr2QeoAQoi+uikySKLhDv8t3Bqw0Y+8t8FzcWUsgnsUrmFN9Xu+Q7skS7FpYgWzgA==}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
