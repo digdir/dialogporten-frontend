@@ -1,4 +1,4 @@
-import styles from './menubar.module.css';
+import styles from './navigationMenu.module.css';
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 
 interface DropDownMenuItemProps {
@@ -12,7 +12,7 @@ interface DropDownMenuItemProps {
   isExternalLink?: boolean
 }
 
-export const DropDownMenuItem = ({ displayText, label, icon, path, onClick, count, onClose, isExternalLink }: DropDownMenuItemProps) => {
+export const NavigationDropdownMenuItem = ({ displayText, label, icon, path, onClick, count, onClose, isExternalLink }: DropDownMenuItemProps) => {
   const renderDropDownMenuItem = () =>
     <div className={styles.sidebarMenuItem} title={label}>
       <div className={styles.iconAndText}>

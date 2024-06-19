@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { Avatar } from '../Avatar';
-import styles from './menubar.module.css';
+import styles from './navigationMenu.module.css';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import { Backdrop } from '../Backdrop/Backdrop';
-import { DropdownMenu } from './DropDownMenu';
-import { SubMenuSelection } from './DropDownSubMenu';
+import { NavigationDropdownMenu } from './NavigationDropdownMenu';
+import { SubMenuSelection } from './NavigationDropdownSubMenu';
 
 const NotificationCount: React.FC<{ count: number }> = ({ count }) => {
   const { t } = useTranslation();
@@ -52,7 +52,7 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
           <Avatar name={name} companyName={companyName} />
         </div>
         <NotificationCount count={notificationCount} />
-        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
+        <NavigationDropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
       </div>
     );
 
@@ -73,7 +73,7 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
           </div>
           <NotificationCount count={notificationCount} />
         </div >
-        <DropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
+        <NavigationDropdownMenu showDropdownMenu={showDropdownMenu} name={name} companyName={companyName} onClose={handleClose} showSubMenu={showSubMenu} setShowSubMenu={setShowSubMenu} />
       </div>
       <Backdrop show={showDropdownMenu} onClick={handleClose} />
     </>

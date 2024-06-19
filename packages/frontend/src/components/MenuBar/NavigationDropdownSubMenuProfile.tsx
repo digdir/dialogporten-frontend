@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
-import styles from './menubar.module.css';
+import styles from './navigationMenu.module.css';
 import { ArrowLeftIcon } from '@navikt/aksel-icons';
 import { Hr } from ".";
 import { useParties } from "../../api/useParties";
-import { MenuLogoutButton, toTitleCase } from "./DropDownMenu";
-import { DropdownSubMenuProps } from "./DropDownSubMenu";
+import { MenuLogoutButton, toTitleCase } from "./NavigationDropdownMenu";
+import { DropdownSubMenuProps } from "./NavigationDropdownSubMenu";
 import { Avatar } from "../Avatar";
 import { useQueryClient } from "react-query";
 import { useDialogs } from "../../api/useDialogs";
 import { PartyFieldsFragment } from "bff-types-generated";
 
 
-export const DropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
+export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();
   const { parties, setSelectedParties } = useParties()
   const queryClient = useQueryClient()
