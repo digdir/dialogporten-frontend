@@ -25,7 +25,7 @@ export const SearchBar: React.FC = () => {
 
   return (
     <>
-      <div className={styles.menuContainer}>
+      <div className={cx(styles.menuContainer, { [styles.searchbarOpen]: showDropdownMenu })}>
         <div className={styles.searchbarContainer}>
           <Search
             autoComplete='off'

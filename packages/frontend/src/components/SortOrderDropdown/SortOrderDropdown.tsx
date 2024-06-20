@@ -2,9 +2,10 @@ import { ArrowsUpDownIcon, CheckmarkIcon, ChevronDownIcon } from '@navikt/aksel-
 import { useState } from 'react';
 import { DropdownList, DropdownListItem, DropdownMobileHeader } from '../DropdownMenu';
 import { ProfileButton } from '../ProfileButton';
-
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import styles from './sortOrderDropdown.module.css';
+import { Backdrop } from '../Backdrop';
 
 export type SortingOrder = 'created_desc' | 'created_asc';
 
@@ -22,7 +23,7 @@ export const SortOrderDropdown = ({ onSelect, selectedSortOrder, options }: Sort
   const { t } = useTranslation();
   const selectedOptionLabel = options.find((option) => option.id === selectedSortOrder)?.label;
   return (
-    <>
+    <div className={cx({ [styles.isOpen]: isOpen })}>
       <ProfileButton onClick={() => setIsOpen(!isOpen)} variant="secondary" size="small">
         <ArrowsUpDownIcon fontSize="1.5rem" />
         {selectedOptionLabel}
@@ -54,6 +55,7 @@ export const SortOrderDropdown = ({ onSelect, selectedSortOrder, options }: Sort
           ))}
         </DropdownList>
       )}
-    </>
+      <Backdrop show={isOpen} onClick={() => setIsOpen(false)} />
+    </div>
   );
 };

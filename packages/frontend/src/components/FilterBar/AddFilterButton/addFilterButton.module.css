@@ -1,12 +1,15 @@
 .addFilterButtonContent {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 1rem;
-    position: relative;
-    z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1rem;
+  position: relative;
 }
 
 .addFilterItemLabel {
-    font-size: 1rem;
+  font-size: 1rem;
+}
+
+.filterOpen button {
+  z-index: 999;
 }
