@@ -55,15 +55,17 @@ fragment GuiActionFields on GuiAction {
     action
     url
     isAuthorized
+    httpMethod
     title {
        value
        cultureCode
     }
-   priority
+    priority
 }
 
 fragment DialogContentFields on Content {
     type
+    mediaType
     value {
       value
       cultureCode
@@ -73,7 +75,6 @@ fragment DialogContentFields on Content {
 fragment DialogElement on Element {
     id
     urls {
-      mediaType
       consumerType
       url
     }
