@@ -7,6 +7,8 @@ import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
 import styles from './savedSearches.module.css';
+import { formatDistance } from "date-fns";
+import { nb } from 'date-fns/locale/nb'
 
 export const SavedSearches = () => {
   const queryClient = useQueryClient();
@@ -64,56 +66,22 @@ export const SavedSearches = () => {
   );
 };
 
-
 export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
 
-interface LastUpdatedProps {
-  searches?: SavedSearchesFieldsFragment[];
-}
-
-export const autoFormatRelativeTime = (date: Date, locale = 'nb-NO', isMinimalistic = false): string => {
+export const autoFormatRelativeTime = (date: Date): string => {
   try {
-    const now = new Date();
-    const diffInSeconds = (now.getTime() - date.getTime()) / 1000;
-    const absDiffInSeconds = Math.abs(diffInSeconds);
-
-    let value: number;
-    let unit: Intl.RelativeTimeFormatUnit;
-
-    if (absDiffInSeconds < 60) {
-      value = -Math.round(diffInSeconds);
-      unit = 'second';
-    } else if (absDiffInSeconds < 3600) {
-      value = -Math.round(diffInSeconds / 60);
-      unit = 'minute';
-    } else if (absDiffInSeconds < 86400) {
-      value = -Math.round(diffInSeconds / 3600);
-      unit = 'hour';
-    } else if (absDiffInSeconds < 2629800) {
-      value = -Math.round(diffInSeconds / 86400);
-      unit = 'day';
-    } else if (absDiffInSeconds < 31557600) {
-      value = -Math.round(diffInSeconds / 2629800);
-      unit = 'month';
-    } else {
-      value = -Math.round(diffInSeconds / 31557600);
-      unit = 'year';
-    }
-
-    const rtf = new Intl.RelativeTimeFormat(locale, {
-      numeric: 'always',
-    });
-
-    let formattedTime = rtf.format(value, unit);
-    formattedTime = isMinimalistic ? formattedTime.replace(/\bfor\b/g, '').trim() : formattedTime;
-    return formattedTime;
+    const result = formatDistance(new Date(date), new Date(), {
+      locale: nb,
+      addSuffix: true
+    })
+    return result
   } catch (error) {
     console.error('autoFormatRelativeTime Error: ', error);
     return '';
   }
 };
 
-export const getMostRecentSearchDate = (data: SavedSearchesFieldsFragment[]): Date | null => {
+const getMostRecentSearchDate = (data: SavedSearchesFieldsFragment[]): Date | null => {
   try {
     if (!data?.length) {
       return null;
@@ -128,7 +96,11 @@ export const getMostRecentSearchDate = (data: SavedSearchesFieldsFragment[]): Da
   }
 };
 
-export const LastUpdated = ({ searches }: LastUpdatedProps) => {
+interface LastUpdatedProps {
+  searches?: SavedSearchesFieldsFragment[];
+}
+
+const LastUpdated = ({ searches }: LastUpdatedProps) => {
   const { t } = useTranslation();
   if (!searches || !searches?.length) return null;
   const lastUpdated = getMostRecentSearchDate(searches) as Date;
