@@ -86,6 +86,7 @@ const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): SortingO
 export const Inbox = ({ viewType }: InboxProps) => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const location = useLocation();
@@ -128,6 +129,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         filters: activeFilters as SearchDataValueFilter[],
         searchString,
       };
+      setIsSavingSearch(true);
       await createSavedSearch('', data);
       openSnackbar({
         message: t('savedSearches.saved_success'),
@@ -140,6 +142,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
         variant: 'error',
       });
       console.error('Error creating saved search: ', error);
+    } finally {
+      setIsSavingSearch(false);
     }
   };
 
@@ -200,6 +204,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               onBtnClick={handleSaveSearch}
               className={styles.hideForSmallScreens}
               disabled={savedSearchDisabled}
+              isLoading={isSavingSearch}
             />
           </div>
           <div className={styles.sortOrderContainer}>

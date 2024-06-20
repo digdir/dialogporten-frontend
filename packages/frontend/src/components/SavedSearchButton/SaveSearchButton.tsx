@@ -5,11 +5,12 @@ import { ProfileButton } from '../ProfileButton';
 
 type SaveSearchButtonProps = {
   onBtnClick: () => void;
+  isLoading?: boolean;
   disabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   RefAttributes<HTMLButtonElement>;
 
-export const SaveSearchButton = ({ disabled, onBtnClick, className }: SaveSearchButtonProps) => {
+export const SaveSearchButton = ({ disabled, onBtnClick, className, isLoading }: SaveSearchButtonProps) => {
   const { t } = useTranslation();
 
   if (disabled) {
@@ -17,7 +18,7 @@ export const SaveSearchButton = ({ disabled, onBtnClick, className }: SaveSearch
   }
 
   return (
-    <ProfileButton size="small" className={className} onClick={onBtnClick} variant="secondary">
+    <ProfileButton size="small" className={className} onClick={onBtnClick} variant="secondary" isLoading={isLoading}>
       <BookmarkIcon fontSize="1.5rem" /> {t('filter_bar.save_search')}
     </ProfileButton>
   );
