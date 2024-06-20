@@ -1,7 +1,7 @@
 {
   "name": "dialogporten-types-generated",
   "main": "src/index.ts",
-	"private": true,
+  "private": true,
   "scripts": {
     "prepare": "pnpm run generate:types",
     "build": "pnpm run generate:types",
@@ -9,7 +9,7 @@
     "test": "pnpm build && vitest run"
   },
   "dependencies": {
-    "@digdir/dialogporten-schema": "1.7.1-18101c1",
+    "@digdir/dialogporten-schema": "1.8.1-c9b50e9",
     "glob": "^10.3.12",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6"
