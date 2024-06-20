@@ -47,3 +47,7 @@ export const PersonSecondary = () => {
     </ProfileButton>
   );
 };
+
+export const LoadingButton = () => {
+  return <ProfileButton size="small" onClick={() => {}} variant="secondary" isLoading />;
+};
