@@ -234,18 +234,34 @@ export const Inbox = ({ viewType }: InboxProps) => {
             {
               label: t('actionPanel.buttons.share'),
               icon: <ArrowForwardIcon />,
+              onClick: () => {
+                openSnackbar({ message: 'del clicked', variant: 'success' });
+                setSelectedItems({});
+              },
             },
             {
               label: t('actionPanel.buttons.mark_as_read'),
               icon: <EnvelopeOpenIcon />,
+              onClick: () => {
+                openSnackbar({ message: 'read clicked', variant: 'success' });
+                setSelectedItems({});
+              },
             },
             {
               label: t('actionPanel.buttons.archive'),
               icon: <ClockDashedIcon />,
+              onClick: () => {
+                openSnackbar({ message: 'arkiv clicked', variant: 'success' });
+                setSelectedItems({});
+              },
             },
             {
               label: t('actionPanel.buttons.delete'),
               icon: <TrashIcon />,
+              onClick: () => {
+                openSnackbar({ message: 'delete clicked', variant: 'success' });
+                setSelectedItems({});
+              },
             },
           ]}
           selectedItemCount={selectedItemCount}
