@@ -26,6 +26,7 @@ import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchB
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
+import { InboxSkeleton } from './InboxSkeleton.tsx';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -91,9 +92,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const location = useLocation();
   const { parties } = useParties();
-  const { dialogsByView, dialogs } = useDialogs(parties);
+  const { dialogsByView, dialogs, isLoading: isLoadingDialogs } = useDialogs(parties);
   const { searchString, queryClient } = useSearchString();
-  const { searchResults, isFetching } = useSearchDialogs({
+  const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
     parties,
     searchString,
   });
@@ -176,7 +177,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const filterBarSettings = getFilterBarSettings(dialogs);
   const savedSearchDisabled = !activeFilters?.length && !searchString;
-  const filteredView = !isFetching && ((searchString ?? []).length > 0 || activeFilters.length > 0);
+  const filteredView = !isFetchingSearchResults && ((searchString ?? []).length > 0 || activeFilters.length > 0);
   const sortOrderOptions = [
     {
       id: 'created_desc' as SortingOrder,
@@ -269,9 +270,10 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
-        {isFetching ? <p>Spinner</p> : filteredView && <h2>{t('search.search.results', { count: items.length })}</h2>}
-        {/* TODO: Replace with actual spinner */}
-        {Object.entries(dataGroupedByYear)
+        {isFetchingSearchResults ? <InboxSkeleton numberOfItems={3} /> : filteredView && <h2>{t('search.search.results', { count: items.length })}</h2>}
+        {!isLoadingDialogs && Object.keys(dataGroupedByYear).length === 0 &&
+          <InboxItemsHeader title={t('inbox.heading.no_results')} />}
+        {!isLoadingDialogs ? Object.entries(dataGroupedByYear)
           .reverse()
           .map(([year, items]) => {
             const hideSelectAll = items.every((item) => selectedItems[item.id]);
@@ -304,8 +306,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   />
                 ))}
               </InboxItems>
-            );
-          })}
+            )
+          }
+          ) : <InboxSkeleton numberOfItems={5} withHeader />}
       </section>
     </main>
   );

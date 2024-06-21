@@ -9,12 +9,13 @@ import { SavedSearchesItem } from './SavedSearchesItem';
 import styles from './savedSearches.module.css';
 import { formatDistance } from "date-fns";
 import { nb } from 'date-fns/locale/nb'
+import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 
 export const SavedSearches = () => {
   const queryClient = useQueryClient();
   const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
   const { t } = useTranslation();
-  const { data } = useSavedSearches();
+  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { openSnackbar } = useSnackbar();
 
@@ -37,6 +38,10 @@ export const SavedSearches = () => {
     }
   };
 
+  if (isLoadingSavedSearches) {
+    return <SavedSearchesSkeleton numberOfItems={3} />;
+  }
+
   return (
     <main>
       <section className={styles.savedSearchesWrapper}>
@@ -48,18 +53,16 @@ export const SavedSearches = () => {
           onClose={() => setSelectedSavedSearch(undefined)}
         />
         <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        {!!savedSearches?.length && (
-          <div className={styles.savedSearchesContainer}>
-            {savedSearches?.map((search) => (
-              <SavedSearchesItem
-                key={search?.id}
-                savedSearch={search}
-                onDelete={handleDeleteSearch}
-                setSelectedSavedSearch={setSelectedSavedSearch}
-              />
-            ))}
-          </div>
-        )}
+        <div className={styles.savedSearchesContainer}>
+          {savedSearches?.map((search) => (
+            <SavedSearchesItem
+              key={search?.id}
+              savedSearch={search}
+              onDelete={handleDeleteSearch}
+              setSelectedSavedSearch={setSelectedSavedSearch}
+            />
+          ))}
+        </div>
         <LastUpdated searches={savedSearches} />
       </section>
     </main>

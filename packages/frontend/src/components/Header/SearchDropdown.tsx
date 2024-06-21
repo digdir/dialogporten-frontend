@@ -11,6 +11,7 @@ import { InboxItem } from '../InboxItem';
 import { compressQueryParams } from '../../pages/Inbox/Inbox';
 import { Avatar } from '../Avatar';
 import { SearchDropdownItem } from './SearchDropdownItem';
+import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
 
 interface SearchDropdownProps {
   showDropdownMenu: boolean;
@@ -21,7 +22,7 @@ interface SearchDropdownProps {
 
 export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu, onClose, searchValue, onSearch }) => {
   const { t } = useTranslation();
-  const { data } = useSavedSearches();
+  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { parties } = useParties();
   const { searchResults, isFetching } = useSearchDialogs({ parties, searchString: searchValue });
@@ -44,8 +45,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
         </SearchDropdownItem>
 
         {/* Search results: */}
-        {/* Loading UI below needs improvement (Skeleton) */}
-        {isFetching ? <div className={styles.menuItem}>Laster...</div> : searchResults?.slice(0, 5).map((item) => (
+        {isFetching ? <SearchDropdownSkeleton numberOfItems={3} /> : searchResults?.slice(0, 5).map((item) => (
           <SearchDropdownItem key={item.id}>
             <InboxItem
               key={item.id}
@@ -74,7 +74,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
           <SearchDropdownItem>
             <div className={styles.displayText}>{t('sidebar.saved_searches')}</div>
           </SearchDropdownItem>
-          {savedSearches?.map((search) => (
+          {!isLoadingSavedSearches && savedSearches?.map((search) => (
             <SearchDropdownItem key={search.id}>
               <div className={styles.searchDetails}>
                 <span className={styles.searchString}>{search.data?.searchString && `«${search.data.searchString}»`}</span>
