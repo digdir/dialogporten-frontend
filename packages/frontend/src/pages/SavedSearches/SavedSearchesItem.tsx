@@ -4,7 +4,7 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
-import { compressQueryParams } from '../Inbox/Inbox';
+import { compressQueryParams } from '../Inbox/queryParams.ts';
 import styles from './savedSearches.module.css';
 
 interface SavedSearchesItemProps {
@@ -74,8 +74,9 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
             const predefinedRange = getPredefinedRange().find((range) => range.value === search?.value);
             const value = predefinedRange && search?.id === 'created' ? predefinedRange.label : search?.value;
             return (
-              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'
-                } ${value}`}</span>
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${
+                index === 0 ? '' : ' +'
+              } ${value}`}</span>
             );
           })}
         </div>

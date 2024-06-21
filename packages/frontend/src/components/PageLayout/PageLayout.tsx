@@ -7,7 +7,7 @@ import { Footer, Header, Sidebar } from '..';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
-import { decompressQueryParams } from '../../pages/Inbox/Inbox';
+import { decompressQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';

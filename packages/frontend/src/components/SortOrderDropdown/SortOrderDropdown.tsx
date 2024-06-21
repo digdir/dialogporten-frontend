@@ -1,5 +1,6 @@
 import { ArrowsUpDownIcon, CheckmarkIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
+import { t } from 'i18next';
 import { type ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Backdrop } from '../Backdrop';
@@ -20,23 +21,35 @@ interface SortOrderDropdownOption {
 interface SortOrderDropdownProps {
   onSelect: (selectedSortOrder: SortingOrder) => void;
   selectedSortOrder: SortingOrder;
-  options: SortOrderDropdownOption[];
+  options?: SortOrderDropdownOption[];
   btnClassName?: string;
 }
+
+const defaultSortOrderOptions = [
+  {
+    id: 'created_desc' as SortingOrder,
+    label: t('sort_order.created_desc'),
+  },
+  {
+    id: 'created_asc' as SortingOrder,
+    label: t('sort_order.created_asc'),
+  },
+];
+
 export const SortOrderDropdown = forwardRef(
   (
-    { onSelect, selectedSortOrder, options, btnClassName }: SortOrderDropdownProps,
+    { onSelect, selectedSortOrder, options = defaultSortOrderOptions, btnClassName }: SortOrderDropdownProps,
     ref: ForwardedRef<SortOrderDropdownRef>,
   ): JSX.Element => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const { t } = useTranslation();
-    const selectedOptionLabel = options.find((option) => option.id === selectedSortOrder)?.label;
-
     useImperativeHandle(ref, () => ({
       openSortOrder() {
         setIsOpen(true);
       },
     }));
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { t } = useTranslation();
+    const selectedOptionLabel = options.find((option) => option.id === selectedSortOrder)?.label;
 
     return (
       <div className={cx({ [styles.isOpen]: isOpen })}>

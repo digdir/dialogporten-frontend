@@ -1,6 +1,7 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
+import { format } from 'date-fns';
+import { nb } from 'date-fns/locale';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -24,9 +25,10 @@ import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
+import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { InboxSkeleton } from './InboxSkeleton.tsx';
+import { getFiltersFromQueryParams, getSortingOrderFromQueryParams } from './queryParams.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -44,13 +46,13 @@ export interface InboxItemInput {
   createdAt: string;
   status: DialogStatus;
 }
+interface DialogCategory {
+  label: string;
+  id: string;
+  items: InboxItemInput[];
+}
 
-export const compressQueryParams = (params: SavedSearchData): string => {
-  const queryParamsString = JSON.stringify(params);
-  return compressToEncodedURIComponent(queryParamsString);
-};
-
-export const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxItemInput[] => {
+const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxItemInput[] => {
   return dialogs.sort((a, b) => {
     if (sortOrder === 'created_desc') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -59,56 +61,58 @@ export const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder):
   });
 };
 
-export const decompressQueryParams = (compressedString: string): SavedSearchData => {
-  const decompressedString = decompressFromEncodedURIComponent(compressedString);
-  if (!decompressedString) {
-    throw new Error('Decompression failed');
-  }
-  return JSON.parse(decompressedString);
-};
-
-export const getFiltersFromQueryParams = (searchParams: URLSearchParams): Filter[] => {
-  const compressedData = searchParams.get('data');
-  if (compressedData) {
-    try {
-      const queryParams = decompressQueryParams(compressedData);
-      return queryParams.filters as Filter[];
-    } catch (error) {
-      console.error('Failed to decompress query parameters:', error);
-    }
-  }
-  return [] as Filter[];
-};
-
-const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): SortingOrder => {
-  return searchParams.get('sortBy') as SortingOrder;
-};
-
 export const Inbox = ({ viewType }: InboxProps) => {
+  const filterBarRef = useRef<FilterBarRef>(null);
+  const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
+
+  const location = useLocation();
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
+  const { openSnackbar } = useSnackbar();
+
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
-  const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
-  const location = useLocation();
+
   const { parties } = useParties();
-  const { dialogsByView, dialogs, isLoading: isLoadingDialogs } = useDialogs(parties);
   const { searchString, queryClient } = useSearchString();
+  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+
   const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
     parties,
     searchString,
   });
-  const { openSnackbar } = useSnackbar();
+  const { dialogsByView, dialogs, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(parties);
   const dialogsForView = dialogsByView[viewType];
-  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
-  const filterBarRef = useRef<FilterBarRef>(null);
-  const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
 
-  /*
-      Todo: There are now many competing lists for dialogs as data source for the output of this component. This needs to be cleaned up.
-      items, searchResults, filteredDialogsForView, dialogsForView, dialogs, ...
-      Search should include filters, update of filters should refetch search results.
-   */
+  const filteredDialogsForView = useMemo(() => {
+    return sortDialogs(filterDialogs(dialogsForView, activeFilters), selectedSortOrder);
+  }, [dialogsForView, activeFilters, selectedSortOrder]);
+
+  const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
+
+  const dialogsGroupedByDate: DialogCategory[] = useMemo(() => {
+    const allWithinSameYear = items.every(
+      (item) => new Date(item.createdAt).getFullYear() === new Date().getFullYear(),
+    );
+    return items.reduce((acc, item) => {
+      const createdAt = new Date(item.createdAt);
+      const key = allWithinSameYear
+        ? format(createdAt, 'LLLL', { locale: nb })
+        : format(createdAt, 'yyyy', { locale: nb });
+      const existingCategory = acc.find((category) => category.id === key);
+      if (existingCategory) {
+        existingCategory.items.push(item);
+      } else {
+        acc.push({
+          label: key,
+          id: key,
+          items: [item],
+        });
+      }
+      return acc;
+    }, [] as DialogCategory[]);
+  }, [items]);
 
   useEffect(() => {
     setActiveFilters(getFiltersFromQueryParams(searchParams));
@@ -148,26 +152,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }
   };
 
-  const filteredDialogsForView = useMemo(() => {
-    return sortDialogs(filterDialogs(dialogsForView, activeFilters), selectedSortOrder);
-  }, [dialogsForView, activeFilters, selectedSortOrder]);
-
-  const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
-
-  const dataGroupedByYear = useMemo(() => {
-    return items.reduce(
-      (acc: Record<string, InboxItemInput[]>, item) => {
-        const year = String(new Date(item.date).getFullYear());
-        if (!acc[year]) {
-          acc[year] = [];
-        }
-        acc[year].push(item);
-        return acc;
-      },
-      {} as Record<string, InboxItemInput[]>,
-    );
-  }, [filteredDialogsForView, items]);
-
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
       ...prev,
@@ -177,17 +161,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const filterBarSettings = getFilterBarSettings(dialogs);
   const savedSearchDisabled = !activeFilters?.length && !searchString;
-  const filteredView = !isFetchingSearchResults && ((searchString ?? []).length > 0 || activeFilters.length > 0);
-  const sortOrderOptions = [
-    {
-      id: 'created_desc' as SortingOrder,
-      label: t('sort_order.created_desc'),
-    },
-    {
-      id: 'created_asc' as SortingOrder,
-      label: t('sort_order.created_asc'),
-    },
-  ];
+  const isViewFiltered = !isFetchingSearchResults && ((searchString ?? []).length > 0 || activeFilters.length > 0);
 
   return (
     <main>
@@ -213,7 +187,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
               ref={sortOrderDropdownRef}
               onSelect={setSelectedSortOrder}
               selectedSortOrder={selectedSortOrder}
-              options={sortOrderOptions}
               btnClassName={styles.hideForSmallScreens}
             />
           </div>
@@ -270,15 +243,17 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
-        {isFetchingSearchResults ? <InboxSkeleton numberOfItems={3} /> : filteredView && <h2>{t('search.search.results', { count: items.length })}</h2>}
-        {!isLoadingDialogs && Object.keys(dataGroupedByYear).length === 0 &&
-          <InboxItemsHeader title={t('inbox.heading.no_results')} />}
-        {!isLoadingDialogs ? Object.entries(dataGroupedByYear)
-          .reverse()
-          .map(([year, items]) => {
+        {isFetchingSearchResults && <InboxSkeleton numberOfItems={3} />}
+        {!isFetchingSearchResults && isViewFiltered && <h2>{t('search.search.results', { count: items.length })}</h2>}
+        {!isLoadingDialogs && dialogsIsSuccess && items.length === 0 && (
+          <InboxItemsHeader title={t('inbox.heading.no_results')} />
+        )}
+        {isLoadingDialogs && <InboxSkeleton numberOfItems={5} withHeader />}
+        {!isLoadingDialogs &&
+          dialogsGroupedByDate.map(({ id, label, items }) => {
             const hideSelectAll = items.every((item) => selectedItems[item.id]);
             return (
-              <InboxItems key={year}>
+              <InboxItems key={id}>
                 <InboxItemsHeader
                   hideSelectAll={hideSelectAll}
                   onSelectAll={() => {
@@ -288,7 +263,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                       ...newItems,
                     });
                   }}
-                  title={year}
+                  title={label}
                 />
                 {items.map((item) => (
                   <InboxItem
@@ -306,9 +281,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   />
                 ))}
               </InboxItems>
-            )
-          }
-          ) : <InboxSkeleton numberOfItems={5} withHeader />}
+            );
+          })}
       </section>
     </main>
   );
