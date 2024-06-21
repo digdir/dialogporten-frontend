@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import styles from './footer.module.css';
 import { AltinnLogoSvg } from '../Header/AltinnLogo';
+import styles from './footer.module.css';
 
 const footerLinks = [
   {
@@ -24,12 +24,14 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} data-testid="main-footer">
       <div className={styles.content}>
         <div>
-          <p className={styles.company}><AltinnLogoSvg small /> {t('footer.company')}</p>
+          <p className={styles.company}>
+            <AltinnLogoSvg small /> {t('footer.company')}
+          </p>
           <p className={styles.addressLineOne}>{t('footer.address.line1')}</p>
-          <p className={styles.addressLineTwo} >{t('footer.address.line2')}</p>
+          <p className={styles.addressLineTwo}>{t('footer.address.line2')}</p>
         </div>
         <div>
           <ul className={styles.links}>
@@ -43,6 +45,6 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-    </footer >
+    </footer>
   );
 };
