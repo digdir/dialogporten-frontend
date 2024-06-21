@@ -5,9 +5,9 @@ test.beforeEach(async ({ page }) => {
 test.describe('Smoke test', () => {
   test('should show header, aside, main and footer', async ({ page }) => {
     const main = page.locator('main');
-    const aside = page.locator('aside');
-    const footer = page.locator('footer');
-    const header = page.locator('header');
+    const aside = page.locator('[data-testid="sidebar"]');
+    const footer = page.locator('[data-testid="main-footer"]');
+    const header = page.locator('[data-testid="main-header"]');
 
     await expect(main).toBeVisible();
     await expect(aside).toBeVisible();

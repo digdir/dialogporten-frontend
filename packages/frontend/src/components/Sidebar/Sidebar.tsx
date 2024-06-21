@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   }
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={styles.sidebar} data-testid="sidebar">
       {children || (
         <>
           <SidebarItem
