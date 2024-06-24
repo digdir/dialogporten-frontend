@@ -155,6 +155,28 @@
   }
 }
 
+.partiesItem:hover {
+  background-color: var(--grey);
+}
+
+.partiesItem {
+  min-height: 24px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.searchInput {
+  min-height: 24px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 1rem 0;
+}
+
+.currentParty {
+  background-color: var(--background-color);
+}
+
 .menuColumn {
   display: flex;
   align-items: center;
