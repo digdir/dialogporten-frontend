@@ -1,25 +1,18 @@
 import { ClockIcon, EyeIcon } from '@navikt/aksel-icons';
 import {
+  type AttachmentFieldsFragment,
   ContentType,
-  DialogActivityFragment,
-  DialogByIdFieldsFragment,
-  DialogElementFragment,
-  GetDialogByIdQuery,
-  PartyFieldsFragment,
+  type DialogByIdFieldsFragment,
+  type GetDialogByIdQuery,
+  type PartyFieldsFragment,
 } from 'bff-types-generated';
 import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useQuery } from 'react-query';
-import { GuiButtonProps } from '../components';
+import type { GuiButtonProps } from '../components';
 import { i18n } from '../i18n/config.ts';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
-
-interface Attachment {
-  label: string;
-  href: string;
-  mime?: string;
-}
 
 interface Participant {
   label: string;
@@ -38,11 +31,10 @@ export interface DialogByIdDetails {
   sender: Participant;
   receiver: Participant;
   title: string;
-  attachment: Attachment[];
   tags: InboxItemTag[];
   guiActions: GuiButtonProps[];
   additionalInfo: string | React.ReactNode;
-  activities: (DialogActivityFragment & { elements: DialogElementFragment[] })[];
+  attachments: AttachmentFieldsFragment[];
 }
 
 interface UseDialogByIdOutput {
@@ -113,7 +105,6 @@ export function mapDialogDtoToInboxItem(
       label: nameOfParty,
     },
     tags: getTags(item),
-    attachment: [],
     additionalInfo: getPropertyByCultureCode(additionalInfoObj),
     guiActions: item.guiActions.map((guiAction) => ({
       id: guiAction.id,
@@ -123,11 +114,7 @@ export function mapDialogDtoToInboxItem(
       method: guiAction.action,
       title: getPropertyByCultureCode(guiAction.title),
     })),
-    activities: item.activities.map((activity) => ({
-      ...activity,
-      elements: item.elements,
-      //or rather this? elements: item.elements.filter((element) => activity.dialogElementId === element.id),
-    })),
+    attachments: item.attachments,
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {

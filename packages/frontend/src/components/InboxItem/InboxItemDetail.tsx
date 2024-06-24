@@ -1,10 +1,8 @@
 import { Link } from '@digdir/designsystemet-react';
 import { FileIcon } from '@navikt/aksel-icons';
-import { ElementUrlConsumer } from 'bff-types-generated';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import { AttachmentUrlConsumer } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
-import { DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
@@ -34,7 +32,7 @@ import styles from './inboxItemDetail.module.css';
  * />
  */
 export const InboxItemDetail = ({
-  dialog: { title, description, sender, receiver, toLabel, guiActions, tags = [], additionalInfo, activities },
+  dialog: { title, description, sender, receiver, toLabel, guiActions, tags = [], additionalInfo, attachments },
 }: { dialog: DialogByIdDetails }): JSX.Element => {
   const { t } = useTranslation();
   return (
@@ -70,52 +68,39 @@ export const InboxItemDetail = ({
         </div>
       </section>
       <section className={styles.activities}>
-        <h2>{t('inbox.heading.events', { count: activities.length })}</h2>
-        {activities
+        <h2>{t('inbox.heading.events', { count: attachments.length })}</h2>
+        {attachments
           .slice()
           .reverse()
-          .map((activity) => {
-            /* cf. https://github.com/digdir/dialogporten/issues/760 for performedBy */
-            const attachmentCount = activity.elements.reduce((tail, element) => tail + element.urls.length, 0);
+          .map((attachment) => {
+            const attachmentCount = attachment.urls.length;
             return (
-              <section key={activity.id}>
-                <span>{activity.performedBy}</span>
+              <section key={attachment.id}>
+                <span>Performed by: TODO</span>
                 <div className={styles.elements}>
                   <h2 id="attachmentTitle" className={styles.attachmentTitle}>
                     {t('inbox.attachment.count', {
                       count: attachmentCount,
                     })}
+                    <ul className={styles.attachmentItem}>
+                      {attachment.urls
+                        .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
+                        .map((url) => (
+                          <li key={url.url}>
+                            {/* TODO: Icon should render differently depending on url.mediaType */}
+                            <FileIcon />
+                            <Link
+                              href={url.url}
+                              aria-label={t('inbox.attachment.link', {
+                                label: url.url,
+                              })}
+                            >
+                              {getPropertyByCultureCode(attachment.displayName) || url.url}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
                   </h2>
-                  {activity.elements.map((element) => {
-                    return (
-                      <div key={element.id}>
-                        {element.urls.length > 0 && (
-                          <div className={styles.attachments} aria-labelledby="attachmentTitle">
-                            <ul className={styles.attachmentItem}>
-                              {element.urls
-                                /* Urls per element are same content in formats */
-                                .filter((url) => url.consumerType === ElementUrlConsumer.Gui)
-                                .map((url) => (
-                                  <li key={url.url}>
-                                    {/* TODO: Icon should render differently depending on url.mediaType */}
-                                    <FileIcon />
-                                    <Link
-                                      href={url.url}
-                                      aria-label={t('inbox.attachment.link', {
-                                        label: url.url,
-                                      })}
-                                    >
-                                      {getPropertyByCultureCode(element.displayName) || url.url}
-                                    </Link>
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <span>{format(activity.createdAt, 'P', { locale: nb })}</span>
                 </div>
               </section>
             );
