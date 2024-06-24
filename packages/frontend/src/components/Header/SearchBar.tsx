@@ -1,34 +1,43 @@
+import { Search } from '@digdir/designsystemet-react';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styles from './search.module.css';
-import { Backdrop } from '../Backdrop/Backdrop';
+import { useSearchParams } from 'react-router-dom';
+import { Backdrop } from '../Backdrop';
 import { useSearchString } from '../Header';
-import { Search } from '@digdir/designsystemet-react';
 import { SearchDropdown } from './SearchDropdown';
-
+import styles from './search.module.css';
 
 export const SearchBar: React.FC = () => {
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
   const { t } = useTranslation();
-  const { queryClient, searchString } = useSearchString();
-  const [searchValue, setSearchValue] = useState(searchString);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { searchString, setSearchString } = useSearchString();
+  const [searchValue, setSearchValue] = useState<string>(searchString);
 
   const handleClose = () => {
     setShowDropdownMenu(false);
-  }
+  };
 
-  const onSearch = (value: string) => {
-    queryClient.setQueryData(['search'], () => value || '');
+  const onClearSearch = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (newSearchParams.has('data')) {
+      newSearchParams.delete('data');
+      setSearchParams(newSearchParams);
+    }
     setShowDropdownMenu(false);
-  }
+  };
+  const onSearch = (value: string) => {
+    setSearchString(value);
+    onClearSearch();
+  };
 
   return (
     <>
       <div className={cx(styles.menuContainer, { [styles.searchbarOpen]: showDropdownMenu })}>
         <div className={styles.searchbarContainer}>
           <Search
-            autoComplete='off'
+            autoComplete="off"
             onFocus={() => setShowDropdownMenu(true)}
             size="small"
             aria-label={t('header.searchPlaceholder')}
@@ -44,12 +53,14 @@ export const SearchBar: React.FC = () => {
               }
             }}
             value={searchValue}
-            onClear={() => {
-              setShowDropdownMenu(false);
-              setSearchValue('')
-            }}
+            onClear={onClearSearch}
           />
-          <SearchDropdown showDropdownMenu={showDropdownMenu} onClose={handleClose} searchValue={searchValue || ''} onSearch={onSearch} />
+          <SearchDropdown
+            showDropdownMenu={showDropdownMenu}
+            onClose={handleClose}
+            searchValue={searchValue}
+            onSearch={onSearch}
+          />
         </div>
       </div>
       <Backdrop show={showDropdownMenu} onClick={handleClose} />

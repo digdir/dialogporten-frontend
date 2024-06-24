@@ -1,5 +1,7 @@
 import type React from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { MenuBar } from '../MenuBar';
 import { AltinnLogo } from './AltinnLogo';
@@ -13,12 +15,27 @@ type HeaderProps = {
 };
 
 export const useSearchString = () => {
-  const queryClient = useQueryClient();
-  const { data: searchString } = useQuery<string>(['search'], () => '', {
-    enabled: false,
-    staleTime: Number.POSITIVE_INFINITY,
-  });
-  return { searchString, queryClient };
+  const [searchParams, updateSearchParams] = useSearchParams();
+  const [searchString, setSearchString] = useState<string>('');
+  const handleSearchString = (value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (value) {
+      newSearchParams.set('search', value);
+    } else {
+      newSearchParams.delete('search');
+    }
+    updateSearchParams(newSearchParams);
+    setSearchString(value);
+  };
+
+  useEffect(() => {
+    const search = searchParams.get('search');
+    if (search !== searchString) {
+      setSearchString(search || '');
+    }
+  }, [searchParams, searchString]);
+
+  return { searchString, setSearchString: handleSearchString };
 };
 
 /**

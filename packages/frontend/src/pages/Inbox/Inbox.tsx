@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
-import { type InboxViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
+import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import {
   ActionPanel,
@@ -45,6 +45,8 @@ export interface InboxItemInput {
   date: string;
   createdAt: string;
   status: DialogStatus;
+  isModifiedLastByServiceOwner: boolean;
+  isSeenByEndUser: boolean;
 }
 interface DialogCategory {
   label: string;
@@ -75,47 +77,27 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
 
   const { parties } = useParties();
-  const { searchString, queryClient } = useSearchString();
+  const { searchString, setSearchString } = useSearchString();
+  const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
     parties,
     searchString,
   });
-  const { dialogsByView, dialogs, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(parties);
+
+  const { dialogsByView, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(parties);
   const dialogsForView = dialogsByView[viewType];
 
-  const filteredDialogsForView = useMemo(() => {
-    return sortDialogs(filterDialogs(dialogsForView, activeFilters), selectedSortOrder);
-  }, [dialogsForView, activeFilters, selectedSortOrder]);
+  const showingSearchResults = searchString.length > 0;
+  const dataSource = showingSearchResults ? searchResults : dialogsForView;
 
-  const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
-
-  const dialogsGroupedByDate: DialogCategory[] = useMemo(() => {
-    const allWithinSameYear = items.every(
-      (item) => new Date(item.createdAt).getFullYear() === new Date().getFullYear(),
-    );
-    return items.reduce((acc, item) => {
-      const createdAt = new Date(item.createdAt);
-      const key = allWithinSameYear
-        ? format(createdAt, 'LLLL', { locale: nb })
-        : format(createdAt, 'yyyy', { locale: nb });
-      const existingCategory = acc.find((category) => category.id === key);
-      if (existingCategory) {
-        existingCategory.items.push(item);
-      } else {
-        acc.push({
-          label: key,
-          id: key,
-          items: [item],
-        });
-      }
-      return acc;
-    }, [] as DialogCategory[]);
-  }, [items]);
+  const itemsToDisplay = useMemo(() => {
+    return sortDialogs(filterDialogs(dataSource, activeFilters), selectedSortOrder);
+  }, [dataSource, activeFilters, selectedSortOrder]);
 
   useEffect(() => {
-    setActiveFilters(getFiltersFromQueryParams(searchParams));
+    setInitialFilters(getFiltersFromQueryParams(searchParams));
     const sortBy = getSortingOrderFromQueryParams(searchParams);
     if (sortBy && sortBy !== selectedSortOrder) {
       setSelectedSortOrder(getSortingOrderFromQueryParams(searchParams));
@@ -127,6 +109,41 @@ export const Inbox = ({ viewType }: InboxProps) => {
     newSearchParams.set('sortBy', selectedSortOrder);
     setSearchParams(newSearchParams);
   }, [selectedSortOrder]);
+
+  const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
+
+  useEffect(() => {
+    if (showingSearchResults && activeFilters.length) {
+      filterBarRef.current?.resetFilters();
+    }
+  }, [showingSearchResults]);
+
+  const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
+    const allWithinSameYear = dataSource.every((d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear());
+
+    return dataSource.reduce((acc, item, _, list) => {
+      const createdAt = new Date(item.createdAt);
+      const key = shouldShowSearchResults
+        ? getViewType(item)
+        : allWithinSameYear
+          ? format(createdAt, 'LLLL', { locale: nb })
+          : format(createdAt, 'yyyy', { locale: nb });
+
+      const label = shouldShowSearchResults
+        ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
+        : key;
+
+      const existingCategory = acc.find((c) => c.id === key);
+
+      if (existingCategory) {
+        existingCategory.items.push(item);
+      } else {
+        acc.push({ label, id: key, items: [item] });
+      }
+
+      return acc;
+    }, [] as DialogCategory[]);
+  }, [dataSource, shouldShowSearchResults]);
 
   const handleSaveSearch = async () => {
     try {
@@ -140,7 +157,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         message: t('savedSearches.saved_success'),
         variant: 'success',
       });
-      await queryClient.invalidateQueries('savedSearches');
+      setSearchString('');
     } catch (error) {
       openSnackbar({
         message: t('savedSearches.saved_error'),
@@ -159,49 +176,74 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const filterBarSettings = getFilterBarSettings(dialogs);
+  const filterBarSettings = useMemo(() => getFilterBarSettings(itemsToDisplay), [itemsToDisplay]);
   const savedSearchDisabled = !activeFilters?.length && !searchString;
-  const isViewFiltered = !isFetchingSearchResults && ((searchString ?? []).length > 0 || activeFilters.length > 0);
+
+  if (isFetchingSearchResults) {
+    return (
+      <main>
+        <InboxSkeleton numberOfItems={3} />
+      </main>
+    );
+  }
+
+  if (isLoadingDialogs) {
+    return (
+      <main>
+        <InboxSkeleton numberOfItems={5} withHeader />
+      </main>
+    );
+  }
+
+  if (itemsToDisplay.length === 0 && dialogsIsSuccess) {
+    return (
+      <main>
+        <InboxItemsHeader title={t('inbox.heading.no_results')} />
+      </main>
+    );
+  }
 
   return (
     <main>
-      <section className={styles.filtersArea}>
-        <div className={styles.gridContainer}>
-          <div className={styles.filterSaveContainer}>
-            <FilterBar
-              ref={filterBarRef}
-              settings={filterBarSettings}
-              onFilterChange={setActiveFilters}
-              initialFilters={activeFilters}
-              addFilterBtnClassNames={styles.hideForSmallScreens}
-            />
-            <SaveSearchButton
-              onBtnClick={handleSaveSearch}
-              className={styles.hideForSmallScreens}
-              disabled={savedSearchDisabled}
-              isLoading={isSavingSearch}
-            />
+      <>
+        <section className={styles.filtersArea}>
+          <div className={styles.gridContainer}>
+            <div className={styles.filterSaveContainer}>
+              <FilterBar
+                ref={filterBarRef}
+                settings={filterBarSettings}
+                onFilterChange={setActiveFilters}
+                initialFilters={initialFilters}
+                addFilterBtnClassNames={styles.hideForSmallScreens}
+              />
+              <SaveSearchButton
+                onBtnClick={handleSaveSearch}
+                className={styles.hideForSmallScreens}
+                disabled={savedSearchDisabled}
+                isLoading={isSavingSearch}
+              />
+            </div>
+            <div className={styles.sortOrderContainer}>
+              <SortOrderDropdown
+                ref={sortOrderDropdownRef}
+                onSelect={setSelectedSortOrder}
+                selectedSortOrder={selectedSortOrder}
+                btnClassName={styles.hideForSmallScreens}
+              />
+            </div>
           </div>
-          <div className={styles.sortOrderContainer}>
-            <SortOrderDropdown
-              ref={sortOrderDropdownRef}
-              onSelect={setSelectedSortOrder}
-              selectedSortOrder={selectedSortOrder}
-              btnClassName={styles.hideForSmallScreens}
-            />
-          </div>
-        </div>
-      </section>
-      <FosToolbar
-        onFilterBtnClick={() => {
-          filterBarRef?.current?.openFilter();
-        }}
-        onSortBtnClick={() => {
-          sortOrderDropdownRef?.current?.openSortOrder();
-        }}
-        onSaveBtnClick={handleSaveSearch}
-        hideSaveButton={savedSearchDisabled}
-      />
+        </section>
+        <FosToolbar
+          onFilterBtnClick={() => {
+            filterBarRef?.current?.openFilter();
+          }}
+          onSortBtnClick={() => {
+            sortOrderDropdownRef?.current?.openSortOrder();
+          }}
+          onSaveBtnClick={handleSaveSearch}
+          hideSaveButton={savedSearchDisabled}
+        />
+      </>
       {inSelectionMode && (
         <ActionPanel
           actionButtons={[
@@ -243,46 +285,39 @@ export const Inbox = ({ viewType }: InboxProps) => {
         />
       )}
       <section>
-        {isFetchingSearchResults && <InboxSkeleton numberOfItems={3} />}
-        {!isFetchingSearchResults && isViewFiltered && <h2>{t('search.search.results', { count: items.length })}</h2>}
-        {!isLoadingDialogs && dialogsIsSuccess && items.length === 0 && (
-          <InboxItemsHeader title={t('inbox.heading.no_results')} />
-        )}
-        {isLoadingDialogs && <InboxSkeleton numberOfItems={5} withHeader />}
-        {!isLoadingDialogs &&
-          dialogsGroupedByDate.map(({ id, label, items }) => {
-            const hideSelectAll = items.every((item) => selectedItems[item.id]);
-            return (
-              <InboxItems key={id}>
-                <InboxItemsHeader
-                  hideSelectAll={hideSelectAll}
-                  onSelectAll={() => {
-                    const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
-                    setSelectedItems({
-                      ...selectedItems,
-                      ...newItems,
-                    });
-                  }}
-                  title={label}
+        {dialogsGroupedByCategory.map(({ id, label, items }) => {
+          const hideSelectAll = items.every((item) => selectedItems[item.id]);
+          return (
+            <InboxItems key={id}>
+              <InboxItemsHeader
+                hideSelectAll={hideSelectAll}
+                onSelectAll={() => {
+                  const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
+                  setSelectedItems({
+                    ...selectedItems,
+                    ...newItems,
+                  });
+                }}
+                title={label}
+              />
+              {items.map((item) => (
+                <InboxItem
+                  key={item.id}
+                  checkboxValue={item.id}
+                  title={item.title}
+                  toLabel={t('word.to')}
+                  description={item.description}
+                  sender={item.sender}
+                  receiver={item.receiver}
+                  isChecked={selectedItems[item.id]}
+                  onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
+                  tags={item.tags}
+                  linkTo={item.linkTo}
                 />
-                {items.map((item) => (
-                  <InboxItem
-                    key={item.id}
-                    checkboxValue={item.id}
-                    title={item.title}
-                    toLabel={t('word.to')}
-                    description={item.description}
-                    sender={item.sender}
-                    receiver={item.receiver}
-                    isChecked={selectedItems[item.id]}
-                    onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
-                    tags={item.tags}
-                    linkTo={item.linkTo}
-                  />
-                ))}
-              </InboxItems>
-            );
-          })}
+              ))}
+            </InboxItems>
+          );
+        })}
       </section>
     </main>
   );

@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    text-transform: capitalize;
     align-items: center;
     padding: 0 1rem;
+    :first-letter {
+      text-transform: capitalize;
+    }
 }
+
