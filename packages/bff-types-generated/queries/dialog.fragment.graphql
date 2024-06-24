@@ -16,7 +16,6 @@ fragment SearchDialogFields on SearchDialog {
       value
       cultureCode
     }
-    dialogElementId
     performedBy
   }
   content {
@@ -29,8 +28,8 @@ fragment DialogByIdFields on Dialog {
   party
   org
   progress
-  elements {
-    ...DialogElement
+  attachments {
+    ...AttachmentFields
   }
   activities {
   	...DialogActivity
@@ -72,16 +71,20 @@ fragment DialogContentFields on Content {
     }
 }
 
-fragment DialogElement on Element {
+fragment AttachmentUrlFields on AttachmentUrl {
+  id
+  url
+  consumerType
+}
+
+fragment AttachmentFields on Attachment {
     id
-    urls {
-      consumerType
-      url
-    }
-    type
     displayName {
       value
       cultureCode
+    }
+    urls {
+      ...AttachmentUrlFields
     }
 }
 
@@ -89,7 +92,6 @@ fragment DialogActivity on Activity {
     id
     type
     createdAt
-    dialogElementId
     performedBy
 }
 
