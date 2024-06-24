@@ -2,18 +2,18 @@ import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import {
   ContentType,
   DialogStatus,
-  GetAllDialogsForPartiesQuery,
-  PartyFieldsFragment,
-  SearchDialogFieldsFragment,
+  type GetAllDialogsForPartiesQuery,
+  type PartyFieldsFragment,
+  type SearchDialogFieldsFragment,
 } from 'bff-types-generated';
 import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { i18n } from '../i18n/config.ts';
-import { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
+import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
-import { useEffect, useState } from 'react';
 
 export type InboxViewType = 'inbox' | 'draft' | 'sent';
 interface UseDialogsOutput {
@@ -25,7 +25,6 @@ interface UseDialogsOutput {
   isLoading: boolean;
 }
 
-
 const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): string => {
   const defaultCultureCode = 'nb-no'; // TODO: Will be changed to -1 iso in the future
   if (value) {
@@ -35,7 +34,7 @@ const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): 
 };
 
 /* TODO: Add more tags */
-const getTags = (item: SearchDialogFieldsFragment) => {
+const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean) => {
   const tags = [];
   tags.push({ label: format(item.createdAt, 'do MMMM', { locale: nb }), icon: <ClockIcon /> });
   if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
@@ -45,7 +44,7 @@ const getTags = (item: SearchDialogFieldsFragment) => {
     });
   }
 
-  if (item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser)) {
+  if (isSeenByEndUser) {
     tags.push({
       label: i18n.t('word.seen'),
       icon: <EyeIcon />,
@@ -64,6 +63,8 @@ export function mapDialogDtoToInboxItem(
     const summaryObj = item?.content?.find((c) => c.type === ContentType.Summary)?.value;
     const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
     const serviceOwner = getOrganisation(item.org, 'nb');
+    const isSeenByEndUser =
+      item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
     return {
       id: item.id,
       title: getPropertyByCultureCode(titleObj),
@@ -72,18 +73,20 @@ export function mapDialogDtoToInboxItem(
         label: serviceOwner?.name ?? item.org,
         ...(serviceOwner?.logo
           ? {
-            icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
-          }
+              icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
+            }
           : {}),
       },
       receiver: {
         label: nameOfParty,
       },
-      tags: getTags(item),
+      tags: getTags(item, isSeenByEndUser),
       linkTo: `/inbox/${item.id}`,
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
       status: item.status ?? 'UnknownStatus',
+      isModifiedLastByServiceOwner: item?.latestActivity?.performedBy === null,
+      isSeenByEndUser,
     };
   });
 }
@@ -99,7 +102,7 @@ export const searchDialogs = (
     search,
     org,
     status,
-  })
+  });
 };
 
 export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForPartiesQuery> =>
@@ -136,7 +139,7 @@ export const useSearchDialogs = ({
 
   useEffect(() => {
     if (searchString && !isFetching) {
-      setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties))
+      setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties));
     }
   }, [setSearchResults, searchString, isFetching]);
 
@@ -144,7 +147,7 @@ export const useSearchDialogs = ({
     isLoading,
     isSuccess,
     searchResults,
-    isFetching
+    isFetching,
   };
 };
 
@@ -155,18 +158,15 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
-  const dialogInboxItems = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
   return {
     isLoading,
     isSuccess,
-    dialogs: dialogInboxItems,
-    /* TODO: As soon as logic for performedBy in lastActivity has changed,
-     *  checking if service owner is last modifier for inbox items and end user is last modifier for draft, must be added
-     */
+    dialogs,
     dialogsByView: {
-      inbox: dialogInboxItems.filter((dii) => dii.status === DialogStatus.New),
-      draft: dialogInboxItems.filter((dii) => [DialogStatus.InProgress, DialogStatus.Signing].includes(dii.status)),
-      sent: dialogInboxItems.filter((dii) => dii.status === DialogStatus.Completed),
+      inbox: dialogs.filter((dii) => dii.status === DialogStatus.New || dii.isModifiedLastByServiceOwner),
+      draft: dialogs.filter((dii) => [DialogStatus.InProgress, DialogStatus.Signing].includes(dii.status)),
+      sent: dialogs.filter((dii) => dii.status === DialogStatus.Completed),
     },
   };
 };

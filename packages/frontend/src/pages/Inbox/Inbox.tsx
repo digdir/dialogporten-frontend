@@ -45,6 +45,8 @@ export interface InboxItemInput {
   date: string;
   createdAt: string;
   status: DialogStatus;
+  isModifiedLastByServiceOwner: boolean;
+  isSeenByEndUser: boolean;
 }
 interface DialogCategory {
   label: string;
@@ -82,37 +84,16 @@ export const Inbox = ({ viewType }: InboxProps) => {
     parties,
     searchString,
   });
+
   const { dialogsByView, dialogs, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(parties);
   const dialogsForView = dialogsByView[viewType];
 
-  const filteredDialogsForView = useMemo(() => {
+  const inSearchMode = searchString?.length && searchResults;
+  const dataSource = inSearchMode ? searchResults : dialogsForView;
+
+  const itemsToDisplay = useMemo(() => {
     return sortDialogs(filterDialogs(dialogsForView, activeFilters), selectedSortOrder);
-  }, [dialogsForView, activeFilters, selectedSortOrder]);
-
-  const items = searchString?.length && searchResults ? searchResults : filteredDialogsForView;
-
-  const dialogsGroupedByDate: DialogCategory[] = useMemo(() => {
-    const allWithinSameYear = items.every(
-      (item) => new Date(item.createdAt).getFullYear() === new Date().getFullYear(),
-    );
-    return items.reduce((acc, item) => {
-      const createdAt = new Date(item.createdAt);
-      const key = allWithinSameYear
-        ? format(createdAt, 'LLLL', { locale: nb })
-        : format(createdAt, 'yyyy', { locale: nb });
-      const existingCategory = acc.find((category) => category.id === key);
-      if (existingCategory) {
-        existingCategory.items.push(item);
-      } else {
-        acc.push({
-          label: key,
-          id: key,
-          items: [item],
-        });
-      }
-      return acc;
-    }, [] as DialogCategory[]);
-  }, [items]);
+  }, [dataSource, activeFilters, selectedSortOrder]);
 
   useEffect(() => {
     setActiveFilters(getFiltersFromQueryParams(searchParams));
@@ -127,6 +108,36 @@ export const Inbox = ({ viewType }: InboxProps) => {
     newSearchParams.set('sortBy', selectedSortOrder);
     setSearchParams(newSearchParams);
   }, [selectedSortOrder]);
+
+  useEffect(() => {
+    setActiveFilters([]);
+  }, [isFetchingSearchResults]);
+
+  const shouldShowSearchResults = !isFetchingSearchResults && inSearchMode;
+  const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
+    const allWithinSameYear = dataSource.every((d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear());
+    return dataSource.reduce((acc, item) => {
+      let key = '';
+      if (shouldShowSearchResults) {
+        key = item.status;
+      } else {
+        const createdAt = new Date(item.createdAt);
+        key = allWithinSameYear ? format(createdAt, 'LLLL', { locale: nb }) : format(createdAt, 'yyyy', { locale: nb });
+      }
+
+      const existingCategory = acc.find((category) => category.id === key);
+      if (existingCategory) {
+        existingCategory.items.push(item);
+      } else {
+        acc.push({
+          label: key,
+          id: key,
+          items: [item],
+        });
+      }
+      return acc;
+    }, [] as DialogCategory[]);
+  }, [itemsToDisplay, shouldShowSearchResults]);
 
   const handleSaveSearch = async () => {
     try {
@@ -161,7 +172,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const filterBarSettings = getFilterBarSettings(dialogs);
   const savedSearchDisabled = !activeFilters?.length && !searchString;
-  const isViewFiltered = !isFetchingSearchResults && ((searchString ?? []).length > 0 || activeFilters.length > 0);
 
   return (
     <main>
@@ -244,13 +254,12 @@ export const Inbox = ({ viewType }: InboxProps) => {
       )}
       <section>
         {isFetchingSearchResults && <InboxSkeleton numberOfItems={3} />}
-        {!isFetchingSearchResults && isViewFiltered && <h2>{t('search.search.results', { count: items.length })}</h2>}
-        {!isLoadingDialogs && dialogsIsSuccess && items.length === 0 && (
+        {!isLoadingDialogs && dialogsIsSuccess && dataSource.length === 0 && (
           <InboxItemsHeader title={t('inbox.heading.no_results')} />
         )}
         {isLoadingDialogs && <InboxSkeleton numberOfItems={5} withHeader />}
         {!isLoadingDialogs &&
-          dialogsGroupedByDate.map(({ id, label, items }) => {
+          dialogsGroupedByCategory.map(({ id, label, items }) => {
             const hideSelectAll = items.every((item) => selectedItems[item.id]);
             return (
               <InboxItems key={id}>
