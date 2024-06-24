@@ -1,13 +1,16 @@
 import { Skeleton } from "@digdir/designsystemet-react";
 import { InboxItems } from "../../components";
 import styles from '../../components/InboxItem/inboxItem.module.css';
+import cx from 'classnames';
 
 interface InboxSkeletonProps {
   numberOfItems: number;
   withHeader?: boolean;
+  noBorder?: boolean;
+
 }
 
-export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({ numberOfItems, withHeader = false }) => {
+export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({ numberOfItems, withHeader = false, noBorder = false }) => {
 
   return (
     <>
@@ -16,7 +19,7 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({ numberOfItems, wit
           <h2><Skeleton.Text width='80px' /></h2>
         </header>}
         {Array.from({ length: numberOfItems }).map((_, index) => (
-          <li key={index} className={styles.inboxItemWrapper} style={{ minHeight: 196 }}>
+          <li key={index} className={cx(styles.inboxItemWrapper, { [styles.noBorder]: noBorder })} style={{ minHeight: 196 }}>
             <section className={styles.inboxItem}>
               <header className={styles.header}>
                 <h2 className={styles.title}>

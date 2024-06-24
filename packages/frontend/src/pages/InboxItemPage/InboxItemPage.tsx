@@ -5,6 +5,7 @@ import { useParties } from '../../api/useParties.ts';
 import { BackButton } from '../../components';
 import { InboxItemDetail } from '../../components';
 import styles from './inboxItemPage.module.css';
+import { InboxItemPageSkeleton } from './InboxItemPageSkeleton.tsx';
 
 export const InboxItemPage = () => {
   const { id } = useParams();
@@ -13,8 +14,9 @@ export const InboxItemPage = () => {
   const { dialog, isLoading } = useDialogById(parties, id);
 
   if (isLoading) {
-    // TODO: Replace with loader
-    return null;
+    return (
+      <InboxItemPageSkeleton />
+    )
   }
 
   if (!dialog) {
