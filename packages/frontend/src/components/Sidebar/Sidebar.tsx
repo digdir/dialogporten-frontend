@@ -44,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             displayText={t('sidebar.inbox')}
             label={t('sidebar.inbox.label')}
             icon={<InboxFillIcon />}
-            count={dialogsByView.inbox.length}
+            count={dialogsByView.inbox.filter((dialog) => !dialog.isSeenByEndUser).length}
             path="/"
             isInbox
             isCompany={isCompany}

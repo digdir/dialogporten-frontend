@@ -50,6 +50,7 @@ type ListOpenTarget = 'none' | 'add_filter' | string;
 
 export type FilterBarRef = {
   openFilter: () => void;
+  resetFilters: () => void;
 };
 
 /**
@@ -105,7 +106,7 @@ export const FilterBar = forwardRef(
     { onFilterChange, settings, initialFilters = [], addFilterBtnClassNames }: FilterBarProps,
     ref: ForwardedRef<FilterBarRef>,
   ) => {
-    const [selectedFilters, setSelectedFilters] = useState<Filter[]>(initialFilters);
+    const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
     const [listOpenForTarget, setListOpenForTarget] = useState<ListOpenTarget>('none');
     const [currentSubLevelMenu, setCurrentSubLevelMenu] = useState<SubLevelState | undefined>();
 
@@ -113,8 +114,12 @@ export const FilterBar = forwardRef(
       openFilter() {
         setListOpenForTarget('add_filter');
       },
+      resetFilters() {
+        setSelectedFilters([]);
+      },
     }));
 
+    // biome-ignore lint: lint/correctness/useExhaustiveDependencies
     useEffect(() => {
       if (initialFilters.length && !selectedFilters.length) {
         setSelectedFilters(initialFilters);
