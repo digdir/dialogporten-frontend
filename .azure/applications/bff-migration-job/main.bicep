@@ -114,6 +114,10 @@ var containerAppEnvVars = [
     name: 'MIGRATION_RUN'
     value: 'true'
   }
+  {
+    name: 'TYPEORM_SYNCHRONIZE_ENABLED'
+    value: ''
+  }
 ]
 
 module containerAppJob '../../modules/containerAppJob/main.bicep' = {

@@ -123,7 +123,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'TYPEORM_SYNCHRONIZE_ENABLED'
-    value: 'true'
+    value: ''
   }
   {
     name: 'DIALOGPORTEN_URL'
