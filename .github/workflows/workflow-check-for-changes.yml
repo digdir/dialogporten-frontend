@@ -47,3 +47,5 @@ jobs:
               - 'packages/storybook/**/*'
             migrations:
               - 'packages/bff/src/migrations/**/*'
+              - '.azure/applications/bff-migration-job/**/*'
+              - '.azure/modules/containerAppJob/**/*'
