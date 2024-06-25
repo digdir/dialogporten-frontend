@@ -1,0 +1,39 @@
+.itemInboxPage {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.titleOne {
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.subTitle {
+  margin-left: 1rem;
+  margin-top: 2rem;
+}
+
+.titleTwo {
+  margin-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.backButton {
+  text-decoration: none;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 8px;
+}
+
+.backIcon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
