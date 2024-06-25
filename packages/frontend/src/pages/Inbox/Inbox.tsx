@@ -205,34 +205,32 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   return (
     <main>
-      <>
-        <section className={styles.filtersArea}>
-          <div className={styles.gridContainer}>
-            <div className={styles.filterSaveContainer}>
-              <FilterBar
-                ref={filterBarRef}
-                settings={filterBarSettings}
-                onFilterChange={setActiveFilters}
-                initialFilters={initialFilters}
-                addFilterBtnClassNames={styles.hideForSmallScreens}
-              />
-              <SaveSearchButton
-                onBtnClick={handleSaveSearch}
-                className={styles.hideForSmallScreens}
-                disabled={savedSearchDisabled}
-                isLoading={isSavingSearch}
-              />
-            </div>
-            <div className={styles.sortOrderContainer}>
-              <SortOrderDropdown
-                ref={sortOrderDropdownRef}
-                onSelect={setSelectedSortOrder}
-                selectedSortOrder={selectedSortOrder}
-                btnClassName={styles.hideForSmallScreens}
-              />
-            </div>
+      <section className={styles.filtersArea}>
+        <div className={styles.gridContainer}>
+          <div className={styles.filterSaveContainer}>
+            <FilterBar
+              ref={filterBarRef}
+              settings={filterBarSettings}
+              onFilterChange={setActiveFilters}
+              initialFilters={initialFilters}
+              addFilterBtnClassNames={styles.hideForSmallScreens}
+            />
+            <SaveSearchButton
+              onBtnClick={handleSaveSearch}
+              className={styles.hideForSmallScreens}
+              disabled={savedSearchDisabled}
+              isLoading={isSavingSearch}
+            />
           </div>
-        </section>
+          <div className={styles.sortOrderContainer}>
+            <SortOrderDropdown
+              ref={sortOrderDropdownRef}
+              onSelect={setSelectedSortOrder}
+              selectedSortOrder={selectedSortOrder}
+              btnClassName={styles.hideForSmallScreens}
+            />
+          </div>
+        </div>
         <FosToolbar
           onFilterBtnClick={() => {
             filterBarRef?.current?.openFilter();
@@ -243,7 +241,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
           onSaveBtnClick={handleSaveSearch}
           hideSaveButton={savedSearchDisabled}
         />
-      </>
+      </section>
       {inSelectionMode && (
         <ActionPanel
           actionButtons={[

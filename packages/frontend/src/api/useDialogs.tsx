@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useDebounce } from 'use-debounce';
 import { i18n } from '../i18n/config.ts';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
@@ -130,8 +131,9 @@ export const useSearchDialogs = ({
   status,
 }: searchDialogsProps): UseSearchDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
+  const debouncedSearchString = useDebounce(searchString, 300);
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: ['searchDialogs', partyURIs, searchString, org, status],
+    queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org, status],
     queryFn: () => searchDialogs(partyURIs, searchString, org, status),
     enabled: partyURIs.length > 0 && !!searchString && searchString.length > 2,
   });
@@ -157,7 +159,8 @@ export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status =
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
   if (isSentDialog(dialog)) {
     return 'sent';
-  } else if (isDraftDialog(dialog)) {
+  }
+  if (isDraftDialog(dialog)) {
     return 'draft';
   }
   return 'inbox';
