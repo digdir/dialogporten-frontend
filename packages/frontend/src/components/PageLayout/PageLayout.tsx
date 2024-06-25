@@ -11,6 +11,7 @@ import { decompressQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
+import { useProfile } from '../../profile/useProfile';
 import styles from './pageLayout.module.css';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
@@ -79,6 +80,7 @@ export const PageLayout: React.FC = () => {
   const { dialogsByView } = useDialogs(parties);
   const dialogs = dialogsByView['inbox'];
   const notificationCount = dialogs.length;
+  useProfile();
 
   const isCompany = selectedParties?.some((party) => party.partyType === 'Organization');
   const companyName = selectedParties?.some((party) => party.partyType === 'Organization')

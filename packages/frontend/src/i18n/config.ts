@@ -3,10 +3,12 @@ import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';
 
 import nb from './resources/nb.json';
+import en from './resources/en.json';
 
 const i18nInitConfig = {
   resources: {
     nb: { translation: nb },
+    en: { translation: en },
   },
   lng: 'nb',
   fallbackLng: 'nb',
