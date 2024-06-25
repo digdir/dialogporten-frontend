@@ -7,6 +7,8 @@ param environment string
 @minLength(3)
 param location string
 param port int = 80
+param minReplicas int
+param maxReplicas int
 
 @minLength(3)
 @secure()
@@ -51,6 +53,8 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     containerAppEnvId: containerAppEnvironment.id
     probes: healthProbes
     port: port
+    minReplicas: minReplicas
+    maxReplicas: maxReplicas
   }
 }
 
