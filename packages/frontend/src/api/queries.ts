@@ -1,16 +1,16 @@
 import { GraphQLClient } from 'graphql-request';
 import { dialogs } from '../mocks/dialogs.tsx';
-import { HelloQuery, ProfileQuery, getSdk, SavedSearchesQuery, DeleteSavedSearchMutation, UpdateSavedSearchMutation, CreateSavedSearchMutation, SavedSearchInput } from 'bff-types-generated';
+import { HelloQuery, getSdk, SavedSearchesQuery, DeleteSavedSearchMutation, UpdateSavedSearchMutation, CreateSavedSearchMutation, SavedSearchInput } from 'bff-types-generated';
 
 const graphQLEndpoint = '/api/graphql';
 const graphQLClient = new GraphQLClient(graphQLEndpoint, { credentials: 'include' });
 export const graphQLSDK = getSdk(graphQLClient);
 
+export const profile = graphQLSDK.profile;
 export const getDialogs = (): Promise<typeof dialogs> => fetch('/dialogs').then((resp) => resp.json());
 
 export const fetchHelloWorld = (): Promise<HelloQuery> => graphQLSDK.hello();
 
-export const fetchProfile = (): Promise<ProfileQuery> => graphQLSDK.profile();
 export const fetchSavedSearches = (): Promise<SavedSearchesQuery> => graphQLSDK.savedSearches();
 export const deleteSavedSearch = (id: number): Promise<DeleteSavedSearchMutation> => graphQLSDK.DeleteSavedSearch({ id });
 export const updateSavedSearch = (id: number, name: string): Promise<UpdateSavedSearchMutation> => graphQLSDK.UpdateSavedSearch({ id, name });
