@@ -34,6 +34,12 @@ interface InboxProps {
   viewType: InboxViewType;
 }
 
+enum Routes {
+  inbox = '/inbox',
+  sent = '/sent',
+  draft = '/drafts',
+}
+
 export interface InboxItemInput {
   id: string;
   title: string;
@@ -72,7 +78,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
-
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
 
@@ -150,6 +155,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       const data: SavedSearchData = {
         filters: activeFilters as SearchDataValueFilter[],
         searchString,
+        fromView: Routes[viewType],
       };
       setIsSavingSearch(true);
       await createSavedSearch('', data);

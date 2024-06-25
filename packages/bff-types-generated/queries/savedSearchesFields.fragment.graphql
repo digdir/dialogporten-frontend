@@ -5,6 +5,7 @@ fragment SavedSearchesFields on SavedSearches {
     updatedAt
     data {
       searchString
+      fromView
       filters {
         id
         value

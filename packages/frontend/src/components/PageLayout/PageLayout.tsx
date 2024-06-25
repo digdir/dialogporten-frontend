@@ -7,32 +7,18 @@ import { Footer, Header, Sidebar } from '..';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
-import { decompressQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
 import { useProfile } from '../../profile/useProfile';
 import styles from './pageLayout.module.css';
+import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
   useEffect(() => {
     fn();
   }, [location, fn]);
-};
-
-const getSearchStringFromQueryParams = (searchParams: URLSearchParams): string => {
-  const compressedData = searchParams.get('data');
-
-  if (compressedData) {
-    try {
-      const queryParams = decompressQueryParams(compressedData);
-      return queryParams.searchString || '';
-    } catch (error) {
-      console.error('Failed to decompress query parameters:', error);
-    }
-  }
-  return '';
 };
 
 interface PageLayoutContentProps {
@@ -78,7 +64,7 @@ export const PageLayout: React.FC = () => {
   const { parties, selectedParties } = useParties();
   const name = parties.find((party) => party.partyType === 'Person')?.name || '';
   const { dialogsByView } = useDialogs(parties);
-  const dialogs = dialogsByView['inbox'];
+  const { inbox: dialogs } = dialogsByView;
   const notificationCount = dialogs.length;
   useProfile();
 

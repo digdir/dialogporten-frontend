@@ -4,7 +4,6 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
-import { compressQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { autoFormatRelativeTime, useSavedSearches } from '../../pages/SavedSearches';
 import { Avatar } from '../Avatar';
 import { getPredefinedRange } from '../FilterBar/dateInfo';
@@ -12,6 +11,7 @@ import { InboxItem } from '../InboxItem';
 import { SearchDropdownItem } from './SearchDropdownItem';
 import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
 import styles from './search.module.css';
+import { OpenSavedSearchLink } from '../../pages/SavedSearches/SavedSearchesItem.tsx';
 
 interface SearchDropdownProps {
   showDropdownMenu: boolean;
@@ -101,9 +101,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                       );
                     })}
                   </div>
-                  <a href={`inbox?data=${compressQueryParams(search.data)}`} onClick={() => handleClose()}>
-                    <ChevronRightIcon className={styles.arrowIcon} />
-                  </a>
+                  <OpenSavedSearchLink savedSearch={search} onClick={handleClose} />
                 </SearchDropdownItem>
               ))}
           </>

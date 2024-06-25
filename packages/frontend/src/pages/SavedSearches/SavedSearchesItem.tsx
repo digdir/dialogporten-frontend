@@ -4,21 +4,39 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
-import { compressQueryParams } from '../Inbox/queryParams.ts';
 import styles from './savedSearches.module.css';
 
 interface SavedSearchesItemProps {
-  savedSearch?: SavedSearchesFieldsFragment;
+  savedSearch: SavedSearchesFieldsFragment;
   onDelete?: (id: number) => void;
   setSelectedSavedSearch?: (savedSearch: SavedSearchesFieldsFragment) => void;
 }
 
+interface OpenSavedSearchLinkProps {
+  savedSearch: SavedSearchesFieldsFragment;
+  onClick?: () => void;
+}
+export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLinkProps) => {
+  const { searchString, filters, fromView } = savedSearch.data;
+  const queryParams = new URLSearchParams({
+    ...(searchString && { searchString }),
+    ...(filters?.length && { filters: JSON.stringify(filters) })
+  });
+  return (
+    <a href={`${fromView}?${queryParams.toString()}`}>
+      <ChevronRightIcon className={styles.icon} onClick={onClick} />
+    </a>
+  );
+};
+
 const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedSearchesItemProps) => {
   const { t } = useTranslation();
   if (!savedSearch?.data) return null;
+
   const handleOpenEditModal = () => {
     setSelectedSavedSearch?.(savedSearch);
   };
+
   return (
     <div className={styles.renderButtons}>
       <DropdownMenu>
@@ -37,9 +55,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu>
-      <a href={`/?data=${compressQueryParams(savedSearch.data)}`}>
-        <ChevronRightIcon className={styles.icon} />
-      </a>
+      <OpenSavedSearchLink savedSearch={savedSearch} />
     </div>
   );
 };
@@ -67,6 +83,7 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
     <>
       <div className={styles.savedSearchItem} key={savedSearch.id}>
         <div className={styles.searchDetails}>
+          <span>{searchData?.fromView && `In ${searchData.fromView.split('/').pop()}:  `}</span>
           <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
           {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
           {searchData?.filters?.map((search, index) => {

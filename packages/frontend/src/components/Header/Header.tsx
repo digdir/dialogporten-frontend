@@ -7,6 +7,7 @@ import { MenuBar } from '../MenuBar';
 import { AltinnLogo } from './AltinnLogo';
 import { SearchBar } from './SearchBar';
 import styles from './header.module.css';
+import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
 
 type HeaderProps = {
   name: string;
@@ -29,7 +30,7 @@ export const useSearchString = () => {
   };
 
   useEffect(() => {
-    const search = searchParams.get('search');
+    const search = getSearchStringFromQueryParams(searchParams);
     if (search !== searchString) {
       setSearchString(search || '');
     }

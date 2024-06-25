@@ -41,6 +41,7 @@ export interface Filter {
 export interface SavedSearchData {
   filters?: Filter[];
   searchString?: string;
+  fromView?: string;
 }
 
 @Entity({ name: 'saved_search' })

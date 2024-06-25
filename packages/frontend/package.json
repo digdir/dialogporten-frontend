@@ -29,7 +29,6 @@
     "graphql-request": "^6.1.0",
     "i18next": "^23.8.2",
     "i18next-icu": "^2.3.0",
-    "lz-string": "^1.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.3",
