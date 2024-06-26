@@ -1,6 +1,6 @@
 # Formatting and Linting
 
-Formatting and linting are performed with [Biome](https://biomejs.dev/) for the following formats: `js`, `jsx`, `ts`, `tsx`, `d.ts`, `json`, and `jsonc`. Configuration and linting rules are defined in `./biome.json`.
+Formatting and linting are performed with [Biome](https://biomejs.dev/) for the following formats: `css`, `js`, `jsx`, `ts`, `tsx`, `d.ts`, `json`, and `jsonc`. Configuration and linting rules are defined in `./biome.json`.
 `Biome` is much faster than its competitors and can even reformat malformed code.
 
 ## Webstorm
@@ -19,7 +19,7 @@ Go to **Settings** -> **Tools** -> **File Watcher**:
 2. Enter a name, e.g., `Biome JSX`.
 3. Choose the file type for files to watch, e.g., `TypeScript JSX`.
 4. Scope: `Project Files`.
-5. Program: Specify the path to the Biome executable in your project, for example, `$ProjectFileDir$/node_modules/.pnpm/@biomejs+biome@1.5.3/node_modules/@biomejs/biome/bin/biome` (adjust the version as necessary).
+5. Program: Specify the path to the Biome executable in your project, for example, `$ProjectFileDir$/node_modules/.pnpm/@biomejs+biome@1.8.1/node_modules/@biomejs/biome/bin/biome` (adjust the version as necessary).
 6. Arguments: `check --apply --no-errors-on-unmatched $FileName$`.
 
 Alternatively, you can import this configuration:
@@ -38,7 +38,7 @@ Alternatively, you can import this configuration:
     <array />
   </option>
   <option name="outputFromStdout" value="false" />
-  <option name="program" value="$ProjectFileDir$/node_modules/.pnpm/@biomejs+biome@1.5.3/node_modules/@biomejs/biome/bin/biome" />
+  <option name="program" value="$ProjectFileDir$/node_modules/.pnpm/@biomejs+biome@1.8.1/node_modules/@biomejs/biome/bin/biome" />
   <option name="runOnExternalChanges" value="true" />
   <option name="scopeName" value="Project Files" />
   <option name="trackOnlyRoot" value="false" />
@@ -48,3 +48,4 @@ Alternatively, you can import this configuration:
 ```
 
 Repeat the process by creating a copy of the file watcher task for the other file formats supported.
+Most importantly `ts`, `tsx`, `js`, `jsx`, and `css`.
