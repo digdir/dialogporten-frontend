@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.10);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   margin: 0;
   text-indent: 0;
   list-style-type: none;
@@ -29,8 +29,8 @@
 }
 
 .active {
-  outline: 2px solid #00315D;
-  background: #EFF5FD;
+  outline: 2px solid #00315d;
+  background: #eff5fd;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -39,7 +39,7 @@
   flex-direction: column;
   margin: 1rem 1.0625rem 1.0625rem 1rem;
   padding-left: 1rem;
-  border-left: 4px solid rgba(0, 0, 0, 0.10);
+  border-left: 4px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 0.5rem;
 }
 
@@ -47,9 +47,8 @@
   margin: 0;
 }
 
-
 .isUnread {
-  border-left: 4px solid var(--Company-Secondary, #4BADF7);
+  border-left: 4px solid var(--Company-Secondary, #4badf7);
 }
 
 .header {
@@ -85,7 +84,8 @@
   column-gap: 5px;
 }
 
-.receiver, .sender {
+.receiver,
+.sender {
   display: flex;
   align-items: center;
 }
@@ -100,7 +100,8 @@
   width: 32px;
   flex-shrink: 0;
 
-  >svg, img {
+  > svg,
+  img {
     min-width: 100%;
     min-height: 100%;
     max-width: 32px;
@@ -114,7 +115,7 @@
   width: 16px;
   flex-shrink: 0;
 
-  >svg {
+  > svg {
     min-width: 100%;
     min-height: 100%;
   }
@@ -137,7 +138,6 @@
   margin: 0;
   padding: 0;
 }
-
 
 .tags {
   display: flex;
