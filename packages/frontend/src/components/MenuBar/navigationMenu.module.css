@@ -1,7 +1,7 @@
 .menuContainer {
   position: relative;
   display: flex;
-  background-color: var(--Company-Primary, #111D46);
+  background-color: var(--Company-Primary, #111d46);
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -15,7 +15,7 @@
 .menuText {
   min-width: 2.25rem;
   min-height: 2.25rem;
-  background-color: var(--Company-Primary, #111D46);
+  background-color: var(--Company-Primary, #111d46);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -30,7 +30,7 @@
 .menuCircle {
   min-width: 2.25rem;
   min-height: 2.25rem;
-  background-color: var(--Company-Primary, #111D46);
+  background-color: var(--Company-Primary, #111d46);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -53,7 +53,7 @@
   min-width: 1.5rem;
   min-height: 1.5rem;
   border-radius: 24px;
-  background-color: var(--action-important, #E02E49);
+  background-color: var(--action-important, #e02e49);
   margin-right: 0.5rem;
   color: #fff;
   position: absolute;
@@ -75,7 +75,7 @@
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  background-color: var(--Company-Primary, #111D46);
+  background-color: var(--Company-Primary, #111d46);
   border-radius: 0.375rem;
   color: #fff;
   height: 2.25rem;
@@ -153,7 +153,7 @@
   padding: 0.375rem;
   min-height: 3.5rem;
 
-  >svg {
+  > svg {
     min-width: 100%;
     min-height: 100%;
   }
