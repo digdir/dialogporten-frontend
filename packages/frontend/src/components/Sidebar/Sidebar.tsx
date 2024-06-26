@@ -1,15 +1,15 @@
 import {
-  CogIcon,
+  ArchiveIcon,
+  BookmarkIcon,
+  DocPencilIcon,
   FileCheckmarkIcon,
-  FileTextIcon,
-  FolderMinusIcon,
   InboxFillIcon,
-  MagnifyingGlassIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
@@ -26,6 +26,7 @@ export const HorizontalLine = () => <hr className={styles.horizontalLine} />;
 
 export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
   const { data } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { isMobile } = useWindowSize();
@@ -43,27 +44,40 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
           <SidebarItem
             displayText={t('sidebar.inbox')}
             label={t('sidebar.inbox.label')}
-            icon={<InboxFillIcon />}
+            icon={<InboxFillIcon fontSize="1.5rem" />}
             count={dialogsByView.inbox.filter((dialog) => !dialog.isSeenByEndUser).length}
             path="/"
             isInbox
+            isActive={pathname === '/'}
             isCompany={isCompany}
           />
-          <HorizontalLine />
           <SidebarItem
             displayText={t('sidebar.drafts')}
             label={t('sidebar.drafts.label')}
-            icon={<FileTextIcon />}
+            icon={<DocPencilIcon fontSize="1.5rem" />}
             count={dialogsByView.draft.length}
             path="/drafts"
+            isActive={pathname === '/drafts'}
             isCompany={isCompany}
           />
           <SidebarItem
             displayText={t('sidebar.sent')}
             label={t('sidebar.sent.label')}
-            icon={<FileCheckmarkIcon />}
+            icon={<FileCheckmarkIcon fontSize="1.5rem" />}
             count={dialogsByView.sent.length}
             path="/sent"
+            isActive={pathname === '/sent'}
+            isCompany={isCompany}
+          />
+          <HorizontalLine />
+          <SidebarItem
+            displayText={t('sidebar.saved_searches')}
+            label={t('sidebar.saved_searches.label')}
+            icon={<BookmarkIcon fontSize="1.5rem" />}
+            count={savedSearches?.length || 0}
+            path="/saved-searches"
+            isActive={pathname === '/saved-searches'}
+            type="secondary"
             isCompany={isCompany}
           />
           <HorizontalLine />
@@ -71,37 +85,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
             disabled
             displayText={t('sidebar.archived')}
             label={t('sidebar.archived.label')}
-            icon={<FolderMinusIcon />}
+            icon={<ArchiveIcon fontSize="1.5rem" />}
             count={8}
             path="/archive"
+            isActive={pathname === '/archive'}
             isCompany={isCompany}
           />
           <SidebarItem
             disabled
             displayText={t('sidebar.deleted')}
             label={t('sidebar.deleted.label')}
-            icon={<TrashIcon />}
+            icon={<TrashIcon fontSize="1.5rem" />}
             count={8}
             path="/deleted"
-            isCompany={isCompany}
-          />
-          <HorizontalLine />
-          <SidebarItem
-            displayText={t('sidebar.saved_searches')}
-            label={t('sidebar.saved_searches.label')}
-            icon={<MagnifyingGlassIcon />}
-            count={savedSearches?.length || 0}
-            path="/saved-searches"
-            type="secondary"
-            isCompany={isCompany}
-          />
-          <SidebarItem
-            disabled
-            displayText={t('sidebar.settings')}
-            label={t('sidebar.settings.label')}
-            icon={<CogIcon />}
-            path="/innstillinger"
-            type="secondary"
+            isActive={pathname === '/deleted'}
             isCompany={isCompany}
           />
         </>

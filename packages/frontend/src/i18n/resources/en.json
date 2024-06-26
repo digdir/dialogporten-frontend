@@ -39,6 +39,7 @@
   "sidebar.deleted.label": "Press here to go to Trash",
   "sidebar.saved_searches": "Saved Searches",
   "sidebar.saved_searches.label": "Press here to go to saved searches",
+  "sidebar.unread_messages.aria_count": "{count, plural, =0 {No saved messages} one {one saved message} other {# saved messages}}",
   "savedSearches.title": "{count, plural, =0 {You have no saved searches} one {# saved search} other {# saved searches}}",
   "savedSearches.delete_search": "Delete saved search",
   "savedSearches.change_name": "Change name",

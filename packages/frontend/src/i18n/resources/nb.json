@@ -39,6 +39,7 @@
   "sidebar.deleted.label": "Trykk her for å gå til Papirkurv",
   "sidebar.saved_searches": "Lagrede søk",
   "sidebar.saved_searches.label": "Trykk her for å gå til lagrede søk",
+  "sidebar.unread_messages.aria_count": "{count, plural, =0 {Ingen lagrede meldinger} one {en lagret melding} other {# lagrede meldinger}}",
   "savedSearches.title": "{count, plural, =0 {Du har ingen lagrede søk} one {# lagret søk} other {# lagrede søk}}",
   "savedSearches.delete_search": "Slett lagret søk",
   "savedSearches.change_name": "Endre navn",

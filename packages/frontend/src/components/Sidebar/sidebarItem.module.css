@@ -1,8 +1,10 @@
 .sidebarItem {
-    margin: 0.5rem 2rem;
+    margin: 0.5rem 1.625rem;
+    padding: 0.2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 240px;
 }
 
 .sidebarItem.isButton {
@@ -18,6 +20,8 @@
 .iconAndText {
     display: flex;
     align-items: center;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
 }
 
 .icon {
@@ -26,8 +30,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 32px;
+    height: 32px;
     border-radius: 4px;
     color: #000;
 }
@@ -49,6 +53,8 @@
 
 .icon.isInbox {
     background: var(--button-color);
+    width: 2.75rem;
+    height: 2.75rem;
     color: #fff;
 }
 
@@ -76,10 +82,11 @@
     background-color: rgba(0, 0, 0, 0.05);
     margin-right: 8px;
     color: #000;
-    font-size: 0.75rem;
     font-style: normal;
     font-weight: 600;
     line-height: 1rem;
+    padding: 4px 8px;
+    font-size: 1rem;
 }
 
 
@@ -96,6 +103,10 @@
 .disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.active {
+  background: #fff;
 }
 
 a:hover,
