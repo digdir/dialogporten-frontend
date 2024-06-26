@@ -15,7 +15,7 @@
     "@digdir/designsystemet-css": "0.9.1-alpha.3",
     "@digdir/designsystemet-react": "1.0.0-rc.3",
     "@digdir/designsystemet-theme": "1.0.0-rc.3",
-    "@navikt/aksel-icons": "^5.18.0",
+    "@navikt/aksel-icons": "^6.12.0",
     "frontend": "workspace:*",
     "i18next": "^23.8.2",
     "i18next-icu": "^2.3.0",

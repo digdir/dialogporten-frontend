@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
-import React from 'react';
+import type React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from './sidebarItem.module.css';
 
@@ -10,6 +11,7 @@ export type SidebarItemProps = {
   icon: JSX.Element;
   count?: number;
   path: string;
+  isActive?: boolean;
   isInbox?: boolean;
   isButton?: boolean;
   isCompany?: boolean;
@@ -30,6 +32,7 @@ export type SidebarItemProps = {
  * @param {number} [props.count] - Optional count to display as a badge, indicating the number of items or notifications.
  * @param {string} props.path - The URL that the sidebar item links to.
  * @param {boolean} [props.isInbox=false] - Flag indicating whether the item is an inbox item, which may change styling.
+ * @param {boolean} [props.isActive=false] - Flag indicating whether the item is active or inactive, which may change styling.
  * @param {boolean} [props.isButton=false] - Flag indicating whether the item should behave as a button, including keyboard interaction.
  * @param {boolean} [props.isCompany=false] - Flag indicating whether the item should use company design or not.
  * @param {'primary' | 'secondary'} [props.type='primary'] - Choose between primary and secondary design.
@@ -66,11 +69,11 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   isCompany,
   className,
   type = 'primary',
+  isActive = false,
   disabled = false,
 }: SidebarItemProps): JSX.Element => {
-  const ariaTextCounter = count
-    ? `${count} uleste ${isInbox ? 'meldinger' : 'elementer'} i ${displayText}`
-    : displayText;
+  const { t } = useTranslation();
+  const ariaTextCounter = t('sidebar.unread_messages.aria_counter', { count });
   const isMenuItem = type === 'menuItem';
   return (
     <Link to={path} className={cx(styles.link, { [styles.disabled]: disabled })} aria-label={label}>
@@ -80,6 +83,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
           {
             [styles.isButton]: isButton,
             [styles.isCompany]: isCompany,
+            [styles.active]: isActive,
           },
           className,
         )}
@@ -106,7 +110,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
               })}
               aria-label={ariaTextCounter}
             >
-              {count}
+              {count > 100 ? '100+' : count}
             </span>
           )}
           {isMenuItem && <ChevronRightIcon className={styles.arrowIcon} />}
