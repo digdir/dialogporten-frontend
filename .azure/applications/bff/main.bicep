@@ -9,6 +9,8 @@ param location string
 param port int = 80
 @minLength(3)
 param hostName string
+param minReplicas int
+param maxReplicas int
 
 @minLength(3)
 @secure()
@@ -141,6 +143,8 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     secrets: secrets
     environmentVariables: containerAppEnvVars
     port: port
+    minReplicas: minReplicas
+    maxReplicas: maxReplicas
   }
 }
 

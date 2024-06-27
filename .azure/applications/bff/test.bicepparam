@@ -4,6 +4,8 @@ param environment = 'test'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
 param hostName = 'https://af.at.altinn.cloud'
+param minReplicas = 2
+param maxReplicas = 3
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')

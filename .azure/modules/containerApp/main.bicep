@@ -5,6 +5,8 @@ param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
 param probes { periodSeconds: int, initialDelaySeconds: int, type: string, httpGet: { path: string, port: int } }[] = []
+param minReplicas int = 1
+param maxReplicas int = 3
 
 param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
@@ -57,9 +59,8 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
         }
       ]
       scale: {
-        // todo: should be configurable
-        minReplicas: 1
-        maxReplicas: 3
+        minReplicas: minReplicas
+        maxReplicas: maxReplicas
       }
     }
   }
