@@ -7,8 +7,8 @@ import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
 import styles from './savedSearches.module.css';
-import { formatDistance } from "date-fns";
-import { nb } from 'date-fns/locale/nb'
+import { formatDistance } from 'date-fns';
+import { nb } from 'date-fns/locale/nb';
 import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 
 export const SavedSearches = () => {
@@ -75,9 +75,9 @@ export const autoFormatRelativeTime = (date: Date): string => {
   try {
     const result = formatDistance(new Date(date), new Date(), {
       locale: nb,
-      addSuffix: true
-    })
-    return result
+      addSuffix: true,
+    });
+    return result;
   } catch (error) {
     console.error('autoFormatRelativeTime Error: ', error);
     return '';

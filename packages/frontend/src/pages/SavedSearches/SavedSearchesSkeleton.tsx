@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import styles from './savedSearches.module.css';
 import { Skeleton } from '@digdir/designsystemet-react';
 
@@ -12,14 +13,14 @@ export const SavedSearchesSkeleton: React.FC<SavedSearchesSkeletonProps> = ({ nu
         <div className={styles.title}><Skeleton.Text width='140px' /></div>
         <div className={styles.savedSearchesContainer}>
           {Array.from({ length: numberOfItems }).map((_, index) => (
-            <>
-              <div className={styles.savedSearchItem} style={{ minHeight: 48 }} key={index}>
+            <Fragment key={index}>
+              <div className={styles.savedSearchItem} style={{ minHeight: 48 }}>
                 <div className={styles.searchDetails}>
                   <Skeleton.Text width='140px' />
                 </div>
               </div>
               <hr style={{ opacity: 0.4 }} />
-            </>
+            </Fragment>
           ))}
         </div>
         <div className={styles.lastUpdated}>

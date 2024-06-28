@@ -23,11 +23,11 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({ numberOfItems, wit
             <section className={styles.inboxItem}>
               <header className={styles.header}>
                 <h2 className={styles.title}>
-                  <Skeleton.Text width='400px' />
+                  <Skeleton.Text width='400px' height='24px' />
                 </h2>
               </header>
-              <Skeleton.Text width='40%' />
-              <p className={styles.description}><Skeleton.Text width='100%' /></p>
+              <Skeleton.Text width='40%' height='36px' className={styles.description} />
+              <Skeleton.Text width='100%' className={styles.description} />
               <div className={styles.participants}>
                 <div className={styles.sender}>
                   <span><Skeleton.Text width='80px' /></span>
