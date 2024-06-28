@@ -1,11 +1,12 @@
 import { Button, Modal } from '@digdir/designsystemet-react';
-import { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import type { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { autoFormatRelativeTime } from '.';
 import { updateSavedSearch } from '../../api/queries';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
+import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import styles from './savedSearches.module.css';
 
 interface EditSavedSearchProps {
@@ -24,6 +25,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
   const handleSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchName(event.target.value);
   };
+  const formatDistance = useFormatDistance();
 
   const handleSave = () => {
     if (!savedSearch?.id) return;
@@ -82,7 +84,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
             </Button>
             <span className={styles.updateTime}>
               {t('savedSearches.lastUpdated')}
-              {autoFormatRelativeTime(new Date(parseInt(savedSearch?.updatedAt, 10)))}
+              {autoFormatRelativeTime(new Date(Number.parseInt(savedSearch?.updatedAt, 10)), formatDistance)}
             </span>
           </div>
         </Modal.Footer>

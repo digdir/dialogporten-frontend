@@ -1,7 +1,5 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -25,6 +23,7 @@ import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
+import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
@@ -70,6 +69,7 @@ const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxI
 };
 
 export const Inbox = ({ viewType }: InboxProps) => {
+  const format = useFormat();
   const filterBarRef = useRef<FilterBarRef>(null);
   const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
 
@@ -98,7 +98,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
 
   const itemsToDisplay = useMemo(() => {
-    return sortDialogs(filterDialogs(dataSource, activeFilters), selectedSortOrder);
+    return sortDialogs(filterDialogs(dataSource, activeFilters, format), selectedSortOrder);
   }, [dataSource, activeFilters, selectedSortOrder]);
 
   useEffect(() => {
@@ -131,8 +131,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
       const key = shouldShowSearchResults
         ? getViewType(item)
         : allWithinSameYear
-          ? format(createdAt, 'LLLL', { locale: nb })
-          : format(createdAt, 'yyyy', { locale: nb });
+          ? format(createdAt, 'LLLL')
+          : format(createdAt, 'yyyy');
 
       const label = shouldShowSearchResults
         ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
@@ -182,7 +182,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const filterBarSettings = useMemo(() => getFilterBarSettings(itemsToDisplay), [itemsToDisplay]);
+  const filterBarSettings = useMemo(() => getFilterBarSettings(itemsToDisplay, format), [itemsToDisplay, format]);
+
   const savedSearchDisabled = !activeFilters?.length && !searchString;
 
   if (isFetchingSearchResults) {

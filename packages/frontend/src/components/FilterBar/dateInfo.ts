@@ -5,7 +5,6 @@ import {
   endOfWeek,
   endOfYear,
   endOfYesterday,
-  format,
   formatISO,
   startOfDay,
   startOfMonth,
@@ -14,8 +13,8 @@ import {
   startOfYear,
   startOfYesterday,
 } from 'date-fns';
-import { type Locale, nb } from 'date-fns/locale';
 import { t } from 'i18next';
+import type { FormatFunction } from '../../i18n/useDateFnsLocale.tsx';
 import { CustomFilterValueType } from './FilterBar.tsx';
 
 interface CombinedDateInfo {
@@ -33,12 +32,11 @@ interface CombinedDateInfo {
  * indicating that it's not a valid date range.
  *
  * @param {string} label - The label containing the combined date range in the format "startDate/endDate".
- * @param providedLocale - The locale to use for formatting the date range label.
+ * @param format - Format function
  * @returns {CombinedDateInfo} An object indicating whether the label represents a valid date range and, if so, the formatted date range label.
  */
-export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale): CombinedDateInfo => {
+export const isCombinedDateAndInterval = (label: string, format: FormatFunction): CombinedDateInfo => {
   try {
-    const locale = providedLocale || nb;
     const [startDateStr, endDateStr] = label.split('/');
     const startDate = startOfDay(new Date(startDateStr));
     const endDate = endOfDay(new Date(endDateStr));
@@ -49,10 +47,10 @@ export const isCombinedDateAndInterval = (label: string, providedLocale?: Locale
       return { isDate: false };
     }
 
-    const startDay = format(startDate, 'do', { locale });
-    const endDay = format(endDate, 'do', { locale });
-    const startMonth = format(startDate, 'MMMM', { locale });
-    const endMonth = format(endDate, 'MMMM', { locale });
+    const startDay = format(startDate, 'do');
+    const endDay = format(endDate, 'do');
+    const startMonth = format(startDate, 'MMMM');
+    const endMonth = format(endDate, 'MMMM');
     const startYear = startDate.getFullYear();
     const endYear = endDate.getFullYear();
 
@@ -96,6 +94,7 @@ const generateRange = (
   const now = new Date();
   return `${formatISO(startFn(now))}/${formatISO(endFn(now))}`;
 };
+
 export const getPredefinedRange = (): { range: string; label: string; value: string }[] => {
   const todayRange = generateRange(startOfToday, endOfToday);
   const yesterdayRange = generateRange(startOfYesterday, endOfYesterday);
@@ -112,13 +111,13 @@ export const getPredefinedRange = (): { range: string; label: string; value: str
   ];
 };
 
-export const generateDateOptions = (createdAt: Date[]) => {
+export const generateDateOptions = (createdAt: Date[], format: FormatFunction) => {
   const firstDate = createdAt.sort((a, b) => a.getTime() - b.getTime())?.[0];
   const lastDate = createdAt.sort((a, b) => b.getTime() - a.getTime())?.[0];
 
   const predefinedOptions = getPredefinedRange()
     .map(({ label, value, range }) => {
-      const { startDate, endDate } = isCombinedDateAndInterval(range);
+      const { startDate, endDate } = isCombinedDateAndInterval(range, format);
       const count = createdAt.filter((date) => date >= startDate! && date <= endDate!).length;
       return {
         displayLabel: label,

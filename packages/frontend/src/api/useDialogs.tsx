@@ -6,12 +6,11 @@ import {
   type PartyFieldsFragment,
   type SearchDialogFieldsFragment,
 } from 'bff-types-generated';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
 import { i18n } from '../i18n/config.ts';
+import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
@@ -35,9 +34,9 @@ const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): 
 };
 
 /* TODO: Add more tags */
-const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean) => {
+const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
   const tags = [];
-  tags.push({ label: format(item.createdAt, 'do MMMM', { locale: nb }), icon: <ClockIcon /> });
+  tags.push({ label: format(item.createdAt, 'do MMMM'), icon: <ClockIcon /> });
   if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
     tags.push({
       label: i18n.t('dialogs.attachment_count', { count: item.guiAttachmentCount }),
@@ -58,6 +57,7 @@ const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean) => 
 export function mapDialogDtoToInboxItem(
   input: SearchDialogFieldsFragment[],
   parties: PartyFieldsFragment[],
+  format: FormatFunction,
 ): InboxItemInput[] {
   return input.map((item) => {
     const titleObj = item?.content?.find((c) => c.type === ContentType.Title)?.value;
@@ -81,7 +81,7 @@ export function mapDialogDtoToInboxItem(
       receiver: {
         label: nameOfParty,
       },
-      tags: getTags(item, isSeenByEndUser),
+      tags: getTags(item, isSeenByEndUser, format),
       linkTo: `/inbox/${item.id}`,
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
@@ -130,6 +130,7 @@ export const useSearchDialogs = ({
   org,
   status,
 }: searchDialogsProps): UseSearchDialogsOutput => {
+  const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchString, 300);
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
@@ -140,7 +141,7 @@ export const useSearchDialogs = ({
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
 
   useEffect(() => {
-    setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties));
+    setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, format));
   }, [setSearchResults, data?.searchDialogs?.items]);
 
   return {
@@ -172,7 +173,8 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
+  const format = useFormat();
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, format);
   return {
     isLoading,
     isSuccess,

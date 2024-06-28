@@ -6,11 +6,10 @@ import {
   type GetDialogByIdQuery,
   type PartyFieldsFragment,
 } from 'bff-types-generated';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
 import { useQuery } from 'react-query';
 import type { GuiButtonProps } from '../components';
 import { i18n } from '../i18n/config.ts';
+import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
@@ -65,9 +64,9 @@ export const getPropertyByCultureCode = (
 };
 
 /* TODO: Add more tags */
-const getTags = (item: DialogByIdFieldsFragment): { label: string; icon: JSX.Element }[] => {
+const getTags = (item: DialogByIdFieldsFragment, format: FormatFunction): { label: string; icon: JSX.Element }[] => {
   const tags = [];
-  tags.push({ label: format(item.createdAt, 'do MMMM', { locale: nb }), icon: <ClockIcon /> });
+  tags.push({ label: format(item.createdAt, 'do MMMM'), icon: <ClockIcon /> });
   if (item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser)) {
     tags.push({
       label: i18n.t('word.seen'),
@@ -80,6 +79,7 @@ const getTags = (item: DialogByIdFieldsFragment): { label: string; icon: JSX.Ele
 export function mapDialogDtoToInboxItem(
   item: DialogByIdFieldsFragment | null | undefined,
   parties: PartyFieldsFragment[],
+  format: FormatFunction,
 ): DialogByIdDetails | undefined {
   if (!item) {
     return undefined;
@@ -104,7 +104,7 @@ export function mapDialogDtoToInboxItem(
     receiver: {
       label: nameOfParty,
     },
-    tags: getTags(item),
+    tags: getTags(item, format),
     additionalInfo: getPropertyByCultureCode(additionalInfoObj),
     guiActions: item.guiActions.map((guiAction) => ({
       id: guiAction.id,
@@ -117,7 +117,9 @@ export function mapDialogDtoToInboxItem(
     attachments: item.attachments,
   };
 }
+
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
+  const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
     queryKey: ['dialogById', id],
@@ -127,6 +129,6 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
   return {
     isLoading,
     isSuccess,
-    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties),
+    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties, format),
   };
 };

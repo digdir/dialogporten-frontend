@@ -1,15 +1,14 @@
-import { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
+import type { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { deleteSavedSearch, fetchSavedSearches } from '../../api/queries';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
+import { type FormatDistanceFunction, useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
-import styles from './savedSearches.module.css';
-import { formatDistance } from 'date-fns';
-import { nb } from 'date-fns/locale/nb';
 import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
+import styles from './savedSearches.module.css';
 
 export const SavedSearches = () => {
   const queryClient = useQueryClient();
@@ -71,10 +70,9 @@ export const SavedSearches = () => {
 
 export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
 
-export const autoFormatRelativeTime = (date: Date): string => {
+export const autoFormatRelativeTime = (date: Date, formatDistance: FormatDistanceFunction): string => {
   try {
     const result = formatDistance(new Date(date), new Date(), {
-      locale: nb,
       addSuffix: true,
     });
     return result;
@@ -90,9 +88,9 @@ const getMostRecentSearchDate = (data: SavedSearchesFieldsFragment[]): Date | nu
       return null;
     }
     const timestamp = data?.reduce((latest, search) => {
-      return parseInt(search?.updatedAt!, 10) > parseInt(latest?.updatedAt!, 10) ? search : latest;
+      return Number.parseInt(search?.updatedAt!, 10) > Number.parseInt(latest?.updatedAt!, 10) ? search : latest;
     })!.updatedAt;
-    return new Date(parseInt(timestamp, 10));
+    return new Date(Number.parseInt(timestamp, 10));
   } catch (error) {
     console.error('getMostRecentSearchDate Error: ', error);
     return null;
@@ -105,13 +103,14 @@ interface LastUpdatedProps {
 
 const LastUpdated = ({ searches }: LastUpdatedProps) => {
   const { t } = useTranslation();
+  const formatDistance = useFormatDistance();
   if (!searches || !searches?.length) return null;
   const lastUpdated = getMostRecentSearchDate(searches) as Date;
 
   return (
     <div className={styles.lastUpdated}>
       {t('savedSearches.lastUpdated')}
-      {autoFormatRelativeTime(lastUpdated)}
+      {autoFormatRelativeTime(lastUpdated, formatDistance)}
     </div>
   );
 };
