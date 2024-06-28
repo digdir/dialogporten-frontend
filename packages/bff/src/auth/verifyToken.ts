@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
-import config from '../config.ts';
+import { oidc } from '../config.ts';
 import { SessionStorageToken } from './oidc.ts';
 
 const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
@@ -26,7 +26,7 @@ const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
     }
 
     try {
-      const tokenEndpoint = `https://${config.oidc_url}/token`;
+      const tokenEndpoint = `https://${oidc.oidc_url}/token`;
       const basicAuthString = `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`;
       const authEncoded = `Basic ${Buffer.from(basicAuthString).toString('base64')}`;
 
