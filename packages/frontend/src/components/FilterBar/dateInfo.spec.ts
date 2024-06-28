@@ -3,7 +3,7 @@ import { enUS } from 'date-fns/locale';
 import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { isCombinedDateAndInterval } from './dateInfo.ts';
 
-(globalThis as unknown as any).jest = vi;
+(globalThis as unknown as { jest: typeof vi }).jest = vi;
 
 const format = (date: Date | string, formatStr: string) => {
   return formatDateFns(date, formatStr, { locale: enUS });

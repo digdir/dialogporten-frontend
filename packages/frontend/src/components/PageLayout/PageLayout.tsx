@@ -16,6 +16,7 @@ import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   useEffect(() => {
     fn();
   }, [location, fn]);

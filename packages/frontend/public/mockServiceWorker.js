@@ -184,9 +184,9 @@ async function getResponse(event, client, requestId) {
     // Remove internal MSW request header so the passthrough request
     // complies with any potential CORS preflight checks on the server.
     // Some servers forbid unknown request headers.
-    delete headers['x-msw-intention'];
+    const { 'x-msw-intention': _, ...filteredHeaders } = headers;
 
-    return fetch(requestClone, { headers });
+    return fetch(requestClone, { headers: filteredHeaders });
   }
 
   // Bypass mocking when the client is not active.
@@ -253,7 +253,7 @@ function sendToClient(client, message, transferrables = []) {
     const channel = new MessageChannel();
 
     channel.port1.onmessage = (event) => {
-      if (event.data && event.data.error) {
+      if (event.data?.error) {
         return reject(event.data.error);
       }
 

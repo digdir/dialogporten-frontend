@@ -9,6 +9,7 @@
     "enabled": true
   },
   "formatter": {
+    "formatWithErrors": true,
     "enabled": true,
     "lineWidth": 120,
     "lineEnding": "lf",

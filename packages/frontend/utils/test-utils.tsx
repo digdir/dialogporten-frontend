@@ -1,5 +1,5 @@
-import { RenderOptions, render } from '@testing-library/react';
-import { ReactElement } from 'react';
+import { type RenderOptions, render } from '@testing-library/react';
+import type { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { SelectedDialogsContainer } from '..';

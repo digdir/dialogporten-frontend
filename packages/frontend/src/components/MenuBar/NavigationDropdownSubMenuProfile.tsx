@@ -4,11 +4,11 @@ import { ArrowLeftIcon } from '@navikt/aksel-icons';
 import { Hr } from '.';
 import { useParties } from '../../api/useParties';
 import { MenuLogoutButton, toTitleCase } from './NavigationDropdownMenu';
-import { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
+import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
 import { Avatar } from '../Avatar';
 import { useQueryClient } from 'react-query';
 import { useDialogs } from '../../api/useDialogs';
-import { PartyFieldsFragment } from 'bff-types-generated';
+import type { PartyFieldsFragment } from 'bff-types-generated';
 import cx from 'classnames';
 import { Search } from '@digdir/designsystemet-react';
 import { useMemo, useState } from 'react';
@@ -22,7 +22,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
   if (!parties.length) {
     return null;
   }
-  const inboxItems = dialogsByView['inbox'];
+  const { inbox: inboxItems } = dialogsByView;
 
   const loggedInPersonName = toTitleCase(parties.find((party) => party.partyType === 'Person')?.name || '' || '');
 
@@ -39,7 +39,22 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <div role="button" tabIndex={0} className={styles.menuColumn} onClick={onBack}>
+          <div
+            role="button"
+            tabIndex={0}
+            className={styles.menuColumn}
+            onClick={onBack}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onBack();
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onBack();
+              }
+            }}
+          >
             <ArrowLeftIcon className={styles.backButtonIcon} />
             <span className={styles.subMenuTitle}>{t('word.main_menu')}</span>
           </div>
@@ -68,8 +83,16 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
                 [styles.currentParty]: party.party === selectedParties[0].party,
               })}
               onClick={() => handleSelectParty([party])}
-              role="button"
-              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleSelectParty([party]);
+                }
+              }}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleSelectParty([party]);
+                }
+              }}
             >
               <div className={styles.sidebarMenuItem} title={loggedInPersonName}>
                 <div className={styles.menuColumn}>

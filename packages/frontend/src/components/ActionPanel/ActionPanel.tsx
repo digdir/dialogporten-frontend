@@ -1,6 +1,6 @@
 import { Button } from '@digdir/designsystemet-react';
 import { XMarkIcon } from '@navikt/aksel-icons';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BottomDrawer } from '../BottomDrawer';
 import styles from './actionPanel.module.css';

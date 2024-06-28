@@ -101,6 +101,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
     return sortDialogs(filterDialogs(dataSource, activeFilters, format), selectedSortOrder);
   }, [dataSource, activeFilters, selectedSortOrder]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   useEffect(() => {
     setInitialFilters(getFiltersFromQueryParams(searchParams));
     const sortBy = getSortingOrderFromQueryParams(searchParams);
@@ -109,6 +110,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }
   }, [location.pathname]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set('sortBy', selectedSortOrder);
@@ -117,12 +119,14 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   useEffect(() => {
     if (showingSearchResults && activeFilters.length) {
       filterBarRef.current?.resetFilters();
     }
   }, [showingSearchResults]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
     const allWithinSameYear = dataSource.every((d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear());
 

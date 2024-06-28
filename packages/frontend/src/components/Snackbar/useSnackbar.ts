@@ -53,7 +53,7 @@ export function useSnackbar(): SnackbarOutput {
 
   const { data } = useQuery<SnackbarConfig>([queryKey], () => initialData, {
     enabled: false,
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
   const dismissSnackbar = () => {

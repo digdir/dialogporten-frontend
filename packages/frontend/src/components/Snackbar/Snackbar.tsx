@@ -2,7 +2,7 @@ import { BellIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { BottomDrawer } from '../BottomDrawer';
 import styles from './snackbar.module.css';
-import { SnackbarStoreRecord, useSnackbar } from './useSnackbar';
+import { type SnackbarStoreRecord, useSnackbar } from './useSnackbar';
 
 /**
  * Represents an individual snackbar message item.
@@ -27,12 +27,24 @@ const SnackbarItem = ({
       aria-live="polite"
     >
       <div className={styles.snackbarItemContent}>
-        <span className={styles.leftIcon} onClick={() => closeSnackbarItem(item.id)}>
+        <span
+          className={styles.leftIcon}
+          onClick={() => closeSnackbarItem(item.id)}
+          onKeyUp={(e) => e.key === 'Enter' && closeSnackbarItem(item.id)}
+          tabIndex={0}
+          role="button"
+        >
           <BellIcon />
         </span>
         <span className={styles.message}>{item.message}</span>
         {item.dismissable && (
-          <span className={styles.closeIcon} onClick={() => closeSnackbarItem(item.id)}>
+          <span
+            className={styles.closeIcon}
+            onClick={() => closeSnackbarItem(item.id)}
+            onKeyUp={(e) => e.key === 'Enter' && closeSnackbarItem(item.id)}
+            tabIndex={0}
+            role="button"
+          >
             <XMarkIcon />
           </span>
         )}

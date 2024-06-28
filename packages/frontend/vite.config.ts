@@ -7,7 +7,7 @@ export default () => {
     plugins: [react()],
     ...(process.env.PORT && {
       server: {
-        port: parseInt(process.env.PORT),
+        port: Number.parseInt(process.env.PORT),
       },
     }),
   });

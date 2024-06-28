@@ -9,7 +9,7 @@ interface SearchDropdownItemProps {
 export const SearchDropdownItem: React.FC<SearchDropdownItemProps> = ({ children, horizontalLine, onClick }) => {
   return (
     <>
-      <li className={styles.menuItem} onClick={onClick}>
+      <li className={styles.menuItem} onClick={onClick} onKeyUp={onClick}>
         {children}
       </li>
       {horizontalLine && <hr className={styles.horizontalLine} />}

@@ -31,7 +31,15 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <div role="button" tabIndex={0} className={styles.menuColumn} onClick={onBack}>
+          <div
+            role="button"
+            tabIndex={0}
+            className={styles.menuColumn}
+            onClick={onBack}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') onBack();
+            }}
+          >
             <ArrowLeftIcon className={styles.backButtonIcon} />
             <span className={styles.subMenuTitle}>{t('word.main_menu')}</span>
           </div>
