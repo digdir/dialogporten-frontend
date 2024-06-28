@@ -1,9 +1,9 @@
 import { Checkbox, Textfield } from '@digdir/designsystemet-react';
 import { CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
-import { format } from 'date-fns';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
@@ -40,6 +40,8 @@ const FilterButtonSection = ({
   id: string;
 }) => {
   const { t } = useTranslation();
+  const format = useFormat();
+
   const [start, end] = date.split('/'!);
   const minDate = format(new Date(start), 'yyyy-MM-dd');
   const maxDate = format(new Date(end), 'yyyy-MM-dd');
@@ -96,6 +98,7 @@ export const FilterButton = ({
   const { t } = useTranslation();
   const [hoveringDeleteBtn, setHoveringDeleteBtn] = useState(false);
   const { id, unSelectedLabel, options, mobileNavLabel } = filterFieldData;
+  const format = useFormat();
 
   const filtersForButton = selectedFilters.filter((filter) => filter.id === id && filter.value !== undefined);
 
@@ -111,6 +114,7 @@ export const FilterButton = ({
 
   const dateInfo = isCombinedDateAndInterval(
     filtersForButton.length === 1 ? (filtersForButton[0].value as string) : displayLabel,
+    format,
   );
 
   const chosenOptions =

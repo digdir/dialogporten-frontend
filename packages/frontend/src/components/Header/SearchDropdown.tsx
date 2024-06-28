@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
+import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { autoFormatRelativeTime, useSavedSearches } from '../../pages/SavedSearches';
 import { Avatar } from '../Avatar';
 import { getPredefinedRange } from '../FilterBar/dateInfo';
@@ -26,6 +27,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { parties } = useParties();
   const { searchResults, isFetching } = useSearchDialogs({ parties, searchString: searchValue });
+  const formatDistance = useFormatDistance();
 
   const handleClose = () => {
     onClose?.();
@@ -69,7 +71,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 isMinimalistic
               />
               <div className={cx(styles.rightContent)}>
-                <span className={styles.timeSince}>{autoFormatRelativeTime(new Date(item.date))}</span>
+                <span className={styles.timeSince}>{autoFormatRelativeTime(new Date(item.date), formatDistance)}</span>
                 <Avatar name={item.sender.label} darkCircle type="small" />
               </div>
             </SearchDropdownItem>

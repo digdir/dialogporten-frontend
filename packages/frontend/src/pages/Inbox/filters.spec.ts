@@ -1,7 +1,13 @@
+import { format as formatDateFns } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { describe, expect, it } from 'vitest';
 import type { Filter } from '../../components';
 import type { InboxItemInput } from './Inbox.tsx';
 import { filterDialogs } from './filters';
+
+const format = (date: Date | string, formatStr: string) => {
+  return formatDateFns(date, formatStr, { locale: enUS });
+};
 
 describe('filterDialogs', () => {
   const dialogs = [
@@ -33,12 +39,12 @@ describe('filterDialogs', () => {
 
   it('returns all dialogs when no filters are active', () => {
     const activeFilters: Filter[] = [];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual(dialogs);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual(dialogs);
   });
 
   it('filters dialogs by single sender', () => {
     const activeFilters = [{ id: 'sender', value: 'Ole' }];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[0], dialogs[2]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0], dialogs[2]]);
   });
 
   it('filters dialogs by multiple senders (OR logic)', () => {
@@ -46,7 +52,7 @@ describe('filterDialogs', () => {
       { id: 'sender', value: 'Ole' },
       { id: 'sender', value: 'Nils' },
     ];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[0], dialogs[1], dialogs[2]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0], dialogs[1], dialogs[2]]);
   });
 
   it('filters dialogs by sender and receiver (AND logic)', () => {
@@ -54,17 +60,17 @@ describe('filterDialogs', () => {
       { id: 'sender', value: 'Ole' },
       { id: 'receiver', value: 'Kari' },
     ];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[0]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0]]);
   });
 
   it('filters dialogs by created date range', () => {
     const activeFilters = [{ id: 'created', value: '2024-01-01/2024-01-03' }];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[0]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0]]);
   });
 
   it('filters dialogs by specific creation date', () => {
     const activeFilters = [{ id: 'created', value: '2024-02-01T10:00:00Z' }];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[1]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[1]]);
   });
 
   it('combines filters with AND and OR logic correctly', () => {
@@ -73,6 +79,6 @@ describe('filterDialogs', () => {
       { id: 'receiver', value: 'Eva' },
       { id: 'created', value: '2024-03-01T10:00:00Z' },
     ];
-    expect(filterDialogs(dialogs, activeFilters)).toEqual([dialogs[2]]);
+    expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[2]]);
   });
 });

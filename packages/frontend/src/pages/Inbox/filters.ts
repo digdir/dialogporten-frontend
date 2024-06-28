@@ -7,7 +7,8 @@ import {
   getPredefinedRange,
   isCombinedDateAndInterval,
 } from '../../components/FilterBar/dateInfo.ts';
-import { InboxItemInput } from './Inbox.tsx';
+import type { FormatFunction } from '../../i18n/useDateFnsLocale.tsx';
+import type { InboxItemInput } from './Inbox.tsx';
 
 /**
  * Filters dialogs based on active filters.
@@ -16,7 +17,11 @@ import { InboxItemInput } from './Inbox.tsx';
  * @param {Array} activeFilters - The array of active filter objects, where each filter has an 'id' and a 'value'.
  * @returns {InboxItemInput[]} - The filtered array of dialogs.
  */
-export const filterDialogs = (dialogs: InboxItemInput[], activeFilters: Filter[]): InboxItemInput[] => {
+export const filterDialogs = (
+  dialogs: InboxItemInput[],
+  activeFilters: Filter[],
+  format: FormatFunction,
+): InboxItemInput[] => {
   if (!activeFilters.length) {
     return dialogs;
   }
@@ -48,6 +53,7 @@ export const filterDialogs = (dialogs: InboxItemInput[], activeFilters: Filter[]
           const rangeProperties = getPredefinedRange().find((range) => range.value === filter.value);
           const { isDate, endDate, startDate } = isCombinedDateAndInterval(
             rangeProperties?.range ?? (filter.value as string),
+            format,
           );
 
           if (isDate) {
@@ -66,7 +72,8 @@ export const filterDialogs = (dialogs: InboxItemInput[], activeFilters: Filter[]
     });
   });
 };
-export const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[] => {
+
+export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFunction): FilterSetting[] => {
   return [
     {
       id: 'sender',
@@ -123,7 +130,10 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[]): FilterSetting[]
       mobileNavLabel: t('filter_bar.label.choose_date'),
       unSelectedLabel: t('filter_bar.label.all_dates'),
       operation: 'equals',
-      options: generateDateOptions(dialogs.map((p) => new Date(p.createdAt))),
+      options: generateDateOptions(
+        dialogs.map((p) => new Date(p.createdAt)),
+        format,
+      ),
     },
   ];
 };

@@ -12,7 +12,7 @@ interface SavedSearchesItemProps {
   setSelectedSavedSearch?: (savedSearch: SavedSearchesFieldsFragment) => void;
 }
 
-interface OpenSavedSearchLinkProps {
+export interface OpenSavedSearchLinkProps {
   savedSearch: SavedSearchesFieldsFragment;
   onClick?: () => void;
 }
