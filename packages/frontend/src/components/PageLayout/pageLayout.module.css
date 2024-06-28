@@ -1,19 +1,13 @@
 .pageLayout {
   display: grid;
-  grid-template-areas:
-    "header header header"
-    "main main main"
-    "footer footer footer";
+  grid-template-areas: "main main";
   grid-template-columns: 1fr 3fr;
   grid-template-rows: auto 1fr auto;
   max-width: 1920px;
   margin: 0 auto;
 
   @media (min-width: 600px) {
-    grid-template-areas:
-      "header header header"
-      "sidebar main main"
-      "footer footer footer";
+    grid-template-areas: "sidebar main";
     grid-template-columns: 1fr 3fr;
   }
 }
