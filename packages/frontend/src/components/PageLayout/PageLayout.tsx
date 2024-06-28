@@ -7,12 +7,12 @@ import { Footer, Header, Sidebar } from '..';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
+import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
+import { useProfile } from '../../profile/useProfile';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
-import { useProfile } from '../../profile/useProfile';
 import styles from './pageLayout.module.css';
-import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
@@ -33,12 +33,14 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
     const { inSelectionMode } = useSelectedDialogs();
 
     return (
-      <div className={styles.pageLayout}>
+      <>
         <Header name={name} companyName={companyName} notificationCount={notificationCount} />
-        {!inSelectionMode && <Sidebar isCompany={isCompany} />}
-        <Outlet />
+        <div className={styles.pageLayout}>
+          {!inSelectionMode && <Sidebar isCompany={isCompany} />}
+          <Outlet />
+        </div>
         <Footer />
-      </div>
+      </>
     );
   },
 );
