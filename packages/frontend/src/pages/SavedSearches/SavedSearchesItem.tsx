@@ -20,7 +20,7 @@ export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLin
   const { searchString, filters, fromView } = savedSearch.data;
   const queryParams = new URLSearchParams({
     ...(searchString && { searchString }),
-    ...(filters?.length && { filters: JSON.stringify(filters) })
+    ...(filters?.length && { filters: JSON.stringify(filters) }),
   });
   return (
     <a href={`${fromView}?${queryParams.toString()}`}>

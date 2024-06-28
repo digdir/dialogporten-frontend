@@ -28,7 +28,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-06-11'))
+      endDate: endOfDay(new Date('2024-06-11')),
     });
   });
 
@@ -42,7 +42,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-06-15'))
+      endDate: endOfDay(new Date('2024-06-15')),
     });
   });
 
@@ -56,7 +56,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-07-01'))
+      endDate: endOfDay(new Date('2024-07-01')),
     });
   });
 
@@ -70,7 +70,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2023-12-31')),
-      endDate: endOfDay(new Date('2024-01-01'))
+      endDate: endOfDay(new Date('2024-01-01')),
     });
   });
 
@@ -84,7 +84,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2023-06-11')),
-      endDate: endOfDay(new Date('2024-06-11'))
+      endDate: endOfDay(new Date('2024-06-11')),
     });
   });
 
@@ -93,7 +93,7 @@ describe('isCombinedDateAndInterval', () => {
     const result = isCombinedDateAndInterval(label, enUS);
 
     expect(result).toEqual({
-      isDate: false
+      isDate: false,
     });
   });
 
@@ -102,7 +102,7 @@ describe('isCombinedDateAndInterval', () => {
     const result = isCombinedDateAndInterval(label, enUS);
 
     expect(result).toEqual({
-      isDate: false
+      isDate: false,
     });
   });
 
@@ -111,7 +111,7 @@ describe('isCombinedDateAndInterval', () => {
     const result = isCombinedDateAndInterval(label, enUS);
 
     expect(result).toEqual({
-      isDate: false
+      isDate: false,
     });
   });
 
@@ -120,7 +120,7 @@ describe('isCombinedDateAndInterval', () => {
     const result = isCombinedDateAndInterval(label, enUS);
 
     expect(result).toEqual({
-      isDate: false
+      isDate: false,
     });
   });
 
@@ -134,7 +134,7 @@ describe('isCombinedDateAndInterval', () => {
       isDate: true,
       label: expectedLabel,
       startDate: startOfDay(new Date('2023-05-11')),
-      endDate: endOfDay(new Date('2024-06-12'))
+      endDate: endOfDay(new Date('2024-06-12')),
     });
   });
 });

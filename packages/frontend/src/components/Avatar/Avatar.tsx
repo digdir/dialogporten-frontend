@@ -20,7 +20,11 @@ interface AvatarProps {
 export const Avatar = ({ name, companyName, className, darkCircle, type = 'normal' }: AvatarProps) => {
   return (
     <div
-      className={cx(styles.initialsCircle, className, { [styles.isOrganization]: !!companyName, [styles.darkCircle]: darkCircle, [styles.small]: type === 'small' })}
+      className={cx(styles.initialsCircle, className, {
+        [styles.isOrganization]: !!companyName,
+        [styles.darkCircle]: darkCircle,
+        [styles.small]: type === 'small',
+      })}
       aria-hidden="true"
     >
       {getInitials(name, companyName)}

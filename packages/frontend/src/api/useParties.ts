@@ -24,7 +24,7 @@ export const useParties = (): UsePartiesOutput => {
       if (!getSelectedParties() && data.parties && data.parties.length > 0) {
         setSelectedParties(data.parties);
       }
-    }
+    },
   });
   const isAllOrganizationsSelected = (data?.parties ?? []).every((party) => party.partyType === 'Organization');
 
@@ -34,6 +34,6 @@ export const useParties = (): UsePartiesOutput => {
     parties: data?.parties ?? ([] as PartyFieldsFragment[]),
     selectedParties: getSelectedParties() ?? ([] as PartyFieldsFragment[]),
     setSelectedParties,
-    isAllOrganizationsSelected
+    isAllOrganizationsSelected,
   };
 };

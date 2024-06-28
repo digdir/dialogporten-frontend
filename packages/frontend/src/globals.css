@@ -2,32 +2,32 @@
 
 :root {
   /* Layer 0 - Raw colors */
-  --dark-blue: #111D46;
-  --grey: #F4F5F6;
+  --dark-blue: #111d46;
+  --grey: #f4f5f6;
 
   /* Layer 1 - Semantic colors */
   --Person-Primary: #084826;
   --Person-800: #076046;
   --Person-Progress: #347659;
   --Person-600: #079669;
-  --Person-Secondary: #10B981;
-  --Person-400: #34D399;
-  --Person-300: #6EE7B7;
-  --Person-200: #A8F3D0;
-  --Person-Paper: #EAF7EF;
-  --Company-Primary: #111D46;
-  --Company-800: #166AAC;
-  --Company-Progress: #4086D7;
-  --Company-600: #1E98F5;
-  --Company-Secondary: #4BADF7;
-  --Company-400: #78C1F9;
-  --Company-300: #A5D6FB;
-  --Company-200: #D3EAFD;
-  --Company-Paper: #E9F5FF;
+  --Person-Secondary: #10b981;
+  --Person-400: #34d399;
+  --Person-300: #6ee7b7;
+  --Person-200: #a8f3d0;
+  --Person-Paper: #eaf7ef;
+  --Company-Primary: #111d46;
+  --Company-800: #166aac;
+  --Company-Progress: #4086d7;
+  --Company-600: #1e98f5;
+  --Company-Secondary: #4badf7;
+  --Company-400: #78c1f9;
+  --Company-300: #a5d6fb;
+  --Company-200: #d3eafd;
+  --Company-Paper: #e9f5ff;
   --background-color: var(--Person-Paper);
   --button-color: var(--Person-Primary);
-  --Action-Important: #E02E49;
-  --Action-Danger: #861C2C;
+  --Action-Important: #e02e49;
+  --Action-Danger: #861c2c;
 }
 
 .isCompany {
@@ -35,6 +35,7 @@
   --button-color: var(--Company-Primary);
 }
 
-body, html {
+body,
+html {
   margin: 0;
 }

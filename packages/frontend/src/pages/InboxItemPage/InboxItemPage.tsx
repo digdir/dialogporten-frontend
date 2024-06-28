@@ -14,9 +14,7 @@ export const InboxItemPage = () => {
   const { dialog, isLoading } = useDialogById(parties, id);
 
   if (isLoading) {
-    return (
-      <InboxItemPageSkeleton />
-    )
+    return <InboxItemPageSkeleton />;
   }
 
   if (!dialog) {

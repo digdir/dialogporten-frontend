@@ -1,56 +1,56 @@
 .filterButton {
   button {
-        border-radius: 0;
-    }
+    border-radius: 0;
+  }
 }
 
 .buttons {
-    z-index: 1001;
-    display: flex;
+  z-index: 1001;
+  display: flex;
 }
 
 .xed {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .filterListContent {
   z-index: 1002;
   display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 1em;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1em;
 }
 
 .filterDateContent {
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem;
-    row-gap: 1rem;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  row-gap: 1rem;
 }
 
 .checkMarkHolder {
-    min-width: 1.5rem;
-    svg {
-        height: 1.5rem;
-        width: auto;
-    }
+  min-width: 1.5rem;
+  svg {
+    height: 1.5rem;
+    width: auto;
+  }
 }
 
 .filterListLabel {
-    font-size: 1rem;
-    margin-left: 0.5rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .filterListCount {
-    font-size: 0.75rem;
-    font-weight: 600;
-    display: flex;
-    height: 24px;
-    min-width: 24px;
-    padding: 4px 8px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    background: var(--black-5, rgba(0, 0, 0, 0.05));
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  height: 24px;
+  min-width: 24px;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--black-5, rgba(0, 0, 0, 0.05));
 }

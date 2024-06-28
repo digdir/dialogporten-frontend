@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from "@testing-library/react";
-import { QueryClient } from "react-query";
-import { SnackbarDuration, useSnackbar } from "./useSnackbar";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { createCustomWrapper } from "../../../utils/test-utils.tsx";
+import { renderHook, waitFor } from '@testing-library/react';
+import { QueryClient } from 'react-query';
+import { SnackbarDuration, useSnackbar } from './useSnackbar';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createCustomWrapper } from '../../../utils/test-utils.tsx';
 
 const queryClient = new QueryClient();
 const wrapper = createCustomWrapper(queryClient);
@@ -25,7 +25,7 @@ describe('useSnackbar', () => {
   it('useSnackbar hook updates state when opening snackbar', async () => {
     const { result } = renderHook(() => useSnackbar(), { wrapper });
 
-    await waitFor( async() => {
+    await waitFor(async () => {
       result.current.openSnackbar({ message: 'Test Message', variant: 'info' });
     });
 
@@ -77,15 +77,9 @@ describe('useSnackbar', () => {
 
     vi.advanceTimersByTime(SnackbarDuration.normal);
 
-    await waitFor(async() => expect(result.current.isOpen).equals(false));
-    await waitFor(async() => expect(result.current.storedMessages.length).equals(0));
+    await waitFor(async () => expect(result.current.isOpen).equals(false));
+    await waitFor(async () => expect(result.current.storedMessages.length).equals(0));
 
     vi.useRealTimers();
   });
-})
-
-
-
-
-
-
+});

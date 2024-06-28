@@ -1,41 +1,41 @@
 .navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--Company-Primary, #111D46);
-    padding: 24px;
-    max-height: 68px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--Company-Primary, #111d46);
+  padding: 24px;
+  max-height: 68px;
 }
 
 .logo a {
-    color: #000;
-    text-align: center;
-    font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1.33;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+  color: #000;
+  text-align: center;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.33;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .logo span {
-    margin-left: 6px;
+  margin-left: 6px;
 }
 
 .searchBar {
-    margin: 0 42px;
+  margin: 0 42px;
 
-    input {
-        border-radius: 6px;
-        border: 2px solid #000;
-        background-color: inherit;
-    }
+  input {
+    border-radius: 6px;
+    border: 2px solid #000;
+    background-color: inherit;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .searchBar {
-        padding: 1rem;
-        margin: 0;
-    }
+  .searchBar {
+    padding: 1rem;
+    margin: 0;
+  }
 }

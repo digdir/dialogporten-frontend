@@ -1,24 +1,23 @@
 .sidebar {
-    width: calc(224px + 2em + 2em);
-    display: flex;
-    flex-direction: column;
-    padding: 1.25rem 0;
-    background-color: var(--background-color, #EAF7EF);
-    margin-right: 2rem;
-    margin-left: 2rem;
+  width: calc(224px + 2em + 2em);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 0;
+  background-color: var(--background-color, #eaf7ef);
+  margin-right: 2rem;
+  margin-left: 2rem;
 }
 
 .horizontalLine {
-    border: 0;
-    height: 1px;
-    background-color: #00000040;
-    margin: 0.5rem 2rem;
+  border: 0;
+  height: 1px;
+  background-color: #00000040;
+  margin: 0.5rem 2rem;
 }
 
 @media screen and (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        padding: 1.25rem 1rem;
-    }
-
+  .sidebar {
+    width: 100%;
+    padding: 1.25rem 1rem;
+  }
 }

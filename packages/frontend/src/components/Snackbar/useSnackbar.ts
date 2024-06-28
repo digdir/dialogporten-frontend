@@ -1,17 +1,14 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from 'react-query';
 import { useCallback, useEffect, useRef } from 'react';
 
 export enum SnackbarDuration {
-  infinite= 0,
-  short= 1000,
-  normal= 3000,
-  long= 5000,
+  infinite = 0,
+  short = 1000,
+  normal = 3000,
+  long = 5000,
 }
 
-export type SnackbarMessageVariant =
-  | "success"
-  | "error"
-  | "info"
+export type SnackbarMessageVariant = 'success' | 'error' | 'info';
 
 export interface SnackbarStoreRecord {
   id: string;
@@ -39,7 +36,6 @@ interface SnackbarConfig {
   storedMessages: SnackbarStoreRecord[];
 }
 
-
 /**
  * Custom hook for managing snackbar messages.
  * @returns SnackbarOutput object containing functions and state related to snackbar.
@@ -52,51 +48,54 @@ export function useSnackbar(): SnackbarOutput {
 
   const initialData = {
     isOpen: false,
-    storedMessages: []
-  }
+    storedMessages: [],
+  };
 
-  const { data } = useQuery<SnackbarConfig>(
-    [queryKey],
-    () => (initialData),
-    {
-      enabled: false,
-      staleTime: Infinity,
-    },
-  );
+  const { data } = useQuery<SnackbarConfig>([queryKey], () => initialData, {
+    enabled: false,
+    staleTime: Infinity,
+  });
 
   const dismissSnackbar = () => {
-    void queryClient.setQueryData<SnackbarConfig>([queryKey], () => (initialData));
+    void queryClient.setQueryData<SnackbarConfig>([queryKey], () => initialData);
     if (closingTime?.current) {
-        clearTimeout(closingTime.current);
+      clearTimeout(closingTime.current);
     }
   };
 
-  const openSnackbar = ({message, variant, dismissable, duration}: SnackbarInput): string => {
-    const id = btoa(String(Math.random())).substring(0,12);
+  const openSnackbar = ({ message, variant, dismissable, duration }: SnackbarInput): string => {
+    const id = btoa(String(Math.random())).substring(0, 12);
     queryClient.setQueryData<SnackbarConfig>([queryKey], (oldData) => {
       return {
         isOpen: true,
-        storedMessages: [...oldData?.storedMessages ?? [], { id, variant, message, duration: duration ?? defaultDuration, dismissable: dismissable ?? true }]
-      }
+        storedMessages: [
+          ...(oldData?.storedMessages ?? []),
+          { id, variant, message, duration: duration ?? defaultDuration, dismissable: dismissable ?? true },
+        ],
+      };
     });
     return id;
   };
 
-  const closeSnackbarItem = useCallback((id: string) => {
-    queryClient.setQueryData<SnackbarConfig>([queryKey], (oldData) => {
-      const updatedStoredMessages = (oldData?.storedMessages ?? []).filter((item) => item.id !== id);
-      const isOpen = updatedStoredMessages.length > 0;
-      return {
-        isOpen,
-        storedMessages: updatedStoredMessages
-      }
-    })}, [queryClient]);
+  const closeSnackbarItem = useCallback(
+    (id: string) => {
+      queryClient.setQueryData<SnackbarConfig>([queryKey], (oldData) => {
+        const updatedStoredMessages = (oldData?.storedMessages ?? []).filter((item) => item.id !== id);
+        const isOpen = updatedStoredMessages.length > 0;
+        return {
+          isOpen,
+          storedMessages: updatedStoredMessages,
+        };
+      });
+    },
+    [queryClient],
+  );
 
   useEffect(() => {
     const storedMessageItem = data?.storedMessages?.filter((item) => item.duration > 0)[0];
     if (typeof storedMessageItem !== 'undefined') {
       closingTime.current = setTimeout(() => {
-        closeSnackbarItem(storedMessageItem?.id)
+        closeSnackbarItem(storedMessageItem?.id);
       }, storedMessageItem.duration);
     }
 
@@ -104,10 +103,8 @@ export function useSnackbar(): SnackbarOutput {
       if (closingTime?.current) {
         clearTimeout(closingTime.current);
       }
-    }
-
+    };
   }, [data?.storedMessages, closeSnackbarItem]);
-
 
   return {
     isOpen: data?.isOpen ?? false,
