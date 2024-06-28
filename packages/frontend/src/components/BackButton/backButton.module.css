@@ -1,15 +1,15 @@
 .backButton {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .backLink {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 8px;
 }
 
 .backIcon {
-    height: 1.5rem;
-    width: 1.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
 }

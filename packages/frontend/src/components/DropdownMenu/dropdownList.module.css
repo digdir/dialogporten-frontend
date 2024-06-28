@@ -1,12 +1,12 @@
 .dropdownList {
-    list-style: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
-    padding: 0.5rem;
-    position: absolute;
-    z-index: 1001;
-    background: #fff;
-    margin-block-start: 10px;
+  list-style: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1001;
+  background: #fff;
+  margin-block-start: 10px;
 }
 
 .long {
@@ -20,12 +20,12 @@
 }
 
 @media screen and (max-width: 996px) {
-    .dropdownList {
-        position: fixed;
-        left: 0;
-        top: 100px;
-        min-width: calc(100vw - 16px);
-        max-width: calc(100vw - 16px);
-        height: 100%;
-    }
+  .dropdownList {
+    position: fixed;
+    left: 0;
+    top: 100px;
+    min-width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: 100%;
+  }
 }

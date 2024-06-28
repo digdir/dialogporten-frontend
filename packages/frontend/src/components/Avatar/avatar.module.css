@@ -20,7 +20,7 @@
 }
 
 .darkCircle {
-  border: 1px solid var(--Company-Primary, #111D46);
+  border: 1px solid var(--Company-Primary, #111d46);
 }
 
 .initialsCircle.isOrganization {

@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 
 export function AltinnLogoSvg({ small }: { small?: boolean }) {
   return (
-    <svg className={small ? styles.altinnLogoSmall : styles.altinnLogo} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className={small ? styles.altinnLogoSmall : styles.altinnLogo}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <title>Altinn logo</title>
       <g id="SVG" clipPath="url(#clip0_272_15462)">
         <path
@@ -21,7 +26,6 @@ export function AltinnLogoSvg({ small }: { small?: boolean }) {
     </svg>
   );
 }
-
 
 interface AltinnLogoProps {
   className?: string;

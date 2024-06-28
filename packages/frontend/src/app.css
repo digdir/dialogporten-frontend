@@ -1,14 +1,14 @@
 /* GLOBAL VARIABLES */
-@import './globals.css';
+@import "./globals.css";
 
 :root {
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: 'cv05'1 !important;
+  font-family: "Inter", sans-serif;
+  font-feature-settings: "cv05" 1 !important;
   /* Enable lowercase l with tail */
   font-weight: 400;
 
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
