@@ -4,6 +4,7 @@
     background: var(--background-color);
   }
   padding: 0.375rem;
+  margin-bottom: 0.5rem;
 }
 
 .active {

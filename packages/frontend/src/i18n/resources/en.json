@@ -1,6 +1,4 @@
 {
-  "example.hello": "Hello, {person}",
-  "example.your_inbox": "Your Inbox",
   "dialog.status.in_progress": "In Progress",
   "dialog.status.new": "New",
   "dialog.status.signing": "For Signing",
@@ -92,6 +90,7 @@
   "actionPanel.buttons.delete": "Delete",
   "actionPanel.buttons.archive": "Move to archive",
   "actionPanel.buttons.mark_as_read": "Mark as read",
+  "partydropdown.all_parties": "All organizations",
   "actionPanel.buttons.share": "Share",
   "actionPanel.chosen": "{count, plural, =0 {None chosen} one {# chosen} other {# chosen}}",
   "notifications.count": "{count, plural, one {# unread message} other {# unread messages}}",
