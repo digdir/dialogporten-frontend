@@ -8,6 +8,7 @@ interface UsePartiesOutput {
   isLoading: boolean;
   selectedParties: PartyFieldsFragment[];
   setSelectedParties: (parties: PartyFieldsFragment[]) => void;
+  setSelectedPartyIds: (parties: string[]) => void;
   isAllOrganizationsSelected: boolean;
 }
 
@@ -28,6 +29,10 @@ export const useParties = (): UsePartiesOutput => {
   });
   const isAllOrganizationsSelected = (data?.parties ?? []).every((party) => party.partyType === 'Organization');
 
+  const setSelectedPartyIds = (partyIds: string[]) => {
+    setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
+  }
+
   return {
     isLoading,
     isSuccess,
@@ -35,5 +40,6 @@ export const useParties = (): UsePartiesOutput => {
     selectedParties: getSelectedParties() ?? ([] as PartyFieldsFragment[]),
     setSelectedParties,
     isAllOrganizationsSelected,
+    setSelectedPartyIds,
   };
 };

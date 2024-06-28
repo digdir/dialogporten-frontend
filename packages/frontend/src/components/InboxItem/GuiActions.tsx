@@ -1,5 +1,5 @@
 import { Button } from '@digdir/designsystemet-react';
-import { GuiActionPriority } from 'bff-types-generated';
+import type { GuiActionPriority } from 'bff-types-generated';
 
 import styles from './guiActions.module.css';
 

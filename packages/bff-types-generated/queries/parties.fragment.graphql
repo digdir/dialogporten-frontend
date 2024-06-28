@@ -1,7 +1,18 @@
 fragment partyFields on AuthorizedParty {
       party
       partyType
+      subParties {
+        ...subPartyFields
+      }
       isAccessManager
       isMainAdministrator
       name
+}
+
+fragment subPartyFields on AuthorizedParty {
+  party
+  partyType
+  isAccessManager
+  isMainAdministrator
+  name
 }

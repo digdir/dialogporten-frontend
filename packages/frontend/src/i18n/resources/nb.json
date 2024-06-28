@@ -1,6 +1,4 @@
 {
-  "example.hello": "Hei, {person}",
-  "example.your_inbox": "Din innboks",
   "dialog.status.in_progress": "Under arbeid",
   "dialog.status.new": "Nye",
   "dialog.status.signing": "Til signering",
@@ -13,7 +11,7 @@
   "inbox.heading.search_results.inbox": "{count, plural, =0 {Ingen treff} one {# treff} other {# treff}} i innboks",
   "inbox.heading.search_results.sent": "{count, plural, =0 {Ingen treff} one {# treff} other {# treff}} i sendte elementer",
   "inbox.heading.search_results.draft": "{count, plural, =0 {Ingen treff} one {# treff} other {# treff}} i utkast",
-  "word.back": "Tilbake",
+  "'word.back'": "Tilbake",
   "word.to": "til",
   "word.private": "Privat",
   "word.close": "Lukk",
@@ -83,6 +81,7 @@
   "search.search.results": "Ditt søk ga {count, plural, one {# treff} other {# treff}}",
   "search.title.in_inbox": "i innboks",
   "footer.nav.about_altinn": "Om Altinn",
+  "partydropdown.all_parties": "Alle virksomheter",
   "footer.company": "Digdir",
   "footer.address.line1": "Postboks 1382 Vika, 0114 Oslo.",
   "footer.address.line2": "Org.nr. 991 825 827",

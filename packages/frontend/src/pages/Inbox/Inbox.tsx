@@ -21,6 +21,7 @@ import { useSnackbar } from '../../components';
 import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
 import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
+import { PartyDropdown } from '../../components/PartyDropdown';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
@@ -41,6 +42,7 @@ enum Routes {
 
 export interface InboxItemInput {
   id: string;
+  party: string;
   title: string;
   description: string;
   sender: Participant;
@@ -215,6 +217,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
+            <PartyDropdown />
             <FilterBar
               ref={filterBarRef}
               settings={filterBarSettings}

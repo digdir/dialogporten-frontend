@@ -68,6 +68,7 @@ export function mapDialogDtoToInboxItem(
       item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
     return {
       id: item.id,
+      party: item.party,
       title: getPropertyByCultureCode(titleObj),
       description: getPropertyByCultureCode(summaryObj),
       sender: {
