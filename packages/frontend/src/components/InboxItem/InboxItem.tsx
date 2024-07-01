@@ -1,6 +1,6 @@
 import { Checkbox } from '@digdir/designsystemet-react';
 import classNames from 'classnames';
-import { JSX } from 'react';
+import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelectedDialogs } from '../PageLayout/SelectedDialogs.tsx';
 
@@ -121,6 +121,11 @@ export const InboxItem = ({
         })}
         aria-selected={isChecked ? 'true' : 'false'}
         onClick={onClick}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            onClick();
+          }
+        }}
       >
         <OptionalLinkContent linkTo={!inSelectionMode ? linkTo : undefined}>
           <section
@@ -162,6 +167,11 @@ export const InboxItem = ({
       })}
       aria-selected={isChecked ? 'true' : 'false'}
       onClick={onClick}
+      onKeyUp={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick();
+        }
+      }}
     >
       <OptionalLinkContent linkTo={!inSelectionMode ? linkTo : undefined}>
         <section

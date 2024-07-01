@@ -1,4 +1,5 @@
-import React, { useState, useContext, createContext } from 'react';
+import type React from 'react';
+import { useState, useContext, createContext } from 'react';
 
 type SelectedState = {
   [key: string]: boolean;
@@ -8,7 +9,10 @@ type ContextType = {
   selectedItems: SelectedState;
   setSelectedItems: React.Dispatch<React.SetStateAction<SelectedState>>;
 };
-const SelectedContext = createContext<ContextType | {}>({});
+const SelectedContext = createContext<ContextType>({
+  selectedItems: {},
+  setSelectedItems: () => {},
+});
 
 /*
  *   A hook used to get and update bulk selection of Dialogs in different views

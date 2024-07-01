@@ -7,5 +7,5 @@ interface BackdropProps {
 
 export const Backdrop = ({ show, onClick }: BackdropProps) => {
   if (!show) return null;
-  return <div className={styles.backdrop} onClick={onClick} />;
+  return <div className={styles.backdrop} onClick={onClick} onKeyUp={onClick} tabIndex={0} role="button" />;
 };

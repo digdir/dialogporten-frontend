@@ -1,4 +1,4 @@
-import { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
+import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
 import { useQuery, useQueryClient } from 'react-query';
 import { graphQLSDK } from './queries.ts';
 

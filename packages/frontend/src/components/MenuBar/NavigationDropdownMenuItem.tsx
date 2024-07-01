@@ -57,7 +57,7 @@ export const NavigationDropdownMenuItem = ({
 
   if (onClick) {
     return (
-      <li className={styles.menuItem} onClick={onClick}>
+      <li className={styles.menuItem} onClick={onClick} onKeyUp={onClick}>
         {renderDropDownMenuItem()}
       </li>
     );

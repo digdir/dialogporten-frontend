@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FeatureFlagKeys } from './FeatureFlags';
+import type { FeatureFlagKeys } from './FeatureFlags';
 import { FeatureFlagContext } from './FeatureFlagsProvider';
 
 export function useFeatureFlag<T>(flag: FeatureFlagKeys): T {

@@ -141,6 +141,7 @@ export const useSearchDialogs = ({
   });
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   useEffect(() => {
     setSearchResults(mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, format));
   }, [setSearchResults, data?.searchDialogs?.items]);

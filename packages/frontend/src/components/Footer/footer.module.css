@@ -1,77 +1,78 @@
 .footer {
-    color: #333;
-    font-size: 1rem;
-    align-items: flex-start;
-    position: relative;
-    padding: 1.5rem 1rem 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.25);
-    margin: 2rem;
+  color: #333;
+  font-size: 1rem;
+  align-items: flex-start;
+  position: relative;
+  padding: 1.5rem 1rem 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  margin: 2rem;
+}
 
-    li {
-      margin-bottom: 0.5rem;
-    }
+.footer li {
+  margin-bottom: 0.5rem;
+}
 
-    li:not(:first-child) {
-      margin-top: 0.5rem;
-    }
+.footer li:not(:first-child) {
+  margin-top: 0.5rem;
+}
 
-    @media (max-width: 768px) {
-      margin: 1rem;
-      padding: 0;
+@media (max-width: 768px) {
+  .footer {
+    margin: 1rem;
+    padding: 0;
+  }
 
-      .content {
-        flex-direction: column;
-      }
+  .footer .content {
+    flex-direction: column;
+  }
 
-      ul {
-        display: flex;
-        flex-direction: column;
-      }
+  .footer ul {
+    display: flex;
+    flex-direction: column;
+  }
 
-      li {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-      }
-    }
-
+  .footer li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .content {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .content div {
-    width: 50%;
+  width: 50%;
 }
 
 .links {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
-    color: #000;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  color: #000;
 }
 
 .links a {
-    color: #000;
+  color: #000;
 }
 
 .logo {
-    width: 1rem;
-    height: 1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .company {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .addressLineOne {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .addressLineTwo {
-    margin-top: 0;
+  margin-top: 0;
 }

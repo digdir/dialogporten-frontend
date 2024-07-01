@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 const wrapper = createCustomWrapper(queryClient);
 
 /* work-around for https://github.com/vitest-dev/vitest/issues/3117 */
-(globalThis as unknown as any).jest = vi;
+(globalThis as unknown as { jest: typeof vi }).jest = vi;
 
 describe('useSnackbar', () => {
   afterEach(() => {

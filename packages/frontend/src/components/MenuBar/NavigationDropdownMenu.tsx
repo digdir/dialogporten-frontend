@@ -51,7 +51,13 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <div className={styles.sidebarMenuItem} onClick={() => setShowSubMenu('profile')} role="button" tabIndex={0}>
+          <div
+            className={styles.sidebarMenuItem}
+            onClick={() => setShowSubMenu('profile')}
+            onKeyDown={(e) => e.key === 'Enter' && setShowSubMenu('profile')}
+            role="button"
+            tabIndex={0}
+          >
             <div className={styles.menuColumn} title={name}>
               <Avatar name={name} companyName={companyNameTitleCase} darkCircle />
               <div>
