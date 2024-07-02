@@ -1,9 +1,9 @@
 using './main.bicep'
 
-param environment = 'staging'
+param environment = 'production'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param hostName = 'https://af.tt.altinn.cloud'
+param hostName = 'https://af.altinn.no'
 param minReplicas = 2
 param maxReplicas = 3
 
