@@ -1,6 +1,6 @@
 {
   "name": "dialogporten-frontend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "1.8.1",
@@ -16,7 +16,9 @@
     "jackspeak": "2.1.1"
   },
   "lint-staged": {
-    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
+    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": [
+      "biome check --apply --no-errors-on-unmatched"
+    ]
   },
   "packageManager": "pnpm@8.15.4"
 }
