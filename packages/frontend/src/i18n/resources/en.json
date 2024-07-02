@@ -78,6 +78,7 @@
   "filter_bar.label.choose_status": "Choose status",
   "filter_bar.label.choose_date": "Choose date",
   "filter_bar.label.choose_created": "Choose created",
+  "filter_bar.showResultsButton": "{count, plural, one {Show # result} other {Show # results}}",
   "search.search.results": "Your search returned {count, plural, one {# hit} other {# hits}}",
   "search.title.in_inbox": "in inbox",
   "footer.nav.about_altinn": "About Altinn",

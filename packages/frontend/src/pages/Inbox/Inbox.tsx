@@ -99,6 +99,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const showingSearchResults = searchString.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   const itemsToDisplay = useMemo(() => {
     return sortDialogs(filterDialogs(dataSource, activeFilters, format), selectedSortOrder);
   }, [dataSource, activeFilters, selectedSortOrder]);
@@ -130,9 +131,11 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
   const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
-    const allWithinSameYear = dataSource.every((d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear());
+    const allWithinSameYear = itemsToDisplay.every(
+      (d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear(),
+    );
 
-    return dataSource.reduce((acc, item, _, list) => {
+    return itemsToDisplay.reduce((acc, item, _, list) => {
       const createdAt = new Date(item.createdAt);
       const key = shouldShowSearchResults
         ? getViewType(item)
@@ -154,7 +157,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
       return acc;
     }, [] as DialogCategory[]);
-  }, [dataSource, shouldShowSearchResults]);
+  }, [itemsToDisplay, shouldShowSearchResults]);
 
   const handleSaveSearch = async () => {
     try {
@@ -228,6 +231,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               onFilterChange={setActiveFilters}
               initialFilters={initialFilters}
               addFilterBtnClassNames={styles.hideForSmallScreens}
+              nResults={itemsToDisplay.length}
             />
             <SaveSearchButton
               onBtnClick={handleSaveSearch}

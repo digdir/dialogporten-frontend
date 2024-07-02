@@ -26,9 +26,9 @@ interface UseDialogsOutput {
 }
 
 const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): string => {
-  const defaultCultureCode = 'nb-no'; // TODO: Will be changed to -1 iso in the future
+  const defaultCultureCode = 'nb';
   if (value) {
-    return value.find((item) => item.cultureCode === defaultCultureCode)?.value ?? '';
+    return value.find((item) => item.languageCode === defaultCultureCode)?.value ?? '';
   }
   return '';
 };
