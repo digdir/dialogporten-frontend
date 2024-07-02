@@ -1,6 +1,6 @@
 using './main.bicep'
 
-param environment = 'staging'
+param environment = 'production'
 param location = 'norwayeast'
 param redisVersion = '6.0'
 
@@ -28,9 +28,9 @@ param applicationGatewayConfiguration = {
     minCapacity: 1
     maxCapacity: 2
   }
-  hostName: 'af.tt.altinn.cloud'
+  hostName: 'af.altinn.no'
   sslCertificate: {
     keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
-    secretKey: 'star-tt-altinn-cloud'
+    secretKey: 'star-altinn-no'
   }
 }

@@ -1,11 +1,8 @@
 using './main.bicep'
 
-param environment = 'staging'
+param environment = 'production'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param hostName = 'https://af.tt.altinn.cloud'
-param minReplicas = 2
-param maxReplicas = 3
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')
