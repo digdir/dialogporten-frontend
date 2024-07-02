@@ -1,5 +1,3 @@
-version: "3.8"
-
 include:
   - path:
       - ./oidc-mock/oidc-mock.compose.yml
