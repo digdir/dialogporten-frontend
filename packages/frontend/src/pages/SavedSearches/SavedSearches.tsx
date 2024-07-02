@@ -52,16 +52,17 @@ export const SavedSearches = () => {
           onClose={() => setSelectedSavedSearch(undefined)}
         />
         <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        <div className={styles.savedSearchesContainer}>
-          {savedSearches?.map((search) => (
-            <SavedSearchesItem
-              key={search?.id}
-              savedSearch={search}
-              onDelete={handleDeleteSearch}
-              setSelectedSavedSearch={setSelectedSavedSearch}
-            />
-          ))}
-        </div>
+        {savedSearches?.length
+          ? savedSearches?.map((search) => (
+              <div key={search?.id} className={styles.savedSearchesContainer}>
+                <SavedSearchesItem
+                  savedSearch={search}
+                  onDelete={handleDeleteSearch}
+                  setSelectedSavedSearch={setSelectedSavedSearch}
+                />
+              </div>
+            ))
+          : t('savedSearches.noSearchesFound')}
         <LastUpdated searches={savedSearches} />
       </section>
     </main>
