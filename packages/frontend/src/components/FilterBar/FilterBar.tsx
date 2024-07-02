@@ -38,6 +38,7 @@ interface FilterBarProps {
   onFilterChange: (newFilters: Filter[]) => void;
   initialFilters?: Filter[];
   addFilterBtnClassNames?: string;
+  nResults?: number;
 }
 
 export interface SubLevelState {
@@ -103,7 +104,7 @@ export type FilterBarRef = {
  */
 export const FilterBar = forwardRef(
   (
-    { onFilterChange, settings, initialFilters = [], addFilterBtnClassNames }: FilterBarProps,
+    { onFilterChange, settings, initialFilters = [], addFilterBtnClassNames, nResults }: FilterBarProps,
     ref: ForwardedRef<FilterBarRef>,
   ) => {
     const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
@@ -207,6 +208,7 @@ export const FilterBar = forwardRef(
                 selectedFilters={selectedFilters}
                 currentSubMenuLevel={currentSubLevelMenu}
                 onSubMenuLevelClick={setCurrentSubLevelMenu}
+                nResults={nResults}
               />
             );
           })}
@@ -218,6 +220,7 @@ export const FilterBar = forwardRef(
             onListItemClick={onToggleFilter}
             onClose={() => setListOpenForTarget('none')}
             className={addFilterBtnClassNames}
+            nResults={nResults}
           />
         </div>
         <Backdrop show={listOpenForTarget !== 'none'} onClick={() => setListOpenForTarget('none')} />

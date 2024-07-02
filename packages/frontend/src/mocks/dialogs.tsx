@@ -21,7 +21,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -30,7 +30,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -39,7 +39,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -74,7 +74,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -83,7 +83,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -92,7 +92,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -120,7 +120,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -129,7 +129,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -138,7 +138,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -166,7 +166,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -175,7 +175,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -184,7 +184,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -212,7 +212,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -221,7 +221,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -230,7 +230,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -258,7 +258,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -267,7 +267,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -276,7 +276,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -304,7 +304,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -313,7 +313,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -322,7 +322,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -357,7 +357,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -366,7 +366,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -375,7 +375,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -410,7 +410,7 @@ export const dialogs = [
         value: [
           {
             value: 'Fin tittel',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -419,7 +419,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -428,7 +428,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -463,7 +463,7 @@ export const dialogs = [
         value: [
           {
             value: 'arst',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -472,7 +472,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -481,7 +481,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -516,7 +516,7 @@ export const dialogs = [
         value: [
           {
             value: 'arst',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -525,7 +525,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -534,7 +534,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -569,7 +569,7 @@ export const dialogs = [
         value: [
           {
             value: 'Din skattemelding for 2023',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -578,7 +578,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -587,7 +587,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -622,7 +622,7 @@ export const dialogs = [
         value: [
           {
             value: 'arst',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -631,7 +631,7 @@ export const dialogs = [
         value: [
           {
             value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
@@ -640,7 +640,7 @@ export const dialogs = [
         value: [
           {
             value: 'some status max 20',
-            cultureCode: 'nb-no',
+            languageCode: 'nb',
           },
         ],
       },
