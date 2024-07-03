@@ -19,9 +19,7 @@ const envVariables = z.object({
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
   MIGRATION_RUN: z.coerce.boolean().default(false),
-  DIALOGPORTEN_URL: z
-    .string()
-    .default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
+  DIALOGPORTEN_URL: z.string().default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
 });
 
 const env = envVariables.parse(process.env);

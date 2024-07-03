@@ -31,7 +31,7 @@ export const useParties = (): UsePartiesOutput => {
 
   const setSelectedPartyIds = (partyIds: string[]) => {
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
-  }
+  };
 
   return {
     isLoading,
