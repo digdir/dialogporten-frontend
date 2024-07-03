@@ -1,5 +1,5 @@
-import { NavigationDropdownSubMenuProfile } from './NavigationDropdownSubMenuProfile';
 import { NavigationDropdownSubMenuInbox } from './NavigationDropdownSubMenuInbox';
+import { NavigationDropdownSubMenuProfile } from './NavigationDropdownSubMenuProfile';
 
 export type SubMenuSelection = 'none' | 'profile' | 'inbox' | 'access' | 'settings' | 'help' | 'all_services';
 

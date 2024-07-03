@@ -6,13 +6,13 @@ import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { autoFormatRelativeTime, useSavedSearches } from '../../pages/SavedSearches';
+import { OpenSavedSearchLink } from '../../pages/SavedSearches/SavedSearchesItem.tsx';
 import { Avatar } from '../Avatar';
 import { getPredefinedRange } from '../FilterBar/dateInfo';
 import { InboxItem } from '../InboxItem';
 import { SearchDropdownItem } from './SearchDropdownItem';
 import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
 import styles from './search.module.css';
-import { OpenSavedSearchLink } from '../../pages/SavedSearches/SavedSearchesItem.tsx';
 
 interface SearchDropdownProps {
   showDropdownMenu: boolean;

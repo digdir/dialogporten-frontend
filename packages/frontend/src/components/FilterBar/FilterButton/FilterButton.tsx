@@ -15,9 +15,9 @@ import {
   type FilterValueType,
   type SubLevelState,
 } from '../FilterBar';
+import { ShowFilterResultsButton } from '../ShowFilterResultsButton.tsx';
 import { isCombinedDateAndInterval } from '../dateInfo.ts';
 import styles from './filterButton.module.css';
-import { ShowFilterResultsButton } from '../ShowFilterResultsButton.tsx';
 
 export interface BaseFilterButtonProps {
   filterFieldData: FilterSetting;

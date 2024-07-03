@@ -1,17 +1,17 @@
-import { useTranslation } from 'react-i18next';
-import styles from './navigationMenu.module.css';
+import { Search } from '@digdir/designsystemet-react';
 import { ArrowLeftIcon } from '@navikt/aksel-icons';
-import { Hr } from '.';
-import { useParties } from '../../api/useParties';
-import { MenuLogoutButton, toTitleCase } from './NavigationDropdownMenu';
-import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
-import { Avatar } from '../Avatar';
-import { useQueryClient } from 'react-query';
-import { useDialogs } from '../../api/useDialogs';
 import type { PartyFieldsFragment } from 'bff-types-generated';
 import cx from 'classnames';
-import { Search } from '@digdir/designsystemet-react';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
+import { Hr } from '.';
+import { useDialogs } from '../../api/useDialogs';
+import { useParties } from '../../api/useParties';
+import { Avatar } from '../Avatar';
+import { MenuLogoutButton, toTitleCase } from './NavigationDropdownMenu';
+import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
+import styles from './navigationMenu.module.css';
 
 export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();

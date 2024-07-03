@@ -1,7 +1,7 @@
 import { Skeleton } from '@digdir/designsystemet-react';
+import cx from 'classnames';
 import { InboxItems } from '../../components';
 import styles from '../../components/InboxItem/inboxItem.module.css';
-import cx from 'classnames';
 
 interface InboxSkeletonProps {
   numberOfItems: number;

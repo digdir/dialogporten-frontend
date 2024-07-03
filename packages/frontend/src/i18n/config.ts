@@ -2,8 +2,8 @@ import i18n from 'i18next';
 import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';
 
-import nb from './resources/nb.json';
 import en from './resources/en.json';
+import nb from './resources/nb.json';
 
 const i18nInitConfig = {
   resources: {

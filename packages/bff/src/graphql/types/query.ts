@@ -1,6 +1,6 @@
 import { list, objectType } from 'nexus';
-import { getOrCreateProfile } from '../../entities.ts';
 import { SavedSearchRepository } from '../../db.ts';
+import { getOrCreateProfile } from '../../entities.ts';
 export const Query = objectType({
   name: 'Query',
   definition(t) {
