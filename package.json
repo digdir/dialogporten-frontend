@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prepare": "husky"
+    "hooks:enable": "git config core.hooksPath .hooks",
+    "hooks:disable": "git config --unset core.hooksPath",
+    "hooks:status": "if [ \"$(git config core.hooksPath)\" == \".hooks\" ]; then echo 'Git hooks is enabled'; else echo 'git hooks is disabled'; fi",
+    "biome:fix-staged": "pnpm husky check --staged --fix"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
     "mprocs": "^0.6.4",
     "turbo": "2.0.5"
   },
@@ -16,6 +19,9 @@
   },
   "resolutions": {
     "jackspeak": "2.1.1"
+  },
+  "lint-staged": {
+    "**/*.*": "biome check --staged --no-errors-on-unmatched --write"
   },
   "packageManager": "pnpm@8.15.4"
 }
