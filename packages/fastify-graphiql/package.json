@@ -2,8 +2,8 @@
   "name": "fastify-graphiql",
   "main": "./src/index.ts",
   "scripts": {
-		"test": "vitest run"
-	},
+    "test": "vitest run"
+  },
   "dependencies": {
     "fastify": "^4.26.1",
     "fastify-plugin": "^4.5.1"

@@ -6,8 +6,7 @@
 
     "files": true,
 
-    "compilerOptions": {
-    }
+    "compilerOptions": {}
   },
 
   "compilerOptions": {

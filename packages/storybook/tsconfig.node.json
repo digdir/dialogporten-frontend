@@ -7,10 +7,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["vite.config.ts"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist",
-    "storybook-static"
-  ]
+  "exclude": ["node_modules", "build", "dist", "storybook-static"]
 }

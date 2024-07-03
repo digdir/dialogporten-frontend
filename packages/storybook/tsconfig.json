@@ -21,11 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", ".storybook/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist",
-    "storybook-static"
-  ],
+  "exclude": ["node_modules", "build", "dist", "storybook-static"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
