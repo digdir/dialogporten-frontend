@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
+import type { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.ts';
-import { SessionStorageToken } from './oidc.ts';
+import type { SessionStorageToken } from './oidc.ts';
 
 const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
   const token: SessionStorageToken = request.session.get('token');

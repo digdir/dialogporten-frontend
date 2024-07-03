@@ -25,6 +25,7 @@ export const Example = () => {
   return (
     <div style={{ padding: 20 }}>
       <button
+        type="button"
         onClick={() =>
           openSnackbar({
             message: 'I am non-dismissable',
@@ -40,6 +41,7 @@ export const Example = () => {
         return (
           <button
             key={variant}
+            type="button"
             onClick={() =>
               openSnackbar({
                 message: variant,
@@ -56,6 +58,7 @@ export const Example = () => {
         return (
           <button
             key={duration}
+            type="button"
             onClick={() =>
               openSnackbar({
                 message: `Duration: ${duration}`,
@@ -68,7 +71,7 @@ export const Example = () => {
           </button>
         );
       })}
-      <button onClick={() => dismissSnackbar()} style={{ marginLeft: 20 }}>
+      <button type="button" onClick={() => dismissSnackbar()} style={{ marginLeft: 20 }}>
         Close all
       </button>
       {isOpen ? <p>Snackbar is open</p> : <p>Snackbar is closed</p>}
@@ -86,6 +89,7 @@ export const SnackbarAndActionPanel = () => {
         return (
           <button
             key={duration}
+            type="button"
             onClick={() =>
               openSnackbar({
                 message: `Duration: ${duration}`,
@@ -98,7 +102,7 @@ export const SnackbarAndActionPanel = () => {
           </button>
         );
       })}
-      <button onClick={() => dismissSnackbar()} style={{ marginLeft: 20 }}>
+      <button type="button" onClick={() => dismissSnackbar()} style={{ marginLeft: 20 }}>
         Close all
       </button>
       {isOpen ? <p>Snackbar is open</p> : <p>Snackbar is closed</p>}

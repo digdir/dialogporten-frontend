@@ -7,7 +7,6 @@ const isValid = (query) => {
     gql(query);
     return true;
   } catch (err) {
-    throw err;
     return false;
   }
 };

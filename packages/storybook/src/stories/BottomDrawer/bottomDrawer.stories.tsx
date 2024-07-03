@@ -21,7 +21,9 @@ export const Example = () => {
     <>
       <BottomDrawerContainer>
         <h2> BottomDrawer example </h2>
-        <button onClick={addDrawer}> Add Drawer </button>
+        <button type="button" onClick={addDrawer}>
+          Add Drawer
+        </button>
 
         {exampleData.map((text, i) => (
           <BottomDrawer key={i}>

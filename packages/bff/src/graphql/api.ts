@@ -1,7 +1,7 @@
 import { stitchSchemas } from '@graphql-tools/stitch';
-import { AsyncExecutor } from '@graphql-tools/utils';
+import type { AsyncExecutor } from '@graphql-tools/utils';
 import axios from 'axios';
-import { FastifyPluginAsync } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { print } from 'graphql';
 import { createHandler } from 'graphql-http/lib/use/fastify';
