@@ -2,10 +2,12 @@
   "name": "dialogporten-frontend",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
     "mprocs": "^0.6.4",
     "turbo": "2.0.5"
   },
@@ -14,9 +16,6 @@
   },
   "resolutions": {
     "jackspeak": "2.1.1"
-  },
-  "lint-staged": {
-    "./packages/**/*.{js,ts,jsx,tsx,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
   },
   "packageManager": "pnpm@8.15.4"
 }
