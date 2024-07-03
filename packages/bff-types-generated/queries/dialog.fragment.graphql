@@ -14,7 +14,7 @@ fragment SearchDialogFields on SearchDialog {
   latestActivity {
     description {
       value
-      cultureCode
+      languageCode
     }
     performedBy
   }
@@ -57,7 +57,7 @@ fragment GuiActionFields on GuiAction {
     httpMethod
     title {
        value
-       cultureCode
+       languageCode
     }
     priority
 }
@@ -67,7 +67,7 @@ fragment DialogContentFields on Content {
     mediaType
     value {
       value
-      cultureCode
+      languageCode
     }
 }
 
@@ -81,7 +81,7 @@ fragment AttachmentFields on Attachment {
     id
     displayName {
       value
-      cultureCode
+      languageCode
     }
     urls {
       ...AttachmentUrlFields

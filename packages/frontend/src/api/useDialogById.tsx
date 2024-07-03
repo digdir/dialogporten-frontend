@@ -51,14 +51,14 @@ export const getPropertyByCultureCode = (
     | Array<{
         __typename?: 'Localization';
         value: string;
-        cultureCode: string;
+        languageCode: string;
       }>
     | null
     | undefined,
 ): string => {
-  const defaultCultureCodes = ['nb-no', 'nb']; // TODO: Will be changed to -1 iso in the future
+  const defaultCultureCodes = ['nb'];
   if (value) {
-    return value.find((item) => defaultCultureCodes.includes(item.cultureCode))?.value ?? '';
+    return value.find((item) => defaultCultureCodes.includes(item.languageCode))?.value ?? '';
   }
   return '';
 };
