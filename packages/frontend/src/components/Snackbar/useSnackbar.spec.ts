@@ -1,8 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient } from 'react-query';
-import { SnackbarDuration, useSnackbar } from './useSnackbar';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createCustomWrapper } from '../../../utils/test-utils.tsx';
+import { SnackbarDuration, useSnackbar } from './useSnackbar';
 
 const queryClient = new QueryClient();
 const wrapper = createCustomWrapper(queryClient);

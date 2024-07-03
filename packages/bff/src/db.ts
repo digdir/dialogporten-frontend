@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, type Repository } from 'typeorm';
 import { ProfileTable, SavedSearch } from './entities.ts';
 
 export let ProfileRepository: Repository<ProfileTable> | undefined = undefined;

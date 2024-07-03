@@ -6,8 +6,8 @@ import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
-import styles from './addFilterButton.module.css';
 import { ShowFilterResultsButton } from '../ShowFilterResultsButton.tsx';
+import styles from './addFilterButton.module.css';
 
 type AddFilterButtonProps = {
   settings: FilterSetting[];

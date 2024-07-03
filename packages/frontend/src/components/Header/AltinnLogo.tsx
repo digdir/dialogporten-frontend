@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import styles from './altinnLogo.module.css';
 import { Link } from 'react-router-dom';
+import styles from './altinnLogo.module.css';
 
 export function AltinnLogoSvg({ small }: { small?: boolean }) {
   return (

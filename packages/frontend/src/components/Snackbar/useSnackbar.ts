@@ -1,5 +1,5 @@
-import { useQuery, useQueryClient } from 'react-query';
 import { useCallback, useEffect, useRef } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 
 export enum SnackbarDuration {
   infinite = 0,

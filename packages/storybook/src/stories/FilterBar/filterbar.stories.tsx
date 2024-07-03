@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { Filter, FilterBar } from 'frontend';
-import { CustomFilterValueType, FilterSetting } from 'frontend/src/components/FilterBar/FilterBar.tsx';
+import type { Meta, StoryObj } from '@storybook/react';
+import { type Filter, FilterBar } from 'frontend';
+import { CustomFilterValueType, type FilterSetting } from 'frontend/src/components/FilterBar/FilterBar.tsx';
 import { useCallback, useEffect, useState } from 'react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 

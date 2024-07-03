@@ -1,5 +1,5 @@
 import type React from 'react';
-import { createContext, type ReactNode } from 'react';
+import { type ReactNode, createContext } from 'react';
 import type { FeatureFlags } from './FeatureFlags';
 
 export const FeatureFlagContext = createContext<FeatureFlags | undefined>(undefined);

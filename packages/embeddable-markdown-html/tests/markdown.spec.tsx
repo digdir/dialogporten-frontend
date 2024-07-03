@@ -7,7 +7,7 @@ describe('Markdown', () => {
     const { container, getByText } = render(<Markdown># header</Markdown>);
 
     await waitFor(() => {
-      (expect(getByText('header')) as any).toBeInTheDocument();
+      expect(getByText('header')).toBeInTheDocument();
     });
 
     expect(container.firstChild).toMatchSnapshot();

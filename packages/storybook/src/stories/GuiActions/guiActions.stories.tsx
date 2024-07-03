@@ -1,5 +1,5 @@
-import { Meta, StoryFn } from '@storybook/react';
-import { GuiActionProps, GuiActions } from 'frontend';
+import type { Meta, StoryFn } from '@storybook/react';
+import { type GuiActionProps, GuiActions } from 'frontend';
 
 export default {
   title: 'Components/GuiActions',

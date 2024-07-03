@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize';
+import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
 import { MenuBar } from '../MenuBar';
 import { AltinnLogo } from './AltinnLogo';
 import { SearchBar } from './SearchBar';
 import styles from './header.module.css';
-import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
 
 type HeaderProps = {
   name: string;

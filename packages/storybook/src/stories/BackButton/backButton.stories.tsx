@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { BackButton } from 'frontend';
 import { withRouter } from 'storybook-addon-react-router-v6';
 

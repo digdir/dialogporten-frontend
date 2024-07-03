@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
 import { Header } from 'frontend';
 import { withRouter } from 'storybook-addon-react-router-v6';

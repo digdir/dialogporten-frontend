@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import { profile } from '../api/queries.ts';
 
 export const useProfile = () => {

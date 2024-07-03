@@ -4,8 +4,8 @@ import { useDialogById } from '../../api/useDialogById.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { BackButton } from '../../components';
 import { InboxItemDetail } from '../../components';
-import styles from './inboxItemPage.module.css';
 import { InboxItemPageSkeleton } from './InboxItemPageSkeleton.tsx';
+import styles from './inboxItemPage.module.css';
 
 export const InboxItemPage = () => {
   const { id } = useParams();

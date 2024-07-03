@@ -1,5 +1,5 @@
-import oauthPlugin, { OAuth2Namespace } from '@fastify/oauth2';
-import {
+import oauthPlugin, { type OAuth2Namespace } from '@fastify/oauth2';
+import type {
   FastifyPluginAsync,
   FastifyPluginCallback,
   FastifyReply,

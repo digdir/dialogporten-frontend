@@ -1,4 +1,4 @@
-import util from 'util';
+import util from 'node:util';
 import 'reflect-metadata';
 import { initAppInsightWithRetry } from './azure/ApplicationInsightsInit.ts';
 import config from './config.ts';

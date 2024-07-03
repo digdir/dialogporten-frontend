@@ -27,6 +27,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
   /*
       TODO: Add subparties to the dropdown
    */
+  // biome-ignore lint: lint/correctness/useExhaustiveDependencies
   const options = useMemo(() => {
     const topLevelParties = parties.map((party) => {
       const subPartyIds = party.subParties?.map((subParty) => subParty.party) ?? [];

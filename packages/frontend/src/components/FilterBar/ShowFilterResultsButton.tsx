@@ -1,6 +1,6 @@
+import { Button } from '@digdir/designsystemet-react';
 import { useTranslation } from 'react-i18next';
 import styles from './showFilterResultsButton.module.css';
-import { Button } from '@digdir/designsystemet-react';
 
 interface ShowFilterResultsButtonProps {
   nResults?: number;

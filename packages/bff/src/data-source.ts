@@ -1,7 +1,7 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import 'reflect-metadata';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource, type DataSourceOptions } from 'typeorm';
 import config from './config.ts';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file

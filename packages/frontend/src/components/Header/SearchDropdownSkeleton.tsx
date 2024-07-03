@@ -1,8 +1,8 @@
 import cx from 'classnames';
 import styles from './search.module.css';
 
-import { SearchDropdownItem } from './SearchDropdownItem';
 import { Skeleton } from '@digdir/designsystemet-react';
+import { SearchDropdownItem } from './SearchDropdownItem';
 
 interface SearchDropdownSkeletonProps {
   numberOfItems: number;

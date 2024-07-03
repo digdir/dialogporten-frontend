@@ -2,7 +2,7 @@ import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
 import session from '@fastify/session';
-import { FastifySessionOptions } from '@fastify/session';
+import type { FastifySessionOptions } from '@fastify/session';
 import RedisStore from 'connect-redis';
 import Fastify from 'fastify';
 import fastifyGraphiql from 'fastify-graphiql';
