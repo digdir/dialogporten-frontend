@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   color: var(--Company-Primary, #111d46);
-  padding: 24px;
+  padding: 16px;
   max-height: 68px;
 }
 

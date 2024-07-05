@@ -1,4 +1,4 @@
-.menuContainer {
+.searchbarContainer {
   position: relative;
   display: flex;
   justify-content: center;
@@ -10,36 +10,75 @@
   user-select: none;
 }
 
-.searchbarContainer {
-  width: 288px;
-  position: relative;
-}
-
-.searchbarOpen .searchbarContainer {
-  z-index: 9999;
-}
-
-.searchbarOpen input {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.searchbarContainer .searchbarOpen {
-  width: 608px;
-  --dsc-focus-border-width: 3px;
-  box-shadow: 0 0 0 var(--dsc-focus-border-width) var(--ds-color-neutral-background-default);
-  outline: var(--dsc-focus-border-width) solid var(--ds-color-neutral-text-default);
-  outline-offset: var(--dsc-focus-border-width);
-}
-
-.searchbar {
-  gap: 0;
-}
-
-.searchbarOpen {
+.inputContainer {
+  display: grid;
+  grid-template-areas: "searchicon searchinput clearbutton";
+  grid-template-columns: 1.5rem 1fr 2rem;
+  gap: 8px;
+  width: 320px;
+  height: 24px;
+  padding: 16px;
+  background-color: transparent;
+  border-radius: 6px;
   border: 2px solid #000;
+  transition: width 0.2s ease, opacity 0.2s ease;
+}
+
+.inputContainer.searchbarOpen {
+  border: 3px solid #000;
   border-radius: 6px 6px 0 0;
-  border-bottom: 0;
+}
+
+input {
+  color: black;
+  font-family: inter;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  background-color: transparent;
+  display: flex;
+  align-self: flex-start;
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+.searchInput {
+  grid-area: searchinput;
+  border: none;
+}
+
+.searchIcon {
+  pointer-events: none;
+  grid-area: searchicon;
+  width: 24px;
+  height: 24px;
+  margin-right: 116px;
+}
+
+.clearButton {
+  grid-area: clearbutton;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  margin: 0 auto;
+}
+
+.clearButton:hover {
+  background-color: var(--Company-Paper);
+}
+
+.clearButtonIcon {
+  border-radius: 12px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+}
+
+.withBackground {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .menuItems {
@@ -48,9 +87,22 @@
   left: 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1002;
-  width: 608px;
+  width: 320px;
+  opacity: 0.4;
+  transition: width 0.2s ease, opacity 0.2s ease;
+}
+
+.searchbarOpen {
+  z-index: 9999;
+  width: 640px;
+  background-color: white;
+}
+
+.showDropdownMenu {
   border: 3px solid #000;
   border-radius: 0 0 6px 6px;
+  width: 672px;
+  opacity: 1;
 }
 
 .menuList {
