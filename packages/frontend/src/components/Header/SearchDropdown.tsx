@@ -33,10 +33,10 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
     onClose?.();
   };
 
-  if (!showDropdownMenu) return null;
+  if (!showDropdownMenu) return <div className={cx(styles.menuItems)} />;
 
   return (
-    <div className={styles.menuItems}>
+    <div className={cx(styles.menuItems, { [styles.showDropdownMenu]: showDropdownMenu })}>
       <ul className={styles.menuList}>
         <SearchDropdownItem onClick={() => onSearch(searchValue)} horizontalLine>
           <div className={styles.displayText}>
