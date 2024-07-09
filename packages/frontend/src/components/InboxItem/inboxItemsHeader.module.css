@@ -3,7 +3,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: 0;
   :first-letter {
     text-transform: capitalize;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .inboxItemsHeader {
+    margin-left: 1rem;
   }
 }

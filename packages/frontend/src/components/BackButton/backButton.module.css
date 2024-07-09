@@ -1,5 +1,6 @@
 .backButton {
   text-decoration: none;
+  padding-left: 0;
 }
 
 .backLink {
@@ -12,4 +13,10 @@
 .backIcon {
   height: 1.5rem;
   width: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .backButton {
+    padding-left: 1rem;
+  }
 }

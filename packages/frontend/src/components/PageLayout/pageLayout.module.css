@@ -5,11 +5,6 @@
   grid-template-rows: auto 1fr auto;
   max-width: 1920px;
   margin: 0 auto;
-
-  @media (min-width: 600px) {
-    grid-template-areas: "sidebar main";
-    grid-template-columns: 1fr 3fr;
-  }
 }
 
 .sidebar {
@@ -32,13 +27,21 @@
 .pageLayout > main {
   grid-area: main;
   overflow: auto;
-  padding: 0.5rem;
-  @media (min-width: 600px) {
-    margin-right: 192px;
-    padding: 1.5rem;
-  }
+  padding: 0;
 }
 
 .pageLayout > footer {
   grid-area: footer;
+}
+
+@media (min-width: 600px) {
+  .pageLayout {
+    grid-template-areas: "sidebar main";
+    grid-template-columns: auto 3fr;
+  }
+
+  .pageLayout > main {
+    margin-right: 192px;
+    padding: 1.5rem;
+  }
 }

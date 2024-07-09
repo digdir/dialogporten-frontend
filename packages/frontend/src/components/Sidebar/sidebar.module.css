@@ -4,8 +4,6 @@
   flex-direction: column;
   padding: 1.25rem 0;
   background-color: var(--background-color, #eaf7ef);
-  margin-right: 2rem;
-  margin-left: 2rem;
 }
 
 .horizontalLine {

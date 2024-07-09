@@ -100,7 +100,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
           >
             {icon}
           </span>
-          <span className={styles.displayText}>{displayText}</span>
+          <span className={cx(styles.displayText, { [styles.isInbox]: isInbox })}>{displayText}</span>
         </div>
         <div className={styles.counterAndIcon}>
           {!!count && (
