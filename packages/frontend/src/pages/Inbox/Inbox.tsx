@@ -35,7 +35,7 @@ interface InboxProps {
 }
 
 enum Routes {
-  inbox = '/inbox',
+  inbox = '/',
   sent = '/sent',
   draft = '/drafts',
 }
@@ -84,7 +84,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
 
   const { parties } = useParties();
-  const { searchString, setSearchString } = useSearchString();
+  const { searchString } = useSearchString();
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
@@ -172,7 +172,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
         message: t('savedSearches.saved_success'),
         variant: 'success',
       });
-      setSearchString('');
     } catch (error) {
       openSnackbar({
         message: t('savedSearches.saved_error'),

@@ -19,7 +19,7 @@ export interface OpenSavedSearchLinkProps {
 export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLinkProps) => {
   const { searchString, filters, fromView } = savedSearch.data;
   const queryParams = new URLSearchParams({
-    ...(searchString && { searchString }),
+    ...(searchString && { search: searchString }),
     ...(filters?.length && { filters: JSON.stringify(filters) }),
   });
   return (
