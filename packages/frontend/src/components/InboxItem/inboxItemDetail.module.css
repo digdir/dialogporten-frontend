@@ -148,3 +148,9 @@
   line-height: 1.5;
   margin: 0;
 }
+
+@media screen and (max-width: 768px) {
+  .inboxItemDetail {
+    margin: 1rem;
+  }
+}

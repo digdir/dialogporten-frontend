@@ -8,6 +8,7 @@
   height: 2.25rem;
   max-height: 2.25rem;
   user-select: none;
+  margin: 1rem;
 }
 
 .inputContainer {
@@ -115,22 +116,6 @@ input:focus-visible {
   z-index: 1001;
   height: 100%;
   padding: 8px 0 0;
-}
-
-@media screen and (max-width: 768px) {
-  .menuItems {
-    left: 0;
-    width: 100%;
-    position: fixed;
-    top: 9.375rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1002;
-  }
-
-  .menuList {
-    width: 100%;
-    min-height: 100vh;
-  }
 }
 
 .menuItem:hover {
@@ -270,4 +255,24 @@ input:focus-visible {
   border: 1px solid #000;
   border-radius: 0.125rem;
   padding: 0.25rem 0.625rem;
+}
+
+@media screen and (max-width: 768px) {
+  .menuItems {
+    left: 0;
+    width: 100%;
+    position: fixed;
+    top: 9.375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1002;
+  }
+
+  .menuList {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .inputContainer {
+    width: 100%;
+  }
 }
