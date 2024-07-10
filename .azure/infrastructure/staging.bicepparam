@@ -28,9 +28,9 @@ param applicationGatewayConfiguration = {
     minCapacity: 1
     maxCapacity: 2
   }
-  hostName: 'af.tt.altinn.cloud'
+  hostName: 'af.tt.altinn.no'
   sslCertificate: {
     keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
-    secretKey: 'star-tt-altinn-cloud'
+    secretKey: 'star-tt-altinn-no'
   }
 }
