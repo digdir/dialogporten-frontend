@@ -1,12 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Html > should render content 1`] = `
-<html>
-  <head />
-  <body>
-    <h1>
-       header 
-    </h1>
-  </body>
-</html>
+<h1>
+   header 
+</h1>
 `;

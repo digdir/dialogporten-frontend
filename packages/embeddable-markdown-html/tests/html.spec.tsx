@@ -13,4 +13,17 @@ describe('Html', () => {
 
     expect(container.firstChild).toMatchSnapshot();
   });
+
+  test('should not render script tags', async () => {
+    const { container, getByText } = render(
+      <Html>{'<div><script>A dangerous script!</script><h1> header </h1></div>'}</Html>,
+    );
+
+    await waitFor(() => {
+      expect(getByText('header')).toBeInTheDocument();
+
+      const scriptTags = container.querySelector('script');
+      expect(scriptTags).not.toBeInTheDocument();
+    });
+  });
 });

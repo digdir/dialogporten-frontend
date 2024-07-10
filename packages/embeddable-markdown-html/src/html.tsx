@@ -2,6 +2,7 @@ import { type ReactElement, useEffect, useState } from 'react';
 import * as prod from 'react/jsx-runtime';
 import rehypeParse, { type Options as RehypeParseOptions } from 'rehype-parse';
 import rehypeReact from 'rehype-react';
+import rehypeSanitize from 'rehype-sanitize';
 import { unified } from 'unified';
 
 // @ts-expect-error: the react types are missing.
@@ -17,6 +18,7 @@ export const Html: React.FC<{
   useEffect(() => {
     unified()
       .use(rehypeParse, {} as RehypeParseOptions)
+      .use(rehypeSanitize)
       .use(rehypeReact, production)
       .process(children)
       .then((vfile) => setReactContent(vfile.result as ReactElement))
