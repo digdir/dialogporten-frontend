@@ -18,8 +18,8 @@ importers:
         specifier: ^15.2.7
         version: 15.2.7
       mprocs:
-        specifier: ^0.6.4
-        version: 0.6.4
+        specifier: ^0.7.0
+        version: 0.7.1
       turbo:
         specifier: 2.0.5
         version: 2.0.5
@@ -160,8 +160,8 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2
       mprocs:
-        specifier: ^0.6.4
-        version: 0.6.4
+        specifier: ^0.7.0
+        version: 0.7.1
       nodemon:
         specifier: ^3.0.3
         version: 3.0.3
@@ -16755,8 +16755,8 @@ packages:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
     dev: false
 
-  /mprocs@0.6.4:
-    resolution: {integrity: sha512-Y4eqnAjp3mjy0eT+zPoMQ+P/ISOzjgRG/4kh4I5cRA4Tv0rPxTCBRadn3+j+boMF5id7IoLhrVq9NFWFPuzD9A==}
+  /mprocs@0.7.1:
+    resolution: {integrity: sha512-v22SIwcOphZm6XLdNfeHf4ZDYHqV1hghyfqNLwmZ604lEXlEkiuazYBWUz3xEB2GdABEAKfCZ8qiOVIoREM6CQ==}
     engines: {node: '>=0.10.0'}
     hasBin: true
     dev: true
