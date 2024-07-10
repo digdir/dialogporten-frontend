@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon, MultiplyIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Backdrop } from '../Backdrop';
 import { useSearchString } from '../Header';
 import { SearchDropdown } from './SearchDropdown';
@@ -14,6 +14,7 @@ export const SearchBar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { searchString, setSearchString } = useSearchString();
   const [searchValue, setSearchValue] = useState<string>(searchString);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setShowDropdownMenu(false);
@@ -35,8 +36,15 @@ export const SearchBar: React.FC = () => {
   };
 
   const onSearch = (value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
     setSearchString(value);
     setShowDropdownMenu(false);
+    newSearchParams.set('search', value);
+    setSearchParams(newSearchParams);
+    navigate({
+      pathname: '/',
+      search: `?${newSearchParams.toString()}`,
+    });
   };
 
   return (
