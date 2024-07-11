@@ -29,7 +29,7 @@ var probes = [
   }
 ]
 
-resource containerAppJob 'Microsoft.App/jobs@2023-05-01' = {
+resource containerAppJob 'Microsoft.App/jobs@2024-03-01' = {
   name: name
   location: location
   identity: {
