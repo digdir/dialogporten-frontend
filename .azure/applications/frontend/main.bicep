@@ -19,7 +19,7 @@ var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var serviceName = 'frontend'
 var containerAppName = '${namePrefix}-${serviceName}'
 
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
   name: containerAppEnvironmentName
 }
 
