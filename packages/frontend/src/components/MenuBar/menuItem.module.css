@@ -1,0 +1,144 @@
+.menuItem {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-height: 32px;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: 90% auto;
+  align-items: center;
+  grid-template-areas: "left right";
+  border-radius: 2px;
+
+  > svg {
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+
+.fullWidth {
+  grid-template-columns: 1fr;
+}
+
+.isWhiteBackground {
+  background: #fff;
+}
+.isTransparentBackground {
+  background: transparent;
+}
+
+.whiteBackgroundWhenActive {
+  background: #fff;
+}
+
+.greyBackgroundWhenActive {
+  background: var(--Neutral-Paper, #f3f4f6);
+}
+
+.leftContent {
+  display: flex;
+  align-items: center;
+  grid-area: left;
+  justify-self: start;
+}
+
+.displayText {
+  margin-left: 10px;
+  color: var(--black-100, #000);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.smallText {
+  color: var(--black-100, #000);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.icon {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--button-color);
+  border-radius: 4px;
+  background: #fff;
+  width: 2rem;
+  height: 2rem;
+  padding: 6px 4px;
+}
+
+.icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.isInbox {
+  background: var(--button-color);
+  width: 2.75rem;
+  height: 2.75rem;
+  color: #fff;
+}
+
+.rightContent {
+  min-width: 24px;
+  min-height: 24px;
+  grid-area: right;
+  justify-self: end;
+}
+
+.arrowIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  color: #000;
+}
+
+.menuItemCounter {
+  padding: 4px 8px;
+  border-radius: 24px;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1rem;
+}
+
+.redCounter {
+  background-color: var(--action-important, #e02e49);
+  color: #fff;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+li:last-child {
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
+.small .displayText {
+  color: var(--black-100, #000);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.smallIcon .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 6px 6px;
+}

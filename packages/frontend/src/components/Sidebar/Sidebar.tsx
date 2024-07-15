@@ -13,8 +13,10 @@ import { useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
+import { Routes } from '../../pages/Inbox/Inbox';
 import { useSavedSearches } from '../../pages/SavedSearches';
-import { SidebarItem } from './';
+import { Hr } from '../MenuBar';
+import { MenuItem } from '../MenuBar/MenuItem';
 import styles from './sidebar.module.css';
 
 export interface SidebarProps {
@@ -22,9 +24,11 @@ export interface SidebarProps {
   isCompany?: boolean;
 }
 
-export const HorizontalLine = () => <hr className={styles.horizontalLine} />;
+export const HorizontalLine = ({ fullWidth = false }) => (
+  <hr className={styles.horizontalLine} style={fullWidth ? { width: '100%', margin: '0.5rem 0' } : {}} />
+);
 
-export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const { data } = useSavedSearches();
@@ -40,68 +44,59 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, isCompany }) => {
   return (
     <aside className={styles.sidebar} data-testid="sidebar">
       {children || (
-        <>
-          <SidebarItem
+        <ul className={styles.menuList}>
+          <MenuItem
             displayText={t('sidebar.inbox')}
             label={t('sidebar.inbox.label')}
-            icon={<InboxFillIcon fontSize="1.5rem" />}
-            count={dialogsByView.inbox.filter((dialog) => !dialog.isSeenByEndUser).length}
+            icon={<InboxFillIcon />}
+            count={dialogsByView.inbox.length}
             path="/"
+            isActive={pathname === Routes.inbox}
             isInbox
-            isActive={pathname === '/'}
-            isCompany={isCompany}
           />
-          <SidebarItem
+          <MenuItem
             displayText={t('sidebar.drafts')}
             label={t('sidebar.drafts.label')}
-            icon={<DocPencilIcon fontSize="1.5rem" />}
+            icon={<DocPencilIcon />}
             count={dialogsByView.draft.length}
             path="/drafts"
-            isActive={pathname === '/drafts'}
-            isCompany={isCompany}
+            isActive={pathname === Routes.draft}
           />
-          <SidebarItem
+          <MenuItem
             displayText={t('sidebar.sent')}
             label={t('sidebar.sent.label')}
-            icon={<FileCheckmarkIcon fontSize="1.5rem" />}
+            icon={<FileCheckmarkIcon />}
             count={dialogsByView.sent.length}
             path="/sent"
-            isActive={pathname === '/sent'}
-            isCompany={isCompany}
+            isActive={pathname === Routes.sent}
           />
-          <HorizontalLine />
-          <SidebarItem
+          <Hr />
+          <MenuItem
             displayText={t('sidebar.saved_searches')}
             label={t('sidebar.saved_searches.label')}
-            icon={<BookmarkIcon fontSize="1.5rem" />}
-            count={savedSearches?.length || 0}
+            icon={<BookmarkIcon />}
+            count={savedSearches?.length ?? 0}
             path="/saved-searches"
-            isActive={pathname === '/saved-searches'}
-            type="secondary"
-            isCompany={isCompany}
+            isActive={pathname === Routes.savedSearches}
           />
-          <HorizontalLine />
-          <SidebarItem
-            disabled
+          <Hr />
+          <MenuItem
             displayText={t('sidebar.archived')}
             label={t('sidebar.archived.label')}
-            icon={<ArchiveIcon fontSize="1.5rem" />}
-            count={8}
+            icon={<ArchiveIcon />}
+            count={0}
             path="/archive"
-            isActive={pathname === '/archive'}
-            isCompany={isCompany}
+            isActive={pathname === Routes.archive}
           />
-          <SidebarItem
-            disabled
+          <MenuItem
             displayText={t('sidebar.deleted')}
             label={t('sidebar.deleted.label')}
-            icon={<TrashIcon fontSize="1.5rem" />}
-            count={8}
+            icon={<TrashIcon />}
+            count={0}
+            isActive={pathname === Routes.deleted}
             path="/deleted"
-            isActive={pathname === '/deleted'}
-            isCompany={isCompany}
           />
-        </>
+        </ul>
       )}
     </aside>
   );

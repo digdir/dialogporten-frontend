@@ -53,7 +53,7 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
       >
         <p className={styles.menuText}>{t('word.menu')}</p>
         <div className={cx(styles.menuCircle, className)} aria-hidden="true">
-          <Avatar name={name} companyName={companyName} />
+          <Avatar name={name} companyName={companyName} type={'small'} />
         </div>
         <NotificationCount count={notificationCount} />
         <NavigationDropdownMenu

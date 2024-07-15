@@ -1,0 +1,58 @@
+.menuItem {
+  display: grid;
+  grid-template-areas: "left right";
+  grid-template-columns: 70% auto;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 6px;
+  padding-bottom: 6px;
+}
+
+.menuColumn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.menuColumnLeft {
+  grid-area: left;
+}
+
+.menuColumnRight {
+  grid-area: right;
+}
+
+.primaryName {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 226px;
+}
+
+.secondaryName {
+  width: 100%;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.wordChange {
+  color: var(--black-100, #000);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.arrowIcon {
+  margin-right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #000;
+}

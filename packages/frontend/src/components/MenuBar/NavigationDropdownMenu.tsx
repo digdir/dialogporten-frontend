@@ -1,13 +1,12 @@
 import { Button } from '@digdir/designsystemet-react';
-import { ChevronRightIcon, InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
+import { InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
-import { Hr } from '.';
-import { Footer } from '..';
+import { Footer, HorizontalLine } from '..';
 import { useWindowSize } from '../../../utils/useWindowSize';
-import { Avatar } from '../Avatar';
-import { NavigationDropdownMenuItem } from './NavigationDropdownMenuItem';
+import { MenuItem } from './MenuItem';
 import { NavigationDropdownSubMenu, type SubMenuSelection } from './NavigationDropdownSubMenu';
-import styles from './navigationMenu.module.css';
+import { UserInfo } from './UserInfo';
+import styles from './navigationDropdownMenu.module.css';
 
 interface NavigationDropdownMenuProps {
   showDropdownMenu: boolean;
@@ -28,8 +27,6 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
 }) => {
   const { t } = useTranslation();
   const { isMobile } = useWindowSize();
-  const companyNameTitleCase = toTitleCase(companyName);
-  const nameTitleCase = toTitleCase(name);
 
   const handleClose = () => {
     onClose?.();
@@ -50,52 +47,39 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
-        <li className={styles.menuItem}>
-          <div
-            className={styles.sidebarMenuItem}
-            onClick={() => setShowSubMenu('profile')}
-            onKeyDown={(e) => e.key === 'Enter' && setShowSubMenu('profile')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={styles.menuColumn} title={name}>
-              <Avatar name={name} companyName={companyNameTitleCase} darkCircle />
-              <div>
-                <div className={styles.primaryName}>{companyNameTitleCase || nameTitleCase}</div>
-                <div className={styles.secondaryName}>{companyNameTitleCase ? nameTitleCase : t('word.private')}</div>
-              </div>
-            </div>
-            <div role="button" tabIndex={0} className={styles.menuColumn} title={t('word.change')}>
-              {t('word.change')}
-              <ChevronRightIcon className={styles.arrowIcon} />
-            </div>
-          </div>
-          <Hr />
-        </li>
-        <NavigationDropdownMenuItem
+        <MenuItem
+          leftContent={<UserInfo name={name} companyName={companyName} onClick={() => setShowSubMenu('profile')} />}
+          isWhiteBackground
+        />
+        <HorizontalLine fullWidth />
+        <MenuItem
           displayText={t('sidebar.inbox')}
           label={t('sidebar.inbox.label')}
           icon={<InboxFillIcon />}
           onClose={handleClose}
           onClick={() => setShowSubMenu('inbox')}
+          isWhiteBackground
         />
-        <NavigationDropdownMenuItem
+        <MenuItem
           displayText={t('menuBar.all_services')}
           label={t('link.goToAllServices')}
           icon={<MenuGridIcon />}
           onClose={handleClose}
           path="https://info.altinn.no/skjemaoversikt/"
           isExternalLink
+          isWhiteBackground
         />
-        <NavigationDropdownMenuItem
+        <MenuItem
           displayText={t('menuBar.chat')}
           label={t('menuBar.chat.label')}
           icon={<PersonChatIcon />}
           onClose={handleClose}
           path="https://info.altinn.no/hjelp/"
           isExternalLink
+          isWhiteBackground
         />
-        <Hr />
+        <HorizontalLine fullWidth />
+
         <MenuLogoutButton />
         {isMobile && <Footer />}
       </ul>
@@ -118,10 +102,8 @@ export const MenuLogoutButton = () => {
     (window as Window).location = `/api/logout`;
   };
   return (
-    <li className={styles.menuItem}>
-      <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
-        {t('word.log_out')}
-      </Button>
-    </li>
+    <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
+      {t('word.log_out')}
+    </Button>
   );
 };
