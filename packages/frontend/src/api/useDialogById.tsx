@@ -24,6 +24,11 @@ interface InboxItemTag {
   className?: string;
 }
 
+interface MainContentReference {
+  url: string;
+  type: 'markdown' | 'unknown';
+}
+
 export interface DialogByIdDetails {
   toLabel: string;
   description: string | React.ReactNode;
@@ -34,6 +39,7 @@ export interface DialogByIdDetails {
   guiActions: GuiButtonProps[];
   additionalInfo: string | React.ReactNode;
   attachments: AttachmentFieldsFragment[];
+  mainContentReference?: MainContentReference;
 }
 
 interface UseDialogByIdOutput {
@@ -46,16 +52,16 @@ export const getDialogsById = (id: string): Promise<GetDialogByIdQuery> =>
     id,
   });
 
-export const getPropertyByCultureCode = (
-  value:
-    | Array<{
-        __typename?: 'Localization';
-        value: string;
-        languageCode: string;
-      }>
-    | null
-    | undefined,
-): string => {
+type ValueType =
+  | Array<{
+      __typename?: 'Localization';
+      value: string;
+      languageCode: string;
+    }>
+  | null
+  | undefined;
+
+export const getPropertyByCultureCode = (value: ValueType): string => {
   const defaultCultureCodes = ['nb'];
   if (value) {
     return value.find((item) => defaultCultureCodes.includes(item.languageCode))?.value ?? '';
@@ -76,6 +82,22 @@ const getTags = (item: DialogByIdFieldsFragment, format: FormatFunction): { labe
   return tags;
 };
 
+const getMainContentReference = ({
+  value,
+  mediaType,
+}: { value: ValueType; mediaType: string }): MainContentReference => {
+  const url = getPropertyByCultureCode(value);
+
+  switch (mediaType) {
+    case 'markdown':
+    case 'text/markdown':
+    case 'text/x-markdown':
+      return { url, type: 'markdown' };
+    default:
+      return { url, type: 'unknown' };
+  }
+};
+
 export function mapDialogDtoToInboxItem(
   item: DialogByIdFieldsFragment | null | undefined,
   parties: PartyFieldsFragment[],
@@ -87,6 +109,7 @@ export function mapDialogDtoToInboxItem(
   const titleObj = item?.content?.find((c) => c.type === ContentType.Title)?.value;
   const additionalInfoObj = item?.content?.find((c) => c.type === ContentType.AdditionalInfo)?.value;
   const summaryObj = item?.content?.find((c) => c.type === ContentType.Summary)?.value;
+  const mainContentReference = item?.content?.find((c) => c.type === ContentType.MainContentReference);
   const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
   const serviceOwner = getOrganisation(item.org, 'nb');
   return {
@@ -115,6 +138,8 @@ export function mapDialogDtoToInboxItem(
       title: getPropertyByCultureCode(guiAction.title),
     })),
     attachments: item.attachments,
+    // biome-ignore lint/suspicious/noExplicitAny: TODO
+    mainContentReference: getMainContentReference(mainContentReference as any),
   };
 }
 

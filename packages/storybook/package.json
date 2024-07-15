@@ -17,6 +17,7 @@
     "@digdir/designsystemet-theme": "1.0.0-rc.3",
     "@navikt/aksel-icons": "^6.12.0",
     "frontend": "workspace:*",
+    "embeddable-markdown-html": "workspace:*",
     "i18next": "^23.8.2",
     "i18next-icu": "^2.3.0",
     "react": "^18.2.0",

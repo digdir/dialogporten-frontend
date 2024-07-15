@@ -14,7 +14,6 @@ export const Html: React.FC<{
 }> = ({ children, onError = () => {} }) => {
   const [reactContent, setReactContent] = useState<ReactElement | null>(null);
 
-  // TODO: Could this be a useMemo call?
   useEffect(() => {
     unified()
       .use(rehypeParse, {} as RehypeParseOptions)

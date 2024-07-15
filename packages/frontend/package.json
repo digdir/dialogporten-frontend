@@ -17,6 +17,7 @@
     "run:docker": "docker run -it -p 80:80 frontend"
   },
   "dependencies": {
+    "embeddable-markdown-html": "workspace:*",
     "@digdir/designsystemet-css": "0.9.1-alpha.3",
     "@digdir/designsystemet-react": "1.0.0-rc.3",
     "@digdir/designsystemet-theme": "1.0.0-rc.3",
