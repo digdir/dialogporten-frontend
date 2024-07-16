@@ -10,14 +10,14 @@ import {
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Hr } from '.';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useSavedSearches } from '../../pages/SavedSearches';
+import { HorizontalLine } from '../Sidebar';
+import { MenuItem } from './MenuItem';
 import { MenuLogoutButton } from './NavigationDropdownMenu';
-import { NavigationDropdownMenuItem } from './NavigationDropdownMenuItem';
 import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
-import styles from './navigationMenu.module.css';
+import styles from './navigationDropdownMenu.module.css';
 
 export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();
@@ -30,31 +30,35 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
-        <li className={styles.menuItem}>
-          <div
-            role="button"
-            tabIndex={0}
-            className={styles.menuColumn}
-            onClick={onBack}
-            onKeyUp={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') onBack();
-            }}
-          >
-            <ArrowLeftIcon className={styles.backButtonIcon} />
-            <span className={styles.subMenuTitle}>{t('word.main_menu')}</span>
-          </div>
-        </li>
-        <Hr />
-        <NavigationDropdownMenuItem
+        <MenuItem
+          leftContent={
+            <div
+              role="button"
+              tabIndex={0}
+              className={styles.menuColumn}
+              onClick={onBack}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') onBack();
+              }}
+            >
+              <ArrowLeftIcon className={styles.backButtonIcon} />
+              <span className={styles.subMenuTitle}>{t('word.main_menu')}</span>
+            </div>
+          }
+          isWhiteBackground
+        />
+        <HorizontalLine fullWidth />
+        <MenuItem
           displayText={t('sidebar.inbox')}
           label={t('sidebar.inbox.label')}
           icon={<InboxFillIcon />}
           count={dialogsByView.inbox.length}
           path="/"
           isActive={pathname === '/'}
+          isWhiteBackground
+          isInbox
         />
-        <Hr />
-        <NavigationDropdownMenuItem
+        <MenuItem
           displayText={t('sidebar.drafts')}
           label={t('sidebar.drafts.label')}
           icon={<DocPencilIcon />}
@@ -62,8 +66,10 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           path="/drafts"
           isActive={pathname === '/drafts'}
           onClick={onClose}
+          isWhiteBackground
+          smallText
         />
-        <NavigationDropdownMenuItem
+        <MenuItem
           displayText={t('sidebar.sent')}
           label={t('sidebar.sent.label')}
           icon={<FileCheckmarkIcon />}
@@ -71,18 +77,24 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           path="/sent"
           isActive={pathname === '/sent'}
           onClick={onClose}
+          isWhiteBackground
+          smallText
         />
-        <Hr />
-        <NavigationDropdownMenuItem
+        <HorizontalLine fullWidth />
+
+        <MenuItem
           displayText={t('sidebar.saved_searches')}
           label={t('sidebar.saved_searches.label')}
           icon={<BookmarkIcon />}
           count={savedSearches?.length ?? 0}
           path="/saved-searches"
           isActive={pathname === '/saved-searches'}
+          isWhiteBackground
+          smallText
         />
-        <Hr />
-        <NavigationDropdownMenuItem
+        <HorizontalLine fullWidth />
+
+        <MenuItem
           displayText={t('sidebar.archived')}
           label={t('sidebar.archived.label')}
           icon={<ArchiveIcon />}
@@ -90,16 +102,21 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           path="/archive"
           isActive={pathname === '/archive'}
           onClick={onClose}
+          isWhiteBackground
+          smallText
         />
-        <NavigationDropdownMenuItem
+        <MenuItem
           displayText={t('sidebar.deleted')}
           label={t('sidebar.deleted.label')}
           icon={<TrashIcon />}
           count={0}
           isActive={pathname === '/deleted'}
           path="/deleted"
+          isWhiteBackground
+          smallText
         />
-        <Hr />
+        <HorizontalLine fullWidth />
+
         <MenuLogoutButton />
       </ul>
     </div>

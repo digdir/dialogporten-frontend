@@ -34,10 +34,13 @@ interface InboxProps {
   viewType: InboxViewType;
 }
 
-enum Routes {
+export enum Routes {
   inbox = '/',
   sent = '/sent',
   draft = '/drafts',
+  savedSearches = '/saved-searches',
+  archive = '/archive',
+  deleted = '/deleted',
 }
 
 export interface InboxItemInput {

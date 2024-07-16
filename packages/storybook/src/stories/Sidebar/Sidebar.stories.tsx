@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
-import { HorizontalLine, Sidebar, SidebarItem } from '../../../../frontend';
+import { HorizontalLine, Sidebar } from '../../../../frontend';
 
 import {
   CogIcon,
@@ -12,6 +12,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
+import { MenuItem } from 'frontend/src/components/MenuBar';
 
 const meta = {
   title: 'Components/Sidebar',
@@ -24,7 +25,7 @@ export default meta;
 const SidebarSimpleExamplePerson = () => {
   return (
     <Sidebar>
-      <SidebarItem
+      <MenuItem
         displayText="Innboks"
         label="Trykk her for å gå til innboks"
         icon={<InboxFillIcon />}
@@ -33,21 +34,15 @@ const SidebarSimpleExamplePerson = () => {
         isInbox
       />
       <HorizontalLine />
-      <SidebarItem
-        displayText="Nytt skjema"
-        label="Trykk her for å gå til utboks"
-        icon={<PlusIcon />}
-        path="/Nytt"
-        isButton
-      />
-      <SidebarItem
+      <MenuItem displayText="Nytt skjema" label="Trykk her for å gå til utboks" icon={<PlusIcon />} path="/Nytt" />
+      <MenuItem
         displayText="Utkast"
         label="Trykk her for å gå til Utkast"
         icon={<FileTextIcon />}
         count={8}
         path="/Utkast"
       />
-      <SidebarItem
+      <MenuItem
         displayText="Sendt"
         label="Trykk her for å gå til Sendt"
         icon={<FileCheckmarkIcon />}
@@ -55,14 +50,14 @@ const SidebarSimpleExamplePerson = () => {
         path="/Sendt"
       />
       <HorizontalLine />
-      <SidebarItem
+      <MenuItem
         displayText="Arkiv"
         label="Trykk her for å gå til Arkiv"
         icon={<FolderMinusIcon />}
         count={8}
         path="/Arkiv"
       />
-      <SidebarItem
+      <MenuItem
         displayText="Slettet"
         label="Trykk her for å gå til Slettet"
         icon={<TrashIcon />}
@@ -70,20 +65,18 @@ const SidebarSimpleExamplePerson = () => {
         path="/Slettet"
       />
       <HorizontalLine />
-      <SidebarItem
+      <MenuItem
         displayText="Lagrede søk"
         label="Trykk her for å gå til utboks"
         icon={<MagnifyingGlassIcon />}
         count={8}
         path="/Lagrede"
-        type="secondary"
       />
-      <SidebarItem
+      <MenuItem
         displayText="Innstillinger"
         label="Trykk her for å gå til utboks"
         icon={<CogIcon />}
         path="/innstillinger"
-        type="secondary"
       />
     </Sidebar>
   );
