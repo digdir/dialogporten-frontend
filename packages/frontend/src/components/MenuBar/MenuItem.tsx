@@ -105,8 +105,6 @@ const RenderDropDownMenuItem = ({
   return (
     <div
       className={cx(styles.menuItem, {
-        [styles.isWhiteBackground]: isWhiteBackground,
-        [styles.isTransparentBackground]: !isWhiteBackground,
         [styles.whiteBackgroundWhenActive]: isActive && !isWhiteBackground,
         [styles.greyBackgroundWhenActive]: isActive && isWhiteBackground,
         [styles.fullWidth]: fullWidth,
@@ -120,6 +118,8 @@ const RenderDropDownMenuItem = ({
           <>
             <div
               className={cx(styles.icon, {
+                [styles.isWhiteBackground]: isWhiteBackground,
+                [styles.isTransparentBackground]: !isWhiteBackground,
                 [styles.isInbox]: isInbox,
                 [styles.greyBackgroundWhenActive]: isWhiteBackground && !isInbox,
               })}

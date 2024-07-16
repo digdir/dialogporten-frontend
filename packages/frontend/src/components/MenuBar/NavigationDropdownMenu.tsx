@@ -1,8 +1,8 @@
 import { Button } from '@digdir/designsystemet-react';
 import { InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Footer, HorizontalLine } from '..';
-import { useWindowSize } from '../../../utils/useWindowSize';
+import { HorizontalLine } from '..';
 import { MenuItem } from './MenuItem';
 import { NavigationDropdownSubMenu, type SubMenuSelection } from './NavigationDropdownSubMenu';
 import { UserInfo } from './UserInfo';
@@ -26,12 +26,13 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   setShowSubMenu,
 }) => {
   const { t } = useTranslation();
-  const { isMobile } = useWindowSize();
 
   const handleClose = () => {
     onClose?.();
     setShowSubMenu('none');
   };
+
+  useEscapeKey(handleClose);
 
   if (showSubMenu !== 'none')
     return (
@@ -47,10 +48,8 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
-        <MenuItem
-          leftContent={<UserInfo name={name} companyName={companyName} onClick={() => setShowSubMenu('profile')} />}
-          isWhiteBackground
-        />
+        <UserInfo name={name} companyName={companyName} onClick={() => setShowSubMenu('profile')} />
+
         <HorizontalLine fullWidth />
         <MenuItem
           displayText={t('sidebar.inbox')}
@@ -58,6 +57,7 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
           icon={<InboxFillIcon />}
           onClose={handleClose}
           onClick={() => setShowSubMenu('inbox')}
+          isActive={true}
           isWhiteBackground
         />
         <MenuItem
@@ -79,9 +79,7 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
           isWhiteBackground
         />
         <HorizontalLine fullWidth />
-
         <MenuLogoutButton />
-        {isMobile && <Footer />}
       </ul>
     </div>
   );
@@ -101,9 +99,30 @@ export const MenuLogoutButton = () => {
   const logOut = () => {
     (window as Window).location = `/api/logout`;
   };
+
   return (
-    <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
-      {t('word.log_out')}
-    </Button>
+    <MenuItem
+      leftContent={
+        <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
+          {t('word.log_out')}
+        </Button>
+      }
+      fullWidth
+    />
   );
+};
+
+const useEscapeKey = (onEscape: () => void): void => {
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onEscape();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [onEscape]);
 };

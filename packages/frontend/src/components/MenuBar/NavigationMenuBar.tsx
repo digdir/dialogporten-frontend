@@ -2,12 +2,11 @@ import { XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWindowSize } from '../../../utils/useWindowSize';
 import { Avatar } from '../Avatar';
 import { Backdrop } from '../Backdrop';
 import { NavigationDropdownMenu } from './NavigationDropdownMenu';
 import type { SubMenuSelection } from './NavigationDropdownSubMenu';
-import styles from './navigationMenu.module.css';
+import styles from './navigationMenuBar.module.css';
 
 const NotificationCount: React.FC<{ count: number }> = ({ count }) => {
   const { t } = useTranslation();
@@ -33,7 +32,6 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
   const [showSubMenu, setShowSubMenu] = useState<SubMenuSelection>('none');
 
   const { t } = useTranslation();
-  const { isMobile } = useWindowSize();
 
   const handleToggle = () => {
     setShowDropdownMenu((prev) => !prev);
@@ -43,29 +41,6 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
     setShowDropdownMenu(false);
     setShowSubMenu('none');
   };
-
-  if (isMobile)
-    return (
-      <div
-        className={styles.menuContainer}
-        onClick={handleToggle}
-        onKeyDown={(e) => e.key === 'Enter' && handleToggle()}
-      >
-        <p className={styles.menuText}>{t('word.menu')}</p>
-        <div className={cx(styles.menuCircle, className)} aria-hidden="true">
-          <Avatar name={name} companyName={companyName} type={'small'} />
-        </div>
-        <NotificationCount count={notificationCount} />
-        <NavigationDropdownMenu
-          showDropdownMenu={showDropdownMenu}
-          name={name}
-          companyName={companyName}
-          onClose={handleClose}
-          showSubMenu={showSubMenu}
-          setShowSubMenu={setShowSubMenu}
-        />
-      </div>
-    );
 
   return (
     <>
