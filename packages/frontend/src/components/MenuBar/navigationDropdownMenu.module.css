@@ -40,16 +40,16 @@
 @media screen and (max-width: 768px) {
   .menuItems {
     left: 0;
-    width: 100%;
+    width: calc(100% - 1rem);
+    margin-right: 1rem;
     position: fixed;
-    top: 9.375rem;
+    top: 10rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1002;
   }
 
   .menuList {
-    width: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 10rem);
   }
 }
 
@@ -79,12 +79,10 @@
 }
 
 .logoutButton {
-  width: 358px;
+  width: 100%;
   color: var(--Action-Link, #1d4ed8);
   border-color: var(--Action-Link, #1d4ed8);
   border-radius: 3px;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 }
 
 .menuColumn {

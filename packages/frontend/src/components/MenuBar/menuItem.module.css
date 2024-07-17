@@ -19,26 +19,10 @@
   grid-template-columns: 1fr;
 }
 
-.isWhiteBackground {
-  background: #fff;
-}
-.isTransparentBackground {
-  background: transparent;
-}
-
-.whiteBackgroundWhenActive {
-  background: #fff;
-}
-
-.greyBackgroundWhenActive {
-  background: var(--Neutral-Paper, #f3f4f6);
-}
-
 .leftContent {
   display: flex;
   align-items: center;
   grid-area: left;
-  justify-self: start;
 }
 
 .displayText {
@@ -73,6 +57,22 @@
 .icon svg {
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.isWhiteBackground {
+  background-color: var(--Neutral-Paper, #f3f4f6);
+}
+
+.whiteBackgroundWhenActive {
+  background: #fff;
+}
+
+.isTransparentBackground {
+  background: transparent;
+}
+
+.greyBackgroundWhenActive {
+  background: var(--Neutral-Paper, #f3f4f6);
 }
 
 .isInbox {

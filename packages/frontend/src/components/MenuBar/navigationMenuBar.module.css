@@ -80,7 +80,18 @@
   color: #fff;
   height: 2.25rem;
   max-height: 36px;
-  padding-right: 0.625rem;
+}
+
+.crossSquare {
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Company-Primary, #111d46);
+  color: #fff;
+  border-radius: 3px;
+  border: 1px solid #9ca3af;
 }
 
 .active {
