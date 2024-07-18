@@ -5,7 +5,7 @@
   position: relative;
   padding: 1.5rem 1rem 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.25);
-  margin: 2rem;
+  margin-top: 2rem;
 }
 
 .footer li {
@@ -40,6 +40,9 @@
 .content {
   display: flex;
   width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .content div {
