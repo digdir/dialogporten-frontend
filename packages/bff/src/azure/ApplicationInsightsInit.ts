@@ -1,12 +1,5 @@
+import { setTimeout } from 'node:timers/promises';
 import * as appInsights from 'applicationinsights';
-
-function waitNSeconds(n = 1): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, 1000 * n);
-  });
-}
 
 export const initAppInsights = async (connectionString: string) => {
   appInsights
@@ -22,7 +15,7 @@ export const initAppInsights = async (connectionString: string) => {
     .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
     .start();
 
-  await waitNSeconds(1);
+  await setTimeout(1000);
 
   if (appInsights.defaultClient) {
     console.log('AppInsights initialized properly.');
@@ -40,7 +33,7 @@ export const initAppInsightWithRetry = async (connectionString: string, retryTim
     } catch (error) {
       console.error(`Error setting up appInsights (retried ${i} time${i > 0 ? 's' : ''}: `, error);
     }
-    await waitNSeconds(1 + i * 5); // Increased waiting time for each retry (1s, 6s, 11s, etc)
+    await setTimeout((1 + i * 5) * 1000); // Increased waiting time for each retry (1s, 6s, 11s, etc)
   }
 
   throw new Error(`AppInsight initialization failed after ${retryTimes} retries`);
