@@ -13,7 +13,7 @@ resource appInsightsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-
   name: appInsightWorkspaceName
 }
 
-resource containerAppEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
+resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: '${namePrefix}-containerappenv'
   location: location
   properties: {
