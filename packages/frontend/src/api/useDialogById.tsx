@@ -82,10 +82,12 @@ const getTags = (item: DialogByIdFieldsFragment, format: FormatFunction): { labe
   return tags;
 };
 
-const getMainContentReference = ({
-  value,
-  mediaType,
-}: { value: ValueType; mediaType: string }): MainContentReference => {
+const getMainContentReference = (
+  args: { value: ValueType; mediaType: string } | undefined,
+): MainContentReference | undefined => {
+  if (typeof args === 'undefined') return undefined;
+
+  const { value, mediaType } = args;
   const url = getPropertyByCultureCode(value);
 
   switch (mediaType) {
