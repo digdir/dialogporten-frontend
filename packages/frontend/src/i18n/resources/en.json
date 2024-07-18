@@ -110,5 +110,9 @@
   "sort_order.created_asc": "Oldest first",
   "fos.buttons.save_search": "Save",
   "fos.buttons.filter": "Filter",
-  "fos.buttons.sort": "Sort"
+  "fos.buttons.sort": "Sort",
+  "route.sent": "Sent",
+  "route.drafts": "In progress",
+  "route.archived": "Archive",
+  "route.deleted": "Trash"
 }

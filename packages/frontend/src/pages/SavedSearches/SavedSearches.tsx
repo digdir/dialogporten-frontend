@@ -1,3 +1,4 @@
+import { Button, Modal } from '@digdir/designsystemet-react';
 import type { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,23 +11,28 @@ import { SavedSearchesItem } from './SavedSearchesItem';
 import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 import styles from './savedSearches.module.css';
 
-export const SavedSearches = () => {
-  const queryClient = useQueryClient();
-  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
-  const { t } = useTranslation();
-  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
-  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
-  const { openSnackbar } = useSnackbar();
+interface DeleteSearchConfirmationProps {
+  savedSearch: SavedSearchesFieldsFragment | false;
+  onClose?: () => void;
+  isOpen?: boolean;
+}
 
-  const handleDeleteSearch = async (id: number) => {
-    if (!id) return;
+const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearchConfirmationProps) => {
+  const { t } = useTranslation();
+  const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+
+  const handleDeleteSearch = async () => {
+    console.log('handleDeleteSearch', savedSearch);
+    if (!savedSearch || !savedSearch?.id) return;
 
     try {
-      await deleteSavedSearch(id);
+      await deleteSavedSearch(savedSearch.id);
       openSnackbar({
         message: t('savedSearches.deleted_success'),
         variant: 'success',
       });
+      onClose?.();
       await queryClient.invalidateQueries('savedSearches');
     } catch (error) {
       console.error('Failed to delete saved search:', error);
@@ -36,6 +42,29 @@ export const SavedSearches = () => {
       });
     }
   };
+
+  return (
+    <Modal onBeforeClose={onClose} open={isOpen} onClose={onClose}>
+      <Modal.Header className={styles.editSavedSearchHeader}>Bekreft sletting</Modal.Header>
+      <Modal.Content>
+        <hr className={styles.horizontalLine} />
+        <p>{t('savedSearches.confirmDelete')}</p>
+      </Modal.Content>
+      <Modal.Footer>
+        <Button className={styles.saveButton} onClick={handleDeleteSearch}>
+          {t('word.delete')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+export const SavedSearches = () => {
+  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment>();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<SavedSearchesFieldsFragment | false>(false);
+  const { t } = useTranslation();
+  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
+  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
 
   if (isLoadingSavedSearches) {
     return <SavedSearchesSkeleton numberOfItems={3} />;
@@ -48,21 +77,31 @@ export const SavedSearches = () => {
           key={selectedSavedSearch?.id}
           isOpen={!!selectedSavedSearch}
           savedSearch={selectedSavedSearch}
-          onDelete={handleDeleteSearch}
+          onDelete={(savedSearchToDelete: SavedSearchesFieldsFragment) => setIsDeleteModalOpen(savedSearchToDelete)}
           onClose={() => setSelectedSavedSearch(undefined)}
         />
+        <DeleteSearchConfirmation
+          savedSearch={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          isOpen={!!isDeleteModalOpen}
+        />
         <div className={styles.title}>{t('savedSearches.title', { count: savedSearches?.length || 0 })}</div>
-        {savedSearches?.length
-          ? savedSearches?.map((search) => (
-              <div key={search?.id} className={styles.savedSearchesContainer}>
-                <SavedSearchesItem
-                  savedSearch={search}
-                  onDelete={handleDeleteSearch}
-                  setSelectedSavedSearch={setSelectedSavedSearch}
-                />
-              </div>
-            ))
-          : t('savedSearches.noSearchesFound')}
+        {savedSearches?.length ? (
+          <div className={styles.savedSearchesList}>
+            {savedSearches?.map((search) => (
+              <SavedSearchesItem
+                key={search?.id}
+                savedSearch={search}
+                setSelectedSavedSearch={setSelectedSavedSearch}
+                onDelete={(savedSearchToDelete: SavedSearchesFieldsFragment) =>
+                  setIsDeleteModalOpen(savedSearchToDelete)
+                }
+              />
+            ))}
+          </div>
+        ) : (
+          t('savedSearches.noSearchesFound')
+        )}
         <LastUpdated searches={savedSearches} />
       </section>
     </main>
