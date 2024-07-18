@@ -1,5 +1,6 @@
 .profileButton {
   white-space: nowrap;
+  border-radius: 2px;
 }
 
 .primary {
