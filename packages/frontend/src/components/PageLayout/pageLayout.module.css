@@ -38,7 +38,7 @@
 @media (min-width: 600px) {
   .pageLayout {
     grid-template-areas: "sidebar main";
-    grid-template-columns: auto 3fr;
+    grid-template-columns: calc(8rem + 224px) 3fr;
   }
 
   .pageLayout > main {

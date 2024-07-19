@@ -11,7 +11,7 @@ import styles from './savedSearches.module.css';
 
 interface EditSavedSearchProps {
   savedSearch?: SavedSearchesFieldsFragment;
-  onDelete?: (id: number) => void;
+  onDelete?: (savedSearchToDelete: SavedSearchesFieldsFragment) => void;
   onClose?: () => void;
   isOpen?: boolean;
 }
@@ -44,7 +44,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
   return (
     <div className={styles.editSavedSearch}>
       <Modal
-        onInteractOutside={() => console.log('Interact outside')}
+        onInteractOutside={() => console.log('Interact outside')} // NEEDS TO BE FIXED
         onBeforeClose={onClose}
         open={isOpen}
         onClose={onClose}
@@ -79,7 +79,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
             <Button className={styles.saveButton} onClick={handleSave}>
               {t('editSavedSearch.save_and_close')}
             </Button>
-            <Button variant="secondary" className={styles.deleteButton} onClick={() => onDelete?.(savedSearch?.id)}>
+            <Button variant="secondary" className={styles.deleteButton} onClick={() => onDelete?.(savedSearch)}>
               {t('word.delete')}
             </Button>
             <span className={styles.updateTime}>

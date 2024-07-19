@@ -3,23 +3,27 @@
   padding: 1rem;
 }
 
-.savedSearchesContainer {
+.savedSearchesList {
   background: #fff;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-
-.renderButtons {
-  display: flex;
-  align-items: center;
+  border-radius: 4px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .savedSearchItem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  row-gap: 0.5rem;
-  margin: 1rem 0;
+  margin: 0 1rem;
+}
+
+hr:last-child {
+  display: none;
+}
+
+.renderButtons {
+  display: flex;
+  align-items: center;
 }
 
 .editSavedSearchHeader {

@@ -8,7 +8,7 @@ import styles from './savedSearches.module.css';
 
 interface SavedSearchesItemProps {
   savedSearch: SavedSearchesFieldsFragment;
-  onDelete?: (id: number) => void;
+  onDelete?: (savedSearchToDelete: SavedSearchesFieldsFragment) => void;
   setSelectedSavedSearch?: (savedSearch: SavedSearchesFieldsFragment) => void;
 }
 
@@ -48,7 +48,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
             <DropdownMenu.Item onClick={handleOpenEditModal}>
               <PencilIcon fontSize="1.5rem" aria-hidden="true" /> {t('savedSearches.change_name')}
             </DropdownMenu.Item>
-            <DropdownMenu.Item onClick={() => onDelete?.(savedSearch.id)}>
+            <DropdownMenu.Item onClick={() => onDelete?.(savedSearch)}>
               <TrashIcon className={styles.icon} aria-hidden="true" />
               {t('savedSearches.delete_search')}
             </DropdownMenu.Item>
@@ -63,6 +63,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
 export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedSearchesItemProps) => {
   if (!savedSearch?.data) return null;
   const searchData = savedSearch.data;
+  const { t } = useTranslation();
 
   if (savedSearch.name)
     return (
@@ -79,11 +80,15 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
       </>
     );
 
+  const getRouteName = (fromView: string) => {
+    return t('route.' + `${fromView.split('/').pop() || 'inbox'}`);
+  };
+
   return (
     <>
       <div className={styles.savedSearchItem} key={savedSearch.id}>
         <div className={styles.searchDetails}>
-          <span>{searchData?.fromView && `In ${searchData.fromView.split('/').pop()}:  `}</span>
+          <span>{searchData?.fromView && `In ${getRouteName(searchData.fromView)}:  `}</span>
           <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
           {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
           {searchData?.filters?.map((search, index) => {
