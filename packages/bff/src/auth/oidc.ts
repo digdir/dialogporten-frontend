@@ -117,6 +117,9 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
         refresh_token_expires_at: refreshTokenExpiresAt,
         scope: customToken.scope,
       };
+      console.log('/api/cb: customToken: ', customToken);
+      console.log('/api/cb: access_token_expires_at: ', sessionStorageToken.access_token_expires_at);
+      console.log('/api/cb: refresh_token_expires_at: ', sessionStorageToken.refresh_token_expires_at);
 
       request.session.set('token', sessionStorageToken);
       request.session.set('sub', sub);
@@ -135,6 +138,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
     async (request: FastifyRequest, reply: FastifyReply) => {
       const token: SessionStorageToken = request.session.get('token');
       const postLogoutRedirectUri = `${hostname}/loggedout`;
+      console.log('Logging out');
 
       if (token?.id_token) {
         const logoutRedirectUrl = `https://login.${oidc_url}/logout?post_logout_redirect_uri=${postLogoutRedirectUri}&id_token_hint=${token.id_token}`;
