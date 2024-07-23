@@ -236,8 +236,8 @@ importers:
   packages/dialogporten-types-generated:
     dependencies:
       '@digdir/dialogporten-schema':
-        specifier: 1.8.1-cd03956
-        version: 1.8.1-cd03956
+        specifier: 1.8.1-a635fcb
+        version: 1.8.1-a635fcb
       glob:
         specifier: ^10.3.12
         version: 10.3.12
@@ -2909,8 +2909,8 @@ packages:
     resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.8.1-cd03956:
-    resolution: {integrity: sha512-ASZd8OH3JCehMIAyf3qCzsmsinZ/FEASGyznSRztv8oifAsrUN0sXHieMcHc9OlZedulpBQmUyb3f26ETIFAOA==}
+  /@digdir/dialogporten-schema@1.8.1-a635fcb:
+    resolution: {integrity: sha512-KDG+Rko/nZSNWIRdP1X1moZNhLofWkLu4lhiHF5Q0Kxm2bTtCFYRlRSnnxV76xBKRWRrhl9D9wVZhCJVEwdvkQ==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
