@@ -11,7 +11,7 @@
     "test": "pnpm build && vitest run"
   },
   "dependencies": {
-    "@digdir/dialogporten-schema": "1.8.1-a635fcb",
+    "@digdir/dialogporten-schema": "1.8.1-5aea32b",
     "glob": "^10.3.12",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6"
