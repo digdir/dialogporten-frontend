@@ -16,7 +16,11 @@ fragment SearchDialogFields on SearchDialog {
       value
       languageCode
     }
-    performedBy
+    performedBy {
+      actorType
+      actorId
+      actorName
+    }
   }
   content {
     ...DialogContentFields
@@ -92,12 +96,20 @@ fragment DialogActivity on Activity {
     id
     type
     createdAt
-    performedBy
+    performedBy {
+      actorType
+      actorId
+      actorName
+    }
 }
 
 fragment SeenLogFields on SeenLog {
     id
     seenAt
-    endUserName
+    seenBy {
+      actorType
+      actorId
+      actorName
+    }
     isCurrentEndUser
 }
