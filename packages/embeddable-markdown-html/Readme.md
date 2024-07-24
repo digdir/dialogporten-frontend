@@ -5,7 +5,7 @@ React components for rendering Markdown and Html at runtime.
 Usage:
 
 ```jsx
-import { Markdown, Html } from 'embeddable-markdown-html";
+import { Markdown, Html } from 'embeddable-markdown-html';
 
 const Testcomponent = () => {
   return (
