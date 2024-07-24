@@ -1,10 +1,9 @@
 import { ClockIcon, EyeIcon } from '@navikt/aksel-icons';
-import {
-  type AttachmentFieldsFragment,
-  ContentType,
-  type DialogByIdFieldsFragment,
-  type GetDialogByIdQuery,
-  type PartyFieldsFragment,
+import type {
+  AttachmentFieldsFragment,
+  DialogByIdFieldsFragment,
+  GetDialogByIdQuery,
+  PartyFieldsFragment,
 } from 'bff-types-generated';
 import { useQuery } from 'react-query';
 import type { GuiButtonProps } from '../components';
@@ -108,10 +107,10 @@ export function mapDialogDtoToInboxItem(
   if (!item) {
     return undefined;
   }
-  const titleObj = item?.content?.find((c) => c.type === ContentType.Title)?.value;
-  const additionalInfoObj = item?.content?.find((c) => c.type === ContentType.AdditionalInfo)?.value;
-  const summaryObj = item?.content?.find((c) => c.type === ContentType.Summary)?.value;
-  const mainContentReference = item?.content?.find((c) => c.type === ContentType.MainContentReference);
+  const titleObj = item?.content?.title?.value;
+  const additionalInfoObj = item?.content?.additionalInfo?.value;
+  const summaryObj = item?.content?.summary?.value;
+  const mainContentReference = item?.content?.mainContentReference!;
   const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
   const serviceOwner = getOrganisation(item.org, 'nb');
   return {
@@ -140,8 +139,7 @@ export function mapDialogDtoToInboxItem(
       title: getPropertyByCultureCode(guiAction.title),
     })),
     attachments: item.attachments,
-    // biome-ignore lint/suspicious/noExplicitAny: TODO
-    mainContentReference: getMainContentReference(mainContentReference as any),
+    mainContentReference: getMainContentReference(mainContentReference),
   };
 }
 

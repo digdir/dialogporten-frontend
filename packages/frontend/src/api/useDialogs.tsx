@@ -1,6 +1,5 @@
 import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import {
-  ContentType,
   DialogStatus,
   type GetAllDialogsForPartiesQuery,
   type PartyFieldsFragment,
@@ -60,9 +59,9 @@ export function mapDialogDtoToInboxItem(
   format: FormatFunction,
 ): InboxItemInput[] {
   return input.map((item) => {
-    const titleObj = item?.content?.find((c) => c.type === ContentType.Title)?.value;
-    const summaryObj = item?.content?.find((c) => c.type === ContentType.Summary)?.value;
-    const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
+    const titleObj = item.content.title.value;
+    const summaryObj = item.content.summary.value;
+    const nameOfParty = parties.find((party) => party.party === item.party)?.name ?? '';
     const serviceOwner = getOrganisation(item.org, 'nb');
     const isSeenByEndUser =
       item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
@@ -87,7 +86,7 @@ export function mapDialogDtoToInboxItem(
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
       status: item.status ?? 'UnknownStatus',
-      isModifiedLastByServiceOwner: item?.latestActivity?.performedBy === null,
+      isModifiedLastByServiceOwner: item.latestActivity?.performedBy === null,
       isSeenByEndUser,
     };
   });

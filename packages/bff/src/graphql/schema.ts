@@ -1,5 +1,5 @@
+import { schema_verified_graphql } from '@digdir/dialogporten-schema';
 import { stitchSchemas } from '@graphql-tools/stitch';
-import { schema_verified_graphql } from 'dialogporten-types-generated';
 import { buildSchema } from 'graphql/index.js';
 import { makeSchema } from 'nexus';
 import * as types from './types/index.ts';
