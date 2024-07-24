@@ -35,6 +35,9 @@ importers:
       '@azure/keyvault-keys':
         specifier: ^4.7.2
         version: 4.7.2
+      '@digdir/dialogporten-schema':
+        specifier: 1.8.1-d549f19
+        version: 1.8.1-d549f19
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.3.1
@@ -83,9 +86,6 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
-      dialogporten-types-generated:
-        specifier: workspace:*
-        version: link:../dialogporten-types-generated
       dotenv:
         specifier: ^16.4.1
         version: 16.4.1
@@ -232,28 +232,6 @@ importers:
       vitest:
         specifier: ^1.2.2
         version: 1.2.2(@types/node@20.14.11)(jsdom@24.0.0)
-
-  packages/dialogporten-types-generated:
-    dependencies:
-      '@digdir/dialogporten-schema':
-        specifier: 1.8.1-5aea32b
-        version: 1.8.1-5aea32b
-      glob:
-        specifier: ^10.3.12
-        version: 10.3.12
-      graphql:
-        specifier: ^16.8.1
-        version: 16.8.1
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.8.1)
-    devDependencies:
-      nodemon:
-        specifier: ^3.0.3
-        version: 3.0.3
-      vitest:
-        specifier: ^1.2.2
-        version: 1.2.2
 
   packages/docs:
     dependencies:
@@ -2909,8 +2887,8 @@ packages:
     resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.8.1-5aea32b:
-    resolution: {integrity: sha512-xQKc7TiOddWd33qUbonICDIhuIgGycg5fRpozVCJwMt2u6QAIqSOV4sFAC96bvsBb8Ma5v9yjQzuw7T1XVctAg==}
+  /@digdir/dialogporten-schema@1.8.1-d549f19:
+    resolution: {integrity: sha512-BnRmwDeBNESui3JG2RfBENEc4MX1ja3pae09wcfqv9KizRh42+V9geKUzQN7WVFiV7ociAsMrfNeTBCtzC/J0w==}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
@@ -13238,6 +13216,7 @@ packages:
       minimatch: 9.0.3
       minipass: 7.0.4
       path-scurry: 1.10.2
+    dev: true
 
   /glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
@@ -17539,6 +17518,7 @@ packages:
     dependencies:
       lru-cache: 10.2.0
       minipass: 7.0.4
+    dev: true
 
   /path-to-regexp@0.1.7:
     resolution: {integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==}

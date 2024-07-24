@@ -23,7 +23,18 @@ fragment SearchDialogFields on SearchDialog {
     }
   }
   content {
-    ...DialogContentFields
+    title {
+      ...DialogContentFields
+    }
+    summary {
+      ...DialogContentFields
+    }
+    senderName {
+      ...DialogContentFields
+    }
+    extendedStatus {
+      ...DialogContentFields
+    }
   }
 }
 
@@ -49,7 +60,24 @@ fragment DialogByIdFields on Dialog {
   updatedAt
   extendedStatus
   content {
-    ...DialogContentFields
+    title {
+      ...DialogContentFields
+    }
+    summary {
+      ...DialogContentFields
+    }
+    senderName {
+      ...DialogContentFields
+    }
+    additionalInfo {
+      ...DialogContentFields
+    }
+    extendedStatus {
+      ...DialogContentFields
+    }
+    mainContentReference {
+      ...DialogContentFields
+    }
   }
 }
 
@@ -66,8 +94,7 @@ fragment GuiActionFields on GuiAction {
     priority
 }
 
-fragment DialogContentFields on Content {
-    type
+fragment DialogContentFields on ContentValue {
     mediaType
     value {
       value
