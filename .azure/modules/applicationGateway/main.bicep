@@ -53,7 +53,7 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   }
 }
 
-resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: '${gatewayName}-identity'
   location: location
 }
