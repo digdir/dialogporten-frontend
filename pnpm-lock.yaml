@@ -36,8 +36,8 @@ importers:
         specifier: ^4.7.2
         version: 4.7.2
       '@digdir/dialogporten-schema':
-        specifier: 1.8.1-d549f19
-        version: 1.8.1-d549f19
+        specifier: 1.8.1-af262b1
+        version: 1.8.1-af262b1
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.3.1
@@ -2894,8 +2894,9 @@ packages:
     resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.8.1-d549f19:
-    resolution: {integrity: sha512-BnRmwDeBNESui3JG2RfBENEc4MX1ja3pae09wcfqv9KizRh42+V9geKUzQN7WVFiV7ociAsMrfNeTBCtzC/J0w==}
+  /@digdir/dialogporten-schema@1.8.1-af262b1:
+    resolution: {integrity: sha512-sVDBGP3eN+6OXmJ8tPz6xg67lJtp6G+DDOELAzxPQTE7th83/T5wcjcIcPBC9cmg5ISC45QrQlxytB66n4CEQQ==}
+    engines: {node: '20'}
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
@@ -4127,7 +4128,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.1
@@ -5109,7 +5110,7 @@ packages:
     deprecated: Use @eslint/config-array instead
     dependencies:
       '@humanwhocodes/object-schema': 2.0.2
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -12299,7 +12300,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
