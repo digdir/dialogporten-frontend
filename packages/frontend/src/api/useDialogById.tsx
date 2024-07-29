@@ -82,9 +82,9 @@ const getTags = (item: DialogByIdFieldsFragment, format: FormatFunction): { labe
 };
 
 const getMainContentReference = (
-  args: { value: ValueType; mediaType: string } | undefined,
+  args: { value: ValueType; mediaType: string } | undefined | null,
 ): MainContentReference | undefined => {
-  if (typeof args === 'undefined') return undefined;
+  if (typeof args === 'undefined' || args === null) return undefined;
 
   const { value, mediaType } = args;
   const url = getPropertyByCultureCode(value);
@@ -110,7 +110,7 @@ export function mapDialogDtoToInboxItem(
   const titleObj = item?.content?.title?.value;
   const additionalInfoObj = item?.content?.additionalInfo?.value;
   const summaryObj = item?.content?.summary?.value;
-  const mainContentReference = item?.content?.mainContentReference!;
+  const mainContentReference = item?.content?.mainContentReference;
   const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
   const serviceOwner = getOrganisation(item.org, 'nb');
   return {
