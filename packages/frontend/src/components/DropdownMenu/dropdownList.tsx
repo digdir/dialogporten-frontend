@@ -6,6 +6,16 @@ interface DropdownListProps {
   variant?: 'short' | 'long';
   className?: string;
 }
+
 export const DropdownList = ({ children, className, variant = 'short' }: DropdownListProps) => {
-  return <ul className={cx(styles.dropdownList, className, variant)}>{children}</ul>;
+  return (
+    <ul
+      className={cx(styles.dropdownList, className, {
+        [styles.short]: variant === 'short',
+        [styles.long]: variant === 'long',
+      })}
+    >
+      {children}
+    </ul>
+  );
 };

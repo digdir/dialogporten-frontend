@@ -73,7 +73,7 @@
   "filter_bar.label.all_senders": "Alle avsendere",
   "filter_bar.label.status": "Status",
   "filter_bar.label.all_statuses": "Alle statuser",
-  "filter_bar.label.created": "Opprettet",
+  "filter_bar.label.created": "Oppdatert dato",
   "filter_bar.label.all_dates": "Alle datoer",
   "filter_bar.label.choose_sender": "Velg avsender",
   "filter_bar.label.choose_recipient": "Velg mottaker",

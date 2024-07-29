@@ -101,7 +101,7 @@
 
 .subMenuTitle {
   color: var(--black-100, #000);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
