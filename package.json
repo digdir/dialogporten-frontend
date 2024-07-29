@@ -18,7 +18,7 @@
     "node": ">=20.0"
   },
   "resolutions": {
-    "jackspeak": "2.1.1"
+    "jackspeak": "4.0.1"
   },
   "lint-staged": {
     "**/*.*": "biome check --staged --no-errors-on-unmatched --write"
