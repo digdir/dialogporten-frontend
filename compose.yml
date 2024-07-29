@@ -136,13 +136,6 @@ services:
             - .azure/
             - .git/
         - action: sync+restart
-          path: ./packages/dialogporten-types-generated/
-          target: /app/packages/dialogporten-types-generated/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
-        - action: sync+restart
           path: ./packages/bff-types-generated/
           target: /app/packages/bff-types-generated/
           ignore:

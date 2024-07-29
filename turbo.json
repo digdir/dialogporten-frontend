@@ -1,18 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build:dialogporten-types-generated": {
-      "dependsOn": ["^build"],
-      "outputs": ["generated/**"],
-      "cache": false
-    },
     "build:bff-types-generated": {
       "dependsOn": ["^build"],
       "outputs": ["generated/**"],
       "cache": false
     },
     "build": {
-      "dependsOn": ["build:dialogporten-types-generated", "build:bff-types-generated"],
+      "dependsOn": ["build:bff-types-generated"],
       "cache": false
     },
     "dev": {
