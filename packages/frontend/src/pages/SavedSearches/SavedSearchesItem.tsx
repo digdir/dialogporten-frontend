@@ -2,7 +2,9 @@ import { DropdownMenu } from '@digdir/designsystemet-react';
 import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Backdrop } from '../../components/Backdrop';
 import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
 import styles from './savedSearches.module.css';
 
@@ -31,6 +33,8 @@ export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLin
 
 const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedSearchesItemProps) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+
   if (!savedSearch?.data) return null;
 
   const handleOpenEditModal = () => {
@@ -39,23 +43,31 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
 
   return (
     <div className={styles.renderButtons}>
-      <DropdownMenu>
-        <DropdownMenu.Trigger className={styles.linkButton}>
+      <DropdownMenu open={open} onClose={() => setOpen(false)}>
+        <DropdownMenu.Trigger className={styles.linkButton} onClick={() => setOpen(!open)}>
           <EllipsisHorizontalIcon className={styles.icon} />
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
+        <DropdownMenu.Content className={styles.dropdownContent}>
           <DropdownMenu.Group>
             <DropdownMenu.Item onClick={handleOpenEditModal}>
-              <PencilIcon fontSize="1.5rem" aria-hidden="true" /> {t('savedSearches.change_name')}
+              <div className={styles.dropdownEditSearch}>
+                <PencilIcon fontSize="1.5rem" aria-hidden="true" />
+                <span>{t('savedSearches.change_name')}</span>
+                <ChevronRightIcon className={styles.icon} />
+              </div>
             </DropdownMenu.Item>
+            <hr />
             <DropdownMenu.Item onClick={() => onDelete?.(savedSearch)}>
-              <TrashIcon className={styles.icon} aria-hidden="true" />
-              {t('savedSearches.delete_search')}
+              <div className={styles.dropdownEditSearch}>
+                <TrashIcon className={styles.icon} aria-hidden="true" />
+                <span>{t('savedSearches.delete_search')}</span>
+              </div>
             </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu>
       <OpenSavedSearchLink savedSearch={savedSearch} />
+      <Backdrop show={open} onClick={() => {}} />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { deleteSavedSearch, fetchSavedSearches } from '../../api/queries';
+import { ModalWithBackdrop } from '../../components/Backdrop';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { type FormatDistanceFunction, useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { EditSavedSearch } from './EditSearchesItem';
@@ -14,7 +15,7 @@ import styles from './savedSearches.module.css';
 interface DeleteSearchConfirmationProps {
   savedSearch: SavedSearchesFieldsFragment | false;
   onClose?: () => void;
-  isOpen?: boolean;
+  isOpen: boolean;
 }
 
 const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearchConfirmationProps) => {
@@ -44,7 +45,7 @@ const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearch
   };
 
   return (
-    <Modal onBeforeClose={onClose} open={isOpen} onClose={onClose}>
+    <ModalWithBackdrop onBeforeClose={onClose} open={isOpen} onClose={onClose}>
       <Modal.Header className={styles.editSavedSearchHeader}>Bekreft sletting</Modal.Header>
       <Modal.Content>
         <hr className={styles.horizontalLine} />
@@ -55,7 +56,7 @@ const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearch
           {t('word.delete')}
         </Button>
       </Modal.Footer>
-    </Modal>
+    </ModalWithBackdrop>
   );
 };
 
