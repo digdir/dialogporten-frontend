@@ -91,6 +91,13 @@
 .sender {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.participantLabel {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .sender {
