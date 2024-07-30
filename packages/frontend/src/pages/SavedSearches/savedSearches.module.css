@@ -32,10 +32,6 @@ hr:last-child {
   justify-content: space-between;
 }
 
-.editSavedSearch {
-  z-index: 999;
-}
-
 .title {
   color: #000;
   font-weight: 500;
@@ -115,6 +111,10 @@ hr:last-child {
 
 .searchFormBody {
   margin-bottom: 16px;
+
+  input {
+    box-sizing: border-box;
+  }
 }
 
 .searchFormBody label {
@@ -142,8 +142,8 @@ hr:last-child {
 }
 
 .searchFormFooter {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto auto;
   align-items: center;
 }
 
@@ -158,6 +158,9 @@ hr:last-child {
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .horizontalLine {
@@ -165,4 +168,33 @@ hr:last-child {
   height: 1px;
   background-color: #00000040;
   margin-bottom: 1rem;
+}
+
+.dropdownContent {
+  border-radius: 0;
+
+  li {
+    margin: 0;
+  }
+
+  button {
+    border-radius: 2px;
+    padding: 0;
+    height: auto;
+  }
+
+  .dropdownEditSearch {
+    width: 100%;
+    display: grid;
+    grid-template-columns: min-content auto min-content;
+    align-items: start;
+    text-align: left;
+    gap: 6px;
+    padding: 6px;
+
+    & > svg,
+    & > span {
+      padding: 4px;
+    }
+  }
 }

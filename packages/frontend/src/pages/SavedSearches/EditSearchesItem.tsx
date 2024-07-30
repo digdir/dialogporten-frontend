@@ -1,10 +1,12 @@
 import { Button, Modal } from '@digdir/designsystemet-react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import type { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { autoFormatRelativeTime } from '.';
 import { updateSavedSearch } from '../../api/queries';
+import { ModalWithBackdrop } from '../../components/Backdrop';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import styles from './savedSearches.module.css';
@@ -42,53 +44,47 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
   if (!isOpen || !savedSearch?.id) return null;
 
   return (
-    <div className={styles.editSavedSearch}>
-      <Modal
-        onInteractOutside={() => console.log('Interact outside')} // NEEDS TO BE FIXED
-        onBeforeClose={onClose}
-        open={isOpen}
-        onClose={onClose}
-      >
-        <Modal.Header className={styles.editSavedSearchHeader}>
-          <div className={styles.searchDetails}>
-            <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
-            {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
-            {searchData?.filters?.map((search, index) => {
-              const id = search?.id;
-              return (
-                <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${id}`}</span>
-              );
-            })}
-          </div>
-        </Modal.Header>
-        <Modal.Content>
-          <hr className={styles.horizontalLine} />
-          <div className={styles.searchFormBody}>
-            <label htmlFor="searchName">{t('editSavedSearch.give_search_name')}</label>
-            <input
-              id="searchName"
-              type="text"
-              placeholder={t('editSavedSearch.search_without_name')}
-              value={searchName}
-              onChange={handleSearchNameChange}
-            />
-          </div>
-        </Modal.Content>
-        <Modal.Footer>
-          <div className={styles.searchFormFooter}>
-            <Button className={styles.saveButton} onClick={handleSave}>
-              {t('editSavedSearch.save_and_close')}
-            </Button>
-            <Button variant="secondary" className={styles.deleteButton} onClick={() => onDelete?.(savedSearch)}>
-              {t('word.delete')}
-            </Button>
-            <span className={styles.updateTime}>
-              {t('savedSearches.lastUpdated')}
-              {autoFormatRelativeTime(new Date(Number.parseInt(savedSearch?.updatedAt, 10)), formatDistance)}
-            </span>
-          </div>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    <ModalWithBackdrop onBeforeClose={onClose} open={isOpen} onClose={onClose}>
+      <Modal.Header className={styles.editSavedSearchHeader}>
+        <div className={styles.searchDetails}>
+          <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
+          {searchData?.searchString && `${searchData.filters?.length ? ' + ' : ''}`}
+          {searchData?.filters?.map((search, index) => {
+            const id = search?.id;
+            return (
+              <span key={`${id}${index}`} className={styles.filterElement}>{`${index === 0 ? '' : ' +'} ${id}`}</span>
+            );
+          })}
+        </div>
+      </Modal.Header>
+      <Modal.Content>
+        <hr className={styles.horizontalLine} />
+        <div className={styles.searchFormBody}>
+          <label htmlFor="searchName">{t('editSavedSearch.give_search_name')}</label>
+          <input
+            id="searchName"
+            type="text"
+            placeholder={t('editSavedSearch.search_without_name')}
+            value={searchName}
+            onChange={handleSearchNameChange}
+          />
+        </div>
+      </Modal.Content>
+      <Modal.Footer>
+        <div className={styles.searchFormFooter}>
+          <Button className={styles.saveButton} onClick={handleSave}>
+            {t('editSavedSearch.save_and_close')}
+          </Button>
+          <Button variant="secondary" className={styles.deleteButton} onClick={() => onDelete?.(savedSearch)}>
+            <TrashIcon className={styles.icon} aria-hidden="true" />
+            <span>{t('word.delete')}</span>
+          </Button>
+          <span className={styles.updateTime}>
+            {t('savedSearches.lastUpdated')}
+            {autoFormatRelativeTime(new Date(Number.parseInt(savedSearch?.updatedAt, 10)), formatDistance)}
+          </span>
+        </div>
+      </Modal.Footer>
+    </ModalWithBackdrop>
   );
 };
