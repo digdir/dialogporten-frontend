@@ -10,13 +10,12 @@ import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useWindowSize } from '../../../utils/useWindowSize';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { Routes } from '../../pages/Inbox/Inbox';
 import { useSavedSearches } from '../../pages/SavedSearches';
 import { Hr } from '../MenuBar';
-import { MenuItem } from '../MenuBar/MenuItem';
+import { MenuItem } from '../MenuBar';
 import styles from './sidebar.module.css';
 
 export interface SidebarProps {
@@ -33,13 +32,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const { pathname } = useLocation();
   const { data } = useSavedSearches();
   const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
-  const { isMobile } = useWindowSize();
   const { parties } = useParties();
   const { dialogsByView } = useDialogs(parties);
-
-  if (isMobile) {
-    return null;
-  }
 
   return (
     <aside className={styles.sidebar} data-testid="sidebar">

@@ -200,12 +200,12 @@ export const InboxItem = ({
           <div className={styles.participants}>
             <div className={styles.sender}>
               {sender?.icon && <div className={styles.senderIcon}>{sender.icon}</div>}
-              <span>{sender?.label}</span>
+              <span className={styles.participantLabel}>{sender?.label}</span>
             </div>
             <span>{toLabel}</span>
             <div className={styles.receiver}>
               {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
-              <span>{receiver?.label}</span>
+              <span className={styles.participantLabel}>{receiver?.label}</span>
             </div>
           </div>
           <p className={styles.description}>{description}</p>

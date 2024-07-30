@@ -45,7 +45,13 @@
 .participants {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   column-gap: 5px;
+}
+
+.participantLabel {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .receiver,
@@ -148,10 +154,4 @@
   font-weight: 500;
   line-height: 1.5;
   margin: 0;
-}
-
-@media screen and (max-width: 768px) {
-  .inboxItemDetail {
-    margin: 1rem;
-  }
 }

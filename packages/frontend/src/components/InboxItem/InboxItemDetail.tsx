@@ -81,12 +81,12 @@ export const InboxItemDetail = ({
       <div className={styles.participants}>
         <div className={styles.sender}>
           {sender?.icon && <div className={styles.participantIcon}>{sender.icon}</div>}
-          <span>{sender?.label}</span>
+          <span className={styles.participantLabel}>{sender?.label}</span>
         </div>
         <span>{toLabel}</span>
         <div className={styles.receiver}>
           {receiver?.icon && <div className={styles.participantIcon}>{receiver.icon}</div>}
-          <span>{receiver?.label}</span>
+          <span className={styles.participantLabel}>{receiver?.label}</span>
         </div>
       </div>
       <section className={styles.descriptionContainer}>

@@ -12,11 +12,9 @@
   margin: 0.5rem 2rem;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .sidebar {
-    width: 100%;
-    padding: 1.25rem 1rem;
-    margin: 0;
+    display: none;
   }
 }
 
