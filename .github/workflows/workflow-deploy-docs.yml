@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/install
 
       - name: 'Build'
-        run: export BASEURL=/dialogporten-frontend/ && pnpm turbo build --filter=docs --filter=storybook
+        run: pnpm turbo build --filter=docs --filter=storybook
         env:
           URL: 'https://digdir.github.io'
 
