@@ -1,5 +1,5 @@
-import { Checkbox, Textfield } from '@digdir/designsystemet-react';
-import { CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
+import { Checkbox } from '@digdir/designsystemet-react';
+import { ArrowLeftIcon, CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
+import { HorizontalLine } from '../../Sidebar/Sidebar.tsx';
 import {
   CustomFilterValueType,
   type Filter,
@@ -31,16 +32,13 @@ export interface BaseFilterButtonProps {
   currentSubMenuLevel?: SubLevelState;
   nResults?: number;
 }
-
-const FilterButtonSection = ({
-  date,
-  onListItemClick,
-  id,
-}: {
+interface FilterButtonSectionProps {
   date: string;
   onListItemClick: (id: string, value: FilterValueType, overrideValue?: boolean) => void;
   id: string;
-}) => {
+  onBack: () => void;
+}
+export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: FilterButtonSectionProps) => {
   const { t } = useTranslation();
   const format = useFormat();
 
@@ -51,30 +49,55 @@ const FilterButtonSection = ({
   const [endDate, setEndDate] = useState<string>('');
   return (
     <section className={styles.filterDateContent}>
-      <Textfield
-        key="fromDate"
-        label={t('filter_bar.from_date_label')}
-        size="sm"
-        type="date"
-        value={startDate || minDate}
-        min={minDate}
-        max={maxDate}
-        onChange={(e) => {
-          setStartDate(format(new Date(e.target.value), 'yyyy-MM-dd'));
+      <div
+        role="button"
+        tabIndex={0}
+        className={styles.menuColumn}
+        onClick={onBack}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') onBack();
         }}
-      />
-      <Textfield
-        key="toDate"
-        label={t('filter_bar.to_date_label')}
-        size="sm"
-        type="date"
-        value={endDate || maxDate}
-        min={minDate}
-        max={maxDate}
-        onChange={(e) => {
-          setEndDate(format(new Date(e.target.value), 'yyyy-MM-dd'));
-        }}
-      />
+      >
+        <ArrowLeftIcon className={styles.backButtonIcon} />
+        <span className={styles.subMenuTitle}>{t('word.back')}</span>
+      </div>
+      <HorizontalLine fullWidth />
+      <label htmlFor="fromDate">{t('filter_bar.from_date_label')}</label>
+      <div className={styles.dateInputWrapper}>
+        <input
+          id="fromDate"
+          key="fromDate"
+          type="date"
+          value={startDate || minDate}
+          min={minDate}
+          max={maxDate}
+          className={styles.dateInputField}
+          onChange={(e) => {
+            setStartDate(format(new Date(e.target.value), 'yyyy-MM-dd'));
+          }}
+        />
+        <button type="button" onClick={() => setStartDate('')} className={styles.clearDateButton}>
+          <XMarkIcon className={styles.clearDateIcon} />
+        </button>
+      </div>
+      <label htmlFor="toDate">{t('filter_bar.to_date_label')}</label>
+      <div className={styles.dateInputWrapper}>
+        <input
+          key="toDate"
+          type="date"
+          value={endDate || maxDate}
+          min={minDate}
+          className={styles.dateInputField}
+          max={maxDate}
+          onChange={(e) => {
+            setEndDate(format(new Date(e.target.value), 'yyyy-MM-dd'));
+          }}
+        />
+        <button type="button" onClick={() => setEndDate('')} className={styles.clearDateButton}>
+          <XMarkIcon className={styles.clearDateIcon} />
+        </button>
+      </div>
+
       <ProfileButton
         onClick={() => {
           onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
@@ -86,6 +109,7 @@ const FilterButtonSection = ({
     </section>
   );
 };
+
 export const FilterButton = ({
   filterFieldData,
   onListItemClick,
@@ -153,7 +177,7 @@ export const FilterButton = ({
         </ProfileButton>
       </div>
       {isOpen && (
-        <DropdownList>
+        <DropdownList variant="long">
           <DropdownMobileHeader
             buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
             onClickButton={onBackBtnClick}
@@ -171,6 +195,7 @@ export const FilterButton = ({
                   date={currentSubMenuLevel?.parentOptionValue as string}
                   onListItemClick={onListItemClick}
                   id={id}
+                  onBack={onBackBtnClick}
                 />
               );
             }
@@ -188,6 +213,7 @@ export const FilterButton = ({
                         size="small"
                         value={option.displayLabel}
                         checked={isChecked}
+                        className={styles.checkbox}
                       >
                         <span className={styles.filterListLabel}>{option.displayLabel}</span>
                       </Checkbox>

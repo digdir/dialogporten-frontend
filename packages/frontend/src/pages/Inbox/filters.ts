@@ -17,6 +17,7 @@ import type { InboxItemInput } from './Inbox.tsx';
  * @param {Array} activeFilters - The array of active filter objects, where each filter has an 'id' and a 'value'.
  * @returns {InboxItemInput[]} - The filtered array of dialogs.
  */
+
 export const filterDialogs = (
   dialogs: InboxItemInput[],
   activeFilters: Filter[],
