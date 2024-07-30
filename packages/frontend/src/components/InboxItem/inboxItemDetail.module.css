@@ -1,11 +1,12 @@
 .inboxItemDetail {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
   background: #fff;
+  padding: 1.5rem;
 }
 
 .descriptionContainer {
+  margin-left: 1rem;
   padding: 0 1.0625rem 1.0625rem;
   border-left: 4px solid rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
@@ -66,15 +67,15 @@
 
 .participantIcon {
   margin-right: 0.375em;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   flex-shrink: 0;
   > svg,
   img {
     min-width: 100%;
     min-height: 100%;
-    max-width: 40px;
-    max-height: 40px;
+    max-width: 36px;
+    max-height: 36px;
   }
 }
 
