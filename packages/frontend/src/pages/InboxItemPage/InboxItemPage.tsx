@@ -27,10 +27,12 @@ export const InboxItemPage = () => {
 
   return (
     <main className={styles.itemInboxPage}>
-      <nav>
-        <BackButton pathTo="/inbox/" />
-      </nav>
-      <InboxItemDetail dialog={dialog} />
+      <section className={styles.itemInboxPageContent}>
+        <nav className={styles.itemInboxNav}>
+          <BackButton pathTo="/inbox/" />
+        </nav>
+        <InboxItemDetail dialog={dialog} />
+      </section>
     </main>
   );
 };
