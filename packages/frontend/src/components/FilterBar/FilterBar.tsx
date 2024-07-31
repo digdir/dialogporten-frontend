@@ -145,7 +145,7 @@ export const FilterBar = forwardRef(
      * and resets sub-level menu state accordingly.
      */
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
+    // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
     const onToggleFilter = useCallback(
       (id: string, value: FilterValueType, overrideValue?: boolean) => {
         const existingFilters = selectedFilters.filter((filter) => filter.id === id);
