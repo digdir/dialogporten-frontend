@@ -16,6 +16,7 @@
 .minimalistic {
   box-shadow: none;
   background: inherit;
+  max-width: 450px;
 }
 
 .link {
