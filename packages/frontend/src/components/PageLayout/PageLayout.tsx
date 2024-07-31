@@ -16,7 +16,7 @@ import styles from './pageLayout.module.css';
 
 export const useUpdateOnLocationChange = (fn: () => void) => {
   const location = useLocation();
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what trigges this code is needed
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     fn();
   }, [location, fn]);

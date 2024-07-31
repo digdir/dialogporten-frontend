@@ -1,5 +1,6 @@
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
+import { Link } from 'react-router-dom';
 import styles from './menuItem.module.css';
 
 interface DropDownMenuItemProps {
@@ -63,9 +64,9 @@ export const MenuItem = ({
   if (path) {
     return (
       <li>
-        <a className={cx(styles.link)} href={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
+        <Link className={styles.link} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
           {RenderItem}
-        </a>
+        </Link>
       </li>
     );
   }
