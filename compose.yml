@@ -261,8 +261,6 @@ services:
         - action: rebuild
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
-    environment:
-      BASEURL: '/'
 
 volumes:
   pgadmin_data:
