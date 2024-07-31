@@ -10,7 +10,25 @@ export default {
       description: 'Array of action button properties',
       table: {
         type: {
-          summary: 'GuiButtonProps[]',
+          summary: 'GuiActionButton[]',
+        },
+      },
+    },
+    dialogToken: {
+      control: 'text',
+      description: 'Authorization token for dialog actions',
+      table: {
+        type: {
+          summary: 'string',
+        },
+      },
+    },
+    onDeleteSuccess: {
+      control: 'function',
+      description: 'Callback function to execute after a successful delete action',
+      table: {
+        type: {
+          summary: '() => void',
         },
       },
     },
@@ -22,20 +40,68 @@ const Template: StoryFn<GuiActionProps> = (args) => <GuiActions {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   actions: [
-    { id: 'btn1', url: '/submit', disabled: false, priority: 'Primary', method: 'POST', title: 'Submit' },
-    { id: 'btn2', url: '/cancel', disabled: false, priority: 'Secondary', method: 'GET', title: 'Cancel' },
+    {
+      id: 'btn1',
+      url: '/submit',
+      disabled: false,
+      priority: 'Primary',
+      httpMethod: 'POST',
+      title: 'Submit',
+      isDeleteAction: false,
+    },
+    {
+      id: 'btn2',
+      url: '/cancel',
+      disabled: false,
+      priority: 'Secondary',
+      httpMethod: 'GET',
+      title: 'Cancel',
+      isDeleteAction: false,
+    },
   ],
+  dialogToken: 'your-dialog-token',
+  onDeleteSuccess: () => console.log('Deleted'),
 };
 
 export const withDisabledButton = Template.bind({});
 withDisabledButton.args = {
   actions: [
-    { id: 'btn1', url: '/submit', disabled: false, priority: 'Primary', method: 'POST', title: 'Submit' },
-    { id: 'btn2', url: '/cancel', disabled: true, priority: 'Secondary', method: 'GET', title: 'Cancel' },
+    {
+      id: 'btn1',
+      url: '/submit',
+      disabled: false,
+      priority: 'Primary',
+      httpMethod: 'POST',
+      title: 'Submit',
+      isDeleteAction: false,
+    },
+    {
+      id: 'btn2',
+      url: '/cancel',
+      disabled: true,
+      priority: 'Secondary',
+      httpMethod: 'GET',
+      title: 'Cancel',
+      isDeleteAction: false,
+    },
   ],
+  dialogToken: 'your-dialog-token',
+  onDeleteSuccess: () => console.log('Deleted'),
 };
 
 export const TertiaryPriority = Template.bind({});
 TertiaryPriority.args = {
-  actions: [{ id: 'btn1', url: '/info', disabled: false, priority: 'Tertiary', method: 'GET', title: 'Info' }],
+  actions: [
+    {
+      id: 'btn1',
+      url: '/info',
+      disabled: false,
+      priority: 'Tertiary',
+      httpMethod: 'GET',
+      title: 'Info',
+      isDeleteAction: false,
+    },
+  ],
+  dialogToken: 'your-dialog-token',
+  onDeleteSuccess: () => console.log('Deleted'),
 };

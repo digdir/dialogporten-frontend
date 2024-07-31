@@ -61,6 +61,7 @@ const MainContentReference = (args: DialogByIdDetails['mainContentReference']) =
 export const InboxItemDetail = ({
   dialog: {
     title,
+    dialogToken,
     description,
     sender,
     receiver,
@@ -95,7 +96,13 @@ export const InboxItemDetail = ({
         ) : (
           <div>{description}</div>
         )}
-        <GuiActions actions={guiActions} />
+        <GuiActions
+          actions={guiActions}
+          dialogToken={dialogToken}
+          onDeleteSuccess={() => {
+            // TODO: Redirect to inbox
+          }}
+        />
         <div className={styles.tags}>
           {tags.map((tag) => (
             <div key={tag.label} className={styles.tag}>
