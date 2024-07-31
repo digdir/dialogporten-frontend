@@ -6,7 +6,7 @@ import type {
   PartyFieldsFragment,
 } from 'bff-types-generated';
 import { useQuery } from 'react-query';
-import type { GuiButtonProps } from '../components';
+import type { GuiActionButtonProps } from '../components';
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import { getOrganisation } from './organisations.ts';
@@ -35,10 +35,11 @@ export interface DialogByIdDetails {
   receiver: Participant;
   title: string;
   tags: InboxItemTag[];
-  guiActions: GuiButtonProps[];
+  guiActions: GuiActionButtonProps[];
   additionalInfo: string | React.ReactNode;
   attachments: AttachmentFieldsFragment[];
   mainContentReference?: MainContentReference;
+  dialogToken: string;
 }
 
 interface UseDialogByIdOutput {
@@ -135,11 +136,15 @@ export function mapDialogDtoToInboxItem(
       url: guiAction.url,
       hidden: !guiAction.isAuthorized,
       priority: guiAction.priority,
-      method: guiAction.action,
+      httpMethod: guiAction.action,
       title: getPropertyByCultureCode(guiAction.title),
+      prompt: getPropertyByCultureCode(guiAction.prompt),
+      isDeleteAction: guiAction.isDeleteDialogAction,
+      disabled: !guiAction.isAuthorized,
     })),
     attachments: item.attachments,
     mainContentReference: getMainContentReference(mainContentReference),
+    dialogToken: item.dialogToken!,
   };
 }
 

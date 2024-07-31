@@ -40,6 +40,7 @@ fragment SearchDialogFields on SearchDialog {
 
 fragment DialogByIdFields on Dialog {
   id
+  dialogToken
   party
   org
   progress
@@ -82,16 +83,22 @@ fragment DialogByIdFields on Dialog {
 }
 
 fragment GuiActionFields on GuiAction {
-    id
-    action
-    url
-    isAuthorized
-    httpMethod
-    title {
-       value
-       languageCode
-    }
-    priority
+  id
+  url
+  isAuthorized
+  isDeleteDialogAction
+  action
+  authorizationAttribute
+  priority
+  httpMethod
+  title {
+    languageCode
+    value
+  }
+  prompt {
+    value
+    languageCode
+  }
 }
 
 fragment DialogContentFields on ContentValue {
