@@ -2,22 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build:bff-types-generated": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "generated/**"
-      ],
+      "dependsOn": ["^build"],
+      "outputs": ["generated/**"],
       "cache": false
     },
     "build": {
-      "env": [
-        "BASEURL",
-        "URL"
-      ],
-      "dependsOn": [
-        "build:bff-types-generated"
-      ],
+      "env": ["BASEURL", "URL"],
+      "dependsOn": ["build:bff-types-generated"],
       "cache": false
     },
     "dev": {
