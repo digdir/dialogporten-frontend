@@ -35,7 +35,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
             <div
               role="button"
               tabIndex={0}
-              className={styles.menuColumn}
+              className={styles.linkContent}
               onClick={onBack}
               onKeyUp={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') onBack();
@@ -54,6 +54,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           icon={<InboxFillIcon />}
           count={dialogsByView.inbox.length}
           path="/"
+          onClose={onClose}
           isActive={pathname === '/'}
           isWhiteBackground
           isInbox
@@ -64,6 +65,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           icon={<DocPencilIcon />}
           count={dialogsByView.draft.length}
           path="/drafts"
+          onClose={onClose}
           isActive={pathname === '/drafts'}
           onClick={onClose}
           isWhiteBackground
@@ -75,6 +77,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           icon={<FileCheckmarkIcon />}
           count={dialogsByView.sent.length}
           path="/sent"
+          onClose={onClose}
           isActive={pathname === '/sent'}
           onClick={onClose}
           isWhiteBackground
@@ -89,6 +92,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           count={savedSearches?.length ?? 0}
           path="/saved-searches"
           isActive={pathname === '/saved-searches'}
+          onClose={onClose}
           isWhiteBackground
           smallText
         />
@@ -101,7 +105,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           count={0}
           path="/archive"
           isActive={pathname === '/archive'}
-          onClick={onClose}
+          onClose={onClose}
           isWhiteBackground
           smallText
         />
@@ -114,6 +118,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           path="/deleted"
           isWhiteBackground
           smallText
+          onClose={onClose}
         />
         <HorizontalLine fullWidth />
 

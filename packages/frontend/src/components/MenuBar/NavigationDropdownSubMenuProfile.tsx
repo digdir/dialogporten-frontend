@@ -43,7 +43,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
             <div
               role="button"
               tabIndex={0}
-              className={styles.menuColumn}
+              className={styles.linkContent}
               onClick={onBack}
               onKeyUp={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') onBack();

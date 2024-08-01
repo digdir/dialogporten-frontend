@@ -4,7 +4,6 @@
   background-color: var(--Company-Primary, #111d46);
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   border-radius: 6px;
   padding: 0.625rem;
   height: 2.25rem;

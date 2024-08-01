@@ -1,5 +1,4 @@
 .menuItem {
-  cursor: pointer;
   transition: background-color 0.3s ease;
   min-height: 32px;
   padding: 0.5rem;
@@ -13,6 +12,12 @@
     min-width: 100%;
     min-height: 100%;
   }
+}
+
+.isLink {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .fullWidth {
@@ -114,11 +119,6 @@
 .redCounter {
   background-color: var(--action-important, #e02e49);
   color: #fff;
-}
-
-.link {
-  text-decoration: none;
-  color: inherit;
 }
 
 li {
