@@ -1,9 +1,9 @@
-import { Checkbox } from '@digdir/designsystemet-react';
 import classNames from 'classnames';
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelectedDialogs } from '../PageLayout/SelectedDialogs.tsx';
+import { useSelectedDialogs } from '../PageLayout';
 
+import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
 
 export interface Participant {
@@ -136,7 +136,7 @@ export const InboxItem = ({
             <header className={styles.header}>
               <h2 className={styles.title}>{title}</h2>
               {onCheckedChange && (
-                <Checkbox
+                <ProfileCheckbox
                   checked={isChecked}
                   value={checkboxValue}
                   onClick={(e) => {
@@ -182,7 +182,7 @@ export const InboxItem = ({
           <header className={styles.header}>
             <h2 className={styles.title}>{title}</h2>
             {onCheckedChange && (
-              <Checkbox
+              <ProfileCheckbox
                 checked={isChecked}
                 value={checkboxValue}
                 onClick={(e) => {

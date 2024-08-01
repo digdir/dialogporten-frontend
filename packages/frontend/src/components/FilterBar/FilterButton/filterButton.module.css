@@ -19,7 +19,6 @@
   align-items: center;
   justify-content: space-between;
   column-gap: 1em;
-  align-items: center; /* Centers the checkbox vertically */
 }
 
 .checkbox input[type="checkbox"] {
