@@ -11,6 +11,13 @@
   border-radius: 6px;
 }
 
+.linkContent {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
 .menuList {
   background: #fff;
   overflow: visible;
@@ -19,22 +26,6 @@
   margin: 0;
   border-radius: 0.5rem;
   z-index: 1001;
-}
-
-.menuItem {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  min-height: 32px;
-  padding: 0.5rem;
-  display: grid;
-  grid-template-columns: 224px auto;
-  align-items: center;
-  grid-template-areas: "left right ";
-
-  > svg {
-    min-width: 100%;
-    min-height: 100%;
-  }
 }
 
 @media screen and (max-width: 768px) {

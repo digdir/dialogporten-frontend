@@ -63,17 +63,15 @@ export const MenuItem = ({
   );
   if (path) {
     return (
-      <li>
-        <Link className={styles.link} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
-          {RenderItem}
-        </Link>
-      </li>
+      <Link className={styles.isLink} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
+        <li>{RenderItem}</li>
+      </Link>
     );
   }
 
   if (onClick) {
     return (
-      <li onClick={onClick} onKeyUp={onClick}>
+      <li className={styles.isLink} onClick={onClick} onKeyUp={onClick}>
         {RenderItem}
       </li>
     );
