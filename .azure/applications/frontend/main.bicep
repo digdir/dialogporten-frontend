@@ -18,6 +18,10 @@ var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var serviceName = 'frontend'
 var containerAppName = '${namePrefix}-${serviceName}'
+var tags = {
+  Environment: environment
+  Product: 'Arbeidsflate'
+}
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
   name: containerAppEnvironmentName
@@ -55,6 +59,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     port: port
     minReplicas: minReplicas
     maxReplicas: maxReplicas
+    tags: tags
   }
 }
 

@@ -16,6 +16,9 @@ type Sku = {
 }
 param sku Sku
 
+@description('The tags to apply to the resources')
+param tags object
+
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.cache/redis?pivots=deployment-language-bicep
 resource redis 'Microsoft.Cache/Redis@2024-03-01' = {
   name: '${namePrefix}-redis'
@@ -33,6 +36,7 @@ resource redis 'Microsoft.Cache/Redis@2024-03-01' = {
     redisVersion: version
     publicNetworkAccess: 'Disabled'
   }
+  tags: tags
 }
 
 resource redisPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = {
@@ -55,6 +59,7 @@ resource redisPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = 
       id: subnetId
     }
   }
+  tags: tags
 }
 
 module privateDnsZone '../privateDnsZone/main.bicep' = {
@@ -63,6 +68,7 @@ module privateDnsZone '../privateDnsZone/main.bicep' = {
     namePrefix: namePrefix
     defaultDomain: 'privatelink.redis.cache.windows.net'
     vnetId: vnetId
+    tags: tags
   }
 }
 
@@ -86,6 +92,7 @@ module redisConnectionString '../keyvault/upsertSecret.bicep' = {
     secretName: 'redisConnectionString'
     // disable public access? Use vnet here maybe?
     secretValue: 'rediss://:${redis.properties.accessKeys.primaryKey}@${redis.properties.hostName}:${redis.properties.sslPort}'
+    tags: tags
   }
 }
 

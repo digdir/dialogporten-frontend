@@ -9,6 +9,9 @@ param privateDnsZoneArmResourceId string
 @secure()
 param administratorLoginPassword string
 
+@description('The tags to apply to the resources')
+param tags object
+
 var administratorLogin = 'dialogportenPgAdmin'
 var databaseName = 'dialogporten'
 
@@ -19,6 +22,7 @@ module saveAdmPassword '../keyvault/upsertSecret.bicep' = {
     destKeyVaultName: srcKeyVault.name
     secretName: srcSecretName
     secretValue: administratorLoginPassword
+    tags: tags
   }
 }
 
@@ -42,6 +46,7 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   resource database 'databases' = {
     name: databaseName
   }
+  tags: tags
 }
 
 var secretName = 'databaseConnectionString'
@@ -52,6 +57,7 @@ module psqlConnectionObject '../keyvault/upsertSecret.bicep' = {
     destKeyVaultName: keyVaultName
     secretName: secretName
     secretValue: secretValue
+    tags: tags
   }
 }
 

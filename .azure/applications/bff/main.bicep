@@ -28,6 +28,10 @@ param environmentKeyVaultName string
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var containerAppName = '${namePrefix}-bff'
+var tags = {
+  Environment: environment
+  Product: 'Arbeidsflate'
+}
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
@@ -145,6 +149,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     port: port
     minReplicas: minReplicas
     maxReplicas: maxReplicas
+    tags: tags
   }
 }
 
