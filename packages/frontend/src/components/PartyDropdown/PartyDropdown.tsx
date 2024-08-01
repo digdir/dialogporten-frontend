@@ -7,6 +7,7 @@ import { ProfileButton } from '../ProfileButton';
 
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
 import styles from './partyDropdown.module.css';
 
 interface PartyDropdownRef {
@@ -17,6 +18,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
   const { t } = useTranslation();
   const { parties, setSelectedPartyIds, selectedParties } = useParties();
   const { dialogs } = useDialogs(parties);
+  const queryClient = useQueryClient();
 
   useImperativeHandle(ref, () => ({
     openPartyDropdown: () => {
@@ -79,6 +81,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
               rightContent={<span className={styles.partyCount}>{option.count}</span>}
               onClick={() => {
                 setSelectedPartyIds(option.onSelectValues);
+                void queryClient.invalidateQueries({ queryKey: ['dialogs'] });
                 setIsMenuOpen(false);
               }}
             />
