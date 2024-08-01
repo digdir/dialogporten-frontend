@@ -1,4 +1,3 @@
-import { Checkbox } from '@digdir/designsystemet-react';
 import { ArrowLeftIcon, CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
@@ -7,7 +6,8 @@ import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
-import { HorizontalLine } from '../../Sidebar/Sidebar.tsx';
+import { ProfileCheckbox } from '../../ProfileCheckbox';
+import { HorizontalLine } from '../../Sidebar';
 import {
   CustomFilterValueType,
   type Filter,
@@ -208,7 +208,7 @@ export const FilterButton = ({
                 leftContent={
                   <div className={styles.filterListContent}>
                     {isMultiSelectable ? (
-                      <Checkbox
+                      <ProfileCheckbox
                         onChange={() => onListItemClick(id, option.value)}
                         size="sm"
                         value={option.displayLabel}
@@ -216,7 +216,7 @@ export const FilterButton = ({
                         className={styles.checkbox}
                       >
                         <span className={styles.filterListLabel}>{option.displayLabel}</span>
-                      </Checkbox>
+                      </ProfileCheckbox>
                     ) : (
                       <>
                         <span className={styles.checkMarkHolder}>{isChecked && <CheckmarkIcon />}</span>
