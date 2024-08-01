@@ -35,12 +35,12 @@ export const AddFilterButton = ({
   return (
     <div className={cx({ [styles.filterOpen]: isMenuOpen })}>
       <ProfileButton
-        size="small"
+        size="sm"
         onClick={onAddBtnClick}
         className={className}
         disabled={disabled}
         variant="secondary"
-        color="first"
+        color="neutral"
       >
         <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>

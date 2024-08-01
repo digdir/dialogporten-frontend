@@ -18,7 +18,7 @@ export const SaveSearchButton = ({ disabled, onBtnClick, className, isLoading }:
   }
 
   return (
-    <ProfileButton size="small" className={className} onClick={onBtnClick} variant="secondary" isLoading={isLoading}>
+    <ProfileButton size="sm" className={className} onClick={onBtnClick} variant="secondary" isLoading={isLoading}>
       <BookmarkIcon fontSize="1.5rem" /> {t('filter_bar.save_search')}
     </ProfileButton>
   );

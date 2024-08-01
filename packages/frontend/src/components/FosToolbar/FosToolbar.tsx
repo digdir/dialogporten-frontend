@@ -28,14 +28,14 @@ export const FosToolbar = ({
   return (
     <div className={styles.fosToolbar}>
       <div className={styles.buttons}>
-        <ProfileButton onClick={onFilterBtnClick} size="small" variant="tertiary">
+        <ProfileButton onClick={onFilterBtnClick} size="sm" variant="tertiary">
           <PlusIcon fontSize="1.5rem" /> {t('fos.buttons.filter')}
         </ProfileButton>
-        <ProfileButton onClick={onSortBtnClick} size="small" variant="tertiary">
+        <ProfileButton onClick={onSortBtnClick} size="sm" variant="tertiary">
           <ArrowsUpDownIcon fontSize="1.5rem" /> {t('fos.buttons.sort')}
         </ProfileButton>
         {hideSaveButton ? null : (
-          <ProfileButton onClick={onSaveBtnClick} size="small" variant="tertiary">
+          <ProfileButton onClick={onSaveBtnClick} size="sm" variant="tertiary">
             <BookmarkIcon fontSize="1.5rem" /> {t('fos.buttons.save_search')}
           </ProfileButton>
         )}

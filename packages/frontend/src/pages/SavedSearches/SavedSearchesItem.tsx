@@ -43,7 +43,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
 
   return (
     <div className={styles.renderButtons}>
-      <DropdownMenu open={open} onClose={() => setOpen(false)}>
+      <DropdownMenu.Root open={open} onClose={() => setOpen(false)}>
         <DropdownMenu.Trigger className={styles.linkButton} onClick={() => setOpen(!open)}>
           <EllipsisHorizontalIcon className={styles.icon} />
         </DropdownMenu.Trigger>
@@ -65,7 +65,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
             </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>
-      </DropdownMenu>
+      </DropdownMenu.Root>
       <OpenSavedSearchLink savedSearch={savedSearch} />
       <Backdrop show={open} onClick={() => {}} />
     </div>

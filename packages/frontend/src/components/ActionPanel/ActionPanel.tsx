@@ -53,7 +53,7 @@ export function ActionPanel({ actionButtons, onUndoSelection, selectedItemCount 
     <>
       <BulkHeader>
         <span className={styles.undoButtonLabel}>{t('actionPanel.chosen', { count: selectedItemCount })}</span>
-        <Button className={styles.undoButton} onClick={onUndoSelection} variant="tertiary" size="small">
+        <Button className={styles.undoButton} onClick={onUndoSelection} variant="tertiary" size="sm">
           <span className={styles.undoButtonIcon}>
             <XMarkIcon />
           </span>
@@ -72,7 +72,7 @@ export function ActionPanel({ actionButtons, onUndoSelection, selectedItemCount 
                     onClick={onClick}
                     disabled={disabled}
                     variant="tertiary"
-                    size="small"
+                    size="sm"
                   >
                     <span className={styles.actionButtonIcon}>{icon}</span>
                     <span className={styles.actionButtonLabel}>{label}</span>

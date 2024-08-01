@@ -3,11 +3,11 @@ import type React from 'react';
 import { Backdrop } from '.';
 import styles from './backdrop.module.css';
 
-type ModalProps = Parameters<typeof Modal>[0];
+type ModalProps = React.ComponentProps<typeof Modal.Dialog>;
 
 type Props = {
   open: boolean;
-  children?: React.ReactChild | React.ReactChild[];
+  children?: React.ReactElement | React.ReactElement[];
 } & ModalProps;
 
 /*
@@ -15,16 +15,14 @@ type Props = {
  */
 export const ModalWithBackdrop = ({ children, open, ...props }: Props) => {
   const onClose = () => {
-    if (typeof props.onClose === 'function') {
-      props.onClose();
-    }
+    props.onClose?.();
   };
 
   return (
     <>
-      <Modal open={open} className={styles.zIndexFix} {...props}>
+      <Modal.Dialog open={open} className={styles.zIndexFix} {...props}>
         {children}
-      </Modal>
+      </Modal.Dialog>
       <Backdrop show={open} onClick={onClose} />
     </>
   );

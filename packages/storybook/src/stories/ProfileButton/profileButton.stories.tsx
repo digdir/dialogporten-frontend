@@ -15,7 +15,7 @@ export default {
 export const CompanyPrimary = () => {
   return (
     <div className="isCompany">
-      <ProfileButton size="small" onClick={() => {}} variant="primary">
+      <ProfileButton size="sm" onClick={() => {}} variant="primary">
         Primary
       </ProfileButton>
     </div>
@@ -25,7 +25,7 @@ export const CompanyPrimary = () => {
 export const CompanySecondary = () => {
   return (
     <div className="isCompany">
-      <ProfileButton size="small" onClick={() => {}} variant="secondary">
+      <ProfileButton size="sm" onClick={() => {}} variant="secondary">
         Secondary
       </ProfileButton>
     </div>
@@ -34,7 +34,7 @@ export const CompanySecondary = () => {
 
 export const PersonPrimary = () => {
   return (
-    <ProfileButton size="small" onClick={() => {}} variant="primary">
+    <ProfileButton size="sm" onClick={() => {}} variant="primary">
       Primary
     </ProfileButton>
   );
@@ -42,12 +42,12 @@ export const PersonPrimary = () => {
 
 export const PersonSecondary = () => {
   return (
-    <ProfileButton size="small" onClick={() => {}} variant="secondary">
+    <ProfileButton size="sm" onClick={() => {}} variant="secondary">
       Secondary
     </ProfileButton>
   );
 };
 
 export const LoadingButton = () => {
-  return <ProfileButton size="small" onClick={() => {}} variant="secondary" isLoading />;
+  return <ProfileButton size="sm" onClick={() => {}} variant="secondary" isLoading />;
 };

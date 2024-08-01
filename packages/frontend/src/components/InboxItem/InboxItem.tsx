@@ -147,7 +147,7 @@ export const InboxItem = ({
                   onChange={(e) => {
                     onCheckedChange?.(e.target.checked);
                   }}
-                  size="small"
+                  size="sm"
                 />
               )}
             </header>
@@ -193,7 +193,7 @@ export const InboxItem = ({
                 onChange={(e) => {
                   onCheckedChange?.(e.target.checked);
                 }}
-                size="small"
+                size="sm"
               />
             )}
           </header>

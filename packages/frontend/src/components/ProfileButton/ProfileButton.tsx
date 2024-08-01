@@ -4,9 +4,9 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import styles from './profileButton.module.css';
 
-interface ProfileButtonProps extends ButtonProps {
+type ProfileButtonProps = {
   isLoading?: boolean;
-}
+} & ButtonProps;
 
 export const ProfileButton = (props: ProfileButtonProps) => {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export const ProfileButton = (props: ProfileButtonProps) => {
   if (isLoading) {
     return (
       <Button className={classes} {...restProps} aria-disabled>
-        <Spinner variant="interaction" title="loading" size="sm" />
+        <Spinner title="loading" size="sm" />
         {t('word.loading')}
       </Button>
     );

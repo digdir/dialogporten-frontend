@@ -46,7 +46,7 @@ const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearch
 
   return (
     <ModalWithBackdrop onBeforeClose={onClose} open={isOpen} onClose={onClose}>
-      <Modal.Header className={styles.editSavedSearchHeader}>Bekreft sletting</Modal.Header>
+      <Modal.Header className={styles.editSavedSearchHeader}>{t('savedSearches.confirm_delete_title')}</Modal.Header>
       <Modal.Content>
         <hr className={styles.horizontalLine} />
         <p>{t('savedSearches.confirmDelete')}</p>

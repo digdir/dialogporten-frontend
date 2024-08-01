@@ -60,7 +60,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
           leftContent={
             <Search
               autoComplete="off"
-              size="small"
+              size="sm"
               aria-label={t('word.search')}
               placeholder={t('word.search')}
               onChange={(e) => {
