@@ -5,7 +5,7 @@ include:
 services:
   reverse-proxy:
     container_name: reverse-proxy
-    image: traefik:v2.3
+    image: traefik:v2.10
     command:
       # Enables the Web UI
       - "--api.dashboard=true"
@@ -35,7 +35,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:6.0-alpine
+    image: redis:6.2-alpine
     restart: always
     ports:
       - 6379:6379
