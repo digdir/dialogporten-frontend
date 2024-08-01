@@ -184,14 +184,15 @@ input:focus-visible {
 }
 
 .arrowIcon {
-  margin-right: 0.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   color: #000;
+
+  > svg {
+    min-width: 100%;
+    min-height: 100%;
+  }
 }
 
 .link {

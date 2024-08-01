@@ -1,6 +1,6 @@
 import { DropdownMenu } from '@digdir/designsystemet-react';
-import { ChevronRightIcon, EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { PencilIcon } from '@navikt/aksel-icons';
+import { EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ export interface OpenSavedSearchLinkProps {
   savedSearch: SavedSearchesFieldsFragment;
   onClick?: () => void;
 }
+
 export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLinkProps) => {
   const { searchString, filters, fromView } = savedSearch.data;
   const queryParams = new URLSearchParams({
@@ -26,7 +27,7 @@ export const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLin
   });
   return (
     <a href={`${fromView}?${queryParams.toString()}`}>
-      <ChevronRightIcon className={styles.icon} onClick={onClick} />
+      <ChevronRightIcon fontSize={24} className={styles.icon} onClick={onClick} />
     </a>
   );
 };
@@ -53,7 +54,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
               <div className={styles.dropdownEditSearch}>
                 <PencilIcon fontSize="1.5rem" aria-hidden="true" />
                 <span>{t('savedSearches.change_name')}</span>
-                <ChevronRightIcon className={styles.icon} />
+                <ChevronRightIcon fontSize={24} className={styles.icon} />
               </div>
             </DropdownMenu.Item>
             <hr />
