@@ -48,6 +48,7 @@
   "savedSearches.deleted_failed": "Sletting av søk feilet",
   "savedSearches.lastUpdated": "Sist oppdatert: ",
   "savedSearches.noSearchesFound": "Legg til ved å utføre et søk og klikke på \"Lagre søk\".",
+  "savedSearches.confirm_delete_title": "Bekreft sletting",
   "savedSearches.confirmDelete": "Er du sikker på at du vil slette søket?",
   "editSavedSearch.save_and_close": "Lagre og avslutt",
   "editSavedSearch.give_search_name": "Gi søket et navn",

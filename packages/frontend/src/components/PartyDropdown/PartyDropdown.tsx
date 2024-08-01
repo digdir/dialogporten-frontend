@@ -54,7 +54,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
 
   return (
     <div>
-      <ProfileButton size="small" onClick={() => setIsMenuOpen(!isMenuOpen)} color="first">
+      <ProfileButton size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
         {selectedParties.length > 0 ? selectedParties[0].name : `${parties.length} valgt`}
         <ChevronDownIcon fontSize="1.5rem" />
       </ProfileButton>

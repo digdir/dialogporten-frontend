@@ -13,7 +13,7 @@ export function BackButton({ pathTo }: BackButtonProps) {
   const { t } = useTranslation();
   return (
     <Link to={pathTo} rel="noreferrer" className={styles.backLink}>
-      <Button color="second" variant="tertiary" className={styles.backButton}>
+      <Button color="neutral" variant="tertiary" className={styles.backButton}>
         <ArrowLeftIcon className={styles.backIcon} />
         {t('word.back')}
       </Button>

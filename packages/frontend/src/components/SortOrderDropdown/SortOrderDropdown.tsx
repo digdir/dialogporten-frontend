@@ -57,7 +57,7 @@ export const SortOrderDropdown = forwardRef(
           onClick={() => setIsOpen(!isOpen)}
           className={cx(styles.openBtn, btnClassName)}
           variant="secondary"
-          size="small"
+          size="sm"
         >
           <ArrowsUpDownIcon fontSize="1.5rem" />
           {selectedOptionLabel}

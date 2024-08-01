@@ -365,14 +365,14 @@ importers:
   packages/frontend:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.9.1-alpha.3
-        version: 0.9.1-alpha.3
+        specifier: 0.11.0-next.10
+        version: 0.11.0-next.10
       '@digdir/designsystemet-react':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.0.0-rc.13
+        version: 1.0.0-rc.13(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3
+        specifier: 1.0.0-rc.13
+        version: 1.0.0-rc.13
       '@heroicons/react':
         specifier: ^2.1.3
         version: 2.1.3(react@18.2.0)
@@ -468,14 +468,14 @@ importers:
   packages/storybook:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.9.1-alpha.3
-        version: 0.9.1-alpha.3
+        specifier: 0.11.0-next.10
+        version: 0.11.0-next.10
       '@digdir/designsystemet-react':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.0.0-rc.13
+        version: 1.0.0-rc.13(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0)
       '@digdir/designsystemet-theme':
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3
+        specifier: 1.0.0-rc.13
+        version: 1.0.0-rc.13
       '@navikt/aksel-icons':
         specifier: ^6.12.0
         version: 6.12.0
@@ -3718,12 +3718,12 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  /@digdir/designsystemet-css@0.9.1-alpha.3:
-    resolution: {integrity: sha512-QDKtEqul9ty7t/rMbJ95WQcAG2w9JjRGGXx10ZDXiB1wuUGzuLv/IpKKHwUBucc01xLz+7G7OEiwG/A58U7xLA==}
+  /@digdir/designsystemet-css@0.11.0-next.10:
+    resolution: {integrity: sha512-RvHqkGCKQ15kHNvGzNtsak9ujuiGQSYDRUf0IqPhxmLBUT2iBKCDM/wPqUhxhZpbPkWt3bTRWQ20au7d/IOE0w==}
     dev: false
 
-  /@digdir/designsystemet-react@1.0.0-rc.3(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ebhOHl5gCkCj8puJ908QNVp7cqoQNB5q4tqI1CWaPQxmUfBiItPpf69xuae7lS6wg19TueA9+GzjcX9JM7Ehgw==}
+  /@digdir/designsystemet-react@1.0.0-rc.13(@types/react@18.2.51)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-UeFid8YfUh2+h5Yqv49VBw0ii7ahTGhN4Uxw8xC255Qgc9NmBgjLhEsKgARo5ZBbr0qgI2eh6ziYb+FEq2rDVw==}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
@@ -3731,15 +3731,15 @@ packages:
       '@floating-ui/react': 0.26.12(react-dom@18.2.0)(react@18.2.0)
       '@navikt/aksel-icons': 5.18.3
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.51)(react@18.2.0)
-      '@tanstack/react-virtual': 3.5.0(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-virtual': 3.8.4(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
 
-  /@digdir/designsystemet-theme@1.0.0-rc.3:
-    resolution: {integrity: sha512-e4gQQwHWzxh6Q8kOKdlhXw5gcZwBI0klBEUjuCSDf3NyTcKFdxPDl/pxyl80tpeWfy9GGF4tz5wKmIEKt9YhIg==}
+  /@digdir/designsystemet-theme@1.0.0-rc.13:
+    resolution: {integrity: sha512-Pp5r6q/QTMKyX1Zwk4oG3kopRqNN9MRAvb2Pw52sdQad7u577LjVcQ8uScJJ8SJYgUAUiy0ErFOPT9QRmULo2g==}
     dev: false
 
   /@digdir/dialogporten-schema@1.8.1-3ca495f:
@@ -9787,19 +9787,19 @@ packages:
       defer-to-connect: 2.0.1
     dev: false
 
-  /@tanstack/react-virtual@3.5.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-rtvo7KwuIvqK9zb0VZ5IL7fiJAEnG+0EiFZz8FUOs+2mhGqdGmjKIaT1XU7Zq0eFqL0jonLlhbayJI/J2SA/Bw==}
+  /@tanstack/react-virtual@3.8.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Dq0VQr3QlTS2qL35g360QaJWBt7tCn/0xw4uZ0dHXPLO1Ak4Z4nVX4vuj1Npg1b/jqNMDToRtR5OIxM2NXRBWg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@tanstack/virtual-core': 3.5.0
+      '@tanstack/virtual-core': 3.8.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/virtual-core@3.5.0:
-    resolution: {integrity: sha512-KnPRCkQTyqhanNC0K63GBG3wA8I+D1fQuVnAvcBF8f13akOKeQp1gSbu6f77zCxhEk727iV5oQnbHLYzHrECLg==}
+  /@tanstack/virtual-core@3.8.4:
+    resolution: {integrity: sha512-iO5Ujgw3O1yIxWDe9FgUPNkGjyT657b1WNX52u+Wv1DyBFEpdCdGkuVaky0M3hHFqNWjAmHWTn4wgj9rTr7ZQg==}
     dev: false
 
   /@testing-library/dom@10.3.0:

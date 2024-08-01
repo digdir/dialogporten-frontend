@@ -163,11 +163,11 @@ export const FilterButton = ({
   return (
     <div className={styles.filterButton}>
       <div className={styles.buttons}>
-        <ProfileButton onClick={onBtnClick} className={cx({ [styles.xed]: hoveringDeleteBtn })} size="small">
+        <ProfileButton onClick={onBtnClick} className={cx({ [styles.xed]: hoveringDeleteBtn })} size="sm">
           {dateInfo.isDate ? dateInfo.label : displayLabel}
         </ProfileButton>
         <ProfileButton
-          size="small"
+          size="sm"
           className={styles.button}
           onClick={() => onRemove(id)}
           onMouseEnter={() => setHoveringDeleteBtn(true)}
@@ -210,7 +210,7 @@ export const FilterButton = ({
                     {isMultiSelectable ? (
                       <Checkbox
                         onChange={() => onListItemClick(id, option.value)}
-                        size="small"
+                        size="sm"
                         value={option.displayLabel}
                         checked={isChecked}
                         className={styles.checkbox}
