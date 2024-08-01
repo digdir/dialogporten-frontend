@@ -45,7 +45,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
           </div>
           <div className={styles.rightContent}>
             <span className={styles.keyText}>Return</span>
-            <ChevronRightIcon className={styles.arrowIcon} />
+            <ChevronRightIcon fontSize={24} className={styles.arrowIcon} />
           </div>
         </SearchDropdownItem>
 
