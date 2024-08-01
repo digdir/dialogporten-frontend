@@ -73,14 +73,14 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
           fullWidth
         />
         {filteredParties.map((party) => {
-          const companyName = party.partyType === 'Organization' ? toTitleCase(party.name || '') : '';
+          const partyName = toTitleCase(party.name);
           const count = inboxItems.filter((d) => d.receiver.label === party.name).length;
           return (
             <MenuItem
               key={party.party}
-              icon={<Avatar name={loggedInPersonName} companyName={companyName} />}
-              displayText={companyName || loggedInPersonName}
-              label={companyName || loggedInPersonName}
+              icon={<Avatar name={loggedInPersonName} companyName={partyName} />}
+              displayText={partyName}
+              label={partyName}
               count={count}
               isActive={party.party === selectedParties[0].party}
               onClick={() => handleSelectParty([party])}
