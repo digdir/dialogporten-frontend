@@ -7,7 +7,8 @@ param environmentVariables { name: string, value: string?, secretRef: string? }[
 param probes { periodSeconds: int, initialDelaySeconds: int, type: string, httpGet: { path: string, port: int } }[] = []
 param minReplicas int = 1
 param maxReplicas int = 3
-
+@description('The tags to apply to the resources')
+param tags object
 param secrets { name: string, keyVaultUrl: string, identity: 'System' }[] = []
 
 var healthProbes = empty(probes)
@@ -64,6 +65,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
       }
     }
   }
+  tags: tags
   identity: {
     type: 'SystemAssigned'
   }

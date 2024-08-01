@@ -38,6 +38,11 @@ var srcKeyVault = {
   resourceGroupName: secrets.sourceKeyVaultResourceGroup
 }
 
+var tags = {
+  Environment: environment
+  Product: 'Arbeidsflate'
+}
+
 var namePrefix = 'dp-fe-${environment}'
 
 // Create resource groups
@@ -52,6 +57,7 @@ module vnet '../modules/vnet/main.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    tags: tags
   }
 }
 
@@ -61,6 +67,7 @@ module environmentKeyVault '../modules/keyvault/create.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    tags: tags
   }
 }
 
@@ -70,6 +77,7 @@ module appConfiguration '../modules/appConfiguration/create.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    tags: tags
   }
 }
 
@@ -79,6 +87,7 @@ module appInsights '../modules/applicationInsights/create.bicep' = {
   params: {
     namePrefix: namePrefix
     location: location
+    tags: tags
   }
 }
 
@@ -90,6 +99,7 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
     subnetId: vnet.outputs.containerAppEnvironmentSubnetId
+    tags: tags
   }
 }
 
@@ -112,6 +122,7 @@ module containerAppEnvPrivateDnsZone '../modules/privateDnsZone/main.bicep' = {
         ttl: 3600
       }
     ]
+    tags: tags
   }
 }
 
@@ -122,6 +133,7 @@ module postgresqlPrivateDnsZone '../modules/privateDnsZone/main.bicep' = {
     namePrefix: namePrefix
     defaultDomain: '${namePrefix}.postgres.database.azure.com'
     vnetId: vnet.outputs.virtualNetworkId
+    tags: tags
   }
 }
 
@@ -135,6 +147,7 @@ module applicationGateway '../modules/applicationGateway/main.bicep' = {
     subnetId: vnet.outputs.applicationGatewaySubnetId
     targetSubnetId: vnet.outputs.containerAppEnvironmentSubnetId
     configuration: applicationGatewayConfiguration
+    tags: tags
   }
 }
 
@@ -149,6 +162,7 @@ module redis '../modules/redis/main.bicep' = {
     sku: redisSku
     subnetId: vnet.outputs.redisSubnetId
     vnetId: vnet.outputs.virtualNetworkId
+    tags: tags
   }
 }
 
@@ -173,6 +187,7 @@ module postgresql '../modules/postgreSql/create.bicep' = {
       ? srcKeyVaultResource.getSecret('dialogportenPgAdminPassword${environment}')
       : secrets.dialogportenPgAdminPassword
     privateDnsZoneArmResourceId: postgresqlPrivateDnsZone.outputs.id
+    tags: tags
   }
 }
 
@@ -186,6 +201,7 @@ module copySecrets '../modules/keyvault/copySecrets.bicep' = {
     srcKeyVaultSubId: srcKeyVault.subscriptionId
     destKeyVaultName: environmentKeyVault.outputs.name
     secretPrefix: 'dialogporten--${environment}--'
+    tags: tags
   }
 }
 
@@ -197,6 +213,7 @@ module appConfigDatabaseConnectionString '../modules/appConfiguration/upsertKeyV
     key: 'DATABASE_CONNECTION_STRING'
     value: postgresql.outputs.connectionStringSecretUri
     keyValueType: 'keyVaultReference'
+    tags: tags
   }
 }
 

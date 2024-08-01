@@ -5,6 +5,8 @@ param containerAppEnvId string
 param port int = 8080
 param environmentVariables { name: string, value: string?, secretRef: string? }[] = []
 param command string[]
+@description('The tags to apply to the resources')
+param tags object
 
 param secrets { name: string, keyVaultUrl: string, identity: 'system' }[] = []
 
@@ -59,6 +61,7 @@ resource containerAppJob 'Microsoft.App/jobs@2024-03-01' = {
       ]
     }
   }
+  tags: tags
 }
 
 output identityPrincipalId string = containerAppJob.identity.principalId

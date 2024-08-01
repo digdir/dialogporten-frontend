@@ -23,6 +23,10 @@ param environmentKeyVaultName string
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var containerAppJobName = '${namePrefix}-bff-migration-job'
+var tags = {
+  Environment: environment
+  Product: 'Arbeidsflate'
+}
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
   name: appConfigurationName
@@ -130,6 +134,7 @@ module containerAppJob '../../modules/containerAppJob/main.bicep' = {
     environmentVariables: containerAppEnvVars
     secrets: secrets
     command: ['pnpm', '--filter', 'bff', 'run', 'start']
+    tags: tags
   }
 }
 

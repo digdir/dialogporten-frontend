@@ -15,6 +15,9 @@ type ARecord = {
 @description('Array of A records to be created in the DNS zone')
 param aRecords ARecord[] = []
 
+@description('The tags to apply to the resources')
+param tags object
+
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: defaultDomain
   location: 'global'
@@ -46,6 +49,7 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
       id: vnetId
     }
   }
+  tags: tags
 }
 
 output id string = privateDnsZone.id

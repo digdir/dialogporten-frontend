@@ -13,6 +13,9 @@ param targetSubnetId string
 @description('The name of the existing container app environment to be used.')
 param containerAppEnvName string
 
+@description('The tags to apply to the resources')
+param tags object
+
 @export()
 type Configuration = {
   sku: {
@@ -51,11 +54,13 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
     publicIPAllocationMethod: 'Static'
     idleTimeoutInMinutes: 4
   }
+  tags: tags
 }
 
 resource applicationGatewayAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: '${gatewayName}-identity'
   location: location
+  tags: tags
 }
 
 var publicIpAddressId = publicIp.id
@@ -414,6 +419,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2024-01-01' =
       '${applicationGatewayAssignedIdentity.id}': {}
     }
   }
+  tags: tags
 }
 
 output applicationGatewayId string = applicationGateway.id

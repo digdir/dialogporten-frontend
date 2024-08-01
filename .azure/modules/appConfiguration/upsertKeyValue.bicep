@@ -12,26 +12,28 @@ param contentType string = ''
 
 @description('Specifies the type of the key-value resources')
 @allowed([
-    'keyVaultReference'
-    'featureFlag'
-    'custom'
+  'keyVaultReference'
+  'featureFlag'
+  'custom'
 ])
 param keyValueType string = 'custom'
 
-@description('Adds tags for the key-value resources')
-param tags object = {}
+@description('The tags to apply to the resources')
+param tags object
 
-var parsedContentType = keyValueType == 'keyVaultReference' ? 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8' : keyValueType == 'featureFlag' ? 'application/vnd.microsoft.appconfig.ff+json;charset=utf-8' : contentType
+var parsedContentType = keyValueType == 'keyVaultReference'
+  ? 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
+  : keyValueType == 'featureFlag' ? 'application/vnd.microsoft.appconfig.ff+json;charset=utf-8' : contentType
 var parsedValue = keyValueType == 'keyVaultReference' ? '{"uri":"${value}"}' : value
 
 resource configStore 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
-    name: configStoreName
-    resource configStoreKeyValue 'keyValues' = {
-        name: key
-        properties: {
-            value: parsedValue
-            contentType: parsedContentType
-            tags: tags
-        }
+  name: configStoreName
+  resource configStoreKeyValue 'keyValues' = {
+    name: key
+    properties: {
+      value: parsedValue
+      contentType: parsedContentType
+      tags: tags
     }
+  }
 }

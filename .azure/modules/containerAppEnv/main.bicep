@@ -9,6 +9,9 @@ param subnetId string
 
 param appInsightWorkspaceName string
 
+@description('The tags to apply to the resources')
+param tags object
+
 resource appInsightsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: appInsightWorkspaceName
 }
@@ -29,6 +32,7 @@ resource containerAppEnv 'Microsoft.App/managedEnvironments@2024-03-01' = {
       }
     }
   }
+  tags: tags
 }
 
 output name string = containerAppEnv.name
