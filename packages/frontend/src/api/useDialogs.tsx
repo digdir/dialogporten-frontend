@@ -132,11 +132,11 @@ export const useSearchDialogs = ({
 }: searchDialogsProps): UseSearchDialogsOutput => {
   const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
-  const debouncedSearchString = useDebounce(searchString, 300);
-  const enabled = !!searchString && searchString.length > 2;
+  const debouncedSearchString = useDebounce(searchString, 300)[0];
+  const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org, status],
-    queryFn: () => searchDialogs(partyURIs, searchString, org, status),
+    queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org, status),
     enabled,
   });
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
