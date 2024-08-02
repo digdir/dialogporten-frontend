@@ -1,14 +1,12 @@
-import { Modal } from '@digdir/designsystemet-react';
+import { Modal, type ModalDialogProps } from '@digdir/designsystemet-react';
 import type React from 'react';
 import { Backdrop } from '.';
 import styles from './backdrop.module.css';
 
-type ModalProps = React.ComponentProps<typeof Modal.Dialog>;
-
 type Props = {
   open: boolean;
   children?: React.ReactElement | React.ReactElement[];
-} & ModalProps;
+} & ModalDialogProps;
 
 /*
  *  Wrapper component that adds a backdrop and fixes z-index

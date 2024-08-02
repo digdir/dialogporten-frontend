@@ -17,15 +17,15 @@
     "run:docker": "docker run -it -p 80:80 frontend"
   },
   "dependencies": {
-    "embeddable-markdown-html": "workspace:*",
     "@digdir/designsystemet-css": "0.11.0-next.10",
-    "@digdir/designsystemet-react": "1.0.0-rc.13",
-    "@digdir/designsystemet-theme": "1.0.0-rc.13",
+    "@digdir/designsystemet-react": "1.0.0-next.15",
+    "@digdir/designsystemet-theme": "1.0.0-next.14",
     "@heroicons/react": "^2.1.3",
     "@navikt/aksel-icons": "^6.12.0",
     "bff-types-generated": "workspace:*",
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
+    "embeddable-markdown-html": "workspace:*",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "i18next": "^23.8.2",
