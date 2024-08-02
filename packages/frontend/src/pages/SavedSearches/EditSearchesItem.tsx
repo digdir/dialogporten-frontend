@@ -44,7 +44,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
   if (!isOpen || !savedSearch?.id) return null;
 
   return (
-    <ModalWithBackdrop onBeforeClose={onClose} open={isOpen} onClose={onClose}>
+    <ModalWithBackdrop open={isOpen} onClose={onClose}>
       <Modal.Header className={styles.editSavedSearchHeader}>
         <div className={styles.searchDetails}>
           <span className={styles.searchString}>{searchData?.searchString && `«${searchData.searchString}»`}</span>
