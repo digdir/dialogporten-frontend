@@ -10,9 +10,9 @@ interface SearchDropdownSkeletonProps {
 
 export const SearchDropdownSkeleton: React.FC<SearchDropdownSkeletonProps> = ({ numberOfItems }) => {
   return (
-    <>
+    <div>
       {Array.from({ length: numberOfItems }).map((_, index) => (
-        <SearchDropdownItem key={index}>
+        <SearchDropdownItem key={`${index}-search-result`}>
           <div style={{ width: '100%' }}>
             <Skeleton.Text width="40%" />
             <Skeleton.Text width="100%" />
@@ -25,6 +25,6 @@ export const SearchDropdownSkeleton: React.FC<SearchDropdownSkeletonProps> = ({ 
           </div>
         </SearchDropdownItem>
       ))}
-    </>
+    </div>
   );
 };
