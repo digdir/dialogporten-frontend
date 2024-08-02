@@ -65,12 +65,12 @@ export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { parties, selectedParties } = useParties();
-  const name = parties.find((party) => party.partyType === 'Person')?.name || '';
   const { dialogsByView } = useDialogs(parties);
   const { inbox: dialogs } = dialogsByView;
   const notificationCount = dialogs.length;
   useProfile();
 
+  const name = selectedParties.find((party) => party.partyType === 'Person')?.name || '';
   const isCompany = selectedParties?.some((party) => party.partyType === 'Organization');
   const companyName = selectedParties?.some((party) => party.partyType === 'Organization')
     ? selectedParties?.find((party) => party.partyType === 'Organization')?.name

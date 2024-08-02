@@ -86,17 +86,17 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
 
-  const { parties } = useParties();
+  const { selectedParties } = useParties();
   const { searchString } = useSearchString();
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
-    parties,
+    parties: selectedParties,
     searchString,
   });
 
-  const { dialogsByView, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(parties);
+  const { dialogsByView, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(selectedParties);
   const dialogsForView = dialogsByView[viewType];
 
   const showingSearchResults = searchString.length > 0;
@@ -216,6 +216,13 @@ export const Inbox = ({ viewType }: InboxProps) => {
   if (itemsToDisplay.length === 0 && dialogsIsSuccess) {
     return (
       <main>
+        <section className={styles.filtersArea}>
+          <div className={styles.gridContainer}>
+            <div className={styles.filterSaveContainer}>
+              <PartyDropdown />
+            </div>
+          </div>
+        </section>
         <InboxItemsHeader title={t('inbox.heading.no_results')} />
       </main>
     );

@@ -44,7 +44,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
     });
     const allYourParties = {
       initial: '...',
-      isCompany: false,
+      isCompany: parties.map((party) => party.partyType === 'Company').length > 1,
       label: t('partydropdown.all_parties'),
       value: 'all',
       onSelectValues: parties.map((party) => party.party),
@@ -57,7 +57,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
   return (
     <div>
       <ProfileButton size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
-        {selectedParties.length > 0 ? selectedParties[0].name : `${parties.length} valgt`}
+        {selectedParties.length === 1 ? selectedParties[0].name : t('partydropdown.all_parties')}
         <ChevronDownIcon fontSize="1.5rem" />
       </ProfileButton>
       {isMenuOpen && (
