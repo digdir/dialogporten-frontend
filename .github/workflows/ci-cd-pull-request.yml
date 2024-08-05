@@ -23,6 +23,9 @@ jobs:
     with:
       environment: test
 
+  translations-check:
+    uses: ./.github/workflows/workflow-check-translations.yml
+
   playwright-test:
     uses: ./.github/workflows/workflow-playwright-test.yml
 
