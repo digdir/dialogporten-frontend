@@ -1,7 +1,7 @@
 ---
 slug: welcome
 title: Welcome
-authors: [theknarf, seanes, alexdigdir]
+authors: [seanes, alexdigdir]
 tags: []
 ---
 
