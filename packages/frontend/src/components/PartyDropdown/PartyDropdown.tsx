@@ -8,6 +8,7 @@ import { ProfileButton } from '../ProfileButton';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
+import { Backdrop } from '../Backdrop';
 import styles from './partyDropdown.module.css';
 
 interface PartyDropdownRef {
@@ -55,7 +56,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
   }, [parties, dialogs]);
 
   return (
-    <div>
+    <>
       <ProfileButton size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
         {selectedParties.length === 1 ? selectedParties[0].name : t('partydropdown.all_parties')}
         <ChevronDownIcon fontSize="1.5rem" />
@@ -88,6 +89,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
           ))}
         </DropdownList>
       )}
-    </div>
+      <Backdrop show={isMenuOpen} onClick={() => setIsMenuOpen(false)} />
+    </>
   );
 });
