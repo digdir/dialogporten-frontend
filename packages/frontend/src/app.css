@@ -5,8 +5,6 @@
   font-family: "Inter", sans-serif;
   font-feature-settings: "cv05" 1 !important;
   /* Enable lowercase l with tail */
-  font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;

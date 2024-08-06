@@ -27,7 +27,7 @@ export const InboxItemsHeader = ({ title, onSelectAll, hideSelectAll = false }: 
   const { t } = useTranslation();
   return (
     <header className={styles.inboxItemsHeader}>
-      <h2>{title}</h2>
+      <h2 className={styles.title}>{title}</h2>
       {typeof onSelectAll === 'function' && !hideSelectAll && (
         <Button size="sm" onClick={onSelectAll} variant="tertiary" color="neutral">
           <CheckmarkIcon fontSize="1.5rem" />

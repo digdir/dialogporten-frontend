@@ -36,7 +36,9 @@ export const AltinnLogo = ({ className }: AltinnLogoProps) => {
   return (
     <div className={className}>
       <Link to="/" aria-label={t('link.goToMain')}>
-        <AltinnLogoSvg aria-label="Altinn logo" />
+        <div className={styles.logoWrapper}>
+          <AltinnLogoSvg aria-label="Altinn logo" />
+        </div>
         <span>Altinn</span>
       </Link>
     </div>

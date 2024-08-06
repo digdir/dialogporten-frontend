@@ -46,11 +46,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             count={dialogsByView.inbox.length}
             path="/"
             isActive={pathname === Routes.inbox}
+            isWhiteBackground
             isInbox
           />
           <MenuItem
             displayText={t('sidebar.drafts')}
             label={t('sidebar.drafts.label')}
+            isWhiteBackground
             icon={<DocPencilIcon />}
             count={dialogsByView.draft.length}
             path="/drafts"
@@ -60,6 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             displayText={t('sidebar.sent')}
             label={t('sidebar.sent.label')}
             icon={<FileCheckmarkIcon />}
+            isWhiteBackground
             count={dialogsByView.sent.length}
             path="/sent"
             isActive={pathname === Routes.sent}
@@ -69,6 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             displayText={t('sidebar.saved_searches')}
             label={t('sidebar.saved_searches.label')}
             icon={<BookmarkIcon />}
+            isWhiteBackground
             count={savedSearches?.length ?? 0}
             path="/saved-searches"
             isActive={pathname === Routes.savedSearches}
@@ -78,6 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             displayText={t('sidebar.archived')}
             label={t('sidebar.archived.label')}
             icon={<ArchiveIcon />}
+            isWhiteBackground
             count={0}
             path="/archive"
             isActive={pathname === Routes.archive}
@@ -85,6 +90,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           <MenuItem
             displayText={t('sidebar.deleted')}
             label={t('sidebar.deleted.label')}
+            isWhiteBackground
             icon={<TrashIcon />}
             count={0}
             isActive={pathname === Routes.deleted}

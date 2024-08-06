@@ -20,7 +20,9 @@
 }
 
 .logo span {
-  margin-left: 6px;
+  margin-left: 4px;
+  font-weight: 500;
+  line-height: 2;
 }
 
 .searchBar {
