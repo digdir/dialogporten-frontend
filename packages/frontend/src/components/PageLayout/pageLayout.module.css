@@ -1,14 +1,13 @@
 .pageLayout {
   display: grid;
-  grid-template-areas: "main main";
-  grid-template-columns: 1fr 3fr;
+  grid-template-areas: "sidebar main";
+  grid-template-columns: 226px 3fr;
   grid-template-rows: auto 1fr auto;
   grid-gap: 2rem;
-  max-width: 1200px;
-}
-
-.sidebar {
-  grid-area: sidebar;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .background {
@@ -28,21 +27,20 @@
   grid-area: main;
   overflow: auto;
   padding: 0;
+  width: 100%;
+  margin-right: auto;
+  margin-top: 1rem;
 }
 
 .pageLayout > footer {
   grid-area: footer;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .pageLayout {
-    grid-template-areas: "sidebar main";
-    grid-template-columns: calc(8rem + 224px) 3fr;
-  }
-
-  .pageLayout > main {
-    width: 100%;
-    margin-right: auto;
-    margin-top: 2.5rem;
+    grid-template-areas: "main main";
+    grid-template-columns: 1fr 3fr;
+    padding-left: 0;
+    padding-right: 0;
   }
 }

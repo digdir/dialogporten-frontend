@@ -8,7 +8,6 @@
   height: 2.25rem;
   max-height: 2.25rem;
   user-select: none;
-  margin: 1rem;
 }
 
 .inputContainer {
@@ -16,7 +15,7 @@
   grid-template-areas: "searchicon searchinput clearbutton";
   grid-template-columns: 1.5rem 1fr 2rem;
   gap: 8px;
-  width: 320px;
+  width: 288px;
   height: 24px;
   padding: 16px;
   background-color: transparent;
@@ -32,7 +31,6 @@
 
 input {
   color: black;
-  font-family: inter;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;

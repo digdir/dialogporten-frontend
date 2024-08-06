@@ -56,7 +56,6 @@
   background: #fff;
   width: 2rem;
   height: 2rem;
-  padding: 4px;
 }
 
 .icon svg {
@@ -65,7 +64,7 @@
 }
 
 .isWhiteBackground {
-  background-color: var(--Neutral-Paper, #f3f4f6);
+  background-color: #fff;
 }
 
 .whiteBackgroundWhenActive {
