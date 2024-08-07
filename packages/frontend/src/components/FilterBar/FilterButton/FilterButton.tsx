@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
+import { HorizontalLine } from '../../HorizontalLine';
 import { ProfileButton } from '../../ProfileButton';
 import { ProfileCheckbox } from '../../ProfileCheckbox';
-import { HorizontalLine } from '../../Sidebar';
 import {
   CustomFilterValueType,
   type Filter,
@@ -61,7 +61,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
         <ArrowLeftIcon className={styles.backButtonIcon} />
         <span className={styles.subMenuTitle}>{t('word.back')}</span>
       </div>
-      <HorizontalLine fullWidth />
+      <HorizontalLine />
       <label htmlFor="fromDate">{t('filter_bar.from_date_label')}</label>
       <div className={styles.dateInputWrapper}>
         <input

@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from 'react-query';
 import { deleteSavedSearch, fetchSavedSearches } from '../../api/queries';
+import { useSnackbar } from '../../components';
+import { HorizontalLine } from '../../components';
 import { ModalWithBackdrop } from '../../components/Backdrop';
-import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { type FormatDistanceFunction, useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { EditSavedSearch } from './EditSearchesItem';
 import { SavedSearchesItem } from './SavedSearchesItem';
@@ -48,7 +49,7 @@ const DeleteSearchConfirmation = ({ savedSearch, onClose, isOpen }: DeleteSearch
     <ModalWithBackdrop open={isOpen} onClose={onClose}>
       <Modal.Header className={styles.editSavedSearchHeader}>{t('savedSearches.confirm_delete_title')}</Modal.Header>
       <Modal.Content>
-        <hr className={styles.horizontalLine} />
+        <HorizontalLine />
         <p>{t('savedSearches.confirmDelete')}</p>
       </Modal.Content>
       <Modal.Footer>

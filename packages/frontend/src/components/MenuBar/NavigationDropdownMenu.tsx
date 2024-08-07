@@ -49,8 +49,7 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
         <UserInfo name={name} companyName={companyName} onClick={() => setShowSubMenu('profile')} />
-
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.inbox')}
           label={t('sidebar.inbox.label')}
@@ -78,7 +77,7 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
           isExternalLink
           isWhiteBackground
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
         <MenuLogoutButton />
       </ul>
     </div>

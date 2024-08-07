@@ -4,6 +4,7 @@ import { ChevronRightIcon, PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { HorizontalLine } from '../../components';
 import { Backdrop } from '../../components/Backdrop';
 import { getPredefinedRange } from '../../components/FilterBar/dateInfo.ts';
 import styles from './savedSearches.module.css';
@@ -57,7 +58,7 @@ const RenderButtons = ({ savedSearch, onDelete, setSelectedSavedSearch }: SavedS
                 <ChevronRightIcon fontSize={24} className={styles.icon} />
               </div>
             </DropdownMenu.Item>
-            <hr />
+            <HorizontalLine />
             <DropdownMenu.Item onClick={() => onDelete?.(savedSearch)}>
               <div className={styles.dropdownEditSearch}>
                 <TrashIcon className={styles.icon} aria-hidden="true" />
@@ -89,7 +90,7 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
             onDelete={onDelete}
           />
         </div>
-        <hr />
+        <HorizontalLine />
       </>
     );
 
@@ -122,7 +123,7 @@ export const SavedSearchesItem = ({ savedSearch, onDelete, setSelectedSavedSearc
           onDelete={onDelete}
         />
       </div>
-      <hr />
+      <HorizontalLine />
     </>
   );
 };

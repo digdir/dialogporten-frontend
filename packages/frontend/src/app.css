@@ -11,6 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  font-family: "Inter", sans-serif;
+}
+
 .app {
   width: 100%;
   margin: 0 auto;

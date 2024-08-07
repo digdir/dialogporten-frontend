@@ -8,7 +8,7 @@ import { MenuItem } from '.';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { Avatar } from '../Avatar';
-import { HorizontalLine } from '../Sidebar';
+import { HorizontalLine } from '../HorizontalLine';
 import { MenuLogoutButton, toTitleCase } from './NavigationDropdownMenu';
 import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
 import styles from './navigationDropdownMenu.module.css';
@@ -55,7 +55,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
           }
           isWhiteBackground
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
         <MenuItem
           leftContent={
             <Search
@@ -90,7 +90,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
             />
           );
         })}
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
         <MenuLogoutButton />
       </ul>
     </div>

@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useSavedSearches } from '../../pages/SavedSearches';
-import { HorizontalLine } from '../Sidebar';
+import { HorizontalLine } from '../HorizontalLine';
 import { MenuItem } from './MenuItem';
 import { MenuLogoutButton } from './NavigationDropdownMenu';
 import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
@@ -47,7 +47,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           }
           isWhiteBackground
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.inbox')}
           label={t('sidebar.inbox.label')}
@@ -83,7 +83,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           isWhiteBackground
           smallText
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
 
         <MenuItem
           displayText={t('sidebar.saved_searches')}
@@ -96,7 +96,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           isWhiteBackground
           smallText
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
 
         <MenuItem
           displayText={t('sidebar.archived')}
@@ -120,7 +120,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           smallText
           onClose={onClose}
         />
-        <HorizontalLine fullWidth />
+        <HorizontalLine />
 
         <MenuLogoutButton />
       </ul>

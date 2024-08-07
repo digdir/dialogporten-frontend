@@ -14,7 +14,7 @@ import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { Routes } from '../../pages/Inbox/Inbox';
 import { useSavedSearches } from '../../pages/SavedSearches';
-import { Hr } from '../MenuBar';
+import { HorizontalLine } from '../HorizontalLine/';
 import { MenuItem } from '../MenuBar';
 import styles from './sidebar.module.css';
 
@@ -22,10 +22,6 @@ export interface SidebarProps {
   children?: React.ReactNode;
   isCompany?: boolean;
 }
-
-export const HorizontalLine = ({ fullWidth = false }) => (
-  <hr className={styles.horizontalLine} style={fullWidth ? { width: '100%', margin: '0.5rem 0' } : {}} />
-);
 
 export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const { t } = useTranslation();
@@ -38,7 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   return (
     <aside className={styles.sidebar} data-testid="sidebar">
       {children || (
-        <ul className={styles.menuList}>
+        <ul className={styles.sidebarUl}>
           <MenuItem
             displayText={t('sidebar.inbox')}
             label={t('sidebar.inbox.label')}
@@ -48,7 +44,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             isActive={pathname === Routes.inbox}
             isWhiteBackground
             isInbox
+            largeText
           />
+          <HorizontalLine />
           <MenuItem
             displayText={t('sidebar.drafts')}
             label={t('sidebar.drafts.label')}
@@ -67,7 +65,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             path="/sent"
             isActive={pathname === Routes.sent}
           />
-          <Hr />
+          <HorizontalLine />
           <MenuItem
             displayText={t('sidebar.saved_searches')}
             label={t('sidebar.saved_searches.label')}
@@ -77,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             path="/saved-searches"
             isActive={pathname === Routes.savedSearches}
           />
-          <Hr />
+          <HorizontalLine />
           <MenuItem
             displayText={t('sidebar.archived')}
             label={t('sidebar.archived.label')}
@@ -95,6 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             count={0}
             isActive={pathname === Routes.deleted}
             path="/deleted"
+            classNames={styles.lastItem}
           />
         </ul>
       )}

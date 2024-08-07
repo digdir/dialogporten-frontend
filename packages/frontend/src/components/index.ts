@@ -10,3 +10,4 @@ export * from './PageLayout';
 export * from './DropdownMenu';
 export * from './SortOrderDropdown';
 export * from './Snackbar';
+export * from './HorizontalLine';

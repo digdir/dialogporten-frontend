@@ -8,6 +8,7 @@
   height: 2.25rem;
   max-height: 2.25rem;
   user-select: none;
+  margin-left: 1rem;
 }
 
 .inputContainer {
@@ -16,8 +17,8 @@
   grid-template-columns: 1.5rem 1fr 2rem;
   gap: 8px;
   width: 288px;
-  height: 24px;
-  padding: 16px;
+  height: 1.5625rem;
+  padding: 0.875rem;
   background-color: transparent;
   border-radius: 6px;
   border: 2px solid #000;
@@ -205,10 +206,6 @@ input:focus-visible {
   align-items: center;
 }
 
-.horizontalLine {
-  border: 1px solid #e5e7eb;
-}
-
 .timeSince {
   color: var(--black-100, #000);
   font-size: 12px;
@@ -275,5 +272,10 @@ input:focus-visible {
 
   .inputContainer {
     width: 100%;
+  }
+
+  .searchbarContainer {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }

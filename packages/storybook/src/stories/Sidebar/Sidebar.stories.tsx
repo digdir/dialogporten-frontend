@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
+import { HorizontalLine, Sidebar } from 'frontend';
 import { withRouter } from 'storybook-addon-react-router-v6';
-import { HorizontalLine, Sidebar } from '../../../../frontend';
 
 import {
   CogIcon,
