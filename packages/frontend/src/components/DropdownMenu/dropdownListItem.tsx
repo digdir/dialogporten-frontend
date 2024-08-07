@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { HorizontalLine } from '../HorizontalLine';
 import styles from './dropdownListItem.module.css';
 interface DropdownListItemProps {
   onClick: () => void;
@@ -36,7 +37,7 @@ export const DropdownListItem = ({
           <div className={styles.rightContent}>{rightContent}</div>
         </div>
       </li>
-      {hasHorizontalRule && <hr className={styles.ruler} />}
+      {hasHorizontalRule && <HorizontalLine />}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { HorizontalLine } from '../HorizontalLine';
 import styles from './search.module.css';
 
 interface SearchDropdownItemProps {
@@ -12,7 +13,7 @@ export const SearchDropdownItem: React.FC<SearchDropdownItemProps> = ({ children
       <li className={styles.menuItem} onClick={onClick} onKeyUp={onClick}>
         {children}
       </li>
-      {horizontalLine && <hr className={styles.horizontalLine} />}
+      {horizontalLine && <HorizontalLine />}
     </>
   );
 };

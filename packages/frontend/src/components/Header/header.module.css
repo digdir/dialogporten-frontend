@@ -17,6 +17,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+  min-width: 7.75rem;
 }
 
 .logo span {

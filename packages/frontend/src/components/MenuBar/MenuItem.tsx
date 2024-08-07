@@ -1,5 +1,6 @@
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import styles from './menuItem.module.css';
 
@@ -19,7 +20,9 @@ interface DropDownMenuItemProps {
   rightContent?: React.ReactNode;
   fullWidth?: boolean;
   smallIcon?: boolean;
+  largeText?: boolean;
   smallText?: boolean;
+  classNames?: string;
 }
 
 export const MenuItem = ({
@@ -38,7 +41,8 @@ export const MenuItem = ({
   rightContent,
   fullWidth,
   smallIcon,
-  smallText,
+  largeText,
+  classNames,
 }: DropDownMenuItemProps) => {
   const RenderItem = (
     <RenderDropDownMenuItem
@@ -57,21 +61,21 @@ export const MenuItem = ({
         rightContent,
         fullWidth,
         smallIcon,
-        smallText,
+        largeText,
       }}
     />
   );
   if (path) {
     return (
       <Link className={styles.isLink} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
-        <li className={styles.liItem}>{RenderItem}</li>
+        <li className={cx(styles.liItem, classNames)}>{RenderItem}</li>
       </Link>
     );
   }
 
   if (onClick) {
     return (
-      <li className={cx(styles.isLink, styles.liItem)} onClick={onClick} onKeyUp={onClick}>
+      <li className={cx(styles.isLink, styles.liItem, classNames)} onClick={onClick} onKeyUp={onClick}>
         {RenderItem}
       </li>
     );
@@ -99,11 +103,11 @@ const RenderDropDownMenuItem = ({
   rightContent,
   fullWidth,
   smallIcon,
-  smallText,
+  largeText,
 }: DropDownMenuItemProps) => {
   return (
     <div
-      className={cx(styles.menuItem, {
+      className={cx(styles.menuItem, classNames, {
         [styles.whiteBackgroundWhenActive]: isActive && isWhiteBackground,
         [styles.greyBackgroundWhenActive]: isActive && !isWhiteBackground,
         [styles.fullWidth]: fullWidth,
@@ -120,13 +124,13 @@ const RenderDropDownMenuItem = ({
                 [styles.isWhiteBackground]: isWhiteBackground,
                 [styles.isTransparentBackground]: !isWhiteBackground,
                 [styles.isInbox]: isInbox,
-                [styles.greyBackgroundWhenActive]: isWhiteBackground && !isInbox,
+                [styles.greyBackgroundWhenActive]: isActive && isWhiteBackground && !isInbox,
               })}
               aria-hidden="true"
             >
               {icon}
             </div>
-            <div className={cx(styles.displayText, { [styles.smallText]: smallText })}>{displayText}</div>
+            <div className={cx(styles.displayText, { [styles.largeText]: largeText })}>{displayText}</div>
           </>
         )}
       </div>

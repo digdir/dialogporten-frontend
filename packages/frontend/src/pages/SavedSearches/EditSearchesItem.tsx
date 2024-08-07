@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { autoFormatRelativeTime } from '.';
 import { updateSavedSearch } from '../../api/queries';
+import { HorizontalLine } from '../../components';
 import { ModalWithBackdrop } from '../../components/Backdrop';
 import { useSnackbar } from '../../components/Snackbar/useSnackbar';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
@@ -58,7 +59,7 @@ export const EditSavedSearch = ({ savedSearch, onDelete, onClose, isOpen }: Edit
         </div>
       </Modal.Header>
       <Modal.Content>
-        <hr className={styles.horizontalLine} />
+        <HorizontalLine />
         <div className={styles.searchFormBody}>
           <label htmlFor="searchName">{t('editSavedSearch.give_search_name')}</label>
           <input
