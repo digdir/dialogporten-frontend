@@ -25,25 +25,23 @@ export const Footer = () => {
 
   return (
     <footer className={styles.footer} data-testid="main-footer">
-      <div className={styles.content}>
+      <div className={styles.footerContent}>
         <div>
-          <p className={styles.company}>
+          <span className={styles.company}>
             <AltinnLogoSvg small /> {t('footer.company')}
-          </p>
-          <p className={styles.addressLineOne}>{t('footer.address.line1')}</p>
-          <p className={styles.addressLineTwo}>{t('footer.address.line2')}</p>
+          </span>
+          <span className={styles.addressLineOne}>{t('footer.address.line1')}</span>
+          <span className={styles.addressLineTwo}>{t('footer.address.line2')}</span>
         </div>
-        <div>
-          <ul className={styles.links}>
-            {footerLinks.map((link) => (
-              <li key={link.resourceId}>
-                <a href={link.href} className={styles.link}>
-                  {t(link.resourceId)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className={styles.links}>
+          {footerLinks.map((link) => (
+            <li key={link.resourceId}>
+              <a href={link.href} className={styles.link}>
+                {t(link.resourceId)}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

@@ -14,6 +14,15 @@
   }
 }
 
+.liItem {
+  margin-bottom: 0.5rem;
+}
+
+.liItem:last-child {
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
 .isLink {
   cursor: pointer;
   text-decoration: none;
@@ -118,15 +127,6 @@
 .redCounter {
   background-color: var(--action-important, #e02e49);
   color: #fff;
-}
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-li:last-child {
-  margin-bottom: 0;
-  margin-top: 1rem;
 }
 
 .small .displayText {

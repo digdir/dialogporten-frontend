@@ -4,7 +4,7 @@
   background-color: var(--Company-Primary, #111d46);
   justify-content: center;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 0.625rem;
   height: 2.25rem;
   user-select: none;
