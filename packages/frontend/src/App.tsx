@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { PageLayout } from './components';
 import { Inbox } from './pages/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
-import { SavedSearches } from './pages/SavedSearches';
+import { SavedSearchesPage } from './pages/SavedSearches';
 
 import './app.css';
 
@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Inbox key="inbox" viewType={'inbox'} />} />
           <Route path="/drafts" element={<Inbox key="draft" viewType={'draft'} />} />
           <Route path="/sent" element={<Inbox key="sent" viewType={'sent'} />} />
-          <Route path="/saved-searches" element={<SavedSearches />} />
+          <Route path="/saved-searches" element={<SavedSearchesPage />} />
           <Route path="/inbox/:id" element={<InboxItemPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>

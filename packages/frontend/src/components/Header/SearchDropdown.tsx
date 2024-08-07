@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
-import { autoFormatRelativeTime, useSavedSearches } from '../../pages/SavedSearches';
-import { OpenSavedSearchLink } from '../../pages/SavedSearches/SavedSearchesItem.tsx';
+import { useSavedSearches } from '../../pages/SavedSearches';
+import { OpenSavedSearchLink } from '../../pages/SavedSearches/SavedSearchesActions/SavedSearchesActions.tsx';
+import SearchFilterTag from '../../pages/SavedSearches/SearchFilterTag/SearchFilterTag.tsx';
+import { autoFormatRelativeTime } from '../../pages/SavedSearches/searchUtils.ts';
 import { Avatar } from '../Avatar';
-import { getPredefinedRange } from '../FilterBar/dateInfo';
 import { InboxItem } from '../InboxItem';
 import { SearchDropdownItem } from './SearchDropdownItem';
 import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
@@ -65,8 +66,6 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 receiver={item.receiver}
                 tags={item.tags}
                 linkTo={item.linkTo}
-                // Logic needed:
-                // isUnread={item.}
                 onClose={() => handleClose()}
                 isMinimalistic
               />
@@ -93,13 +92,13 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                     </span>
                     {search.data?.searchString && `${search.data.filters?.length ? ' + ' : ''}`}
                     {search.data?.filters?.map((search, index) => {
-                      const id = search?.id;
-                      const predefinedRange = getPredefinedRange().find((range) => range.value === search?.value);
-                      const value = predefinedRange && search?.id === 'created' ? predefinedRange.label : search?.value;
                       return (
-                        <span key={`${id}${index}`} className={styles.filterElement}>{`${
-                          index === 0 ? '' : ' +'
-                        } ${value}`}</span>
+                        <SearchFilterTag
+                          key={`${search?.id}${index}`}
+                          searchValue={search?.value}
+                          searchId={search?.id}
+                          index={index}
+                        />
                       );
                     })}
                   </div>
