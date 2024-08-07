@@ -64,21 +64,21 @@ export const MenuItem = ({
   if (path) {
     return (
       <Link className={styles.isLink} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
-        <li>{RenderItem}</li>
+        <li className={styles.liItem}>{RenderItem}</li>
       </Link>
     );
   }
 
   if (onClick) {
     return (
-      <li className={styles.isLink} onClick={onClick} onKeyUp={onClick}>
+      <li className={cx(styles.isLink, styles.liItem)} onClick={onClick} onKeyUp={onClick}>
         {RenderItem}
       </li>
     );
   }
 
   if (leftContent || rightContent) {
-    return <li>{RenderItem}</li>;
+    return <li className={styles.liItem}>{RenderItem}</li>;
   }
 
   return null;
