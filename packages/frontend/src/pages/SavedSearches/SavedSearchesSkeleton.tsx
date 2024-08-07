@@ -1,6 +1,6 @@
 import { Skeleton } from '@digdir/designsystemet-react';
 import { Fragment } from 'react';
-import styles from './savedSearches.module.css';
+import styles from './savedSearchesPage.module.css';
 
 interface SavedSearchesSkeletonProps {
   numberOfItems: number;

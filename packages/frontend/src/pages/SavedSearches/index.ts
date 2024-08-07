@@ -1,1 +1,1 @@
-export * from './SavedSearches.tsx';
+export * from './SavedSearchesPage.tsx';

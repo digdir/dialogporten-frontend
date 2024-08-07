@@ -17,19 +17,9 @@
   margin: 0 1rem;
 }
 
-hr:last-child {
-  display: none;
-}
-
 .renderButtons {
   display: flex;
   align-items: center;
-}
-
-.editSavedSearchHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 .title {
@@ -111,10 +101,10 @@ hr:last-child {
 
 .searchFormBody {
   margin-bottom: 16px;
+}
 
-  input {
-    box-sizing: border-box;
-  }
+.searchFormBody input {
+  box-sizing: border-box;
 }
 
 .searchFormBody label {
@@ -165,29 +155,29 @@ hr:last-child {
 
 .dropdownContent {
   border-radius: 0;
+}
 
-  li {
-    margin: 0;
-  }
+.dropdownContent li {
+  margin: 0;
+}
 
-  button {
-    border-radius: 2px;
-    padding: 0;
-    height: auto;
-  }
+.dropdownContent button {
+  border-radius: 2px;
+  padding: 0;
+  height: auto;
+}
 
-  .dropdownEditSearch {
-    width: 100%;
-    display: grid;
-    grid-template-columns: min-content auto min-content;
-    align-items: start;
-    text-align: left;
-    gap: 6px;
-    padding: 6px;
+.dropdownEditSearch {
+  width: 100%;
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  align-items: start;
+  text-align: left;
+  gap: 6px;
+  padding: 6px;
+}
 
-    & > svg,
-    & > span {
-      padding: 4px;
-    }
-  }
+.dropdownEditSearch > svg,
+.dropdownEditSearch > span {
+  padding: 4px;
 }
