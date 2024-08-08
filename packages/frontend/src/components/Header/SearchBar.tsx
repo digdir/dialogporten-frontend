@@ -75,10 +75,10 @@ export const SearchBar: React.FC = () => {
           <button
             type="button"
             onClick={searchValue ? onClearSearch : onClearAndCloseDropdown}
-            className={cx(styles.clearButton)}
+            className={styles.clearButton}
             aria-label={t('header.clearSearch')}
           >
-            <MultiplyIcon className={cx(styles.clearButtonIcon, { [styles.withBackground]: !searchValue })} />
+            <MultiplyIcon className={cx(styles.clearButtonIcon, { [styles.withBackground]: !!searchValue })} />
           </button>
         )}
       </div>

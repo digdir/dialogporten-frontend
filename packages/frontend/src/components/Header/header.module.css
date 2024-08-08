@@ -20,6 +20,19 @@
   min-width: 7.75rem;
 }
 
+@media screen and (max-width: 1024px) {
+  .logo {
+    display: none;
+  }
+  .hideOnMobile {
+    display: none;
+  }
+
+  .navigation {
+    display: block;
+  }
+}
+
 .logo span {
   margin-left: 4px;
   font-weight: 500;
@@ -33,12 +46,5 @@
     border-radius: 6px;
     border: 2px solid #000;
     background-color: inherit;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .searchBar {
-    padding: 1rem;
-    margin: 0;
   }
 }
