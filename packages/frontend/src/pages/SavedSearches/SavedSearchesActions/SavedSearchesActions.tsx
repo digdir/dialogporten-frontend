@@ -1,5 +1,5 @@
 import { DropdownMenu } from '@digdir/designsystemet-react';
-import { EllipsisHorizontalIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { MenuElipsisHorizontalIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ChevronRightIcon, PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
@@ -25,7 +25,7 @@ const SaveSearchesActions = ({ savedSearch, onDeleteBtnClick, onEditBtnClick }: 
     <div className={styles.renderButtons}>
       <DropdownMenu.Root open={open} onClose={() => setOpen(false)}>
         <DropdownMenu.Trigger className={styles.linkButton} onClick={() => setOpen(!open)}>
-          <EllipsisHorizontalIcon className={styles.icon} />
+          <MenuElipsisHorizontalIcon className={styles.icon} />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className={styles.dropdownContent}>
           <DropdownMenu.Group>
