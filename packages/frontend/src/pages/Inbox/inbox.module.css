@@ -8,10 +8,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 1rem;
+  padding-top: 1.25rem;
 
   @media (max-width: 1024px) {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 }
 
@@ -45,7 +45,7 @@
   }
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1024px) {
   .hideForSmallScreens {
     display: none;
   }

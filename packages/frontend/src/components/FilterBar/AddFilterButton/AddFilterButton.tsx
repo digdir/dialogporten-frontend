@@ -35,14 +35,14 @@ export const AddFilterButton = ({
   return (
     <div className={cx({ [styles.filterOpen]: isMenuOpen })}>
       <ProfileButton
-        size="sm"
+        size="xs"
         onClick={onAddBtnClick}
         className={className}
         disabled={disabled}
         variant="secondary"
         color="neutral"
       >
-        <PlusIcon fontSize="1.5rem" /> {t('filter_bar.add_filter')}
+        <PlusIcon fontSize="1.25rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
       {isMenuOpen && (
         <DropdownList variant="long">

@@ -25,7 +25,7 @@
 }
 
 .inputContainer.searchbarOpen {
-  border: 3px solid #000;
+  border: 2px solid #000;
   border-radius: 6px 6px 0 0;
 }
 
@@ -98,7 +98,7 @@ input:focus-visible {
 }
 
 .showDropdownMenu {
-  border: 3px solid #000;
+  border: 2px solid #000;
   border-radius: 0 0 6px 6px;
   width: 100%;
   box-sizing: border-box;
@@ -262,5 +262,7 @@ input:focus-visible {
   }
   .searchbarContainer {
     padding-top: 0.5rem;
+    width: calc(100% - 2rem);
+    margin: 0 auto;
   }
 }

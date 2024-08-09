@@ -28,7 +28,7 @@
   z-index: 1001;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .menuItems {
     left: 0;
     width: calc(100% - 1rem);

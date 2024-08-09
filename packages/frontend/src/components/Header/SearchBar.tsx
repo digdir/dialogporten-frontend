@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { Backdrop } from '../Backdrop';
 import { useSearchString } from '../Header';
 import { SearchDropdown } from './SearchDropdown';
@@ -15,6 +16,8 @@ export const SearchBar: React.FC = () => {
   const { searchString, setSearchString } = useSearchString();
   const [searchValue, setSearchValue] = useState<string>(searchString);
   const navigate = useNavigate();
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 1024;
 
   const handleClose = () => {
     setShowDropdownMenu(false);
@@ -57,7 +60,15 @@ export const SearchBar: React.FC = () => {
           type="text"
           autoComplete="off"
           onClick={() => setShowDropdownMenu(true)}
-          onFocus={() => setShowDropdownMenu(true)}
+          onFocus={() => {
+            setShowDropdownMenu(true);
+            if (isMobile) {
+              window.scroll({
+                top: 65,
+                behavior: 'smooth',
+              });
+            }
+          }}
           aria-label={t('header.searchPlaceholder')}
           placeholder={t('header.searchPlaceholder')}
           className={cx(styles.searchInput)}

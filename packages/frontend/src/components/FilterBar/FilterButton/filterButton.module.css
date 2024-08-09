@@ -1,12 +1,22 @@
-.filterButton {
-  button {
-    border-radius: 0;
-  }
-}
-
 .buttons {
   z-index: 1001;
   display: flex;
+}
+
+.xIcon {
+  background-color: #1e98f5;
+}
+
+.removeFilterButton {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid #fff;
+  box-sizing: border-box;
+}
+
+.xableButton {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .xed {

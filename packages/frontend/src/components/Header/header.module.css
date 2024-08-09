@@ -7,6 +7,18 @@
   max-height: 68px;
 }
 
+.navigationTablet {
+  display: flex;
+  flex-direction: column;
+  color: var(--Company-Primary, #111d46);
+  padding: 16px;
+  max-height: 68px;
+}
+
+.adjustPadding {
+  padding-left: 2rem;
+}
+
 .logo a {
   color: #000;
   text-align: center;
@@ -18,19 +30,6 @@
   display: flex;
   align-items: center;
   min-width: 7.75rem;
-}
-
-@media screen and (max-width: 1024px) {
-  .logo {
-    display: none;
-  }
-  .hideOnMobile {
-    display: none;
-  }
-
-  .navigation {
-    display: block;
-  }
 }
 
 .logo span {

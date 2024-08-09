@@ -2,6 +2,7 @@ import type React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
 import { MenuBar } from '../MenuBar';
 import { AltinnLogo } from './AltinnLogo';
@@ -57,15 +58,16 @@ export const useSearchString = () => {
  */
 
 export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationCount }) => {
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 1024;
   return (
     <header data-testid="main-header">
       <nav className={styles.navigation} aria-label="Navigasjon">
         <AltinnLogo className={styles.logo} />
-        <SearchBar />
-        <div className={styles.hideOnMobile}>
-          <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
-        </div>
+        {!isMobile && <SearchBar />}
+        <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
+      {isMobile && <SearchBar />}
     </header>
   );
 };

@@ -6,15 +6,17 @@ import styles from './profileButton.module.css';
 
 type ProfileButtonProps = {
   isLoading?: boolean;
-} & ButtonProps;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+} & Omit<ButtonProps, 'size'>;
 
 export const ProfileButton = (props: ProfileButtonProps) => {
   const { t } = useTranslation();
-  const { className, isLoading, children, variant = 'primary', ...restProps } = props;
+  const { className, isLoading, children, variant = 'primary', size, ...restProps } = props;
   const classes = cx(className, styles.profileButton, {
     [styles.primary]: variant === 'primary',
     [styles.secondary]: variant === 'secondary',
     [styles.tertiary]: variant === 'tertiary',
+    [styles.xs]: size === 'xs',
   });
 
   if (isLoading) {

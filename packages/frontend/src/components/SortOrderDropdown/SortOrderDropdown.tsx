@@ -57,9 +57,9 @@ export const SortOrderDropdown = forwardRef(
           onClick={() => setIsOpen(!isOpen)}
           className={cx(styles.openBtn, btnClassName)}
           variant="secondary"
-          size="sm"
+          size="xs"
         >
-          <ArrowsUpDownIcon fontSize="1.5rem" />
+          <ArrowsUpDownIcon fontSize="1.25rem" />
           {selectedOptionLabel}
         </ProfileButton>
         {isOpen && (
