@@ -19,7 +19,7 @@
   max-width: 195px;
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1024px) {
   .dropdownList {
     position: fixed;
     left: 0;

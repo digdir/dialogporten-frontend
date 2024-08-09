@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@navikt/aksel-icons';
+import { ChevronUpDownIcon } from '@navikt/aksel-icons';
 import { type Ref, forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
@@ -57,9 +57,9 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
 
   return (
     <>
-      <ProfileButton size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
+      <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
         {selectedParties.length === 1 ? selectedParties[0].name : t('partydropdown.all_parties')}
-        <ChevronDownIcon fontSize="1.5rem" />
+        <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
       {isMenuOpen && (
         <DropdownList variant="long">

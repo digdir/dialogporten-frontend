@@ -103,6 +103,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
           onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
         }}
         variant="secondary"
+        size="xs"
       >
         {t('filter_bar.choose_date')}
       </ProfileButton>
@@ -163,17 +164,21 @@ export const FilterButton = ({
   return (
     <div className={styles.filterButton}>
       <div className={styles.buttons}>
-        <ProfileButton onClick={onBtnClick} className={cx({ [styles.xed]: hoveringDeleteBtn })} size="sm">
+        <ProfileButton
+          onClick={onBtnClick}
+          className={cx(styles.removeFilterButton, { [styles.xed]: hoveringDeleteBtn })}
+          size="xs"
+        >
           {dateInfo.isDate ? dateInfo.label : displayLabel}
         </ProfileButton>
         <ProfileButton
-          size="sm"
-          className={styles.button}
+          size="xs"
+          className={styles.xableButton}
           onClick={() => onRemove(id)}
           onMouseEnter={() => setHoveringDeleteBtn(true)}
           onMouseLeave={() => setHoveringDeleteBtn(false)}
         >
-          <XMarkIcon />
+          <XMarkIcon fontSize="1.5rem" />
         </ProfileButton>
       </div>
       {isOpen && (

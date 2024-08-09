@@ -1,3 +1,4 @@
+import { BookmarkIcon } from '@navikt/aksel-icons';
 import type { Meta } from '@storybook/react';
 import { ProfileButton } from 'frontend/src/components/ProfileButton/ProfileButton.tsx';
 import { withRouter } from 'storybook-addon-react-router-v6';
@@ -44,6 +45,22 @@ export const PersonSecondary = () => {
   return (
     <ProfileButton size="sm" onClick={() => {}} variant="secondary">
       Secondary
+    </ProfileButton>
+  );
+};
+
+export const XsButton = () => {
+  return (
+    <ProfileButton size="xs" onClick={() => {}} variant="primary">
+      xs button
+    </ProfileButton>
+  );
+};
+
+export const XsButtonWithIcon = () => {
+  return (
+    <ProfileButton size="xs" onClick={() => {}} variant="primary">
+      xs button <BookmarkIcon fontSize="1.25rem" />
     </ProfileButton>
   );
 };
