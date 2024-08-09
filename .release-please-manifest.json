@@ -1,9 +1,9 @@
 {
-  ".": "1.0.0",
-  "packages/bff": "1.0.0",
+  ".": "1.1.0",
+  "packages/bff": "1.1.0",
   "packages/bff-types-generated": "1.0.0",
-  "packages/docs": "1.0.0",
-  "packages/docusaurus-tldraw-plugin": "1.0.0",
-  "packages/frontend": "1.0.0",
-  "packages/storybook": "1.0.0"
+  "packages/docs": "1.1.0",
+  "packages/docusaurus-tldraw-plugin": "1.1.0",
+  "packages/frontend": "1.1.0",
+  "packages/storybook": "1.1.0"
 }
