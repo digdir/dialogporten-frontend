@@ -1,5 +1,5 @@
 import { Button, Modal } from '@digdir/designsystemet-react';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from '@navikt/aksel-icons';
 import type { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { type ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
