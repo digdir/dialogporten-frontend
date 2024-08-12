@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
 import { MenuItem } from './MenuItem';
-import { toTitleCase } from './NavigationDropdownMenu';
 import styles from './userInfo.module.css';
 
 interface UserInfoProps {
@@ -14,8 +13,6 @@ interface UserInfoProps {
 
 export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
   const { t } = useTranslation();
-  const companyNameTitleCase = toTitleCase(companyName);
-  const nameTitleCase = toTitleCase(name);
   return (
     <MenuItem
       leftContent={
@@ -27,10 +24,10 @@ export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
           role="button"
           tabIndex={0}
         >
-          <Avatar name={name} companyName={companyNameTitleCase} />
+          <Avatar name={name} companyName={companyName} />
           <div>
-            <div className={styles.primaryName}>{companyNameTitleCase || nameTitleCase}</div>
-            <div className={styles.secondaryName}>{companyNameTitleCase ? nameTitleCase : t('word.private')}</div>
+            <div className={styles.primaryName}>{companyName || name}</div>
+            <div className={styles.secondaryName}>{companyName ? name : t('word.private')}</div>
           </div>
         </div>
       }

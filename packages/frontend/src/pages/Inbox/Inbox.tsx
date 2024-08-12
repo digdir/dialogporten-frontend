@@ -240,7 +240,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               onFilterChange={setActiveFilters}
               initialFilters={initialFilters}
               addFilterBtnClassNames={styles.hideForSmallScreens}
-              nResults={itemsToDisplay.length}
+              resultsCount={itemsToDisplay.length}
             />
             <SaveSearchButton
               onBtnClick={handleSaveSearch}

@@ -16,7 +16,6 @@ import {
   type FilterValueType,
   type SubLevelState,
 } from '../FilterBar';
-import { ShowFilterResultsButton } from '../ShowFilterResultsButton.tsx';
 import { isCombinedDateAndInterval } from '../dateInfo.ts';
 import styles from './filterButton.module.css';
 
@@ -30,7 +29,6 @@ export interface BaseFilterButtonProps {
   onSubMenuLevelClick: (state: SubLevelState) => void;
   onBackBtnClick: () => void;
   currentSubMenuLevel?: SubLevelState;
-  nResults?: number;
 }
 interface FilterButtonSectionProps {
   date: string;
@@ -121,7 +119,6 @@ export const FilterButton = ({
   currentSubMenuLevel,
   onSubMenuLevelClick,
   onBackBtnClick,
-  nResults,
 }: BaseFilterButtonProps) => {
   const { t } = useTranslation();
   const [hoveringDeleteBtn, setHoveringDeleteBtn] = useState(false);
@@ -240,7 +237,6 @@ export const FilterButton = ({
               />
             );
           })}
-          <ShowFilterResultsButton nResults={nResults} onClick={onBtnClick} />
         </DropdownList>
       )}
     </div>

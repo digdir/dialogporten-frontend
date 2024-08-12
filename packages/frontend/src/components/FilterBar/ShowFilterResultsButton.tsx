@@ -3,15 +3,21 @@ import { useTranslation } from 'react-i18next';
 import styles from './showFilterResultsButton.module.css';
 
 interface ShowFilterResultsButtonProps {
-  nResults?: number;
+  show: boolean;
   onClick: () => void;
+  resultsCount?: number;
 }
 
-export const ShowFilterResultsButton = ({ nResults, onClick }: ShowFilterResultsButtonProps) => {
+export const ShowFilterResultsButton = ({ resultsCount, onClick, show = false }: ShowFilterResultsButtonProps) => {
   const { t } = useTranslation();
+
+  if (!show) {
+    return null;
+  }
+
   return (
     <Button className={styles.showResultsButton} onClick={onClick}>
-      {t('filter_bar.showResultsButton', { count: nResults || 0 })}
+      {t('filter_bar.showResultsButton', { count: resultsCount ?? 0 })}
     </Button>
   );
 };
