@@ -2,6 +2,7 @@ import { type ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHan
 import { Backdrop } from '../Backdrop';
 import { AddFilterButton } from './AddFilterButton';
 import { FilterButton } from './FilterButton';
+import { ShowFilterResultsButton } from './ShowFilterResultsButton.tsx';
 import styles from './filterBar.module.css';
 
 export type FieldOptionOperation = 'equals' | 'includes';
@@ -38,7 +39,7 @@ interface FilterBarProps {
   onFilterChange: (newFilters: Filter[]) => void;
   initialFilters?: Filter[];
   addFilterBtnClassNames?: string;
-  nResults?: number;
+  resultsCount?: number;
 }
 
 export interface SubLevelState {
@@ -104,7 +105,7 @@ export type FilterBarRef = {
  */
 export const FilterBar = forwardRef(
   (
-    { onFilterChange, settings, initialFilters = [], addFilterBtnClassNames, nResults }: FilterBarProps,
+    { onFilterChange, settings, initialFilters = [], addFilterBtnClassNames, resultsCount }: FilterBarProps,
     ref: ForwardedRef<FilterBarRef>,
   ) => {
     const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
@@ -208,7 +209,6 @@ export const FilterBar = forwardRef(
                 selectedFilters={selectedFilters}
                 currentSubMenuLevel={currentSubLevelMenu}
                 onSubMenuLevelClick={setCurrentSubLevelMenu}
-                nResults={nResults}
               />
             );
           })}
@@ -220,9 +220,13 @@ export const FilterBar = forwardRef(
             onListItemClick={onToggleFilter}
             onClose={() => setListOpenForTarget('none')}
             className={addFilterBtnClassNames}
-            nResults={nResults}
           />
         </div>
+        <ShowFilterResultsButton
+          show={listOpenForTarget !== 'none'}
+          resultsCount={resultsCount}
+          onClick={() => setListOpenForTarget('none')}
+        />
         <Backdrop show={listOpenForTarget !== 'none'} onClick={() => setListOpenForTarget('none')} />
       </section>
     );

@@ -13,15 +13,15 @@ interface AvatarProps {
   name: string;
   companyName?: string;
   className?: string;
-  type?: 'small' | 'normal';
+  size?: 'small' | 'medium';
 }
 
-export const Avatar = ({ name, companyName, className, type = 'normal' }: AvatarProps) => {
+export const Avatar = ({ name, companyName, className, size = 'medium' }: AvatarProps) => {
   return (
     <div
       className={cx(styles.initialsCircle, className, {
         [styles.isOrganization]: !!companyName,
-        [styles.small]: type === 'small',
+        [styles.small]: size === 'small',
       })}
       aria-hidden="true"
     >

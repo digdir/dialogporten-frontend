@@ -5,10 +5,11 @@ import { useParties } from '../../api/useParties.ts';
 import { DropdownList, DropdownListItem, DropdownMobileHeader } from '../DropdownMenu';
 import { ProfileButton } from '../ProfileButton';
 
-import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
+import { Avatar } from '../Avatar';
 import { Backdrop } from '../Backdrop';
+import { mergeParties } from './mergeParties.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyDropdownRef {
@@ -27,38 +28,15 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
     },
   }));
 
-  /*
-      TODO: Add subparties to the dropdown
-   */
   // biome-ignore lint: lint/correctness/useExhaustiveDependencies
   const options = useMemo(() => {
-    const topLevelParties = parties.map((party) => {
-      const subPartyIds = party.subParties?.map((subParty) => subParty.party) ?? [];
-      return {
-        initial: party.name[0].toUpperCase(),
-        label: party.name,
-        isCompany: party.partyType === 'Organization',
-        value: party.party,
-        onSelectValues: [party.party],
-        count: dialogs.filter((dialog) => [...subPartyIds, party.party].includes(dialog.party)).length,
-      };
-    });
-    const allYourParties = {
-      initial: '...',
-      isCompany: parties.map((party) => party.partyType === 'Company').length > 1,
-      label: t('partydropdown.all_parties'),
-      value: 'all',
-      onSelectValues: parties.map((party) => party.party),
-      count: dialogs.length,
-    };
-
-    return [...topLevelParties, allYourParties];
+    return parties.map((party) => mergeParties(party, dialogs));
   }, [parties, dialogs]);
 
   return (
-    <>
+    <div>
       <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
-        {selectedParties.length === 1 ? selectedParties[0].name : t('partydropdown.all_parties')}
+        {selectedParties[0]?.name ?? t('partyDropdown.selectParty')}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
       {isMenuOpen && (
@@ -73,9 +51,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
               key={option.value}
               leftContent={
                 <div className={styles.partyListContent}>
-                  <div className={cx(styles.initial, option.isCompany ? styles.companyInitial : styles.personInitial)}>
-                    <span>{option.initial}</span>
-                  </div>
+                  <Avatar name={option.label} size="small" />
                   <span className={styles.partyListLabel}>{option.label}</span>
                 </div>
               }
@@ -90,6 +66,6 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
         </DropdownList>
       )}
       <Backdrop show={isMenuOpen} onClick={() => setIsMenuOpen(false)} />
-    </>
+    </div>
   );
 });

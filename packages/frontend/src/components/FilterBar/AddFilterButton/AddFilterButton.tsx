@@ -6,7 +6,6 @@ import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { ProfileButton } from '../../ProfileButton';
-import { ShowFilterResultsButton } from '../ShowFilterResultsButton.tsx';
 import styles from './addFilterButton.module.css';
 
 type AddFilterButtonProps = {
@@ -18,7 +17,6 @@ type AddFilterButtonProps = {
   isMenuOpen: boolean;
   disabled?: boolean;
   className?: string;
-  nResults?: number;
 };
 export const AddFilterButton = ({
   settings,
@@ -29,7 +27,6 @@ export const AddFilterButton = ({
   isMenuOpen,
   onClose,
   className,
-  nResults,
 }: AddFilterButtonProps) => {
   const { t } = useTranslation();
   return (
@@ -68,7 +65,6 @@ export const AddFilterButton = ({
               />
             );
           })}
-          <ShowFilterResultsButton nResults={nResults} onClick={onClose} />
         </DropdownList>
       )}
     </div>
