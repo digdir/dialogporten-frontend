@@ -37,7 +37,7 @@ interface InboxProps {
 export enum Routes {
   inbox = '/',
   sent = '/sent',
-  draft = '/drafts',
+  drafts = '/drafts',
   savedSearches = '/saved-searches',
   archive = '/archive',
   deleted = '/deleted',

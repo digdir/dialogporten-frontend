@@ -1,8 +1,6 @@
-import type { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
+import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
-import { fetchSavedSearches } from '../../api/queries';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { ConfirmDeleteDialog, type DeleteSearchDialogRef } from './ConfirmDeleteDialog/ConfirmDeleteDialog.tsx';
 import {
@@ -14,8 +12,7 @@ import { SavedSearchesItem } from './SavedSearchesItem/SavedSearchesItem.tsx';
 import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 import styles from './savedSearchesPage.module.css';
 import { autoFormatRelativeTime, getMostRecentSearchDate } from './searchUtils.ts';
-
-export const useSavedSearches = () => useQuery<SavedSearchesQuery, Error>('savedSearches', fetchSavedSearches);
+import { useSavedSearches } from './useSavedSearches.ts';
 
 export const SavedSearchesPage = () => {
   const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment | null>(null);

@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
-import { useSavedSearches } from '../../pages/SavedSearches';
+import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuItem } from './MenuItem';
 import { MenuLogoutButton } from './NavigationDropdownMenu';
@@ -63,7 +63,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           displayText={t('sidebar.drafts')}
           label={t('sidebar.drafts.label')}
           icon={<DocPencilIcon />}
-          count={dialogsByView.draft.length}
+          count={dialogsByView.drafts.length}
           path="/drafts"
           onClose={onClose}
           isActive={pathname === '/drafts'}
