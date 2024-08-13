@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 
 const mobileBreakpoint = 768;
+const tabletBreakpoint = 1024;
 
 interface WindowSize {
   width: number | undefined;
   height: number | undefined;
-  isMobile: boolean | undefined;
+  isMobile: boolean;
+  isTabletOrSmaller: boolean;
 }
 
 export function useWindowSize(): WindowSize {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: undefined,
     height: undefined,
-    isMobile: undefined,
+    isMobile: false,
+    isTabletOrSmaller: false,
   });
 
   useEffect(() => {
@@ -20,7 +23,8 @@ export function useWindowSize(): WindowSize {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
-        isMobile: window.innerWidth < mobileBreakpoint,
+        isMobile: window.innerWidth <= mobileBreakpoint,
+        isTabletOrSmaller: window.innerWidth <= tabletBreakpoint,
       });
     }
 

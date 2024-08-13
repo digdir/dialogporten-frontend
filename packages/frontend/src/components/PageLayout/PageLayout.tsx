@@ -3,11 +3,13 @@ import type React from 'react';
 import { memo, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
-import { Footer, Header, Sidebar } from '..';
+import { Footer, Header, type ItemPerViewCount, Sidebar } from '..';
+import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
+import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { useProfile } from '../../profile/useProfile';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
@@ -32,12 +34,27 @@ interface PageLayoutContentProps {
 const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
   ({ name, companyName, isCompany, notificationCount }) => {
     const { inSelectionMode } = useSelectedDialogs();
+    const { isTabletOrSmaller, width } = useWindowSize();
+    const showSidebar = !isTabletOrSmaller && !inSelectionMode;
+    const { data: savedSearchesData } = useSavedSearches();
+    const { parties } = useParties();
+    const { dialogsByView } = useDialogs(parties);
+    const itemsPerViewCount = {
+      inbox: dialogsByView.inbox.length,
+      drafts: dialogsByView.drafts.length,
+      sent: dialogsByView.sent.length,
+      'saved-searches': savedSearchesData?.savedSearches?.length ?? 0,
+      archive: 0,
+      deleted: 0,
+    } as ItemPerViewCount;
+
+    console.log('isTabletOrSmaller', width, isTabletOrSmaller);
 
     return (
       <>
         <Header name={name} companyName={companyName} notificationCount={notificationCount} />
         <div className={styles.pageLayout}>
-          {!inSelectionMode && <Sidebar isCompany={isCompany} />}
+          {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} isCompany={isCompany} />}
           <Outlet />
         </div>
         <Footer />

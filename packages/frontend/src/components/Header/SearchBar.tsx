@@ -16,8 +16,7 @@ export const SearchBar: React.FC = () => {
   const { searchString, setSearchString } = useSearchString();
   const [searchValue, setSearchValue] = useState<string>(searchString);
   const navigate = useNavigate();
-  const { width } = useWindowSize();
-  const isMobile = (width ?? 0) <= 1024;
+  const { isTabletOrSmaller } = useWindowSize();
 
   const handleClose = () => {
     setShowDropdownMenu(false);
@@ -62,7 +61,7 @@ export const SearchBar: React.FC = () => {
           onClick={() => setShowDropdownMenu(true)}
           onFocus={() => {
             setShowDropdownMenu(true);
-            if (isMobile) {
+            if (isTabletOrSmaller) {
               window.scroll({
                 top: 65,
                 behavior: 'smooth',

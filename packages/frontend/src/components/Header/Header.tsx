@@ -58,16 +58,15 @@ export const useSearchString = () => {
  */
 
 export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationCount }) => {
-  const { width } = useWindowSize();
-  const isMobile = (width ?? 0) <= 1024;
+  const { isTabletOrSmaller } = useWindowSize();
   return (
     <header data-testid="main-header">
       <nav className={styles.navigation} aria-label="Navigasjon">
         <AltinnLogo className={styles.logo} />
-        {!isMobile && <SearchBar />}
+        {!isTabletOrSmaller && <SearchBar />}
         <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
-      {isMobile && <SearchBar />}
+      {isTabletOrSmaller && <SearchBar />}
     </header>
   );
 };

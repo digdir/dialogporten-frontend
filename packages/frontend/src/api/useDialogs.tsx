@@ -14,7 +14,7 @@ import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
-export type InboxViewType = 'inbox' | 'draft' | 'sent';
+export type InboxViewType = 'inbox' | 'drafts' | 'sent';
 interface UseDialogsOutput {
   dialogs: InboxItemInput[];
   dialogsByView: {
@@ -164,7 +164,7 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
     return 'sent';
   }
   if (isDraftDialog(dialog)) {
-    return 'draft';
+    return 'drafts';
   }
   return 'inbox';
 };
@@ -183,7 +183,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     dialogs,
     dialogsByView: {
       inbox: dialogs.filter(isInboxDialog),
-      draft: dialogs.filter(isDraftDialog),
+      drafts: dialogs.filter(isDraftDialog),
       sent: dialogs.filter(isSentDialog),
     },
   };
