@@ -34,7 +34,7 @@ interface PageLayoutContentProps {
 const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
   ({ name, companyName, isCompany, notificationCount }) => {
     const { inSelectionMode } = useSelectedDialogs();
-    const { isTabletOrSmaller, width } = useWindowSize();
+    const { isTabletOrSmaller } = useWindowSize();
     const showSidebar = !isTabletOrSmaller && !inSelectionMode;
     const { data: savedSearchesData } = useSavedSearches();
     const { parties } = useParties();
@@ -47,8 +47,6 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
       archive: 0,
       deleted: 0,
     } as ItemPerViewCount;
-
-    console.log('isTabletOrSmaller', width, isTabletOrSmaller);
 
     return (
       <>

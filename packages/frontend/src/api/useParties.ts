@@ -10,6 +10,7 @@ interface UsePartiesOutput {
   selectedParties: PartyFieldsFragment[];
   setSelectedParties: (parties: PartyFieldsFragment[]) => void;
   setSelectedPartyIds: (parties: string[]) => void;
+  currentEndUser: PartyFieldsFragment | undefined;
 }
 
 const fetchParties = (): Promise<PartiesQuery> => graphQLSDK.parties();
@@ -31,7 +32,10 @@ export const useParties = (): UsePartiesOutput => {
     {
       onSuccess: (data) => {
         if (!getSelectedParties() && data.parties && data.parties.length > 0) {
-          setSelectedParties(data.parties);
+          const currentEndUser = data.parties.find((party) => party.isCurrentEndUser);
+          if (currentEndUser) {
+            setSelectedParties([currentEndUser]);
+          }
         }
       },
     },
@@ -52,5 +56,6 @@ export const useParties = (): UsePartiesOutput => {
     selectedParties: getSelectedParties() ?? ([] as PartyFieldsFragment[]),
     setSelectedParties,
     setSelectedPartyIds,
+    currentEndUser: data?.parties.find((party) => party.isCurrentEndUser),
   };
 };
