@@ -32,6 +32,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     }
     tenantId: subscription().tenantId
     accessPolicies: adminAccessPolicies
+    enableRbacAuthorization: true
   }
   tags: tags
 }
