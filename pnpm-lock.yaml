@@ -558,6 +558,9 @@ importers:
       axe-core:
         specifier: ^4.8.4
         version: 4.8.4
+      get-contrast:
+        specifier: ^3.0.0
+        version: 3.0.0
       storybook:
         specifier: ^8.0.0
         version: 8.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -13625,6 +13628,20 @@ packages:
       type-fest: 1.4.0
     dev: false
 
+  /css-color-list@0.0.1:
+    resolution: {integrity: sha512-+ArYbB9GT3tR/1ocPwgX2e9gwZiR3vi0+x0/HsQ1iB/9+tkugLJaPFO37s8zmNNc5vpsr8Kc7mQ78z83JwgfUA==}
+    dependencies:
+      css-color-names: 0.0.1
+    dev: true
+
+  /css-color-names@0.0.1:
+    resolution: {integrity: sha512-i7o8lqlrmiG/EUzlBftBncsrkYgBCfCI9X6plNxdyXMZlMNd4hPX7u/o7YLH9vwXPPPAr+BUs3R0oto+lzjbyA==}
+    dev: true
+
+  /css-color-names@1.0.1:
+    resolution: {integrity: sha512-/loXYOch1qU1biStIFsHH8SxTmOseh1IJqFvy8IujXOm1h+QjUdDhkzOrR5HG8K8mlxREj0yfi8ewCHx0eMxzA==}
+    dev: true
+
   /css-declaration-sorter@6.4.1(postcss@8.4.33):
     resolution: {integrity: sha512-rtdthzxKuyq6IzqX6jEcIzQF/YqccluefyCYheovBOLhFT/drQA9zj/UbRAa9J7C0o6EG6u3E6g+vKkay7/k3g==}
     engines: {node: ^10 || ^12 || >=14}
@@ -15159,6 +15176,11 @@ packages:
       - supports-color
     dev: true
 
+  /esm@3.2.25:
+    resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
+    engines: {node: '>=6'}
+    dev: true
+
   /espree@9.6.1:
     resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -15942,6 +15964,17 @@ packages:
   /get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
+
+  /get-contrast@3.0.0:
+    resolution: {integrity: sha512-B3uK3WpKz/4bHMCMSmi4UfZ/Gk8qqVHQXMk6ayhx/x5cCjK3hl5kvX4POTauVQK5kdzWNfbyd5QjwOxERSwKlQ==}
+    hasBin: true
+    dependencies:
+      css-color-names: 1.0.1
+      is-blank: 2.1.0
+      is-named-css-color: 1.0.0
+      rgb: 0.1.0
+      wcag-contrast: 3.0.0
+    dev: true
 
   /get-east-asian-width@1.2.0:
     resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
@@ -17115,6 +17148,13 @@ packages:
     dependencies:
       binary-extensions: 2.2.0
 
+  /is-blank@2.1.0:
+    resolution: {integrity: sha512-SOPvTu4ZRlJOSBBYV7+6D6wN+2UcN6IJCaQ2Yeu3BQ3oolsD4dqF95sz52TCSgMVCLR1osLOXIiFsO2TKp0GZA==}
+    dependencies:
+      is-empty: 1.2.0
+      is-whitespace: 0.3.0
+    dev: true
+
   /is-boolean-object@1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
     engines: {node: '>= 0.4'}
@@ -17157,6 +17197,10 @@ packages:
     resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
     engines: {node: '>=8'}
     hasBin: true
+
+  /is-empty@1.2.0:
+    resolution: {integrity: sha512-F2FnH/otLNJv0J6wc73A5Xo7oHLNnqplYqZhUu01tD54DIPvxIRSTSLkrUB/M0nHO4vo1O9PDfN4KoTxCzLh/w==}
+    dev: true
 
   /is-extendable@0.1.1:
     resolution: {integrity: sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw==}
@@ -17227,6 +17271,12 @@ packages:
 
   /is-map@2.0.2:
     resolution: {integrity: sha512-cOZFQQozTha1f4MxLFzlgKYPTyj26picdZTx82hbc/Xf4K/tZOOXSCkMvU4pKioRXGDLJRn0GM7Upe7kR721yg==}
+    dev: true
+
+  /is-named-css-color@1.0.0:
+    resolution: {integrity: sha512-8U8MlUMBJ3RiDpbYY5QGmIxGKGmK8c96bnESYyY0rA4BwqN7EPOF9gG/TFktKd4J+p5isdEQ+1x5cwOkSUWCsw==}
+    dependencies:
+      css-color-list: 0.0.1
     dev: true
 
   /is-nan@1.3.2:
@@ -17391,6 +17441,11 @@ packages:
     dependencies:
       call-bind: 1.0.5
       get-intrinsic: 1.2.2
+    dev: true
+
+  /is-whitespace@0.3.0:
+    resolution: {integrity: sha512-RydPhl4S6JwAyj0JJjshWJEFG6hNye3pZFBRZaTUfZFwGHxzppNaNOVgQuS/E/SlhrApuMXrpnK1EEIXfdo3Dg==}
+    engines: {node: '>=0.10.0'}
     dev: true
 
   /is-windows@0.2.0:
@@ -22608,6 +22663,12 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
+  /relative-luminance@2.0.1:
+    resolution: {integrity: sha512-wFuITNthJilFPwkK7gNJcULxXBcfFZvZORsvdvxeOdO44wCeZnuQkf3nFFzOR/dpJNxYsdRZJLsepWbyKhnMww==}
+    dependencies:
+      esm: 3.2.25
+    dev: true
+
   /relay-runtime@12.0.0:
     resolution: {integrity: sha512-QU6JKr1tMsry22DXNy9Whsq5rmvwr3LSZiiWV/9+DFpuTWvp+WFhobWMc8TC4OjKFfNhEZy7mOiqUAn5atQtug==}
     dependencies:
@@ -22856,6 +22917,11 @@ packages:
 
   /rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
+    dev: true
+
+  /rgb@0.1.0:
+    resolution: {integrity: sha512-F49dXX73a92N09uQkfCp2QjwXpmJcn9/i9PvjmwsSIXUGqRLCf/yx5Q9gRxuLQTq248kakqQuc8GX/U/CxSqlA==}
+    hasBin: true
     dev: true
 
   /rimraf@2.6.3:
@@ -25157,6 +25223,12 @@ packages:
     dependencies:
       minimalistic-assert: 1.0.1
     dev: false
+
+  /wcag-contrast@3.0.0:
+    resolution: {integrity: sha512-RWbpg/S7FOXDCwqC2oFhN/vh8dHzj0OS6dpyOSDHyQFSmqmR+lAUStV/ziTT1GzDqL9wol+nZQB4vCi5yEak+w==}
+    dependencies:
+      relative-luminance: 2.0.1
+    dev: true
 
   /wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
