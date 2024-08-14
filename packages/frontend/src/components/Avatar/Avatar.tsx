@@ -1,13 +1,6 @@
 import cx from 'classnames';
+import { fromStringToColor } from '../../profile';
 import styles from './avatar.module.css';
-
-const getInitials = (name: string, companyName?: string) => {
-  if (!companyName?.length) {
-    return name[0];
-  }
-
-  return companyName[0];
-};
 
 interface AvatarProps {
   name: string;
@@ -17,15 +10,21 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ name, companyName, className, size = 'medium' }: AvatarProps) => {
+  const appliedName = companyName || name || '';
+  const isOrganization = !!companyName;
+  const colorType = isOrganization ? 'dark' : 'light';
+  const { backgroundColor, foregroundColor } = fromStringToColor(appliedName, colorType);
+  const initials = (appliedName[0] ?? '').toUpperCase();
   return (
     <div
       className={cx(styles.initialsCircle, className, {
-        [styles.isOrganization]: !!companyName,
+        [styles.isOrganization]: isOrganization,
         [styles.small]: size === 'small',
       })}
+      style={{ backgroundColor, color: foregroundColor }}
       aria-hidden="true"
     >
-      {getInitials(name, companyName)}
+      {initials}
     </div>
   );
 };

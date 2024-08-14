@@ -51,7 +51,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
               key={option.value}
               leftContent={
                 <div className={styles.partyListContent}>
-                  <Avatar name={option.label} size="small" />
+                  <Avatar name={option.label} companyName={option.isCompany ? option.label : ''} size="small" />
                   <span className={styles.partyListLabel}>{option.label}</span>
                 </div>
               }
