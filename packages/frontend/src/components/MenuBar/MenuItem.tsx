@@ -1,75 +1,38 @@
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';
+import type { HTMLProps } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '../Badge';
 import styles from './menuItem.module.css';
 
-interface DropDownMenuItemProps {
+interface MenuItem {
   displayText?: string;
-  label?: string;
-  icon?: React.ReactNode;
+  toolTipText?: string;
+  leftIcon?: React.ReactNode;
   path?: string;
   onClick?: () => void;
   count?: number;
-  onClose?: () => void;
   isExternalLink?: boolean;
   isActive?: boolean;
   isInbox?: boolean;
   isWhiteBackground?: boolean;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
-  fullWidth?: boolean;
-  smallIcon?: boolean;
+  useProfiledHover?: boolean;
   largeText?: boolean;
-  smallText?: boolean;
   classNames?: string;
+  disabled?: boolean;
 }
 
-export const MenuItem = ({
-  displayText,
-  label,
-  icon,
-  path,
-  onClick,
-  count,
-  onClose,
-  isExternalLink,
-  isActive,
-  isInbox,
-  isWhiteBackground,
-  leftContent,
-  rightContent,
-  fullWidth,
-  smallIcon,
-  largeText,
-  classNames,
-}: DropDownMenuItemProps) => {
-  const RenderItem = (
-    <RenderDropDownMenuItem
-      {...{
-        displayText,
-        label,
-        icon,
-        path,
-        onClick,
-        count,
-        isExternalLink,
-        isActive,
-        isInbox,
-        isWhiteBackground,
-        leftContent,
-        rightContent,
-        fullWidth,
-        smallIcon,
-        largeText,
-      }}
-    />
-  );
+const MenuItem = (props: MenuItem) => {
+  const { path, onClick, isExternalLink, leftContent, rightContent, classNames } = props;
+  const content = <MenuItemContent {...props} />;
+
   if (path) {
     return (
-      <Link className={styles.isLink} to={path} onClick={onClose} target={isExternalLink ? '_blank' : '_self'}>
-        <li className={cx(styles.liItem, classNames)}>{RenderItem}</li>
+      <Link className={styles.isLink} to={path} onClick={onClick} target={isExternalLink ? '_blank' : '_self'}>
+        <li className={cx(styles.liItem, classNames)}>{content}</li>
       </Link>
     );
   }
@@ -77,22 +40,22 @@ export const MenuItem = ({
   if (onClick) {
     return (
       <li className={cx(styles.isLink, styles.liItem, classNames)} onClick={onClick} onKeyUp={onClick}>
-        {RenderItem}
+        {content}
       </li>
     );
   }
 
   if (leftContent || rightContent) {
-    return <li className={styles.liItem}>{RenderItem}</li>;
+    return <li className={styles.liItem}>{content}</li>;
   }
 
   return null;
 };
 
-const RenderDropDownMenuItem = ({
+const MenuItemContent = ({
   displayText,
-  label,
-  icon,
+  toolTipText,
+  leftIcon,
   path,
   onClick,
   count,
@@ -102,19 +65,22 @@ const RenderDropDownMenuItem = ({
   isWhiteBackground,
   leftContent,
   rightContent,
-  fullWidth,
-  smallIcon,
   largeText,
-}: DropDownMenuItemProps) => {
+  useProfiledHover,
+  disabled,
+}: MenuItem) => {
+  const hoverEnabled = typeof (path || onClick) !== 'undefined' && !isActive && !disabled;
+  const hasProfiledHover = hoverEnabled && useProfiledHover;
   return (
     <div
       className={cx(styles.menuItem, classNames, {
-        [styles.whiteBackgroundWhenActive]: isActive && isWhiteBackground,
         [styles.greyBackgroundWhenActive]: isActive && !isWhiteBackground,
-        [styles.fullWidth]: fullWidth,
-        [styles.smallIcon]: smallIcon,
+        [styles.whiteBackgroundWhenActive]: isActive && isWhiteBackground,
+        [styles.hasHover]: hoverEnabled,
+        [styles.hasProfiledHover]: hasProfiledHover,
+        [styles.disabled]: disabled,
       })}
-      title={label}
+      title={toolTipText}
     >
       <div className={cx(styles.leftContent)}>
         {leftContent}
@@ -125,11 +91,10 @@ const RenderDropDownMenuItem = ({
                 [styles.isWhiteBackground]: isWhiteBackground,
                 [styles.isTransparentBackground]: !isWhiteBackground,
                 [styles.isInbox]: isInbox,
-                [styles.greyBackgroundWhenActive]: isActive && isWhiteBackground && !isInbox,
               })}
               aria-hidden="true"
             >
-              {icon}
+              {leftIcon}
             </div>
             <div className={cx(styles.displayText, { [styles.largeText]: largeText })}>{displayText}</div>
           </>
@@ -137,7 +102,7 @@ const RenderDropDownMenuItem = ({
       </div>
       {rightContent}
       {(path || onClick) && (
-        <div className={styles.rightContent}>
+        <div>
           {isExternalLink ? (
             <ExternalLinkIcon className={styles.arrowIcon} />
           ) : count ? (
@@ -152,3 +117,25 @@ const RenderDropDownMenuItem = ({
     </div>
   );
 };
+
+MenuItem.LeftContent = ({
+  children,
+  className,
+  ...restProps
+}: { children: React.ReactNode } & HTMLProps<HTMLDivElement>) => (
+  <div className={cx(styles.leftContent, className)} {...restProps}>
+    {children}
+  </div>
+);
+
+MenuItem.RightContent = ({
+  children,
+  className,
+  ...restProps
+}: { children: React.ReactNode } & HTMLProps<HTMLDivElement>) => (
+  <div className={cx(styles.rightContent, className)} {...restProps}>
+    {children}
+  </div>
+);
+
+export default MenuItem;

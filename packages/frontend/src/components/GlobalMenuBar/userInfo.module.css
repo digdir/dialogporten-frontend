@@ -18,7 +18,7 @@
 }
 
 .menuColumnRight {
-  grid-area: "right";
+  grid-area: right;
   text-align: right;
   justify-content: flex-end;
 }

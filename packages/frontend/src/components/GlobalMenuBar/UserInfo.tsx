@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
-import { MenuItem } from './MenuItem';
+import { MenuItem } from '../MenuBar';
 import styles from './userInfo.module.css';
 
 interface UserInfoProps {
@@ -16,7 +16,7 @@ export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
   return (
     <MenuItem
       leftContent={
-        <div
+        <MenuItem.LeftContent
           className={cx(styles.menuColumn, styles.menuColumnLeft)}
           title={name}
           onClick={onClick}
@@ -29,7 +29,7 @@ export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
             <div className={styles.primaryName}>{companyName || name}</div>
             <div className={styles.secondaryName}>{companyName ? name : t('word.private')}</div>
           </div>
-        </div>
+        </MenuItem.LeftContent>
       }
       rightContent={
         <div
@@ -44,7 +44,6 @@ export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
         </div>
       }
       isWhiteBackground
-      fullWidth
     />
   );
 };

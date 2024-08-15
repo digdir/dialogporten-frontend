@@ -1,12 +1,12 @@
 import { ArrowLeftIcon, CheckmarkIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
-import { Badge } from '../../Badge';
-import { DropdownList, DropdownListItem } from '../../DropdownMenu';
+import { DropdownList } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { HorizontalLine } from '../../HorizontalLine';
+import { MenuItem } from '../../MenuBar';
 import { ProfileButton } from '../../ProfileButton';
 import { ProfileCheckbox } from '../../ProfileCheckbox';
 import {
@@ -179,37 +179,40 @@ export const FilterButton = ({
           <XMarkIcon fontSize="1.5rem" />
         </ProfileButton>
       </div>
-      {isOpen && (
-        <DropdownList variant="long">
-          <DropdownMobileHeader
-            buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
-            onClickButton={onBackBtnClick}
-            buttonText={mobileNavLabel}
-          />
-          {chosenOptions.map((option) => {
-            const isMultiSelectable = filterFieldData.operation === 'includes';
-            const isChecked = selectedFilters.some((filter) => filter.id === id && filter.value === option.value);
-            const shouldNotDismiss = isMultiSelectable || option.value === CustomFilterValueType['$startTime/$endTime'];
+      <DropdownList variant="long" isExpanded={isOpen}>
+        <DropdownMobileHeader
+          buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
+          onClickButton={onBackBtnClick}
+          buttonText={mobileNavLabel}
+        />
+        {chosenOptions.map((option) => {
+          const isMultiSelectable = filterFieldData.operation === 'includes';
+          const isChecked = selectedFilters.some((filter) => filter.id === id && filter.value === option.value);
+          const shouldNotDismiss = isMultiSelectable || option.value === CustomFilterValueType['$startTime/$endTime'];
 
-            if (option.value === CustomFilterValueType['$startTime/$endTime']) {
-              return (
-                <FilterButtonSection
-                  key={id}
-                  date={currentSubMenuLevel?.parentOptionValue as string}
-                  onListItemClick={onListItemClick}
-                  id={id}
-                  onBack={onBackBtnClick}
-                />
-              );
-            }
-
+          if (option.value === CustomFilterValueType['$startTime/$endTime']) {
             return (
-              <DropdownListItem
+              <FilterButtonSection
+                key={id}
+                date={currentSubMenuLevel?.parentOptionValue as string}
+                onListItemClick={onListItemClick}
+                id={id}
+                onBack={onBackBtnClick}
+              />
+            );
+          }
+
+          const hasOptions = !!option.options?.length;
+          const badgeCount = hasOptions ? 0 : option.count;
+
+          return (
+            <Fragment key={option.displayLabel}>
+              <MenuItem
                 key={option.displayLabel}
+                count={badgeCount}
                 onClick={() => handleOnClick(shouldNotDismiss, option)}
-                hasHorizontalRule={option.horizontalRule}
                 leftContent={
-                  <div className={styles.filterListContent}>
+                  <MenuItem.LeftContent>
                     {isMultiSelectable ? (
                       <ProfileCheckbox
                         onChange={() => onListItemClick(id, option.value)}
@@ -226,16 +229,21 @@ export const FilterButton = ({
                         <span className={styles.filterListLabel}>{option.displayLabel}</span>
                       </>
                     )}
-                  </div>
+                  </MenuItem.LeftContent>
                 }
                 rightContent={
-                  option.options?.length ? <ChevronRightIcon fontSize="1.5rem" /> : <Badge label={option.count} />
+                  hasOptions && (
+                    <MenuItem.RightContent>
+                      <ChevronRightIcon fontSize="1.5rem" />
+                    </MenuItem.RightContent>
+                  )
                 }
               />
-            );
-          })}
-        </DropdownList>
-      )}
+              {option.horizontalRule && <HorizontalLine />}
+            </Fragment>
+          );
+        })}
+      </DropdownList>
     </div>
   );
 };

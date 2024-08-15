@@ -1,4 +1,4 @@
-.menuContainer {
+.globalMenuBar {
   position: relative;
   display: flex;
   background-color: var(--Company-Primary, #111d46);
@@ -9,6 +9,7 @@
   height: 2.25rem;
   min-width: 6.4375rem;
   user-select: none;
+  z-index: 11;
 }
 
 .menuText {
@@ -73,7 +74,7 @@
   align-items: center;
   background-color: var(--Company-Primary, #111d46);
   color: #fff;
-  border-radius: 3px;
+  border-radius: 0.125rem;
   border: 1px solid #9ca3af;
 }
 

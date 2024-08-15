@@ -3,11 +3,16 @@ import styles from './dropdownList.module.css';
 
 interface DropdownListProps {
   children: React.ReactNode;
+  isExpanded: boolean;
   variant?: 'short' | 'medium' | 'long';
   className?: string;
 }
 
-export const DropdownList = ({ children, className, variant = 'short' }: DropdownListProps) => {
+export const DropdownList = ({ children, className, variant = 'short', isExpanded }: DropdownListProps) => {
+  if (!isExpanded) {
+    return null;
+  }
+
   return (
     <ul
       className={cx(styles.dropdownList, className, {

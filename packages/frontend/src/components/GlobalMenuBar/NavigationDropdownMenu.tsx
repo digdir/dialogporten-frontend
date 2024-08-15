@@ -1,11 +1,10 @@
-import { Button } from '@digdir/designsystemet-react';
 import { InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { HorizontalLine } from '..';
-import { MenuItem } from './MenuItem';
-import { NavigationDropdownSubMenu, type SubMenuSelection } from './NavigationDropdownSubMenu';
-import { UserInfo } from './UserInfo';
+import { MenuItem } from '../MenuBar';
+import { HorizontalLine } from '../index.ts';
+import { MenuLogoutButton } from './MenuLogoutButton.tsx';
+import { NavigationDropdownSubMenu, type SubMenuSelection } from './NavigationDropdownSubMenu.tsx';
+import { UserInfo } from './UserInfo.tsx';
 import styles from './navigationDropdownMenu.module.css';
 
 interface NavigationDropdownMenuProps {
@@ -32,8 +31,6 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
     setShowSubMenu('none');
   };
 
-  useEscapeKey(handleClose);
-
   if (showSubMenu !== 'none')
     return (
       <NavigationDropdownSubMenu
@@ -52,27 +49,24 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.inbox')}
-          label={t('sidebar.inbox.label')}
-          icon={<InboxFillIcon />}
-          onClose={handleClose}
+          toolTipText={t('sidebar.inbox.label')}
+          leftIcon={<InboxFillIcon />}
           onClick={() => setShowSubMenu('inbox')}
-          isActive={true}
-          isWhiteBackground
+          isActive
+          isWhiteBackground={false}
         />
         <MenuItem
           displayText={t('menuBar.all_services')}
-          label={t('link.goToAllServices')}
-          icon={<MenuGridIcon />}
-          onClose={handleClose}
+          toolTipText={t('link.goToAllServices')}
+          leftIcon={<MenuGridIcon />}
           path="https://info.altinn.no/skjemaoversikt/"
           isExternalLink
           isWhiteBackground
         />
         <MenuItem
           displayText={t('menuBar.chat')}
-          label={t('menuBar.chat.label')}
-          icon={<PersonChatIcon />}
-          onClose={handleClose}
+          toolTipText={t('menuBar.chat.label')}
+          leftIcon={<PersonChatIcon />}
           path="https://info.altinn.no/hjelp/"
           isExternalLink
           isWhiteBackground
@@ -82,37 +76,4 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
       </ul>
     </div>
   );
-};
-
-export const MenuLogoutButton = () => {
-  const { t } = useTranslation();
-  const logOut = () => {
-    (window as Window).location = `/api/logout`;
-  };
-
-  return (
-    <MenuItem
-      leftContent={
-        <Button variant="secondary" className={styles.logoutButton} onClick={logOut}>
-          {t('word.log_out')}
-        </Button>
-      }
-      fullWidth
-    />
-  );
-};
-
-const useEscapeKey = (onEscape: () => void): void => {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onEscape();
-      }
-    };
-    document.addEventListener('keydown', handleEscape);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [onEscape]);
 };

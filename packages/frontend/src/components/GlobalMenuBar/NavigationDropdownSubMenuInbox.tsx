@@ -10,13 +10,15 @@ import {
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useDialogs } from '../../api/useDialogs';
-import { useParties } from '../../api/useParties';
+import { useDialogs } from '../../api/useDialogs.tsx';
+import { useParties } from '../../api/useParties.ts';
+import { Routes } from '../../pages/Inbox/Inbox';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { HorizontalLine } from '../HorizontalLine';
-import { MenuItem } from './MenuItem';
-import { MenuLogoutButton } from './NavigationDropdownMenu';
-import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu';
+import { MenuItem } from '../MenuBar';
+import { MenuLogoutButton } from './MenuLogoutButton.tsx';
+import type { DropdownSubMenuProps } from './NavigationDropdownSubMenu.tsx';
+
 import styles from './navigationDropdownMenu.module.css';
 
 export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
@@ -50,78 +52,62 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.inbox')}
-          label={t('sidebar.inbox.label')}
-          icon={<InboxFillIcon />}
+          toolTipText={t('sidebar.inbox.label')}
+          leftIcon={<InboxFillIcon />}
           count={dialogsByView.inbox.length}
-          path="/"
-          onClose={onClose}
-          isActive={pathname === '/'}
-          isWhiteBackground
+          path={Routes.inbox}
+          isActive={pathname === Routes.inbox}
+          onClick={onClose}
           isInbox
         />
+        <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.drafts')}
-          label={t('sidebar.drafts.label')}
-          icon={<DocPencilIcon />}
+          toolTipText={t('sidebar.drafts.label')}
+          leftIcon={<DocPencilIcon />}
           count={dialogsByView.drafts.length}
-          path="/drafts"
-          onClose={onClose}
-          isActive={pathname === '/drafts'}
+          path={Routes.drafts}
+          isActive={pathname === Routes.drafts}
           onClick={onClose}
-          isWhiteBackground
-          smallText
         />
         <MenuItem
           displayText={t('sidebar.sent')}
-          label={t('sidebar.sent.label')}
-          icon={<FileCheckmarkIcon />}
+          toolTipText={t('sidebar.sent.label')}
+          leftIcon={<FileCheckmarkIcon />}
           count={dialogsByView.sent.length}
-          path="/sent"
-          onClose={onClose}
-          isActive={pathname === '/sent'}
+          path={Routes.sent}
+          isActive={pathname === Routes.sent}
           onClick={onClose}
-          isWhiteBackground
-          smallText
         />
         <HorizontalLine />
-
         <MenuItem
           displayText={t('sidebar.saved_searches')}
-          label={t('sidebar.saved_searches.label')}
-          icon={<BookmarkIcon />}
+          toolTipText={t('sidebar.saved_searches.label')}
+          leftIcon={<BookmarkIcon />}
           count={savedSearches?.length ?? 0}
-          path="/saved-searches"
-          isActive={pathname === '/saved-searches'}
-          onClose={onClose}
-          isWhiteBackground
-          smallText
+          path={Routes.savedSearches}
+          isActive={pathname === Routes.savedSearches}
         />
         <HorizontalLine />
-
         <MenuItem
           displayText={t('sidebar.archived')}
-          label={t('sidebar.archived.label')}
-          icon={<ArchiveIcon />}
+          toolTipText={t('sidebar.archived.label')}
+          leftIcon={<ArchiveIcon />}
           count={0}
-          path="/archive"
-          isActive={pathname === '/archive'}
-          onClose={onClose}
-          isWhiteBackground
-          smallText
+          path={Routes.archive}
+          isActive={pathname === Routes.archive}
+          disabled
         />
         <MenuItem
           displayText={t('sidebar.deleted')}
-          label={t('sidebar.deleted.label')}
-          icon={<TrashIcon />}
+          toolTipText={t('sidebar.deleted.label')}
+          leftIcon={<TrashIcon />}
           count={0}
-          isActive={pathname === '/deleted'}
-          path="/deleted"
-          isWhiteBackground
-          smallText
-          onClose={onClose}
+          isActive={pathname === Routes.deleted}
+          path={Routes.deleted}
+          disabled
         />
         <HorizontalLine />
-
         <MenuLogoutButton />
       </ul>
     </div>

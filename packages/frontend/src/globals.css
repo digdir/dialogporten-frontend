@@ -25,15 +25,19 @@
   --Company-300: #a5d6fb;
   --Company-200: #d3eafd;
   --Company-Paper: #e9f5ff;
-  --background-color: var(--Person-Paper);
-  --button-color: var(--Person-Primary);
   --Action-Important: #e02e49;
   --Action-Danger: #861c2c;
+
+  /* Profile variables */
+  --background-color: var(--Person-Paper);
+  --button-color: var(--Person-Primary);
+  --background-color-accented: var(--Person-300);
 }
 
 .isCompany {
   --background-color: var(--Company-Paper);
   --button-color: var(--Company-Primary);
+  --background-color-accented: var(--Company-300);
 }
 
 body,

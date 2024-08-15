@@ -1,10 +1,13 @@
-import { ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, PlusIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { DropdownList, DropdownListItem } from '../../DropdownMenu';
+import { DropdownList } from '../../DropdownMenu';
 import type { Filter, FilterSetting, FilterValueType } from '../FilterBar.tsx';
 
+import { Fragment } from 'react';
 import { DropdownMobileHeader } from '../../DropdownMenu';
+import { HorizontalLine } from '../../HorizontalLine';
+import { MenuItem } from '../../MenuBar';
 import { ProfileButton } from '../../ProfileButton';
 import styles from './addFilterButton.module.css';
 
@@ -41,32 +44,30 @@ export const AddFilterButton = ({
       >
         <PlusIcon fontSize="1.25rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
-      {isMenuOpen && (
-        <DropdownList variant="medium">
-          <DropdownMobileHeader
-            buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
-            onClickButton={onClose}
-            buttonText={t('filter_bar.add_filter')}
-          />
-          {settings.map((setting: FilterSetting) => {
-            const filterActive = !!selectedFilters.find(
-              (filter) => filter.id === setting.id && filter.value !== undefined,
-            );
-            return (
-              <DropdownListItem
-                key={setting.id}
+      <DropdownList variant="medium" isExpanded={isMenuOpen}>
+        <DropdownMobileHeader
+          buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
+          onClickButton={onClose}
+          buttonText={t('filter_bar.add_filter')}
+        />
+        {settings.map((setting: FilterSetting) => {
+          const filterActive = !!selectedFilters.find(
+            (filter) => filter.id === setting.id && filter.value !== undefined,
+          );
+          return (
+            <Fragment key={setting.id}>
+              <MenuItem
                 onClick={() => {
                   onListItemClick(setting.id, undefined);
                 }}
                 leftContent={<span className={styles.addFilterItemLabel}>{setting.label}</span>}
-                rightContent={<ChevronRightIcon fontSize="1.5rem" />}
-                hasHorizontalRule={setting.horizontalRule}
                 isActive={filterActive}
               />
-            );
-          })}
-        </DropdownList>
-      )}
+              {setting.horizontalRule && <HorizontalLine />}
+            </Fragment>
+          );
+        })}
+      </DropdownList>
     </div>
   );
 };
