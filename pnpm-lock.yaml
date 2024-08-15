@@ -33,8 +33,8 @@ importers:
         specifier: ^4.7.2
         version: 4.7.2
       '@digdir/dialogporten-schema':
-        specifier: 1.11.0-161c42b
-        version: 1.11.0-161c42b
+        specifier: 1.12.0
+        version: 1.12.0
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.3.1
@@ -3781,8 +3781,8 @@ packages:
     resolution: {integrity: sha512-JWCLhXxDlMYwatg7mLkptfEkeiv/EKSaUOXX4nUoV8HjqyxMnLaaZZe6NKqx2SH1GPKOeSL5bEcs2NAEoFlGXg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.11.0-161c42b:
-    resolution: {integrity: sha512-9s47Y/MqFCQ03JijJWBMAgZs/L3TWrA8aYM243l6bEAkZp9IzroRD+5NNxkwdQqQJRiEFMtYZKjJv0SGoG26+A==}
+  /@digdir/dialogporten-schema@1.12.0:
+    resolution: {integrity: sha512-Xx4vWwwgg+5spWSp9aJGqn++IE60Vgzv+ZEQfkB9Mv7jKEXboXdsxgKNRr0QY04VRnCxVMrYu6dW7IwXN9BodA==}
     engines: {node: '20'}
     dev: false
 
