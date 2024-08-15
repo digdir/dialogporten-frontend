@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
-import { MenuBar } from '../MenuBar';
+import { GlobalMenuBar } from '../GlobalMenuBar/GlobalMenuBar.tsx';
 import { AltinnLogo } from './AltinnLogo';
 import { SearchBar } from './SearchBar';
 import styles from './header.module.css';
@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({ name, companyName, notificationC
       <nav className={styles.navigation} aria-label="Navigasjon">
         <AltinnLogo className={styles.logo} />
         {!isTabletOrSmaller && <SearchBar />}
-        <MenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
+        <GlobalMenuBar notificationCount={notificationCount} name={name} companyName={companyName} />
       </nav>
       {isTabletOrSmaller && <SearchBar />}
     </header>

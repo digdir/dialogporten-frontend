@@ -57,63 +57,71 @@ export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }) => {
       <ul className={styles.sidebarUl}>
         <MenuItem
           displayText={t('sidebar.inbox')}
-          label={t('sidebar.inbox.label')}
-          icon={<InboxFillIcon />}
+          toolTipText={t('sidebar.inbox.label')}
+          leftIcon={<InboxFillIcon />}
           count={itemsPerViewCount.inbox}
           path={Routes.inbox}
           isActive={pathname === Routes.inbox}
           isWhiteBackground
           isInbox
           largeText
+          useProfiledHover
         />
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.drafts')}
-          label={t('sidebar.drafts.label')}
+          toolTipText={t('sidebar.drafts.label')}
           isWhiteBackground
-          icon={<DocPencilIcon />}
+          leftIcon={<DocPencilIcon />}
           count={itemsPerViewCount.drafts}
           path={Routes.drafts}
           isActive={pathname === Routes.drafts}
+          useProfiledHover
         />
         <MenuItem
           displayText={t('sidebar.sent')}
-          label={t('sidebar.sent.label')}
-          icon={<FileCheckmarkIcon />}
+          toolTipText={t('sidebar.sent.label')}
+          leftIcon={<FileCheckmarkIcon />}
           isWhiteBackground
           count={itemsPerViewCount.sent}
           path={Routes.sent}
           isActive={pathname === Routes.sent}
+          useProfiledHover
         />
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.saved_searches')}
-          label={t('sidebar.saved_searches.label')}
-          icon={<BookmarkIcon />}
+          toolTipText={t('sidebar.saved_searches.label')}
+          leftIcon={<BookmarkIcon />}
           isWhiteBackground
           count={itemsPerViewCount['saved-searches']}
           path={Routes.savedSearches}
           isActive={pathname === Routes.savedSearches}
+          useProfiledHover
         />
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.archived')}
-          label={t('sidebar.archived.label')}
-          icon={<ArchiveIcon />}
+          toolTipText={t('sidebar.archived.label')}
+          leftIcon={<ArchiveIcon />}
           isWhiteBackground
           count={itemsPerViewCount.archive}
           path={Routes.archive}
           isActive={pathname === Routes.archive}
+          useProfiledHover
+          disabled
         />
         <MenuItem
           displayText={t('sidebar.deleted')}
-          label={t('sidebar.deleted.label')}
+          toolTipText={t('sidebar.deleted.label')}
           isWhiteBackground
-          icon={<TrashIcon />}
+          leftIcon={<TrashIcon />}
           count={itemsPerViewCount.deleted}
           isActive={pathname === Routes.deleted}
           path={Routes.deleted}
           classNames={styles.lastItem}
+          useProfiledHover
+          disabled
         />
       </ul>
     </aside>

@@ -1,17 +1,11 @@
 import { ChevronUpDownIcon } from '@navikt/aksel-icons';
-import { type Ref, forwardRef, useImperativeHandle, useMemo, useState } from 'react';
-import { useDialogs } from '../../api/useDialogs.tsx';
-import { useParties } from '../../api/useParties.ts';
-import { DropdownList, DropdownListItem, DropdownMobileHeader } from '../DropdownMenu';
-import { ProfileButton } from '../ProfileButton';
-
+import { type Ref, forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
-import { Avatar } from '../Avatar';
+import { useParties } from '../../api/useParties.ts';
 import { Backdrop } from '../Backdrop';
-import { Badge } from '../Badge';
-import { mergeParties } from './mergeParties.ts';
-import styles from './partyDropdown.module.css';
+import { DropdownList, DropdownMobileHeader } from '../DropdownMenu';
+import { ProfileButton } from '../ProfileButton';
+import { PartyList } from './PartyList.tsx';
 
 interface PartyDropdownRef {
   openPartyDropdown: () => void;
@@ -19,9 +13,7 @@ interface PartyDropdownRef {
 export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { t } = useTranslation();
-  const { parties, setSelectedPartyIds, selectedParties } = useParties();
-  const { dialogs } = useDialogs(parties);
-  const queryClient = useQueryClient();
+  const { selectedParties } = useParties();
 
   useImperativeHandle(ref, () => ({
     openPartyDropdown: () => {
@@ -29,43 +21,21 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
     },
   }));
 
-  // biome-ignore lint: lint/correctness/useExhaustiveDependencies
-  const options = useMemo(() => {
-    return parties.map((party) => mergeParties(party, dialogs));
-  }, [parties, dialogs]);
-
   return (
     <div>
       <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
         {selectedParties[0]?.name ?? t('partyDropdown.selectParty')}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
-      {isMenuOpen && (
-        <DropdownList variant="long">
-          <DropdownMobileHeader
-            onClickButton={() => setIsMenuOpen(false)}
-            buttonText={t('word.back')}
-            buttonIcon={null}
-          />
-          {options.map((option) => (
-            <DropdownListItem
-              key={option.value}
-              leftContent={
-                <div className={styles.partyListContent}>
-                  <Avatar name={option.label} companyName={option.isCompany ? option.label : ''} size="small" />
-                  <span className={styles.partyListLabel}>{option.label}</span>
-                </div>
-              }
-              rightContent={<Badge label={option.count} />}
-              onClick={() => {
-                setSelectedPartyIds(option.onSelectValues);
-                void queryClient.invalidateQueries({ queryKey: ['dialogs'] });
-                setIsMenuOpen(false);
-              }}
-            />
-          ))}
-        </DropdownList>
-      )}
+      <DropdownList variant="long" isExpanded={isMenuOpen}>
+        <DropdownMobileHeader
+          onClickButton={() => setIsMenuOpen(false)}
+          buttonText={t('word.back')}
+          buttonIcon={null}
+        />
+        <PartyList onOpenMenu={setIsMenuOpen} />
+      </DropdownList>
+
       <Backdrop show={isMenuOpen} onClick={() => setIsMenuOpen(false)} />
     </div>
   );

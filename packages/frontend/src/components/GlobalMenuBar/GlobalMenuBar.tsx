@@ -5,59 +5,68 @@ import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
 import { Backdrop } from '../Backdrop';
 import { Badge } from '../Badge';
-import { NavigationDropdownMenu } from './NavigationDropdownMenu';
-import type { SubMenuSelection } from './NavigationDropdownSubMenu';
-import styles from './navigationMenuBar.module.css';
+import { NavigationDropdownMenu } from './NavigationDropdownMenu.tsx';
+import type { SubMenuSelection } from './NavigationDropdownSubMenu.tsx';
+import styles from './globalMenuBar.module.css';
 
-interface MenuBarProps {
+interface GlobalMenuBarProps {
   name: string;
   companyName?: string;
   className?: string;
   notificationCount?: number;
 }
 
-export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificationCount = 0, className }) => {
-  const [showDropdownMenu, setShowDropdownMenu] = useState<boolean>(false);
+export const CloseMenuButton = ({ className }: { className?: string }) => {
+  return (
+    <div className={cx(styles.crossSquare, className)} aria-hidden="true">
+      <XMarkIcon />
+    </div>
+  );
+};
+
+export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({
+  name,
+  companyName,
+  notificationCount = 0,
+  className,
+}) => {
+  const [showBackDrop, setShowBackDrop] = useState<boolean>(false);
   const [showSubMenu, setShowSubMenu] = useState<SubMenuSelection>('none');
 
   const { t } = useTranslation();
 
-  const handleToggle = () => {
-    setShowDropdownMenu((prev) => !prev);
+  const toggleShowBackdrop = () => {
+    setShowBackDrop((prev) => !prev);
   };
 
   const handleClose = () => {
-    setShowDropdownMenu(false);
+    setShowBackDrop(false);
     setShowSubMenu('none');
   };
 
+  const showNotificationsBadge = notificationCount > 0 && !showBackDrop;
   return (
     <>
-      <div className={styles.menuContainer}>
-        <div onClick={handleToggle} onKeyDown={(e) => e.key === 'Enter' && handleToggle()}>
+      <div className={styles.globalMenuBar}>
+        <div onClick={toggleShowBackdrop} onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}>
           <div className={cx(styles.menuText, className)} aria-hidden="true">
             <div className={styles.nameWithInitials}>
               {t('word.menu')}
-              {showDropdownMenu ? (
-                <div
-                  className={cx(styles.crossSquare, className, { [styles.isOrganization]: !!companyName })}
-                  aria-hidden="true"
-                >
-                  <XMarkIcon />
-                </div>
+              {showBackDrop ? (
+                <CloseMenuButton className={className} />
               ) : (
                 <Avatar name={name} companyName={companyName} />
               )}
             </div>
           </div>
-          {notificationCount > 0 && (
+          {showNotificationsBadge && (
             <div className={styles.notificationWrapper}>
               <Badge label={notificationCount} variant="strong" />
             </div>
           )}
         </div>
         <NavigationDropdownMenu
-          showDropdownMenu={showDropdownMenu}
+          showDropdownMenu={showBackDrop}
           name={name}
           companyName={companyName}
           onClose={handleClose}
@@ -65,7 +74,7 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
           setShowSubMenu={setShowSubMenu}
         />
       </div>
-      <Backdrop show={showDropdownMenu} onClick={handleClose} />
+      <Backdrop show={showBackDrop} onClick={handleClose} />
     </>
   );
 };

@@ -4,7 +4,8 @@ import { t } from 'i18next';
 import { type ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Backdrop } from '../Backdrop';
-import { DropdownList, DropdownListItem, DropdownMobileHeader } from '../DropdownMenu';
+import { DropdownList, DropdownMobileHeader } from '../DropdownMenu';
+import { MenuItem } from '../MenuBar';
 import { ProfileButton } from '../ProfileButton';
 import styles from './sortOrderDropdown.module.css';
 
@@ -62,35 +63,32 @@ export const SortOrderDropdown = forwardRef(
           <ArrowsUpDownIcon fontSize="1.25rem" />
           {selectedOptionLabel}
         </ProfileButton>
-        {isOpen && (
-          <DropdownList className={styles.positionedRight}>
-            <DropdownMobileHeader
-              onClickButton={() => {
+        <DropdownList className={styles.positionedRight} isExpanded={isOpen}>
+          <DropdownMobileHeader
+            onClickButton={() => {
+              setIsOpen(false);
+            }}
+            buttonText={t('sort_order.choose.label')}
+            buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
+          />
+          {options.map((option) => (
+            <MenuItem
+              key={option.id}
+              onClick={() => {
                 setIsOpen(false);
+                onSelect(option.id);
               }}
-              buttonText={t('sort_order.choose.label')}
-              buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
+              count={0}
+              leftContent={
+                <MenuItem.LeftContent>
+                  <span className={styles.checkMarkHolder}>{option.id === selectedSortOrder && <CheckmarkIcon />}</span>
+                  <span className={styles.filterListLabel}>{option.label}</span>
+                </MenuItem.LeftContent>
+              }
+              isActive={option.id === selectedSortOrder}
             />
-            {options.map((option) => (
-              <DropdownListItem
-                key={option.id}
-                onClick={() => {
-                  setIsOpen(false);
-                  onSelect(option.id);
-                }}
-                leftContent={
-                  <div className={styles.content}>
-                    <span className={styles.checkMarkHolder}>
-                      {option.id === selectedSortOrder && <CheckmarkIcon />}
-                    </span>
-                    <span className={styles.filterListLabel}>{option.label}</span>
-                  </div>
-                }
-                isActive={option.id === selectedSortOrder}
-              />
-            ))}
-          </DropdownList>
-        )}
+          ))}
+        </DropdownList>
         <Backdrop show={isOpen} onClick={() => setIsOpen(false)} />
       </div>
     );
