@@ -4,21 +4,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
 import { Backdrop } from '../Backdrop';
+import { Badge } from '../Badge';
 import { NavigationDropdownMenu } from './NavigationDropdownMenu';
 import type { SubMenuSelection } from './NavigationDropdownSubMenu';
 import styles from './navigationMenuBar.module.css';
-
-const NotificationCount: React.FC<{ count: number }> = ({ count }) => {
-  const { t } = useTranslation();
-  if (!count) return null;
-  return (
-    <div className={cx(styles.counterWrapper)} aria-label={t('notifications.count', { count })}>
-      <span className={styles.counter}>{count}</span>
-    </div>
-  );
-};
-
-export const Hr = () => <div className={styles.hr} />;
 
 interface MenuBarProps {
   name: string;
@@ -61,7 +50,11 @@ export const MenuBar: React.FC<MenuBarProps> = ({ name, companyName, notificatio
               )}
             </div>
           </div>
-          <NotificationCount count={notificationCount} />
+          {notificationCount > 0 && (
+            <div className={styles.notificationWrapper}>
+              <Badge label={notificationCount} variant="strong" />
+            </div>
+          )}
         </div>
         <NavigationDropdownMenu
           showDropdownMenu={showDropdownMenu}

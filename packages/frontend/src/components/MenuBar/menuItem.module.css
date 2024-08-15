@@ -2,11 +2,10 @@
   transition: background-color 0.3s ease;
   min-height: 32px;
   padding: 0.375rem;
-  display: grid;
-  grid-template-columns: 90% auto;
   align-items: center;
-  grid-template-areas: "left right";
   border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
 
   > svg {
     min-width: 100%;
@@ -62,6 +61,11 @@
   height: 2rem;
 }
 
+.badgeWrapper {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
 .icon svg {
   width: 1.5rem;
   height: 1.5rem;
@@ -93,8 +97,6 @@
 .rightContent {
   min-width: 24px;
   min-height: 24px;
-  grid-area: right;
-  justify-self: end;
 }
 
 .arrowIcon {
@@ -105,23 +107,6 @@
   height: 1.5rem;
   border-radius: 50%;
   color: #000;
-}
-
-.menuItemCounter {
-  padding: 4px 8px;
-  border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #000;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1rem;
-  margin-right: 6px;
-}
-
-.redCounter {
-  background-color: var(--action-important, #e02e49);
-  color: #fff;
 }
 
 .small .displayText {

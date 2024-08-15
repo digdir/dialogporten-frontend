@@ -1,0 +1,33 @@
+.badge {
+  display: inline-flex;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  justify-content: center;
+  min-height: 24px;
+  width: auto;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--black-5, rgba(0, 0, 0, 0.05));
+  color: var(--black-100, #000);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1rem;
+}
+
+.strong {
+  font-weight: 700;
+  background: var(--Action-Important, #e02e49);
+  color: #ffffff;
+}
+
+.small {
+  display: flex;
+  width: 12px;
+  height: 12px;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: unset;
+}

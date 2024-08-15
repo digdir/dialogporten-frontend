@@ -78,7 +78,7 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
           return (
             <MenuItem
               key={party.value}
-              icon={<Avatar name={loggedInPersonName} companyName={party.label} />}
+              icon={<Avatar name={loggedInPersonName} companyName={party.isCompany ? party.label : ''} />}
               displayText={party.label}
               label={party.value}
               count={party.count}

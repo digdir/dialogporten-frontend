@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormat } from '../../../i18n/useDateFnsLocale.tsx';
+import { Badge } from '../../Badge';
 import { DropdownList, DropdownListItem } from '../../DropdownMenu';
 import { DropdownMobileHeader } from '../../DropdownMenu';
 import { HorizontalLine } from '../../HorizontalLine';
@@ -228,11 +229,7 @@ export const FilterButton = ({
                   </div>
                 }
                 rightContent={
-                  option.options?.length ? (
-                    <ChevronRightIcon fontSize="1.5rem" />
-                  ) : (
-                    <span className={styles.filterListCount}>{option.count}</span>
-                  )
+                  option.options?.length ? <ChevronRightIcon fontSize="1.5rem" /> : <Badge label={option.count} />
                 }
               />
             );

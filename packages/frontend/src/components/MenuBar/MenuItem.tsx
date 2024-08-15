@@ -2,6 +2,7 @@ import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { Badge } from '../Badge';
 import styles from './menuItem.module.css';
 
 interface DropDownMenuItemProps {
@@ -140,7 +141,9 @@ const RenderDropDownMenuItem = ({
           {isExternalLink ? (
             <ExternalLinkIcon className={styles.arrowIcon} />
           ) : count ? (
-            <span className={cx(styles.menuItemCounter, { [styles.redCounter]: isInbox })}>{count}</span>
+            <div className={styles.badgeWrapper}>
+              <Badge label={count} variant={isInbox ? 'strong' : 'neutral'} />
+            </div>
           ) : (
             count !== 0 && <ChevronRightIcon className={styles.arrowIcon} />
           )}

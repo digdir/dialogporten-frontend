@@ -44,31 +44,6 @@
   }
 }
 
-.counterWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 1.5rem;
-  min-height: 1.5rem;
-  border-radius: 24px;
-  background-color: var(--action-important, #e02e49);
-  margin-right: 0.5rem;
-  color: #fff;
-  position: absolute;
-  transform: translate(50%, -50%);
-  top: 0;
-  margin-top: 0.25rem;
-  right: 0;
-}
-
-.counter {
-  padding: 4px 8px;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1rem;
-}
-
 .logoutButton {
   width: 100%;
   color: var(--Action-Link, #1d4ed8);
