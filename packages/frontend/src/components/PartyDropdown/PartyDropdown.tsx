@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Avatar } from '../Avatar';
 import { Backdrop } from '../Backdrop';
+import { Badge } from '../Badge';
 import { mergeParties } from './mergeParties.ts';
 import styles from './partyDropdown.module.css';
 
@@ -55,7 +56,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
                   <span className={styles.partyListLabel}>{option.label}</span>
                 </div>
               }
-              rightContent={<span className={styles.partyCount}>{option.count}</span>}
+              rightContent={<Badge label={option.count} />}
               onClick={() => {
                 setSelectedPartyIds(option.onSelectValues);
                 void queryClient.invalidateQueries({ queryKey: ['dialogs'] });

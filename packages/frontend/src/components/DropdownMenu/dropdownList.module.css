@@ -10,8 +10,13 @@
 }
 
 .long {
-  min-width: 390px;
-  max-width: 390px;
+  min-width: 350px;
+  max-width: 350px;
+}
+
+.medium {
+  min-width: 290px;
+  max-width: 290px;
 }
 
 .short {
