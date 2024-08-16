@@ -1,6 +1,6 @@
 using './main.bicep'
 
-param environment = 'production'
+param environment = 'prod'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
 param hostName = 'https://af.altinn.no'
