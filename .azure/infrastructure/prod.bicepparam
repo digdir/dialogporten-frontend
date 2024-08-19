@@ -1,6 +1,6 @@
 using './main.bicep'
 
-param environment = 'production'
+param environment = 'prod'
 param location = 'norwayeast'
 param redisVersion = '6.0'
 
