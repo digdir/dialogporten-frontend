@@ -13,26 +13,26 @@ describe('filterDialogs', () => {
   const dialogs = [
     {
       id: 1,
-      sender: { label: 'Ole' },
-      receiver: { label: 'Kari' },
+      sender: { name: 'Ole' },
+      receiver: { name: 'Kari' },
       createdAt: '2024-01-01T10:00:00Z',
     },
     {
       id: 2,
-      sender: { label: 'Nils' },
-      receiver: { label: 'Liv' },
+      sender: { name: 'Nils' },
+      receiver: { name: 'Liv' },
       createdAt: '2024-02-01T10:00:00Z',
     },
     {
       id: 3,
-      sender: { label: 'Ole' },
-      receiver: { label: 'Eva' },
+      sender: { name: 'Ole' },
+      receiver: { name: 'Eva' },
       createdAt: '2024-03-01T10:00:00Z',
     },
     {
       id: 4,
-      sender: { label: 'Per' },
-      receiver: { label: 'Kari' },
+      sender: { name: 'Per' },
+      receiver: { name: 'Kari' },
       createdAt: '2024-01-15T10:00:00Z',
     },
   ] as unknown as InboxItemInput[];
