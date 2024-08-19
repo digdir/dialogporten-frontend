@@ -61,7 +61,9 @@ export function mapDialogDtoToInboxItem(
   return input.map((item) => {
     const titleObj = item.content.title.value;
     const summaryObj = item.content.summary.value;
-    const nameOfParty = parties.find((party) => party.party === item.party)?.name ?? '';
+    const endUserParty = parties?.find((party) => party.isCurrentEndUser);
+    const dialogReceiverParty = parties?.find((party) => party.party === item.party);
+    const actualReceiverParty = dialogReceiverParty ?? endUserParty;
     const serviceOwner = getOrganisation(item.org, 'nb');
     const isSeenByEndUser =
       item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
@@ -71,15 +73,13 @@ export function mapDialogDtoToInboxItem(
       title: getPropertyByCultureCode(titleObj),
       description: getPropertyByCultureCode(summaryObj),
       sender: {
-        label: serviceOwner?.name ?? item.org,
-        ...(serviceOwner?.logo
-          ? {
-              icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
-            }
-          : {}),
+        name: serviceOwner?.name ?? '',
+        isCompany: true,
+        imageURL: serviceOwner?.logo,
       },
       receiver: {
-        label: nameOfParty,
+        name: actualReceiverParty?.name ?? '',
+        isCompany: actualReceiverParty?.partyType === 'Organisation',
       },
       tags: getTags(item, isSeenByEndUser, format),
       linkTo: `/inbox/${item.id}`,

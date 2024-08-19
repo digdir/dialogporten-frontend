@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import type { Participant } from '../../components';
+import type { Participant } from '../../api/useDialogById.tsx';
 import type { Filter, FilterSetting } from '../../components/FilterBar/FilterBar.tsx';
 import {
   countOccurrences,
@@ -15,6 +15,7 @@ import type { InboxItemInput } from './Inbox.tsx';
  *
  * @param {InboxItemInput[]} dialogs - The array of dialogs to filter.
  * @param {Array} activeFilters - The array of active filter objects, where each filter has an 'id' and a 'value'.
+ * @param format
  * @returns {InboxItemInput[]} - The filtered array of dialogs.
  */
 
@@ -48,7 +49,7 @@ export const filterDialogs = (
       return filters.some((filter) => {
         if (filter.id === 'sender' || filter.id === 'receiver') {
           const participant = item[filter.id as keyof InboxItemInput] as Participant;
-          return filter.value === participant.label;
+          return filter.value === participant.name;
         }
         if (filter.id === 'created') {
           const rangeProperties = getPredefinedRange().find((range) => range.value === filter.value);
@@ -83,7 +84,7 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       mobileNavLabel: t('filter_bar.label.choose_sender'),
       operation: 'includes',
       options: (() => {
-        const senders = dialogs.map((p) => p.sender.label);
+        const senders = dialogs.map((p) => p.sender.name);
         const senderCounts = countOccurrences(senders);
         return Array.from(new Set(senders)).map((sender) => ({
           displayLabel: `${t('filter_bar_fields.from')} ${sender}`,
@@ -99,7 +100,7 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       mobileNavLabel: t('filter_bar.label.choose_recipient'),
       operation: 'includes',
       options: (() => {
-        const receivers = dialogs.map((p) => p.receiver.label);
+        const receivers = dialogs.map((p) => p.receiver.name);
         const receiversCount = countOccurrences(receivers);
         return Array.from(new Set(receivers)).map((receiver) => ({
           displayLabel: `${t('filter_bar_fields.to')} ${receiver}`,

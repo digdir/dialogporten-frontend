@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
+import type { Participant } from '../../api/useDialogById.tsx';
 import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import {
@@ -11,7 +12,6 @@ import {
   InboxItem,
   type InboxItemTag,
   InboxItems,
-  type Participant,
   SortOrderDropdown,
   useSearchString,
 } from '../../components';
