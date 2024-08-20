@@ -4,3 +4,8 @@
   background-color: rgba(0, 0, 0, 0.1);
   margin: 0.5rem 2rem;
 }
+
+.fullWidth {
+  width: 100%;
+  margin: 0.5rem 0;
+}
