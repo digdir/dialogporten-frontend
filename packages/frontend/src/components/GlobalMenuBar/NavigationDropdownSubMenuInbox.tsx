@@ -87,6 +87,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           count={savedSearches?.length ?? 0}
           path={Routes.savedSearches}
           isActive={pathname === Routes.savedSearches}
+          onClick={onClose}
         />
         <HorizontalLine />
         <MenuItem
@@ -97,6 +98,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           path={Routes.archive}
           isActive={pathname === Routes.archive}
           disabled
+          onClick={onClose}
         />
         <MenuItem
           displayText={t('sidebar.deleted')}
@@ -106,6 +108,7 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           isActive={pathname === Routes.deleted}
           path={Routes.deleted}
           disabled
+          onClick={onClose}
         />
         <HorizontalLine />
         <MenuLogoutButton />
