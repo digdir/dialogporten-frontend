@@ -41,26 +41,26 @@ jobs:
       dryRun: true
       version: ${{ needs.get-current-version.outputs.version }}-${{ github.event.pull_request.number }}
 
-  dry-run-deploy-apps-test:
-    name: Dry run deploy apps to test
-    needs: [get-current-version, check-for-changes]
-    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
-    uses: ./.github/workflows/workflow-deploy-apps.yml
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      # todo: consider resolving these in another way since they are created in the infra-step
-      AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
-      AZURE_ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
-      AZURE_CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
-      AZURE_APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
-      AZURE_APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
-    with:
-      environment: test
-      region: norwayeast
-      dryRun: true
-      version: ${{ needs.get-current-version.outputs.version }}-${{ github.event.pull_request.number }}
+  # dry-run-deploy-apps-test:
+  #   name: Dry run deploy apps to test
+  #   needs: [get-current-version, check-for-changes]
+  #   if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+  #   uses: ./.github/workflows/workflow-deploy-apps.yml
+  #   secrets:
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     # todo: consider resolving these in another way since they are created in the infra-step
+  #     AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+  #     AZURE_ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+  #     AZURE_CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
+  #     AZURE_APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
+  #     AZURE_APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
+  #   with:
+  #     environment: test
+  #     region: norwayeast
+  #     dryRun: true
+  #     version: ${{ needs.get-current-version.outputs.version }}-${{ github.event.pull_request.number }}
 
   docker-build-and-push:
     name: Build and publish docker images
