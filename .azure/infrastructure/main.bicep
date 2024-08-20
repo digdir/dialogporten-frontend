@@ -95,10 +95,21 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   scope: resourceGroup
   name: 'containerAppEnv'
   params: {
-    namePrefix: namePrefix
+    name: '${namePrefix}-containerappenv'
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
     subnetId: vnet.outputs.containerAppEnvironmentSubnetId
+    tags: tags
+  }
+}
+
+module ephemeralContainerAppEnv '../modules/containerAppEnv/main.bicep' = if (environment == 'test') {
+  scope: resourceGroup
+  name: 'ephemeralContainerAppEnv'
+  params: {
+    name: '${namePrefix}-containerappenv-ephemeral'
+    location: location
+    appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
     tags: tags
   }
 }
