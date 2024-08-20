@@ -5,12 +5,16 @@ param imageTag string
 @minLength(3)
 param environment string
 @minLength(3)
+param containerAppName string
+@minLength(3)
 param location string
 param port int = 80
 @minLength(3)
 param hostName string
 param minReplicas int
 param maxReplicas int
+// todo: remove
+param prNumber string
 
 @minLength(3)
 @secure()
@@ -25,12 +29,11 @@ param appConfigurationName string
 @secure()
 param environmentKeyVaultName string
 
-var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
-var containerAppName = '${namePrefix}-bff'
 var tags = {
   Environment: environment
   Product: 'Arbeidsflate'
+  PullRequestNumber: prNumber
 }
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {

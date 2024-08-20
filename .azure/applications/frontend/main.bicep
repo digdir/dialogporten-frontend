@@ -9,18 +9,19 @@ param location string
 param port int = 80
 param minReplicas int
 param maxReplicas int
-
+// todo: remove
+param prNumber string
+param containerAppName string
 @minLength(3)
 @secure()
 param containerAppEnvironmentName string
 
-var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
-var serviceName = 'frontend'
-var containerAppName = '${namePrefix}-${serviceName}'
+
 var tags = {
   Environment: environment
   Product: 'Arbeidsflate'
+  PullRequestNumber: prNumber
 }
 
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' existing = {
@@ -53,7 +54,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
   params: {
     name: containerAppName
     location: location
-    image: '${baseImageUrl}${serviceName}:${imageTag}'
+    image: '${baseImageUrl}frontend:${imageTag}'
     containerAppEnvId: containerAppEnvironment.id
     probes: healthProbes
     port: port

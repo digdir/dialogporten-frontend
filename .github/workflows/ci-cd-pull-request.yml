@@ -100,5 +100,4 @@ jobs:
       region: norwayeast
       version: ${{ needs.get-current-version.outputs.version }}-ephemeral-${{ github.event.pull_request.number }}
 
-
       # todo: add workflow to delete ephemeral environment once pull request is closed. Should also delete the role assignment for the service principal
