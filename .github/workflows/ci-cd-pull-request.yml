@@ -6,10 +6,6 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  generate-git-short-sha:
-    name: Generate git short sha
-    uses: ./.github/workflows/workflow-generate-git-short-sha.yml
-
   get-current-version:
     name: Get current version
     uses: ./.github/workflows/workflow-get-current-version.yml
@@ -20,8 +16,6 @@ jobs:
 
   build-and-test:
     uses: ./.github/workflows/workflow-build-and-test.yml
-    with:
-      environment: test
 
   translations-check:
     uses: ./.github/workflows/workflow-check-translations.yml
@@ -31,7 +25,7 @@ jobs:
 
   dry-run-deploy-infra:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs: [generate-git-short-sha, check-for-changes, get-current-version]
+    needs: [check-for-changes, get-current-version]
     if: ${{ needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -45,11 +39,11 @@ jobs:
       environment: test
       region: norwayeast
       dryRun: true
-      version: ${{needs.get-current-version.outputs.version}}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ github.event.pull_request.number }}
 
-  deploy-apps-test:
-    name: Deploy apps to test
-    needs: [get-current-version, check-for-changes, generate-git-short-sha]
+  dry-run-deploy-apps-test:
+    name: Dry run deploy apps to test
+    needs: [get-current-version, check-for-changes]
     if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     uses: ./.github/workflows/workflow-deploy-apps.yml
     secrets:
@@ -66,4 +60,45 @@ jobs:
       environment: test
       region: norwayeast
       dryRun: true
-      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
+      version: ${{ needs.get-current-version.outputs.version }}-${{ github.event.pull_request.number }}
+
+  docker-build-and-push:
+    name: Build and publish docker images
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+    uses: ./.github/workflows/workflow-docker-build-and-push.yml
+    needs:
+      [
+        check-for-changes,
+        get-current-version,
+        build-and-test,
+      ]
+    secrets:
+      GCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      dockerImageBaseName: ghcr.io/digdir/dialogporten-frontend-
+      version: ${{ needs.get-current-version.outputs.version }}-ephemeral-${{ github.event.pull_request.number }}
+
+  # todo: only run this if pr title is prefixed with fix or feat
+  deploy-apps-to-ephemeral-environment:
+    name: Deploy apps to ephemeral environment
+    needs: [get-current-version, check-for-changes, docker-build-and-push]
+    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+    uses: ./.github/workflows/workflow-deploy-apps.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      AZURE_ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+      # todo: change back to AZURE_CONTAINER_APP_ENVIRONMENT_NAME once we have defined a "ephemeral" environment in Github
+      AZURE_CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_EPHEMERAL_CONTAINER_APP_ENVIRONMENT_NAME }}
+      AZURE_APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
+      AZURE_APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
+    with:
+      # todo: change to ephemeral when we support ephemeral environment in azure github federation
+      environment: test
+      region: norwayeast
+      version: ${{ needs.get-current-version.outputs.version }}-ephemeral-${{ github.event.pull_request.number }}
+
+
+      # todo: add workflow to delete ephemeral environment once pull request is closed. Should also delete the role assignment for the service principal
