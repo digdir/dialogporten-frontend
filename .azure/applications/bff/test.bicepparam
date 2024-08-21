@@ -4,6 +4,7 @@ param environment = 'test'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
 param hostName = 'https://af.at.altinn.cloud'
+param dialogportenURL = 'https://altinn-dev-api.azure-api.net/dialogporten/graphql'
 param minReplicas = 2
 param maxReplicas = 3
 

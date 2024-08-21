@@ -9,6 +9,8 @@ param location string
 param port int = 80
 @minLength(3)
 param hostName string
+@minLength(3)
+param dialogportenURL string
 param minReplicas int
 param maxReplicas int
 
@@ -133,7 +135,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'DIALOGPORTEN_URL'
-    value: 'https://altinn-dev-api.azure-api.net/dialogporten/graphql'
+    value: dialogportenURL
   }
 ]
 

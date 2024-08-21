@@ -4,6 +4,7 @@ param environment = 'staging'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
 param hostName = 'https://af.tt.altinn.no'
+param dialogportenURL = 'https://altinn-tt02-api.azure-api.net/dialogporten/graphql'
 param minReplicas = 2
 param maxReplicas = 3
 
