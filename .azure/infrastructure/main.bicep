@@ -17,6 +17,11 @@ param sourceKeyVaultResourceGroup string
 @minLength(3)
 param sourceKeyVaultName string
 
+@description('SSH public key for the ssh jumper')
+@secure()
+@minLength(3)
+param sourceKeyVaultSshJumperSshPublicKey string
+
 import { Sku as RedisSku } from '../modules/redis/main.bicep'
 param redisSku RedisSku
 @minLength(1)
@@ -30,6 +35,7 @@ var secrets = {
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
   sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
   sourceKeyVaultName: sourceKeyVaultName
+  sourceKeyVaultSshJumperSshPublicKey: sourceKeyVaultSshJumperSshPublicKey
 }
 
 var srcKeyVault = {
@@ -199,6 +205,18 @@ module postgresql '../modules/postgreSql/create.bicep' = {
       : secrets.dialogportenPgAdminPassword
     privateDnsZoneArmResourceId: postgresqlPrivateDnsZone.outputs.id
     tags: tags
+  }
+}
+
+module sshJumper '../modules/ssh-jumper/main.bicep' = {
+  scope: resourceGroup
+  name: 'sshJumper'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    subnetId: vnet.outputs.defaultSubnetId
+    tags: tags
+    sshPublicKey: secrets.sourceKeyVaultSshJumperSshPublicKey
   }
 }
 
