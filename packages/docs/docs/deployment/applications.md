@@ -12,7 +12,7 @@ Refer to the existing applications like `bff` and `frontend` as templates.
 
 ## Deploying applications in a new infrastructure environment
 
-Ensure you have followed the steps in [Deploying a new infrastructure environment](#deploying-a-new-infrastructure-environment) to have the resources required for the applications.
+Ensure you have followed the steps in [Deploying a new infrastructure environment](./infrastructure.md) to have the resources required for the applications.
 
 Use the following steps:
 
@@ -22,4 +22,4 @@ Use the following steps:
 
 - Run the GitHub action `Dispatch applications` in order to deploy all applications to the new environment.
 
-- To expose the applications through APIM, see [Common APIM Guide](docs/CommonAPIM.md)
+- Contact Platform team to add an A-record that points to the `Application Gateway` public IP
