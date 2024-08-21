@@ -87,31 +87,35 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
         {!searchResults?.length && (
           <>
             <SearchDropdownItem>
-              <div className={styles.displayText}>{t('sidebar.saved_searches')}</div>
+              <div className={styles.displayText}>{t('savedSearches.title', { count: savedSearches?.length })}</div>
             </SearchDropdownItem>
             {!isLoadingSavedSearches &&
               savedSearches?.map((search) => (
                 <SearchDropdownItem key={search.id}>
                   {search.name ? (
-                    <div className={styles.searchDetails}>{search.name}</div>
+                    <div className={styles.savedSearchItem}>
+                      <div className={styles.searchDetails}>{search.name}</div>
+                    </div>
                   ) : (
-                    <div className={styles.searchDetails}>
-                      <span className={styles.searchString}>
-                        {search.data?.searchString && `«${search.data.searchString}»`}
-                      </span>
-                      {search.data?.searchString && search.data?.filters && search.data?.filters?.length > 0 && (
-                        <PlusIcon />
-                      )}
-                      {search.data?.filters?.map((filter, index) => {
-                        return (
-                          <SearchFilterTag
-                            key={`${filter?.id}${index}`}
-                            searchValue={filter?.value}
-                            searchId={filter?.id}
-                            isLastItem={search.data?.filters?.length === index + 1}
-                          />
-                        );
-                      })}
+                    <div className={styles.savedSearchItem}>
+                      <div className={styles.searchDetails}>
+                        <span className={styles.searchString}>
+                          {search.data?.searchString && `«${search.data.searchString}»`}
+                        </span>
+                        {search.data?.searchString && search.data?.filters && search.data?.filters?.length > 0 && (
+                          <PlusIcon />
+                        )}
+                        {search.data?.filters?.map((filter, index) => {
+                          return (
+                            <SearchFilterTag
+                              key={`${filter?.id}${index}`}
+                              searchValue={filter?.value}
+                              searchId={filter?.id}
+                              isLastItem={search.data?.filters?.length === index + 1}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
                   <OpenSavedSearchLink savedSearch={search} onClick={handleClose} />
