@@ -10,7 +10,7 @@ import { useParties } from '../../api/useParties.ts';
 import { useAuthenticated } from '../../auth';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
-import { useProfile } from '../../profile/useProfile';
+import { useProfile } from '../../profile';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { Snackbar } from '../Snackbar';
 import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
