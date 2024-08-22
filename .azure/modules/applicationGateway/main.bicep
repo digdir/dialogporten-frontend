@@ -43,7 +43,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' 
   name: containerAppEnvName
 }
 
-resource publicIp 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
+resource publicIp 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
   name: '${gatewayName}-publicIp'
   location: location
   sku: {
