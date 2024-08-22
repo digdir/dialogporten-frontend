@@ -37,8 +37,8 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
     const { isTabletOrSmaller } = useWindowSize();
     const showSidebar = !isTabletOrSmaller && !inSelectionMode;
     const { data: savedSearchesData } = useSavedSearches();
-    const { parties } = useParties();
-    const { dialogsByView } = useDialogs(parties);
+    const { selectedParties } = useParties();
+    const { dialogsByView } = useDialogs(selectedParties);
     const itemsPerViewCount = {
       inbox: dialogsByView.inbox.length,
       drafts: dialogsByView.drafts.length,
@@ -79,8 +79,8 @@ const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-  const { parties, selectedParties } = useParties();
-  const { dialogsByView } = useDialogs(parties);
+  const { selectedParties } = useParties();
+  const { dialogsByView } = useDialogs(selectedParties);
   const { inbox: dialogs } = dialogsByView;
   const notificationCount = dialogs.length;
   useProfile();
