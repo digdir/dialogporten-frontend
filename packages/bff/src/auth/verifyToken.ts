@@ -1,10 +1,75 @@
 import axios from 'axios';
-import type { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
+import type {
+  FastifyPluginAsync,
+  FastifyReply,
+  FastifyRequest,
+  HookHandlerDoneFunction,
+  IdPortenUpdatedToken,
+} from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.ts';
 import type { SessionStorageToken } from './oidc.ts';
 
-const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
+const refreshAllTokens = async (request: FastifyRequest) => {
+  const token: SessionStorageToken = request.session.get('token');
+
+  if (!token) {
+    return;
+  }
+
+  const tokenEndpoint = `https://${config.oidc_url}/token`;
+  const basicAuthString = `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`;
+  const authEncoded = `Basic ${Buffer.from(basicAuthString).toString('base64')}`;
+
+  const refreshResponse = await axios.post(
+    tokenEndpoint,
+    {
+      grant_type: 'refresh_token',
+      refresh_token: token.refresh_token,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: authEncoded,
+      },
+    },
+  );
+
+  const updatedToken: IdPortenUpdatedToken = refreshResponse?.data;
+
+  if (updatedToken) {
+    const refreshTokenExpiresAt = new Date(Date.now() + updatedToken.refresh_token_expires_in * 1000).toISOString();
+    const accessTokenExpiresAt = new Date(Date.now() + updatedToken.expires_in * 1000).toISOString();
+
+    const updatedSessionStorageToken = {
+      ...token,
+      access_token: updatedToken.access_token,
+      refresh_token_expires_at: refreshTokenExpiresAt,
+      refresh_token: updatedToken.refresh_token,
+      access_token_expires_at: accessTokenExpiresAt,
+    };
+
+    request.session.set('token', updatedSessionStorageToken);
+  }
+};
+
+/**
+ * Checks the validity of the session token in the request and optionally refreshes the token if necessary.
+ *
+ * @param {FastifyRequest} request - The Fastify request object containing the session token.
+ * @param {boolean} allowTokenRefresh - Flag indicating whether the function should attempt to refresh tokens if the access token has expired.
+ * @returns {Promise<boolean>} - Returns `true` if the access token is still valid or if it has been successfully refreshed.
+ *                               Returns `false` if the token is invalid or cannot be refreshed.
+ *
+ * The function performs the following:
+ * 1. Retrieves the session token from the request. If the token is not present, returns `false`.
+ * 2. Validates the expiration times of the access token and the refresh token.
+ * 3. If the access token is still valid, returns `true`.
+ * 4. If the access token is expired and the refresh token is also invalid or token refresh is not allowed, returns `false`.
+ * 5. If the access token is expired, but the refresh token is valid and token refresh is allowed, it attempts to refresh all tokens.
+ * 6. If the refresh operation succeeds, returns `true`; otherwise, returns `false`.
+ */
+const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boolean): Promise<boolean> => {
   const token: SessionStorageToken = request.session.get('token');
 
   if (!token) {
@@ -20,71 +85,35 @@ const getIsTokenValid = async (request: FastifyRequest): Promise<boolean> => {
     return true;
   }
 
-  if (!isAccessTokenValid) {
-    if (!isRefreshTokenValid) {
-      return false;
-    }
-
-    try {
-      const tokenEndpoint = `https://${config.oidc_url}/token`;
-      const basicAuthString = `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`;
-      const authEncoded = `Basic ${Buffer.from(basicAuthString).toString('base64')}`;
-
-      const refreshResponse = await axios.post(
-        tokenEndpoint,
-        {
-          grant_type: 'refresh_token',
-          refresh_token: token.refresh_token,
-          scope: 'digdir:dialogporten openid',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: authEncoded,
-          },
-        },
-      );
-
-      const updatedToken: IdPortenUpdatedToken = refreshResponse?.data;
-
-      if (updatedToken) {
-        const refreshTokenExpiresAt = new Date(Date.now() + updatedToken.refresh_token_expires_in * 1000).toISOString();
-        const accessTokenExpiresAt = new Date(Date.now() + updatedToken.expires_in * 1000).toISOString();
-
-        /* We need to make sure id_token is included or else it will expire and log out will not work */
-        const updatedSessionStorageToken = {
-          ...token,
-          access_token: updatedToken,
-          refresh_token_expires_at: refreshTokenExpiresAt,
-          refresh_token: updatedToken.refresh_token,
-          access_token_expires_at: accessTokenExpiresAt,
-          idToken: updatedToken?.id_token || token.id_token,
-        };
-
-        request.session.set('token', updatedSessionStorageToken);
-
-        return true;
-      }
-    } catch (error) {
-      console.log('Error in renewing token', error);
-      return false;
-    }
+  if (!isRefreshTokenValid) {
+    return false;
   }
-  return false;
+
+  if (!allowTokenRefresh) {
+    return false;
+  }
+
+  try {
+    await refreshAllTokens(request);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const plugin: FastifyPluginAsync = async (fastify, _) => {
-  fastify.decorate('verifyToken', (request: FastifyRequest, reply: FastifyReply, done) => {
-    getIsTokenValid(request)
-      .then((isValid) => {
-        if (isValid) {
-          done();
-        }
-        if (!isValid) {
-          done(new Error('unauthenticated'));
-        }
-      })
-      .catch(done);
+  fastify.decorate('verifyToken', (allowTokenRefresh: boolean) => {
+    return (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => {
+      getIsTokenValid(request, allowTokenRefresh)
+        .then((isValid) => {
+          if (isValid) {
+            done();
+          } else {
+            done(new Error('unauthenticated'));
+          }
+        })
+        .catch(done);
+    };
   });
 };
 

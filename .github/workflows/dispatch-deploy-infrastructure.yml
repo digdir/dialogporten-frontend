@@ -25,8 +25,8 @@ jobs:
     name: Generate git short sha
     uses: ./.github/workflows/workflow-generate-git-short-sha.yml
 
-  deploy-infra-test:
-    name: Deploy infra to test
+  deploy-infra:
+    name: Deploy infra to ${{ inputs.environment }}
     needs: [generate-git-short-sha]
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
     secrets:
@@ -37,6 +37,7 @@ jobs:
       AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID }}
       AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP: ${{ secrets.AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP }}
       AZURE_CERTIFICATE_KEY_VAULT_NAME: ${{ secrets.AZURE_CERTIFICATE_KEY_VAULT_NAME }}
+      AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY }}
     with:
       environment: ${{ inputs.environment }}
       region: norwayeast

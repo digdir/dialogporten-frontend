@@ -17,6 +17,11 @@ param sourceKeyVaultResourceGroup string
 @minLength(3)
 param sourceKeyVaultName string
 
+@description('SSH public key for the ssh jumper')
+@secure()
+@minLength(3)
+param sourceKeyVaultSshJumperSshPublicKey string
+
 import { Sku as RedisSku } from '../modules/redis/main.bicep'
 param redisSku RedisSku
 @minLength(1)
@@ -30,6 +35,7 @@ var secrets = {
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
   sourceKeyVaultResourceGroup: sourceKeyVaultResourceGroup
   sourceKeyVaultName: sourceKeyVaultName
+  sourceKeyVaultSshJumperSshPublicKey: sourceKeyVaultSshJumperSshPublicKey
 }
 
 var srcKeyVault = {
@@ -95,10 +101,21 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   scope: resourceGroup
   name: 'containerAppEnv'
   params: {
-    namePrefix: namePrefix
+    name: '${namePrefix}-containerappenv'
     location: location
     appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
     subnetId: vnet.outputs.containerAppEnvironmentSubnetId
+    tags: tags
+  }
+}
+
+module ephemeralContainerAppEnv '../modules/containerAppEnv/main.bicep' = if (environment == 'test') {
+  scope: resourceGroup
+  name: 'ephemeralContainerAppEnv'
+  params: {
+    name: '${namePrefix}-containerappenv-ephemeral'
+    location: location
+    appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
     tags: tags
   }
 }
@@ -188,6 +205,18 @@ module postgresql '../modules/postgreSql/create.bicep' = {
       : secrets.dialogportenPgAdminPassword
     privateDnsZoneArmResourceId: postgresqlPrivateDnsZone.outputs.id
     tags: tags
+  }
+}
+
+module sshJumper '../modules/ssh-jumper/main.bicep' = {
+  scope: resourceGroup
+  name: 'sshJumper'
+  params: {
+    namePrefix: namePrefix
+    location: location
+    subnetId: vnet.outputs.defaultSubnetId
+    tags: tags
+    sshPublicKey: secrets.sourceKeyVaultSshJumperSshPublicKey
   }
 }
 

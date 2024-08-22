@@ -6,6 +6,7 @@ export const getIsAuthenticated = async (): Promise<boolean> => {
     });
     return response.status === 200;
   } catch (error) {
+    console.log('error', error);
     return false;
   }
 };

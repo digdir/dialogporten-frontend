@@ -5,6 +5,7 @@ import { Markdown } from 'embeddable-markdown-html';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import { Avatar } from '../Avatar';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
@@ -81,13 +82,12 @@ export const InboxItemDetail = ({
       </header>
       <div className={styles.participants}>
         <div className={styles.sender}>
-          {sender?.icon && <div className={styles.participantIcon}>{sender.icon}</div>}
-          <span className={styles.participantLabel}>{sender?.label}</span>
+          <Avatar name={sender?.name} imageUrl={sender?.imageURL} />
+          <span className={styles.participantLabel}>{sender?.name}</span>
         </div>
         <span>{toLabel}</span>
         <div className={styles.receiver}>
-          {receiver?.icon && <div className={styles.participantIcon}>{receiver.icon}</div>}
-          <span className={styles.participantLabel}>{receiver?.label}</span>
+          <span className={styles.participantLabel}>{receiver?.name}</span>
         </div>
       </div>
       <section className={styles.descriptionContainer}>

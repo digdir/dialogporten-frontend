@@ -3,8 +3,11 @@ import { useQuery } from 'react-query';
 import { getIsAuthenticated } from './api.ts';
 import { getStoredURL, isRedirectURL, removeStoredURL, saveURL } from './url.ts';
 
+/* Keeps session alive as soon as it is active, e.g. active tab in browser */
 export const useAuthenticated = () => {
-  const { data: isAuthenticated, isSuccess: isAuthenticatedSuccess } = useQuery('isAuthenticated', getIsAuthenticated);
+  const { data: isAuthenticated, isSuccess: isAuthenticatedSuccess } = useQuery('isAuthenticated', getIsAuthenticated, {
+    refetchInterval: 30 * 1000,
+  });
 
   useEffect(() => {
     const currentHref = window.location.href;

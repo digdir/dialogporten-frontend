@@ -3,13 +3,10 @@ import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelectedDialogs } from '../PageLayout';
 
+import type { Participant } from '../../api/useDialogById.tsx';
+import { Avatar } from '../Avatar';
 import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
-
-export interface Participant {
-  label: string;
-  icon?: JSX.Element;
-}
 
 export interface InboxItemTag {
   label: string;
@@ -199,13 +196,17 @@ export const InboxItem = ({
           </header>
           <div className={styles.participants}>
             <div className={styles.sender}>
-              {sender?.icon && <div className={styles.senderIcon}>{sender.icon}</div>}
-              <span className={styles.participantLabel}>{sender?.label}</span>
+              <Avatar
+                name={sender?.name}
+                companyName={sender?.isCompany ? sender?.name : ''}
+                imageUrl={sender.imageURL}
+                size="small"
+              />
+              <span className={styles.participantLabel}>{sender?.name}</span>
             </div>
             <span>{toLabel}</span>
             <div className={styles.receiver}>
-              {receiver?.icon && <div className={styles.icon}>{receiver.icon}</div>}
-              <span className={styles.participantLabel}>{receiver?.label}</span>
+              <span className={styles.participantLabel}>{receiver?.name}</span>
             </div>
           </div>
           <p className={styles.description}>{description}</p>
