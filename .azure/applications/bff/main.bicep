@@ -32,7 +32,7 @@ var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var containerAppName = '${namePrefix}-bff'
 var tags = {
   Environment: environment
-  Product: 'Arbeidsflate'
+  Product: 'Arbeidsflakaffe'
 }
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
