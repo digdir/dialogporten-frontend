@@ -13,7 +13,7 @@ export const runMigrationApp = async () => {
       throw e;
     }
   } else {
-    console.warn('Application Insights is not enabled');
+    console.log('Application Insights is not enabled');
   }
 
   try {
