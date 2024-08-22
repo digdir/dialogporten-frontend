@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { intitialize } from './azure/ApplicationInsights.ts';
+import { initialize } from './azure/ApplicationInsights.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
 
@@ -7,9 +7,12 @@ export const runMigrationApp = async () => {
   // App Insight setup
   if (config.applicationInsights.enabled) {
     try {
-      intitialize();
+      initialize();
     } catch (e) {
-      console.error('Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.', e);
+      console.error(
+        'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.',
+        e,
+      );
       throw e;
     }
   } else {
@@ -22,10 +25,8 @@ export const runMigrationApp = async () => {
     if (!dataSource.isInitialized) {
       throw new Error('Something went from initializing a connection to database');
     }
-
     // Run migrations
     await dataSource.runMigrations();
-
     // Disconnect from database
     await dataSource.destroy();
 

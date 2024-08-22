@@ -3,10 +3,11 @@ import config from '../config.ts';
 
 const { applicationInsights } = config;
 
-export const intitialize = () => {
+export const initialize = () => {
   const { connectionString } = applicationInsights;
   if (!connectionString) {
-    const errorMsg = 'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.';
+    const errorMsg =
+      'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.';
     console.error(errorMsg);
     throw new Error(errorMsg);
   }

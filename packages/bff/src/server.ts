@@ -8,7 +8,7 @@ import Fastify from 'fastify';
 import fastifyGraphiql from 'fastify-graphiql';
 import { default as Redis } from 'ioredis';
 import { oidc, userApi, verifyToken } from './auth/index.ts';
-import { intitialize as intitializeApplicationInsights } from './azure/ApplicationInsights.ts';
+import { initialize as intitializeApplicationInsights } from './azure/ApplicationInsights.ts';
 import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
