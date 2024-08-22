@@ -4,6 +4,7 @@ fragment SavedSearchesFields on SavedSearches {
     createdAt
     updatedAt
     data {
+      urn
       searchString
       fromView
       filters {

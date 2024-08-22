@@ -5,12 +5,19 @@ import { useParties } from '../../api/useParties.ts';
 import { Backdrop } from '../Backdrop';
 import { DropdownList, DropdownMobileHeader } from '../DropdownMenu';
 import { ProfileButton } from '../ProfileButton';
+import type { SideBarView } from '../Sidebar/Sidebar.tsx';
 import { PartyList } from './PartyList.tsx';
 
 interface PartyDropdownRef {
   openPartyDropdown: () => void;
 }
-export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>) => {
+
+interface PartyDropdownProps {
+  counterContext?: SideBarView;
+}
+
+export const PartyDropdown = forwardRef((_: PartyDropdownProps, ref: Ref<PartyDropdownRef>) => {
+  const { counterContext } = _;
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { t } = useTranslation();
   const { selectedParties } = useParties();
@@ -24,7 +31,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
   return (
     <div>
       <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
-        {selectedParties[0]?.name ?? t('partyDropdown.selectParty')}
+        {selectedParties?.[0]?.name ?? t('partyDropdown.selectParty')}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
       <DropdownList variant="long" isExpanded={isMenuOpen}>
@@ -33,7 +40,7 @@ export const PartyDropdown = forwardRef((_: unknown, ref: Ref<PartyDropdownRef>)
           buttonText={t('word.back')}
           buttonIcon={null}
         />
-        <PartyList onOpenMenu={setIsMenuOpen} />
+        <PartyList onOpenMenu={setIsMenuOpen} counterContext={counterContext} />
       </DropdownList>
 
       <Backdrop show={isMenuOpen} onClick={() => setIsMenuOpen(false)} />

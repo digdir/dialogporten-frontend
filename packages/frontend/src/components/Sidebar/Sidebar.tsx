@@ -15,7 +15,7 @@ import { HorizontalLine } from '../HorizontalLine/';
 import { MenuItem } from '../MenuBar';
 import styles from './sidebar.module.css';
 
-type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'deleted';
+export type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'deleted';
 
 export type ItemPerViewCount = {
   [key in SideBarView]: number;

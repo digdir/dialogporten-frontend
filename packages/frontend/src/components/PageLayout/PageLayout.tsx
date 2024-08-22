@@ -36,14 +36,14 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
     const { inSelectionMode } = useSelectedDialogs();
     const { isTabletOrSmaller } = useWindowSize();
     const showSidebar = !isTabletOrSmaller && !inSelectionMode;
-    const { data: savedSearchesData } = useSavedSearches();
     const { selectedParties } = useParties();
+    const { currentPartySavedSearches } = useSavedSearches(selectedParties?.[0]);
     const { dialogsByView } = useDialogs(selectedParties);
     const itemsPerViewCount = {
       inbox: dialogsByView.inbox.length,
       drafts: dialogsByView.drafts.length,
       sent: dialogsByView.sent.length,
-      'saved-searches': savedSearchesData?.savedSearches?.length ?? 0,
+      'saved-searches': currentPartySavedSearches?.length ?? 0,
       archive: 0,
       deleted: 0,
     } as ItemPerViewCount;

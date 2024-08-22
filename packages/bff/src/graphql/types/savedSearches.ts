@@ -86,6 +86,7 @@ export const SavedSearchInput = inputObjectType({
   definition(t) {
     t.string('searchString');
     t.string('fromView');
+    t.string('urn');
     t.list.field('filters', { type: 'SearchDataValueFilterInput' });
   },
 });
@@ -152,6 +153,12 @@ export const SavedSearchData = objectType({
       description: 'fromView of savedSearch',
       resolve: (source, args, ctx, info) => {
         return source.fromView;
+      },
+    });
+    t.string('urn', {
+      description: 'urn of savedSearch',
+      resolve: (source, args, ctx, info) => {
+        return source.urn;
       },
     });
     t.field('filters', {

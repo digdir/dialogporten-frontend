@@ -86,7 +86,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
 
-  const { selectedParties } = useParties();
+  const { currentEndUser, selectedParties } = useParties();
   const { searchString } = useSearchString();
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
@@ -163,9 +163,11 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }, [itemsToDisplay, shouldShowSearchResults]);
 
   const handleSaveSearch = async () => {
+    console.log('handleSaveSearch currentEndUser', currentEndUser);
     try {
       const data: SavedSearchData = {
         filters: activeFilters as SearchDataValueFilter[],
+        urn: currentEndUser as string | undefined,
         searchString,
         fromView: Routes[viewType],
       };
@@ -219,7 +221,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         <section className={styles.filtersArea}>
           <div className={styles.gridContainer}>
             <div className={styles.filterSaveContainer}>
-              <PartyDropdown />
+              <PartyDropdown counterContext={viewType} />
             </div>
           </div>
         </section>
@@ -233,7 +235,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
-            <PartyDropdown />
+            <PartyDropdown counterContext={viewType} />
             <FilterBar
               ref={filterBarRef}
               settings={filterBarSettings}
