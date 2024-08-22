@@ -7,7 +7,6 @@ import {
   InboxFillIcon,
   TrashIcon,
 } from '@navikt/aksel-icons';
-import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useDialogs } from '../../api/useDialogs.tsx';
@@ -23,9 +22,8 @@ import styles from './navigationDropdownMenu.module.css';
 
 export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();
-  const { data } = useSavedSearches();
+  const { savedSearches } = useSavedSearches();
   const { pathname } = useLocation();
-  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
   const { parties } = useParties();
   const { dialogsByView } = useDialogs(parties);
 

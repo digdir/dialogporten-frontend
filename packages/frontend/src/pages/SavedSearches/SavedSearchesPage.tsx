@@ -1,6 +1,8 @@
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParties } from '../../api/useParties.ts';
+import { PartyDropdown } from '../../components/PartyDropdown/PartyDropdown.tsx';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { ConfirmDeleteDialog, type DeleteSearchDialogRef } from './ConfirmDeleteDialog/ConfirmDeleteDialog.tsx';
 import {
@@ -18,8 +20,9 @@ export const SavedSearchesPage = () => {
   const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment | null>(null);
   const [selectedDeleteItem, setSelectedDeleteItem] = useState<number | undefined>(undefined);
   const { t } = useTranslation();
-  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
-  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
+  const { selectedParties } = useParties();
+  const { currentPartySavedSearches: savedSearches, isLoading: isLoadingSavedSearches } =
+    useSavedSearches(selectedParties);
   const deleteDialogRef = useRef<DeleteSearchDialogRef>(null);
   const editSavedSearchDialogRef = useRef<EditSavedSearchDialogRef>(null);
   const formatDistance = useFormatDistance();
@@ -32,6 +35,13 @@ export const SavedSearchesPage = () => {
   if (!savedSearches?.length) {
     return (
       <main>
+        <section className={styles.filtersArea}>
+          <div className={styles.gridContainer}>
+            <div className={styles.filterSaveContainer}>
+              <PartyDropdown counterContext="saved-searches" />
+            </div>
+          </div>
+        </section>
         <section className={styles.savedSearchesWrapper}>
           <div className={styles.title}>{t('savedSearches.title', { count: 0 })}</div>
           <span>{t('savedSearches.noSearchesFound')}</span>
@@ -42,34 +52,43 @@ export const SavedSearchesPage = () => {
 
   return (
     <main>
-      <section className={styles.savedSearchesWrapper}>
-        <div className={styles.title}>{t('savedSearches.title', { count: savedSearches.length })}</div>
-        <div className={styles.savedSearchesList}>
-          {savedSearches.map((savedSearch, index) => (
-            <SavedSearchesItem
-              key={savedSearch?.id}
-              savedSearch={savedSearch}
-              isLast={index === savedSearches.length - 1}
-              actionPanel={
-                <SaveSearchesActions
-                  key={savedSearch.id}
-                  onEditBtnClick={(selectedValue: SavedSearchesFieldsFragment) => {
-                    setSelectedSavedSearch(selectedValue);
-                    editSavedSearchDialogRef.current?.openDialog();
-                  }}
-                  onDeleteBtnClick={(savedSearchToDelete: SavedSearchesFieldsFragment) => {
-                    setSelectedDeleteItem(savedSearchToDelete.id);
-                    deleteDialogRef.current?.openDialog();
-                  }}
-                  savedSearch={savedSearch}
-                />
-              }
-            />
-          ))}
+      <section className={styles.filtersArea}>
+        <div className={styles.gridContainer}>
+          <div className={styles.filterSaveContainer}>
+            <PartyDropdown counterContext="saved-searches" />
+          </div>
         </div>
-        <div className={styles.lastUpdated}>
-          {t('savedSearches.lastUpdated')}
-          {autoFormatRelativeTime(lastUpdated, formatDistance)}
+      </section>
+      <section>
+        <div className={styles.savedSearchesWrapper}>
+          <div className={styles.title}>{t('savedSearches.title', { count: savedSearches.length })}</div>
+          <div className={styles.savedSearchesList}>
+            {savedSearches.map((savedSearch, index) => (
+              <SavedSearchesItem
+                key={savedSearch?.id}
+                savedSearch={savedSearch}
+                isLast={index === savedSearches.length - 1}
+                actionPanel={
+                  <SaveSearchesActions
+                    key={savedSearch.id}
+                    onEditBtnClick={(selectedValue: SavedSearchesFieldsFragment) => {
+                      setSelectedSavedSearch(selectedValue);
+                      editSavedSearchDialogRef.current?.openDialog();
+                    }}
+                    onDeleteBtnClick={(savedSearchToDelete: SavedSearchesFieldsFragment) => {
+                      setSelectedDeleteItem(savedSearchToDelete.id);
+                      deleteDialogRef.current?.openDialog();
+                    }}
+                    savedSearch={savedSearch}
+                  />
+                }
+              />
+            ))}
+          </div>
+          <div className={styles.lastUpdated}>
+            {t('savedSearches.lastUpdated')}
+            {autoFormatRelativeTime(lastUpdated, formatDistance)}
+          </div>
         </div>
       </section>
       <EditSavedSearchDialog

@@ -2,23 +2,32 @@ import { Fragment, useMemo } from 'react';
 import { useQueryClient } from 'react-query';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
+import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { Avatar } from '../Avatar';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
+import type { SideBarView } from '../Sidebar/Sidebar.tsx';
 import { type MergedPartyGroup, groupParties, mergeParties } from './mergeParties.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyListProps {
   onOpenMenu: (value: boolean) => void;
+  counterContext?: SideBarView;
 }
-export const PartyList = ({ onOpenMenu }: PartyListProps) => {
+
+export const PartyList = ({ onOpenMenu, counterContext = 'inbox' }: PartyListProps) => {
   const { parties, setSelectedPartyIds, selectedParties } = useParties();
-  const { dialogs } = useDialogs(parties);
+  const { dialogsByView } = useDialogs(parties);
   const queryClient = useQueryClient();
+  const { savedSearches } = useSavedSearches(selectedParties);
 
   const optionsGroups: MergedPartyGroup = useMemo(() => {
-    return groupParties(parties.map((party) => mergeParties(party, dialogs)));
-  }, [parties, dialogs]);
+    return groupParties(
+      parties.map((party) =>
+        mergeParties(party, dialogsByView[counterContext as keyof typeof dialogsByView], savedSearches, counterContext),
+      ),
+    );
+  }, [parties, dialogsByView, savedSearches, counterContext]);
 
   return (
     <>
@@ -44,7 +53,8 @@ export const PartyList = ({ onOpenMenu }: PartyListProps) => {
                     count={option.count}
                     onClick={() => {
                       setSelectedPartyIds(option.onSelectValues);
-                      void queryClient.invalidateQueries({ queryKey: ['dialogs'] });
+                      void queryClient.invalidateQueries(['dialogs']);
+                      void queryClient.invalidateQueries(['savedSearches']);
                       onOpenMenu(false);
                     }}
                   />
