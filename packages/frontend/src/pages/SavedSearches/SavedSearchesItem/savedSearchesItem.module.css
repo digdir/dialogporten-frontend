@@ -3,18 +3,25 @@
   padding: 1rem;
 }
 
-.savedSearchesList {
-  background: #fff;
-  border-radius: 4px;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
 .savedSearchItem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 0 1rem;
+}
+
+.actionPanel {
+  max-width: 20%;
+}
+
+.goToSavedSearchLink {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 6px;
+  row-gap: 6px;
 }
 
 .renderButtons {
@@ -31,12 +38,21 @@
 }
 
 .searchDetails {
-  text-align: center;
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 500;
   line-height: 1.3;
   align-self: center;
+  max-width: 80%;
+  display: flex;
+}
+
+.searchDetailsTitle {
+  color: var(--black-100, #000);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
 }
 
 .searchString {

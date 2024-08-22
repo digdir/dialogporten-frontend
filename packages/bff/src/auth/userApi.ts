@@ -4,7 +4,7 @@ import fp from 'fastify-plugin';
 const plugin: FastifyPluginAsync = async (fastify, options) => {
   fastify.get(
     '/api/isAuthenticated',
-    { preValidation: fastify.verifyToken },
+    { preHandler: fastify.verifyToken(true) },
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         reply.send({

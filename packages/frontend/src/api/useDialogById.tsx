@@ -12,9 +12,10 @@ import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
-interface Participant {
-  label: string;
-  icon?: JSX.Element;
+export interface Participant {
+  name: string;
+  isCompany: boolean;
+  imageURL?: string;
 }
 
 interface InboxItemTag {
@@ -112,22 +113,22 @@ export function mapDialogDtoToInboxItem(
   const additionalInfoObj = item?.content?.additionalInfo?.value;
   const summaryObj = item?.content?.summary?.value;
   const mainContentReference = item?.content?.mainContentReference;
-  const nameOfParty = parties?.find((party) => party.party === item.party)?.name ?? '';
+  const endUserParty = parties?.find((party) => party.isCurrentEndUser);
+  const dialogReceiverParty = parties?.find((party) => party.party === item.party);
+  const actualReceiverParty = dialogReceiverParty ?? endUserParty;
   const serviceOwner = getOrganisation(item.org, 'nb');
   return {
     title: getPropertyByCultureCode(titleObj),
     description: getPropertyByCultureCode(summaryObj),
     toLabel: i18n.t('word.to'), // TODO: Remove this
     sender: {
-      label: serviceOwner?.name ?? item.org,
-      ...(serviceOwner?.logo
-        ? {
-            icon: <img src={serviceOwner?.logo} alt={`logo of ${serviceOwner?.name ?? item.org}`} />,
-          }
-        : {}),
+      name: serviceOwner?.name ?? '',
+      isCompany: true,
+      imageURL: serviceOwner?.logo,
     },
     receiver: {
-      label: nameOfParty,
+      name: actualReceiverParty?.name ?? '',
+      isCompany: actualReceiverParty?.partyType === 'Organisation',
     },
     tags: getTags(item, format),
     additionalInfo: getPropertyByCultureCode(additionalInfoObj),

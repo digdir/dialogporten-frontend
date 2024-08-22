@@ -26,6 +26,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof Avatar>;
 
+export const ImageURL: Story = {
+  args: {
+    companyName: 'NAV',
+    imageUrl: 'https://altinncdn.no/orgs/nav/nav.png',
+  },
+};
+
 export const ColorPlayground: StoryObj<typeof Avatar> = {
   render: (args) => {
     const [name, setName] = useState<string>(args.name);

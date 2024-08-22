@@ -1,0 +1,4 @@
+*                   @digdir/team-dialogporten-frontend
+.azure/**           @digdir/team-dialogporten-frontend @digdir/team-dialogporten-infra
+.github/**          @digdir/team-dialogporten-frontend @digdir/team-dialogporten-infra
+.github/CODEOWNERS  @digdir/team-dialogporten-frontend

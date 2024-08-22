@@ -46,7 +46,6 @@ const SaveSearchesActions = ({ savedSearch, onDeleteBtnClick, onEditBtnClick }: 
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <OpenSavedSearchLink savedSearch={savedSearch} />
     </div>
   );
 };
