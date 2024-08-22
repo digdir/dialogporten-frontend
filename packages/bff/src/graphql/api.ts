@@ -38,7 +38,7 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
 
   fastify.post(
     '/api/graphql',
-    { preValidation: fastify.verifyToken },
+    { preHandler: fastify.verifyToken(false) },
     createHandler({
       schema: stitchedSchema,
       context(request) {
