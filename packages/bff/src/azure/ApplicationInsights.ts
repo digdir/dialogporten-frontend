@@ -6,8 +6,9 @@ const { applicationInsights } = config;
 export const intitialize = () => {
   const { connectionString } = applicationInsights;
   if (!connectionString) {
-    console.error('Application Insights enabled, but connection string is missing.');
-    throw new Error('Unable to initialize Application Insights: Connection string not provided.');
+    const errorMsg = 'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.';
+    console.error(errorMsg);
+    throw new Error(errorMsg);
   }
 
   try {
@@ -24,6 +25,6 @@ export const intitialize = () => {
       .start();
   } catch (error) {
     console.error('Error initializing Application Insights:', error);
-    throw new Error('Failed to initialize Application Insights');
+    throw error;
   }
 };

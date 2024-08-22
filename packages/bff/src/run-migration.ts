@@ -9,11 +9,11 @@ export const runMigrationApp = async () => {
     try {
       intitialize();
     } catch (e) {
-      console.error(e);
-      process.exit(1);
+      console.error('Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.', e);
+      throw e;
     }
   } else {
-    console.error('Application Insights is not enabled');
+    console.warn('Application Insights is not enabled');
   }
 
   try {
