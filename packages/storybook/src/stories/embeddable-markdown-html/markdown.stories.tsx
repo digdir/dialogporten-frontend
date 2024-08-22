@@ -7,7 +7,7 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
-} as Meta<typeof Makrdown>;
+} as Meta<typeof Markdown>;
 
 export const Example: StoryObj<typeof Markdown> = {
   args: {
