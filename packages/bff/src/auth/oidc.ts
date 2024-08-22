@@ -13,7 +13,9 @@ import jwt from 'jsonwebtoken';
 declare module 'fastify' {
   interface FastifyInstance {
     idporten: OAuth2Namespace;
-    verifyToken: (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => void;
+    verifyToken: (
+      shouldRefresh: boolean,
+    ) => (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => void;
   }
 
   interface IdportenToken {
@@ -131,7 +133,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
   fastify.get(
     '/api/logout',
-    { preValidation: fastify.verifyToken },
+    { preHandler: fastify.verifyToken(false) },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const token: SessionStorageToken = request.session.get('token');
       const postLogoutRedirectUri = `${hostname}/loggedout`;
