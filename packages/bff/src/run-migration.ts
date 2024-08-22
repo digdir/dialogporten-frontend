@@ -1,20 +1,19 @@
-import util from 'node:util';
 import 'reflect-metadata';
-import { initAppInsightWithRetry } from './azure/ApplicationInsightsInit.ts';
+import { intitialize } from './azure/ApplicationInsights.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
 
 export const runMigrationApp = async () => {
   // App Insight setup
-  if (config.applicationInsights.connectionString) {
+  if (config.applicationInsights.enabled) {
     try {
-      await initAppInsightWithRetry(config.applicationInsights.connectionString, 10);
+      intitialize();
     } catch (e) {
       console.error(e);
       process.exit(1);
     }
   } else {
-    console.error('Missing config for AppInsight');
+    console.error('Application Insights is not enabled');
   }
 
   try {

@@ -94,6 +94,10 @@ var containerAppEnvVars = [
     value: appInsightConnectionString
   }
   {
+    name: 'APPLICATIONINSIGHTS_ENABLED'
+    value: 'true'
+  }
+  {
     name: 'AZURE_APPCONFIG_URI'
     value: appConfiguration.properties.endpoint
   }
