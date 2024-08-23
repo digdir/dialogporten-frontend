@@ -1,38 +1,12 @@
 import { Link } from '@digdir/designsystemet-react';
 import { FileIcon } from '@navikt/aksel-icons';
 import { AttachmentUrlConsumer } from 'bff-types-generated';
-import { Markdown } from 'embeddable-markdown-html';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
 import { Avatar } from '../Avatar';
+import { MainContentReference } from '../MainContentReference';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
-
-const MainContentReference = (args: DialogByIdDetails['mainContentReference']) => {
-  const [markdown, setMarkdown] = useState('');
-
-  useEffect(() => {
-    if (!args || !args.url || args.type === 'unknown') {
-      return;
-    }
-
-    // TODO: fetch url and get markdown
-    setMarkdown('# example markdown');
-  }, [args]);
-
-  if (!args || !args.url || args.type === 'unknown') {
-    return null;
-  }
-
-  switch (args.type) {
-    case 'markdown':
-      return <Markdown>{markdown}</Markdown>;
-
-    default:
-      return <div>Error parsing 'mainContentReference', unknown type</div>;
-  }
-};
 
 /**
  * Displays detailed information about an inbox item, including title, description, sender, receiver, attachments, tags, and GUI actions.
@@ -90,6 +64,7 @@ export const InboxItemDetail = ({
           <span className={styles.participantLabel}>{receiver?.name}</span>
         </div>
       </div>
+      {mainContentReference && <MainContentReference args={mainContentReference} dialogToken={dialogToken} />}
       <section className={styles.descriptionContainer}>
         {typeof description === 'string' ? (
           <p className={styles.description}>{description}</p>
@@ -152,7 +127,6 @@ export const InboxItemDetail = ({
           })}
       </section>
       {additionalInfo && <section className={styles.additionalInfo}>{additionalInfo}</section>}
-      {mainContentReference && <MainContentReference {...mainContentReference} />}
     </section>
   );
 };
