@@ -1,5 +1,4 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons';
-import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useSearchDialogs } from '../../api/useDialogs';
@@ -25,8 +24,7 @@ interface SearchDropdownProps {
 
 export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu, onClose, searchValue, onSearch }) => {
   const { t } = useTranslation();
-  const { data, isLoading: isLoadingSavedSearches } = useSavedSearches();
-  const savedSearches = data?.savedSearches as SavedSearchesFieldsFragment[];
+  const { savedSearches, isLoading: isLoadingSavedSearches } = useSavedSearches();
   const { parties } = useParties();
   const { searchResults, isFetching } = useSearchDialogs({ parties, searchString: searchValue });
   const formatDistance = useFormatDistance();

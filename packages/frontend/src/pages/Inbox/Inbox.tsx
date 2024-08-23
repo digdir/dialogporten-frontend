@@ -2,6 +2,7 @@ import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '
 import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
@@ -77,6 +78,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const format = useFormat();
   const filterBarRef = useRef<FilterBarRef>(null);
   const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
+  const queryClient = useQueryClient();
 
   const location = useLocation();
   const { t } = useTranslation();
@@ -166,6 +168,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
     try {
       const data: SavedSearchData = {
         filters: activeFilters as SearchDataValueFilter[],
+        urn: selectedParties.map((party) => party.party) as string[],
         searchString,
         fromView: Routes[viewType],
       };
@@ -183,6 +186,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       console.error('Error creating saved search: ', error);
     } finally {
       setIsSavingSearch(false);
+      void queryClient.invalidateQueries(['savedSearches']);
     }
   };
 
@@ -219,7 +223,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         <section className={styles.filtersArea}>
           <div className={styles.gridContainer}>
             <div className={styles.filterSaveContainer}>
-              <PartyDropdown />
+              <PartyDropdown counterContext={viewType} />
             </div>
           </div>
         </section>
@@ -233,7 +237,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
-            <PartyDropdown />
+            <PartyDropdown counterContext={viewType} />
             <FilterBar
               ref={filterBarRef}
               settings={filterBarSettings}
