@@ -16,7 +16,6 @@ export const PartyList = ({ onOpenMenu }: PartyListProps) => {
   const { dialogs } = useDialogs(parties);
   const queryClient = useQueryClient();
 
-  // biome-ignore lint: lint/correctness/useExhaustiveDependencies
   const optionsGroups: MergedPartyGroup = useMemo(() => {
     return groupParties(parties.map((party) => mergeParties(party, dialogs)));
   }, [parties, dialogs]);
