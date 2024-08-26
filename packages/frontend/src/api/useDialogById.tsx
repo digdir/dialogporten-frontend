@@ -137,7 +137,7 @@ export function mapDialogDtoToInboxItem(
       url: guiAction.url,
       hidden: !guiAction.isAuthorized,
       priority: guiAction.priority,
-      httpMethod: guiAction.action,
+      httpMethod: guiAction.httpMethod,
       title: getPropertyByCultureCode(guiAction.title),
       prompt: getPropertyByCultureCode(guiAction.prompt),
       isDeleteAction: guiAction.isDeleteDialogAction,

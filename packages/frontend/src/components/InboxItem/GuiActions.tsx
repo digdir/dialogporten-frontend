@@ -13,7 +13,7 @@ export interface GuiActionButtonProps {
   url: string;
   priority: GuiActionPriority;
   isDeleteAction: boolean;
-  httpMethod: string;
+  httpMethod: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'TRACE' | 'CONNECT';
   title: string;
   prompt?: string;
   disabled?: boolean;
@@ -40,7 +40,7 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
   }
 
   if (httpMethod === 'GET') {
-    window.location.href = url;
+    window.open(url, '_blank');
   } else {
     try {
       const response = await fetch(url, {
