@@ -6,6 +6,8 @@ param imageTag string
 param environment string
 @minLength(3)
 param location string
+@minLength(3)
+param oicdUrl string
 
 @minLength(3)
 @secure()
@@ -112,7 +114,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'OIDC_URL'
-    value: 'test.idporten.no'
+    value: oicdUrl
   }
   {
     name: 'SESSION_SECRET'
