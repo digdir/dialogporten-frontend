@@ -11,6 +11,8 @@ param port int = 80
 param hostName string
 @minLength(3)
 param dialogportenURL string
+@minLength(3)
+param oicdUrl string
 param minReplicas int
 param maxReplicas int
 
@@ -127,7 +129,7 @@ var containerAppEnvVars = [
   }
   {
     name: 'OIDC_URL'
-    value: 'test.idporten.no'
+    value: oicdUrl
   }
   {
     name: 'SESSION_SECRET'
