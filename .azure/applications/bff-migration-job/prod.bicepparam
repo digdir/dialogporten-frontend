@@ -3,7 +3,7 @@ using './main.bicep'
 param environment = 'prod'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param oicdUrl = 'https://idporten.no'
+param oicdUrl = 'idporten.no'
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')
