@@ -54,7 +54,7 @@
   "inbox.attachment.count": "{count, plural, =0 {No attachments} one {# attachment} other {# attachments}}",
   "inbox.attachment.link": "Link as attachment",
   "inbox.heading.choose_all": "Select All",
-  "inbox.heading.events": "{count, plural, =0 {No events} one {# event} other {# events}}",
+  "inbox.heading.attachments": "{count, plural, =0 {No attachments} one {# attachment} other {# attachments}}",
   "inbox.heading.no_results": "No messages",
   "inbox.heading.search_results.draft": "{count, plural, =0 {No hits} one {# hit} other {# hits}} in drafts",
   "inbox.heading.search_results.inbox": "{count, plural, =0 {No hits} one {# hit} other {# hits}} in inbox",

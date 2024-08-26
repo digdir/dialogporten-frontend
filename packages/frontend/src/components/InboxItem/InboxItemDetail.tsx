@@ -49,6 +49,11 @@ export const InboxItemDetail = ({
   },
 }: { dialog: DialogByIdDetails }): JSX.Element => {
   const { t } = useTranslation();
+  const attachmentCount = attachments.reduce(
+    (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
+    0,
+  );
+
   return (
     <section className={styles.inboxItemDetail}>
       <header className={styles.header}>
@@ -56,7 +61,7 @@ export const InboxItemDetail = ({
       </header>
       <div className={styles.participants}>
         <div className={styles.sender}>
-          <Avatar name={sender?.name} imageUrl={sender?.imageURL} />
+          <Avatar name={sender?.name ?? ''} imageUrl={sender?.imageURL} />
           <span className={styles.participantLabel}>{sender?.name}</span>
         </div>
         <span>{toLabel}</span>
@@ -64,13 +69,35 @@ export const InboxItemDetail = ({
           <span className={styles.participantLabel}>{receiver?.name}</span>
         </div>
       </div>
-      {mainContentReference && <MainContentReference args={mainContentReference} dialogToken={dialogToken} />}
       <section className={styles.descriptionContainer}>
         {typeof description === 'string' ? (
           <p className={styles.description}>{description}</p>
         ) : (
           <div>{description}</div>
         )}
+        {mainContentReference && <MainContentReference args={mainContentReference} dialogToken={dialogToken} />}
+        <section>
+          <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
+          <ul className={styles.attachments}>
+            {attachments.map((attachment) =>
+              attachment.urls
+                .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
+                .map((url) => (
+                  <li key={url.id} className={styles.attachmentItem}>
+                    <FileIcon fontSize="1.5rem" />
+                    <Link
+                      href={url.url}
+                      aria-label={t('inbox.attachment.link', {
+                        label: url.url,
+                      })}
+                    >
+                      {getPropertyByCultureCode(attachment.displayName) || url.url}
+                    </Link>
+                  </li>
+                )),
+            )}
+          </ul>
+        </section>
         <GuiActions
           actions={guiActions}
           dialogToken={dialogToken}
@@ -86,45 +113,6 @@ export const InboxItemDetail = ({
             </div>
           ))}
         </div>
-      </section>
-      <section className={styles.activities}>
-        <h2>{t('inbox.heading.events', { count: attachments.length })}</h2>
-        {attachments
-          .slice()
-          .reverse()
-          .map((attachment) => {
-            const attachmentCount = attachment.urls.length;
-            return (
-              <section key={attachment.id}>
-                <span>Performed by: TODO</span>
-                <div className={styles.elements}>
-                  <h2 id="attachmentTitle" className={styles.attachmentTitle}>
-                    {t('inbox.attachment.count', {
-                      count: attachmentCount,
-                    })}
-                    <ul className={styles.attachmentItem}>
-                      {attachment.urls
-                        .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
-                        .map((url) => (
-                          <li key={url.url}>
-                            {/* TODO: Icon should render differently depending on url.mediaType */}
-                            <FileIcon />
-                            <Link
-                              href={url.url}
-                              aria-label={t('inbox.attachment.link', {
-                                label: url.url,
-                              })}
-                            >
-                              {getPropertyByCultureCode(attachment.displayName) || url.url}
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </h2>
-                </div>
-              </section>
-            );
-          })}
       </section>
       {additionalInfo && <section className={styles.additionalInfo}>{additionalInfo}</section>}
     </section>
