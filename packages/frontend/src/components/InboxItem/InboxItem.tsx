@@ -89,13 +89,13 @@ export const InboxItem = ({
   receiver,
   toLabel,
   tags = [],
-  isChecked = false,
   onCheckedChange,
   checkboxValue,
-  isUnread = false,
   linkTo,
-  isMinimalistic = false,
   onClose,
+  isUnread = false,
+  isMinimalistic = false,
+  isChecked = false,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
 
@@ -197,7 +197,7 @@ export const InboxItem = ({
           <div className={styles.participants}>
             <div className={styles.sender}>
               <Avatar
-                name={sender?.name}
+                name={sender?.name ?? ''}
                 companyName={sender?.isCompany ? sender?.name : ''}
                 imageUrl={sender.imageURL}
                 size="small"
@@ -211,7 +211,7 @@ export const InboxItem = ({
           </div>
           <p className={styles.description}>{description}</p>
           <div className={styles.tags}>
-            {tags.map((tag) => (
+            {tags?.map((tag) => (
               <div key={tag.label} className={styles.tag}>
                 {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
                 <span> {tag.label}</span>
