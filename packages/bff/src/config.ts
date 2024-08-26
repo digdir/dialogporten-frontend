@@ -8,10 +8,10 @@ const envVariables = z.object({
   DB_CONNECTION_STRING: z.string().default('postgres://postgres:mysecretpassword@localhost:5432/dialogporten'),
   TYPEORM_SYNCHRONIZE_ENABLED: z.coerce.boolean().default(false),
   APPLICATIONINSIGHTS_CONNECTION_STRING: z.string().optional(),
+  APPLICATIONINSIGHTS_ENABLED: z.string().default('false'),
   PORT: z.coerce.number().default(3000),
   OIDC_URL: z.string().default('test.idporten.no'),
   HOSTNAME: z.string().default('http://localhost'),
-  ENABLE_APP_INSIGHTS: z.string().default('false'),
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
   ENABLE_HTTPS: z.boolean().default(false),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
@@ -27,13 +27,13 @@ const env = envVariables.parse(process.env);
 const config = {
   version: env.GIT_SHA,
   port: env.PORT,
-  isAppInsightsEnabled: env.ENABLE_APP_INSIGHTS === 'true',
   host: env.HOST,
   oidc_url: env.OIDC_URL,
   hostname: env.HOSTNAME,
   client_id: env.CLIENT_ID,
   client_secret: env.CLIENT_SECRET,
   applicationInsights: {
+    enabled: env.APPLICATIONINSIGHTS_ENABLED === 'true',
     connectionString: env.APPLICATIONINSIGHTS_CONNECTION_STRING,
   },
   postgresql: {

@@ -22,7 +22,8 @@ describe('mergeParties', () => {
       isCompany: true,
       value: 'party1',
       onSelectValues: ['party1', 'subParty1', 'subParty2'],
-      count: 3,
+      count: 1,
+      isCurrentEndUser: false,
     });
   });
 
@@ -42,6 +43,7 @@ describe('mergeParties', () => {
       value: 'party2',
       onSelectValues: ['party2'],
       count: 1,
+      isCurrentEndUser: false,
     });
   });
 
@@ -61,7 +63,8 @@ describe('mergeParties', () => {
       isCompany: true,
       value: 'party3',
       onSelectValues: ['party3', 'subParty3'],
-      count: 2,
+      count: 1,
+      isCurrentEndUser: false,
     });
   });
 });

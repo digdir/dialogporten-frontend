@@ -26,7 +26,7 @@ interface InboxItemTag {
 
 interface MainContentReference {
   url: string;
-  type: 'markdown' | 'unknown';
+  mediaType: 'markdown' | 'html' | 'unknown';
 }
 
 export interface DialogByIdDetails {
@@ -39,8 +39,8 @@ export interface DialogByIdDetails {
   guiActions: GuiActionButtonProps[];
   additionalInfo: string | React.ReactNode;
   attachments: AttachmentFieldsFragment[];
-  mainContentReference?: MainContentReference;
   dialogToken: string;
+  mainContentReference?: MainContentReference;
 }
 
 interface UseDialogByIdOutput {
@@ -91,13 +91,13 @@ const getMainContentReference = (
   const { value, mediaType } = args;
   const url = getPropertyByCultureCode(value);
 
+  /* TODO: add support for frontchannelembed+json;type=html */
   switch (mediaType) {
-    case 'markdown':
     case 'text/markdown':
-    case 'text/x-markdown':
-      return { url, type: 'markdown' };
+    case 'application/vnd.dialogporten.frontchannelembed+json;type=markdown':
+      return { url, mediaType: 'markdown' };
     default:
-      return { url, type: 'unknown' };
+      return { url, mediaType: 'unknown' };
   }
 };
 
@@ -137,7 +137,7 @@ export function mapDialogDtoToInboxItem(
       url: guiAction.url,
       hidden: !guiAction.isAuthorized,
       priority: guiAction.priority,
-      httpMethod: guiAction.action,
+      httpMethod: guiAction.httpMethod,
       title: getPropertyByCultureCode(guiAction.title),
       prompt: getPropertyByCultureCode(guiAction.prompt),
       isDeleteAction: guiAction.isDeleteDialogAction,

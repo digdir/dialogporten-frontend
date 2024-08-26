@@ -1,4 +1,6 @@
-import type { PartyFieldsFragment } from 'bff-types-generated';
+import type { PartyFieldsFragment, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { filterSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
+import type { SideBarView } from '../Sidebar';
 
 type Dialog = {
   party: string;
@@ -42,7 +44,19 @@ export function groupParties(mergedParties: MergedParty[]): MergedPartyGroup {
   );
 }
 
-export function mergeParties(party: PartyFieldsFragment, dialogs: Dialog[]): MergedParty {
+export function mergeParties(
+  party: PartyFieldsFragment,
+  dialogs: Dialog[],
+  savedSearches?: SavedSearchesFieldsFragment[],
+  counterContext?: SideBarView,
+): MergedParty {
+  let count = 0;
+  if (counterContext === 'saved-searches') {
+    count = filterSavedSearches(savedSearches ?? [], [party]).length ?? 0;
+  } else {
+    count = dialogs?.filter((dialogs) => dialogs?.party === party.party).length ?? 0;
+  }
+
   const mergedParties = party.subParties?.reduce(
     (acc, subParty) => {
       if (subParty.name === party.name) {
@@ -60,7 +74,7 @@ export function mergeParties(party: PartyFieldsFragment, dialogs: Dialog[]): Mer
     isCompany: party.partyType === 'Organization',
     value: party.party,
     onSelectValues: mergedParties,
-    count: dialogs.filter((dialog) => mergedParties.includes(dialog.party)).length,
-    isCurrentEndUser: party.isCurrentEndUser,
+    count,
+    isCurrentEndUser: party.isCurrentEndUser ?? false,
   };
 }

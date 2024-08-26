@@ -1,0 +1,1 @@
+export { MainContentReference } from './MainContentReference';
