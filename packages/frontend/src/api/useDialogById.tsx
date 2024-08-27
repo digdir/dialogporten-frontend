@@ -143,12 +143,11 @@ export function mapDialogDtoToInboxItem(
       isDeleteAction: guiAction.isDeleteDialogAction,
       disabled: !guiAction.isAuthorized,
     })),
-    attachments: item.attachments,
+    attachments: item.attachments.filter((attachment) => attachment.urls.length > 0),
     mainContentReference: getMainContentReference(mainContentReference),
     dialogToken: item.dialogToken!,
   };
 }
-
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
   const format = useFormat();
   const partyURIs = parties.map((party) => party.party);

@@ -27,6 +27,8 @@
   --Company-Paper: #e9f5ff;
   --Action-Important: #e02e49;
   --Action-Danger: #861c2c;
+  --text-neutral-subtle: #5b6471;
+  --text-accent-suble: #0163ba;
 
   /* Profile variables */
   --background-color: var(--Person-Paper);
