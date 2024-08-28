@@ -368,8 +368,8 @@ importers:
   packages/frontend:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.11.0-next.10
-        version: 0.11.0-next.10
+        specifier: 0.11.0-next.12
+        version: 0.11.0-next.12
       '@digdir/designsystemet-react':
         specifier: 1.0.0-next.15
         version: 1.0.0-next.15(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -471,8 +471,8 @@ importers:
   packages/storybook:
     dependencies:
       '@digdir/designsystemet-css':
-        specifier: 0.11.0-next.10
-        version: 0.11.0-next.10
+        specifier: 0.11.0-next.12
+        version: 0.11.0-next.12
       '@digdir/designsystemet-react':
         specifier: 1.0.0-next.15
         version: 1.0.0-next.15(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -5174,8 +5174,8 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  /@digdir/designsystemet-css@0.11.0-next.10:
-    resolution: {integrity: sha512-RvHqkGCKQ15kHNvGzNtsak9ujuiGQSYDRUf0IqPhxmLBUT2iBKCDM/wPqUhxhZpbPkWt3bTRWQ20au7d/IOE0w==}
+  /@digdir/designsystemet-css@0.11.0-next.12:
+    resolution: {integrity: sha512-7I7+b2ik1J9o+0yB3eAUu4bARv8JoUbQWiIl+ChdPT/9jYDyEHK/tgLxncrWZHnF+vqbgbqi5rlmeUuqdF+p2Q==}
     dev: false
 
   /@digdir/designsystemet-react@1.0.0-next.15(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1):
