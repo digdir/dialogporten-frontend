@@ -22,11 +22,12 @@ export const useParties = (): UsePartiesOutput => {
     async () => {
       const response = await fetchParties();
       return {
-        parties:
+        parties: (
           response.parties.map((party) => ({
             ...party,
             name: toTitleCase(party.name),
-          })) ?? [],
+          })) ?? []
+        ).filter((party) => !party.isDeleted),
       };
     },
     {
