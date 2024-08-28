@@ -8,6 +8,7 @@ fragment partyFields on AuthorizedParty {
       isMainAdministrator
       name
       isCurrentEndUser
+      isDeleted
 }
 
 fragment subPartyFields on AuthorizedParty {
