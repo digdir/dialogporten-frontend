@@ -30,7 +30,7 @@ export const runMigrationApp = async () => {
     // Disconnect from database
     await dataSource.destroy();
 
-    console.log('Migration successful');
+    console.log('Miwgration successful');
   } catch (error) {
     console.error('Migration failed: ', error);
     process.exit(1);
