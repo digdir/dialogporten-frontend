@@ -1,13 +1,14 @@
 import pino, { type LevelWithSilent } from 'pino'
+import z from 'zod';
 
-// zodify
-const formatLogsAsJson = process.env.LOGGER_FORMAT === 'json'
+const envVariables = z.object({
+  LOGGER_FORMAT: z.enum(['json', 'pretty']).default('pretty'),
+  LOG_LEVEL: z.enum(Object.keys(pino.levels.values) as [LevelWithSilent, ...LevelWithSilent[]]).default('info'),
+});
 
-const DEFAULT_LOG_LEVEL = 'info'
+const env = envVariables.parse(process.env);
 
-// todo: zodify
-const selectedLogLevel: LevelWithSilent = process.env.LOG_LEVEL as LevelWithSilent || DEFAULT_LOG_LEVEL
-console.info(`node-logger: Log level set to ${selectedLogLevel}`)
+console.info(`node-logger: Log level set to ${env.LOG_LEVEL}`)
 
 const defaultOptions: pino.LoggerOptions = {
   formatters: {
@@ -17,33 +18,26 @@ const defaultOptions: pino.LoggerOptions = {
       return { level: label }
     },
   },
-  level: selectedLogLevel,
+  level: env.LOG_LEVEL,
 }
+
+const prettyTransport = pino.transport({
+  target: 'pino-pretty',
+  options: {
+    destination: 1, // stdout
+    colorize: true,
+    levelFirst: true,
+  },
+})
 
 let logger: pino.Logger
 
-if (formatLogsAsJson) {
-  logger = pino({
+logger = pino(
+  {
     ...defaultOptions,
-    // this timestamp is used by application insights to determine the timestamp of the log message
-    // todo: double check and link to documentation
-    timestamp: () => `,"TimeGenerated [UTC]":"${new Date().toISOString()}"`,
-  })
-} else {
-  logger = pino(
-    {
-      ...defaultOptions,
-    },
-    pino.transport({
-      target: 'pino-pretty',
-      options: {
-        destination: 1, // stdout
-        colorize: true,
-        levelFirst: true,
-      },
-    })
-  )
-}
+  },
+  env.LOGGER_FORMAT === 'json' ? undefined : prettyTransport
+)
 
 export const createContextLogger = (
   context: Record<string | number | symbol, unknown>
@@ -51,13 +45,13 @@ export const createContextLogger = (
   const child = logger.child(context)
   
   return {
-    trace: child.trace,
-    debug: child.debug,
-    info: child.info,
-    warn: child.warn,
-    error: child.error,
-    fatal: child.fatal,
-    silent: child.silent,
+    trace: child.trace.bind(child),
+    debug: child.debug.bind(child),
+    info: child.info.bind(child),
+    warn: child.warn.bind(child),
+    error: child.error.bind(child),
+    fatal: child.fatal.bind(child),
+    silent: child.silent.bind(child),
   }
 }
 
@@ -72,11 +66,11 @@ if (process.env.TEST_LOGGING) {
 }
 
 export default {
-  trace: logger.trace,
-  debug: logger.debug,
-  info: logger.info,
-  warn: logger.warn,
-  error: logger.error,
-  fatal: logger.fatal,
-  silent: logger.silent,
+  trace: logger.trace.bind(logger),
+  debug: logger.debug.bind(logger),
+  info: logger.info.bind(logger),
+  warn: logger.warn.bind(logger),
+  error: logger.error.bind(logger),
+  fatal: logger.fatal.bind(logger),
+  silent: logger.silent.bind(logger),
 }
