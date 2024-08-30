@@ -1,24 +1,32 @@
-import pino from 'pino'
+import pino, { type LevelWithSilent } from 'pino'
 
-const shouldFormatLogsToJSON = process.env.LOGGER_FORMAT === 'json'
+// zodify
+const formatLogsAsJson = process.env.LOGGER_FORMAT === 'json'
 
 const DEFAULT_LOG_LEVEL = 'info'
+
+// todo: zodify
+const selectedLogLevel: LevelWithSilent = process.env.LOG_LEVEL as LevelWithSilent || DEFAULT_LOG_LEVEL
+console.info(`node-logger: Log level set to ${selectedLogLevel}`)
 
 const defaultOptions: pino.LoggerOptions = {
   formatters: {
     level: (label: string) => {
       // specify that we want to use the log level label instead of the value for easier consumption by third party services
+      // label will be the actual textual representation of the log level (e.g. "info", "debug", "error", etc.)
       return { level: label }
     },
   },
+  level: selectedLogLevel,
 }
 
 let logger: pino.Logger
 
-if (shouldFormatLogsToJSON) {
+if (formatLogsAsJson) {
   logger = pino({
     ...defaultOptions,
     // this timestamp is used by application insights to determine the timestamp of the log message
+    // todo: double check and link to documentation
     timestamp: () => `,"TimeGenerated [UTC]":"${new Date().toISOString()}"`,
   })
 } else {
@@ -37,36 +45,23 @@ if (shouldFormatLogsToJSON) {
   )
 }
 
-type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal' | 'silent'
-
-const selectedLogLevel: LogLevel = process.env.LOG_LEVEL as LogLevel
-if (selectedLogLevel && logger.levels.values[selectedLogLevel]) {
-  const logLevelVal = logger.levels.values[selectedLogLevel]
-  logger.level = logger.levels.labels[logLevelVal]
-  console.info(`node-logger: Log level set to ${selectedLogLevel}`)
-} else {
-  logger.level = DEFAULT_LOG_LEVEL
-  console.info(
-    `node-logger: Log level set to default log level ${DEFAULT_LOG_LEVEL}`
-  )
-}
-
 export const createContextLogger = (
   context: Record<string | number | symbol, unknown>
 ) => {
   const child = logger.child(context)
-
+  
   return {
-    trace: child.trace.bind(child),
-    debug: child.debug.bind(child),
-    info: child.info.bind(child),
-    warn: child.warn.bind(child),
-    error: child.error.bind(child),
-    fatal: child.fatal.bind(child),
-    silent: child.silent.bind(child),
+    trace: child.trace,
+    debug: child.debug,
+    info: child.info,
+    warn: child.warn,
+    error: child.error,
+    fatal: child.fatal,
+    silent: child.silent,
   }
 }
 
+// todo: zodify
 if (process.env.TEST_LOGGING) {
   logger.debug('Debug test')
   logger.trace('Trace test')
@@ -77,11 +72,11 @@ if (process.env.TEST_LOGGING) {
 }
 
 export default {
-  trace: logger.trace.bind(logger),
-  debug: logger.debug.bind(logger),
-  info: logger.info.bind(logger),
-  warn: logger.warn.bind(logger),
-  error: logger.error.bind(logger),
-  fatal: logger.fatal.bind(logger),
-  silent: logger.silent.bind(logger),
+  trace: logger.trace,
+  debug: logger.debug,
+  info: logger.info,
+  warn: logger.warn,
+  error: logger.error,
+  fatal: logger.fatal,
+  silent: logger.silent,
 }
