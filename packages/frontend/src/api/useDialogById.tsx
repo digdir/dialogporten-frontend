@@ -1,6 +1,7 @@
 import { ClockIcon, EyeIcon } from '@navikt/aksel-icons';
 import type {
   AttachmentFieldsFragment,
+  DialogActivityFragment,
   DialogByIdFieldsFragment,
   GetDialogByIdQuery,
   PartyFieldsFragment,
@@ -29,9 +30,15 @@ interface MainContentReference {
   mediaType: 'markdown' | 'html' | 'unknown';
 }
 
+export interface DialogActivity {
+  id: string;
+  type: DialogActivityFragment['type'];
+  createdAt: string;
+  description: string;
+  performedBy: DialogActivityFragment['performedBy'];
+}
 export interface DialogByIdDetails {
-  toLabel: string;
-  description: string | React.ReactNode;
+  description: string;
   sender: Participant;
   receiver: Participant;
   title: string;
@@ -41,6 +48,7 @@ export interface DialogByIdDetails {
   attachments: AttachmentFieldsFragment[];
   dialogToken: string;
   mainContentReference?: MainContentReference;
+  activities: DialogActivity[];
 }
 
 interface UseDialogByIdOutput {
@@ -120,7 +128,6 @@ export function mapDialogDtoToInboxItem(
   return {
     title: getPropertyByCultureCode(titleObj),
     description: getPropertyByCultureCode(summaryObj),
-    toLabel: i18n.t('word.to'), // TODO: Remove this
     sender: {
       name: serviceOwner?.name ?? '',
       isCompany: true,
@@ -146,6 +153,15 @@ export function mapDialogDtoToInboxItem(
     attachments: item.attachments.filter((attachment) => attachment.urls.length > 0),
     mainContentReference: getMainContentReference(mainContentReference),
     dialogToken: item.dialogToken!,
+    activities: item.activities
+      .map((activity) => ({
+        id: activity.id,
+        type: activity.type,
+        createdAt: activity.createdAt,
+        performedBy: activity.performedBy,
+        description: getPropertyByCultureCode(activity.description),
+      }))
+      .reverse(),
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {

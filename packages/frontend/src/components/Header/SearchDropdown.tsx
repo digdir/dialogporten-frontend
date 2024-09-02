@@ -59,7 +59,6 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 key={item.id}
                 checkboxValue={item.id}
                 title={item.title}
-                toLabel={t('word.to')}
                 description={item.description}
                 sender={item.sender}
                 receiver={item.receiver}

@@ -27,7 +27,6 @@ export const SimpleDesktopExample = () => {
         description="Eksempel på en beskrivelse av en ulest melding"
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        toLabel="til"
         tags={[
           { label: '19.01.2024', icon: <CalendarIcon /> },
           { label: 'Viktig!', icon: <SealIcon /> },
@@ -42,7 +41,6 @@ export const SimpleDesktopExample = () => {
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin, nisi vitae auctor accumsan, odio ipsum efficitur nulla, eu tempus sem leo et felis. Curabitur vel varius tortor. Proin semper in nisl eget venenatis. Vestibulum egestas urna id sapien iaculis, id consequat ante varius. Vestibulum vel facilisis nulla. Aenean vitae orci est. Nulla at sagittis mauris. Vestibulum nisl nibh, pulvinar non odio quis, fermentum aliquet tortor. Mauris imperdiet ante lacus. Sed pretium, lorem sed ornare vehicula, neque diam dictum massa, et aliquam lectus metus sit amet nunc. Aliquam erat volutpat. Aliquam ac massa mauris"
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        toLabel="til"
         tags={[
           { label: '16.01.2024', icon: <CalendarIcon /> },
           { label: 'Viktig!', icon: <SealIcon /> },
@@ -56,7 +54,6 @@ export const SimpleDesktopExample = () => {
         description="Integer lacinia ornare ex id consequat. Vivamus condimentum ex vitae elit dignissim convallis. Vivamus nec velit lacus. Vestibulum pharetra pharetra nibh vitae auctor."
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        toLabel="til"
         tags={[
           { label: '12.01.2024', icon: <CalendarIcon /> },
           { label: 'Viktig!', icon: <SealIcon /> },

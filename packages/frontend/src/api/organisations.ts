@@ -83,7 +83,7 @@ const organisations: OrganisationBody = {
         nb: 'Digitaliseringsdirektoratet',
         nn: 'Digitaliseringsdirektoratet',
       },
-      logo: 'https://altinncdn.no/orgs/dsb/dsb.png',
+      logo: '',
       orgnr: '991825827',
       homepage: 'https://www.digdir.no',
       environments: ['tt02', 'production'],

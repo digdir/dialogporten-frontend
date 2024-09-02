@@ -50,7 +50,6 @@ export interface InboxItemInput {
   date: string;
   createdAt: string;
   status: DialogStatus;
-  isModifiedLastByServiceOwner: boolean;
   isSeenByEndUser: boolean;
 }
 interface DialogCategory {
@@ -328,7 +327,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   key={item.id}
                   checkboxValue={item.id}
                   title={item.title}
-                  toLabel={t('word.to')}
                   description={item.description}
                   sender={item.sender}
                   receiver={item.receiver}
