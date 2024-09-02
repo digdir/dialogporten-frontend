@@ -37,7 +37,7 @@ const startServer = async (): Promise<void> => {
     try {
       intitializeApplicationInsights();
     } catch (error) {
-      logger.error(error, 'Error initializing Application Insights:');
+      logger.error(error, 'Error initializing Application Insights');
       throw error;
     }
   }
