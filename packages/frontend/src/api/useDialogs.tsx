@@ -7,9 +7,10 @@ import {
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
+import type { InboxItemMetaField } from '../components/index.ts';
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
-import type { InboxItemInput, InboxItemTag } from '../pages/Inbox/Inbox.tsx';
+import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
@@ -59,7 +60,7 @@ export function mapDialogDtoToInboxItem(
         name: actualReceiverParty?.name ?? '',
         isCompany: actualReceiverParty?.partyType === 'Organisation',
       },
-      tags: getTags(item, isSeenByEndUser, format),
+      metaFields: getTags(item, isSeenByEndUser, format),
       linkTo: `/inbox/${item.id}`,
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
@@ -169,24 +170,24 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
 
 export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
-  const tags: InboxItemTag[] = [];
+  const metaFields: InboxItemMetaField[] = [];
 
-  tags.push({
+  metaFields.push({
     type: 'status',
     label: `${i18n.t('word.status')}: ${item.status}`,
   });
 
-  tags.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH:mm') });
+  metaFields.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH:mm') });
 
   if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
-    tags.push({
+    metaFields.push({
       type: 'attachment',
       label: i18n.t('dialogs.attachment_count', { count: item.guiAttachmentCount }),
     });
   }
 
   if (isSeenByEndUser && nOtherSeen) {
-    tags.push({
+    metaFields.push({
       type: 'seenBy',
       label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')} ${i18n.t('word.and')} ${nOtherSeen} ${i18n.t('word.others')}`,
       options: {
@@ -194,7 +195,7 @@ export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boole
       },
     });
   } else if (nOtherSeen) {
-    tags.push({
+    metaFields.push({
       type: 'seenBy',
       label: `${i18n.t('word.seenBy')} ${nOtherSeen} ${i18n.t('word.others')}`,
       options: {
@@ -202,7 +203,7 @@ export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boole
       },
     });
   } else if (isSeenByEndUser) {
-    tags.push({
+    metaFields.push({
       type: 'seenBy',
       label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')}`,
       options: {
@@ -211,5 +212,5 @@ export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boole
     });
   }
 
-  return tags;
+  return metaFields;
 };

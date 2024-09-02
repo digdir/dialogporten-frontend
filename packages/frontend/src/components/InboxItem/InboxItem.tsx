@@ -5,7 +5,7 @@ import { useSelectedDialogs } from '../PageLayout';
 
 import type { Participant } from '../../api/useDialogById.tsx';
 import { Avatar } from '../Avatar';
-import type { InboxItemTag } from '../MetaDataFields/MetaDataFields.tsx';
+import type { InboxItemMetaField } from '../MetaDataFields/MetaDataFields.tsx';
 import { MetaDataFields } from '../MetaDataFields/MetaDataFields.tsx';
 import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
@@ -19,7 +19,7 @@ interface InboxItemProps {
   receiver: Participant;
   isChecked?: boolean;
   onCheckedChange?: (value: boolean) => void;
-  tags?: InboxItemTag[];
+  metaFields?: InboxItemMetaField[];
   isUnread?: boolean;
   linkTo?: string;
   isMinimalistic?: boolean;
@@ -85,7 +85,7 @@ export const InboxItem = ({
   sender,
   receiver,
   toLabel,
-  tags = [],
+  metaFields = [],
   onCheckedChange,
   checkboxValue,
   linkTo,
@@ -95,7 +95,6 @@ export const InboxItem = ({
   isChecked = false,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
-  console.log('InboxItem', tags);
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
       onCheckedChange(!checkboxValue);
@@ -206,7 +205,7 @@ export const InboxItem = ({
             </div>
           </div>
           <p className={styles.description}>{description}</p>
-          <MetaDataFields tags={tags || []} />
+          <MetaDataFields metaFields={metaFields || []} />
         </section>
       </OptionalLinkContent>
     </li>

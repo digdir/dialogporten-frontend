@@ -63,7 +63,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 description={item.description}
                 sender={item.sender}
                 receiver={item.receiver}
-                tags={item.tags}
+                metaFields={item.metaFields}
                 linkTo={item.linkTo}
                 onClose={() => handleClose()}
                 isMinimalistic
