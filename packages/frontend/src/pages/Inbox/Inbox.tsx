@@ -8,14 +8,8 @@ import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
 import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import {
-  ActionPanel,
-  InboxItem,
-  type InboxItemTag,
-  InboxItems,
-  SortOrderDropdown,
-  useSearchString,
-} from '../../components';
+import { ActionPanel, InboxItem, InboxItems, SortOrderDropdown, useSearchString } from '../../components';
+import type { InboxItemTag } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
 import { useSnackbar } from '../../components';

@@ -110,6 +110,7 @@
   "sort_order.choose.label": "Sorter etter",
   "sort_order.created_asc": "Eldste først",
   "sort_order.created_desc": "Nyeste først",
+  "word.and": "og",
   "word.back": "Tilbake",
   "word.change": "Endre",
   "word.close": "Lukk",
@@ -120,8 +121,12 @@
   "word.log_out": "Logg ut",
   "word.main_menu": "Hovedmeny",
   "word.menu": "Meny",
+  "word.others": "andre",
   "word.private": "Privat",
   "word.search": "Søk",
   "word.seen": "Sett",
-  "word.to": "til"
+  "word.seenBy": "Sett av",
+  "word.status": "Status",
+  "word.to": "til",
+  "word.you": "deg"
 }

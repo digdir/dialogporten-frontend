@@ -44,7 +44,6 @@
   margin: 1rem 1.0625rem 1.0625rem 1rem;
   padding-left: 1rem;
   border-left: 4px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 0.5rem;
 }
 
 .minimalistic .inboxItem {
@@ -62,12 +61,12 @@
 }
 
 .title {
-  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 25px;
   margin-top: 0;
-  margin-bottom: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 2;
+  margin-bottom: 0.25rem;
 }
 
 .minimalistic .title {
@@ -86,6 +85,10 @@
   flex-wrap: wrap;
   align-items: center;
   column-gap: 5px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .receiver,
@@ -100,10 +103,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.sender {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .senderIcon {
@@ -121,18 +121,6 @@
   }
 }
 
-.icon {
-  margin-right: 0.375em;
-  height: 16px;
-  width: 16px;
-  flex-shrink: 0;
-
-  > svg {
-    min-width: 100%;
-    min-height: 100%;
-  }
-}
-
 .description {
   color: #000;
   font-size: 1rem;
@@ -141,7 +129,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .minimalistic .description {
@@ -150,19 +139,6 @@
   font-style: normal;
   margin: 0;
   padding: 0;
-}
-
-.tags {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.tag {
-  display: flex;
-  align-items: center;
-  margin-right: 1rem;
-  font-weight: 400;
 }
 
 .pointer {
