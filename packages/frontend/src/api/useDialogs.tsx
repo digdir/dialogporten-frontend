@@ -1,4 +1,3 @@
-import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import {
   DialogStatus,
   type GetAllDialogsForPartiesQuery,
@@ -10,7 +9,7 @@ import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
-import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
+import type { InboxItemInput, InboxItemTag } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
@@ -30,27 +29,6 @@ const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): 
     return value.find((item) => item.languageCode === defaultCultureCode)?.value ?? '';
   }
   return '';
-};
-
-/* TODO: Add more tags */
-const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
-  const tags = [];
-  tags.push({ label: format(item.createdAt, 'do MMMM'), icon: <ClockIcon /> });
-  if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
-    tags.push({
-      label: i18n.t('dialogs.attachment_count', { count: item.guiAttachmentCount }),
-      icon: <PaperclipIcon />,
-    });
-  }
-
-  if (isSeenByEndUser) {
-    tags.push({
-      label: i18n.t('word.seen'),
-      icon: <EyeIcon />,
-    });
-  }
-
-  return tags;
 };
 
 export function mapDialogDtoToInboxItem(
@@ -187,4 +165,51 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
       sent: dialogs.filter(isSentDialog),
     },
   };
+};
+
+export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
+  const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
+  const tags: InboxItemTag[] = [];
+
+  tags.push({
+    type: 'status',
+    label: `${i18n.t('word.status')}: ${item.status}`,
+  });
+
+  tags.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH:mm') });
+
+  if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
+    tags.push({
+      type: 'attachment',
+      label: i18n.t('dialogs.attachment_count', { count: item.guiAttachmentCount }),
+    });
+  }
+
+  if (isSeenByEndUser && nOtherSeen) {
+    tags.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')} ${i18n.t('word.and')} ${nOtherSeen} ${i18n.t('word.others')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
+    });
+  } else if (nOtherSeen) {
+    tags.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${nOtherSeen} ${i18n.t('word.others')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
+    });
+  } else if (isSeenByEndUser) {
+    tags.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
+    });
+  }
+
+  return tags;
 };

@@ -5,14 +5,10 @@ import { useSelectedDialogs } from '../PageLayout';
 
 import type { Participant } from '../../api/useDialogById.tsx';
 import { Avatar } from '../Avatar';
+import type { InboxItemTag } from '../MetaDataFields/MetaDataFields.tsx';
+import { MetaDataFields } from '../MetaDataFields/MetaDataFields.tsx';
 import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
-
-export interface InboxItemTag {
-  label: string;
-  icon?: JSX.Element;
-  className?: string;
-}
 
 interface InboxItemProps {
   checkboxValue: string;
@@ -28,6 +24,7 @@ interface InboxItemProps {
   linkTo?: string;
   isMinimalistic?: boolean;
   onClose?: () => void;
+  isSeenByEndUser?: boolean;
 }
 
 export const OptionalLinkContent = ({
@@ -98,7 +95,7 @@ export const InboxItem = ({
   isChecked = false,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
-
+  console.log('InboxItem', tags);
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
       onCheckedChange(!checkboxValue);
@@ -202,22 +199,14 @@ export const InboxItem = ({
                 imageUrl={sender.imageURL}
                 size="small"
               />
-              <span className={styles.participantLabel}>{sender?.name}</span>
+              <span>{sender?.name}</span>
             </div>
-            <span>{toLabel}</span>
             <div className={styles.receiver}>
-              <span className={styles.participantLabel}>{receiver?.name}</span>
+              <span className={styles.participantLabel}>{`${toLabel} ${receiver?.name}`}</span>
             </div>
           </div>
           <p className={styles.description}>{description}</p>
-          <div className={styles.tags}>
-            {tags?.map((tag) => (
-              <div key={tag.label} className={styles.tag}>
-                {tag.icon && <div className={styles.icon}>{tag.icon}</div>}
-                <span> {tag.label}</span>
-              </div>
-            ))}
-          </div>
+          <MetaDataFields tags={tags || []} />
         </section>
       </OptionalLinkContent>
     </li>

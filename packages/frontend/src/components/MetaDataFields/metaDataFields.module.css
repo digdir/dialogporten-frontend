@@ -1,0 +1,30 @@
+.status {
+  border: 1px solid #b8bcc1;
+  border-radius: 2px;
+  padding: 0.25rem;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  font-weight: 400;
+}
+
+.icon {
+  margin-right: 0.375em;
+  height: 16px;
+  width: 16px;
+  flex-shrink: 0;
+
+  > svg {
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
