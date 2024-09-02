@@ -110,6 +110,7 @@
   "sort_order.choose.label": "Sort by",
   "sort_order.created_asc": "Oldest first",
   "sort_order.created_desc": "Newest first",
+  "word.and": "and",
   "word.back": "Back",
   "word.change": "Change",
   "word.close": "Close",
@@ -120,8 +121,12 @@
   "word.log_out": "Log Out",
   "word.main_menu": "Main Menu",
   "word.menu": "Menu",
+  "word.others": "others",
   "word.private": "Private",
   "word.search": "Search",
   "word.seen": "Seen",
-  "word.to": "to"
+  "word.seenBy": "Seen by",
+  "word.status": "Status",
+  "word.to": "to",
+  "word.you": "you"
 }

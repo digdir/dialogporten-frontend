@@ -8,14 +8,8 @@ import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
 import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import {
-  ActionPanel,
-  InboxItem,
-  type InboxItemTag,
-  InboxItems,
-  SortOrderDropdown,
-  useSearchString,
-} from '../../components';
+import { ActionPanel, InboxItem, InboxItems, SortOrderDropdown, useSearchString } from '../../components';
+import type { InboxItemMetaField } from '../../components';
 import { type Filter, FilterBar } from '../../components';
 import { useSelectedDialogs } from '../../components';
 import { useSnackbar } from '../../components';
@@ -51,7 +45,7 @@ export interface InboxItemInput {
   description: string;
   sender: Participant;
   receiver: Participant;
-  tags: InboxItemTag[];
+  metaFields: InboxItemMetaField[];
   linkTo: string;
   date: string;
   createdAt: string;
@@ -340,7 +334,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   receiver={item.receiver}
                   isChecked={selectedItems[item.id]}
                   onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
-                  tags={item.tags}
+                  metaFields={item.metaFields}
                   linkTo={item.linkTo}
                 />
               ))}
