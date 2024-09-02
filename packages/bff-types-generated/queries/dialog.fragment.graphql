@@ -127,14 +127,19 @@ fragment AttachmentFields on Attachment {
 }
 
 fragment DialogActivity on Activity {
-    id
-    type
-    createdAt
-    performedBy {
-      actorType
-      actorId
-      actorName
-    }
+  id
+  performedBy {
+    actorType
+    actorId
+    actorName
+  }
+  description {
+    value
+    languageCode
+  }
+  type
+  createdAt
+  relatedActivityId
 }
 
 fragment SeenLogFields on SeenLog {

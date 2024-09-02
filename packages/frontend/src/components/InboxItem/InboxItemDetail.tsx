@@ -3,6 +3,7 @@ import { FileIcon } from '@navikt/aksel-icons';
 import { AttachmentUrlConsumer } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import { Activity } from '../Activity';
 import { Avatar } from '../Avatar';
 import { MainContentReference } from '../MainContentReference';
 import { GuiActions } from './GuiActions.tsx';
@@ -23,16 +24,16 @@ import styles from './inboxItemDetail.module.css';
  * <InboxItemDetail
  *   dialog={{
  *     title: "Project Update",
- *     description: <p>Here's the latest update on the project...</p>,
- *     sender: { label: "Alice", icon: <PersonIcon /> },
- *     receiver: { label: "Bob", icon: <PersonIcon /> },
- *     toLabel: "to",
+ *     description: "Here's the latest update on the project...",
+ *     sender: { name: "Alice", icon: <PersonIcon /> },
+ *     receiver: { name: "Bob", icon: <PersonIcon /> },
  *     attachment: [{ label: "Project Plan", href: "/path/to/document", mime: "application/pdf" }],
  *     tags: [{ label: "Important", icon: <FlagIcon />, className: "important" }],
  *     guiActions: [{ label: "Approve", onClick: () => alert('Approved') }]
  *   }}
  * />
  */
+
 export const InboxItemDetail = ({
   dialog: {
     title,
@@ -40,12 +41,12 @@ export const InboxItemDetail = ({
     description,
     sender,
     receiver,
-    toLabel,
     guiActions,
     tags = [],
     additionalInfo,
     attachments,
     mainContentReference,
+    activities,
   },
 }: { dialog: DialogByIdDetails }): JSX.Element => {
   const { t } = useTranslation();
@@ -56,29 +57,25 @@ export const InboxItemDetail = ({
 
   return (
     <section className={styles.inboxItemDetail}>
-      <header className={styles.header}>
+      <header className={styles.header} data-id="dialog-header">
         <h1 className={styles.title}>{title}</h1>
       </header>
-      <div className={styles.participants}>
+      <div className={styles.participants} data-id="dialog-sender-receiver">
         <div className={styles.sender}>
           <Avatar name={sender?.name ?? ''} imageUrl={sender?.imageURL} />
           <span className={styles.participantLabel}>{sender?.name}</span>
         </div>
-        <span>{toLabel}</span>
+        <span>{t('word.to')}</span>
         <div className={styles.receiver}>
           <span className={styles.participantLabel}>{receiver?.name}</span>
         </div>
       </div>
-      <section className={styles.descriptionContainer}>
-        {typeof description === 'string' ? (
-          <p className={styles.description}>{description}</p>
-        ) : (
-          <div>{description}</div>
-        )}
-        {mainContentReference && <MainContentReference args={mainContentReference} dialogToken={dialogToken} />}
-        <section>
+      <div className={styles.sectionWithStatus} data-id="dialog-description">
+        <p className={styles.description}>{description}</p>
+        <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
+        <section data-id="dialog-attachments">
           <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
-          <ul className={styles.attachments}>
+          <ul className={styles.attachments} data-id="dialog-attachments-list">
             {attachments.map((attachment) =>
               attachment.urls
                 .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
@@ -105,7 +102,7 @@ export const InboxItemDetail = ({
             // TODO: Redirect to inbox
           }}
         />
-        <div className={styles.tags}>
+        <div className={styles.tags} data-id="dialog-meta-field-tags">
           {tags.map((tag) => (
             <div key={tag.label} className={styles.tag}>
               {tag.icon && <div className={styles.tagIcon}>{tag.icon}</div>}
@@ -113,8 +110,18 @@ export const InboxItemDetail = ({
             </div>
           ))}
         </div>
+      </div>
+      {additionalInfo && (
+        <section className={styles.additionalInfo} data-id="dialog-additional-info">
+          {additionalInfo}
+        </section>
+      )}
+      <section data-id="dialog-activity-history" className={styles.activities}>
+        <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
+        {activities.map((activity) => (
+          <Activity key={activity.id} activity={activity} serviceOwner={sender} />
+        ))}
       </section>
-      {additionalInfo && <section className={styles.additionalInfo}>{additionalInfo}</section>}
     </section>
   );
 };

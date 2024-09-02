@@ -3,17 +3,17 @@ import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelectedDialogs } from '../PageLayout';
 
+import { useTranslation } from 'react-i18next';
 import type { Participant } from '../../api/useDialogById.tsx';
 import { Avatar } from '../Avatar';
-import type { InboxItemMetaField } from '../MetaDataFields/MetaDataFields.tsx';
-import { MetaDataFields } from '../MetaDataFields/MetaDataFields.tsx';
+import type { InboxItemMetaField } from '../MetaDataFields';
+import { MetaDataFields } from '../MetaDataFields';
 import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
 
 interface InboxItemProps {
   checkboxValue: string;
   title: string;
-  toLabel: string;
   description: string;
   sender: Participant;
   receiver: Participant;
@@ -54,7 +54,6 @@ export const OptionalLinkContent = ({
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.checkboxValue - The value attribute for the checkbox input.
  * @param {string} props.title - The title of the inbox item.
- * @param {string} props.toLabel - The label for "to" for full i18n support.
  * @param {string} props.description - The description or content of the inbox item.
  * @param {Participant} props.sender - The sender of the inbox item, including label and optional icon.
  * @param {Participant} props.receiver - The receiver of the inbox item, including label and optional icon.
@@ -69,7 +68,6 @@ export const OptionalLinkContent = ({
  * <InboxItem
  *   checkboxValue="item1"
  *   title="Meeting Reminder"
- *   toLabel="to"
  *   description="Don't forget the meeting tomorrow at 10am."
  *   sender={{ label: "Alice", icon: <MailIcon /> }}
  *   receiver={{ label: "Bob", icon: <PersonIcon /> }}
@@ -84,7 +82,6 @@ export const InboxItem = ({
   description,
   sender,
   receiver,
-  toLabel,
   metaFields = [],
   onCheckedChange,
   checkboxValue,
@@ -95,6 +92,8 @@ export const InboxItem = ({
   isChecked = false,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
+  const { t } = useTranslation();
+
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
       onCheckedChange(!checkboxValue);
@@ -201,7 +200,7 @@ export const InboxItem = ({
               <span>{sender?.name}</span>
             </div>
             <div className={styles.receiver}>
-              <span className={styles.participantLabel}>{`${toLabel} ${receiver?.name}`}</span>
+              <span className={styles.participantLabel}>{`${t('word.to')} ${receiver?.name}`}</span>
             </div>
           </div>
           <p className={styles.description}>{description}</p>

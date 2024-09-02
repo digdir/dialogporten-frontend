@@ -17,13 +17,17 @@ export const MainContentReference = ({
     enabled: args?.url !== undefined && args?.mediaType === 'markdown',
   });
 
+  if (!args) {
+    return null;
+  }
+
   if (typeof error === 'string') {
-    return <div>Error parsing 'mainContentReference': {error}</div>;
+    return <div data-id="dialog-main-content-reference-error">Error parsing 'mainContentReference': {error}</div>;
   }
 
   if (typeof data === 'string' && isSuccess) {
     return (
-      <section>
+      <section data-id="dialog-main-content-reference">
         <Markdown>{data}</Markdown>
       </section>
     );

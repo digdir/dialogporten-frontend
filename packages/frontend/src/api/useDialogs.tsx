@@ -65,7 +65,6 @@ export function mapDialogDtoToInboxItem(
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
       status: item.status ?? 'UnknownStatus',
-      isModifiedLastByServiceOwner: item.latestActivity?.performedBy === null,
       isSeenByEndUser,
     };
   });

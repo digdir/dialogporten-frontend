@@ -1,4 +1,10 @@
 {
+  "activity.description_missing": "Description missing",
+  "activity.status.dialog_closed": "Dialog closed",
+  "activity.status.dialog_created": "Dialog created",
+  "activity.status.payment_made": "Payment made",
+  "activity.status.signature_provided": "Signature provided",
+  "activity.status.transmission_opened": "Transmission opened",
   "actionPanel.buttons.archive": "Move to archive",
   "actionPanel.buttons.delete": "Delete",
   "actionPanel.buttons.mark_as_read": "Mark as read",
@@ -111,6 +117,7 @@
   "sort_order.created_asc": "Oldest first",
   "sort_order.created_desc": "Newest first",
   "word.and": "and",
+  "word.activities": "Activities",
   "word.back": "Back",
   "word.change": "Change",
   "word.close": "Close",

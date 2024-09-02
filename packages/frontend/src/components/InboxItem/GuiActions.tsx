@@ -105,7 +105,7 @@ const GuiActionButton = ({ actions, dialogToken, onDeleteSuccess }: GuiActionsPr
  */
 export const GuiActions = ({ actions, dialogToken, onDeleteSuccess }: GuiActionProps): JSX.Element => {
   return (
-    <section className={styles.guiActions}>
+    <section className={styles.guiActions} data-id="dialog-gui-actions">
       {actions.map((actionProps) => (
         <GuiActionButton
           key={actionProps.id}

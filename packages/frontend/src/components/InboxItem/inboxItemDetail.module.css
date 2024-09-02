@@ -2,10 +2,16 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 0.5rem;
+  padding: 1.5rem;
 }
 
-.descriptionContainer {
+@media (max-width: 1024px) {
+  .inboxItemDetail {
+    padding: 0.5rem;
+  }
+}
+
+.sectionWithStatus {
   margin-left: 1rem;
   padding: 0 1.0625rem 1.0625rem;
   border-left: 4px solid rgba(0, 0, 0, 0.1);
@@ -37,9 +43,16 @@
 }
 
 .activities {
-  padding: 2rem 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  row-gap: 1.5rem;
+}
+
+.activitiesTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 
 .participants {
@@ -47,6 +60,7 @@
   align-items: center;
   flex-wrap: wrap;
   column-gap: 5px;
+  row-gap: 5px;
 }
 
 .participantLabel {
