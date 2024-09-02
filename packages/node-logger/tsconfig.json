@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": ["es6"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["es2022"],
     "declaration": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
@@ -10,7 +10,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "baseUrl": "src",
     "typeRoots": ["./node_modules/@types"],
     "esModuleInterop": true,

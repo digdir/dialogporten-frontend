@@ -4,6 +4,10 @@ import z from 'zod';
 const envVariables = z.object({
   LOGGER_FORMAT: z.enum(['json', 'pretty']).default('pretty'),
   LOG_LEVEL: z.enum(Object.keys(pino.levels.values) as [LevelWithSilent, ...LevelWithSilent[]]).default('info'),
+  TEST_LOGGING: z
+    .enum(['true', 'false'])
+    .transform((val) => val === 'true')
+    .default('false'),
 });
 
 const env = envVariables.parse(process.env);
@@ -53,8 +57,7 @@ export const createContextLogger = (context: Record<string | number | symbol, un
   };
 };
 
-// todo: zodify
-if (process.env.TEST_LOGGING) {
+if (env.TEST_LOGGING) {
   logger.debug('Debug test');
   logger.trace('Trace test');
   logger.info({ some: 'object' }, 'Info test');
