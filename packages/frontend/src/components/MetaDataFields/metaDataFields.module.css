@@ -1,16 +1,10 @@
-.status {
-  border: 1px solid #b8bcc1;
-  border-radius: 2px;
-  padding: 0.25rem;
-}
-
-.tags {
+.fields {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.tag {
+.field {
   display: flex;
   align-items: center;
   margin-right: 1rem;
@@ -27,4 +21,10 @@
     min-width: 100%;
     min-height: 100%;
   }
+}
+
+.status {
+  border: 1px solid #b8bcc1;
+  border-radius: 2px;
+  padding: 0.25rem;
 }

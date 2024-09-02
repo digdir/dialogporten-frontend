@@ -1,10 +1,10 @@
 import { ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
-import type { InboxItemTag } from './MetaDataFields';
+import type { InboxItemMetaField } from './MetaDataFields';
 import styles from './metaDataFields.module.css';
 
-export const MetaDataField = ({ tag }: { tag: InboxItemTag }) => {
-  const getIconByType = (type: InboxItemTag['type']) => {
+export const MetaDataField = ({ metaField }: { metaField: InboxItemMetaField }) => {
+  const getIconByType = (type: InboxItemMetaField['type']): JSX.Element | null => {
     switch (type) {
       case 'attachment':
         return <PaperclipIcon />;
@@ -12,19 +12,19 @@ export const MetaDataField = ({ tag }: { tag: InboxItemTag }) => {
         return <ClockIcon />;
       case 'seenBy':
         return <EyeIcon />;
-      case 'status':
-        return;
+      default:
+        return null;
     }
   };
-  const icon = getIconByType(tag.type);
+  const icon = getIconByType(metaField.type);
 
   return (
     <div
-      className={cx(styles.tag, { [styles.status]: tag.type === 'status' })}
-      title={String(tag.options?.tooltip || '')}
+      className={cx(styles.field, { [styles.status]: metaField.type === 'status' })}
+      title={String(metaField.options?.tooltip || '')}
     >
       {icon && <div className={styles.icon}>{icon}</div>}
-      <span>{tag.label}</span>
+      <span>{metaField.label}</span>
     </div>
   );
 };

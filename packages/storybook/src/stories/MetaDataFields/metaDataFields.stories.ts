@@ -12,7 +12,7 @@ export default {
 
 export const Default: StoryObj<typeof MetaDataFields> = {
   args: {
-    tags: [
+    metaFields: [
       { type: 'status', label: 'Status' },
       { type: 'timestamp', label: 'Timestamp' },
       { type: 'attachment', label: 'Attachment here' },
