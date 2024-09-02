@@ -1,3 +1,4 @@
+import logger from '@digdir/dialogporten-node-logger';
 import oauthPlugin, { type OAuth2Namespace } from '@fastify/oauth2';
 import type {
   FastifyPluginAsync,
@@ -126,7 +127,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
       reply.redirect('/?loggedIn=true');
     } catch (e) {
-      console.log(e);
+      logger.error(e);
       reply.status(500);
     }
   });

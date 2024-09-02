@@ -32,6 +32,9 @@ importers:
       '@azure/keyvault-keys':
         specifier: ^4.7.2
         version: 4.7.2
+      '@digdir/dialogporten-node-logger':
+        specifier: workspace:*
+        version: link:../node-logger
       '@digdir/dialogporten-schema':
         specifier: 1.12.0
         version: 1.12.0
@@ -344,10 +347,10 @@ importers:
         version: 5.5.3
       vite:
         specifier: ^5.0.8
-        version: 5.0.12(@types/node@20.16.1)
+        version: 5.0.12(@types/node@20.14.11)
       vitest:
         specifier: ^2.0.0
-        version: 2.0.4(@types/node@20.16.1)
+        version: 2.0.4
 
   packages/fastify-graphiql:
     dependencies:
@@ -360,7 +363,7 @@ importers:
     devDependencies:
       vitest:
         specifier: ^2.0.0
-        version: 2.0.4(@types/node@20.16.1)
+        version: 2.0.4
 
   packages/frontend:
     dependencies:
@@ -594,7 +597,7 @@ importers:
         version: 5.3.3
       vite:
         specifier: ^5.0.8
-        version: 5.0.12(@types/node@20.16.1)
+        version: 5.0.12(@types/node@20.14.11)
 
 packages:
 
@@ -8147,7 +8150,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.3.3)
       typescript: 5.3.3
-      vite: 5.0.12(@types/node@20.16.1)
+      vite: 5.0.12(@types/node@20.14.11)
     dev: true
 
   /@jridgewell/gen-mapping@0.3.5:
@@ -11035,7 +11038,7 @@ packages:
       magic-string: 0.30.6
       ts-dedent: 2.2.0
       typescript: 5.3.3
-      vite: 5.0.12(@types/node@20.16.1)
+      vite: 5.0.12(@types/node@20.14.11)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -11478,7 +11481,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       resolve: 1.22.8
       tsconfig-paths: 4.2.0
-      vite: 5.0.12(@types/node@20.16.1)
+      vite: 5.0.12(@types/node@20.14.11)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -12213,7 +12216,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash: 4.17.21
       redent: 3.0.0
-      vitest: 2.0.4(@types/node@20.16.1)
+      vitest: 2.0.4
     dev: true
 
   /@testing-library/react@16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.3.1)(react@18.3.1):
@@ -13071,7 +13074,7 @@ packages:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.3.107
-      vite: 5.0.12(@types/node@20.16.1)
+      vite: 5.0.12(@types/node@20.14.11)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -13087,7 +13090,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.0.12(@types/node@20.16.1)
+      vite: 5.0.12(@types/node@20.14.11)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -27080,6 +27083,60 @@ packages:
       rollup: 4.9.6
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /vitest@2.0.4:
+    resolution: {integrity: sha512-luNLDpfsnxw5QSW4bISPe6tkxVvv5wn2BBs/PuDRkhXZ319doZyLOBr1sjfB5yCEpTiU7xCAdViM8TNVGPwoog==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/node': ^18.0.0 || >=20.0.0
+      '@vitest/browser': 2.0.4
+      '@vitest/ui': 2.0.4
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@vitest/expect': 2.0.4
+      '@vitest/pretty-format': 2.0.4
+      '@vitest/runner': 2.0.4
+      '@vitest/snapshot': 2.0.4
+      '@vitest/spy': 2.0.4
+      '@vitest/utils': 2.0.4
+      chai: 5.1.1
+      debug: 4.3.5
+      execa: 8.0.1
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      std-env: 3.7.0
+      tinybench: 2.8.0
+      tinypool: 1.0.0
+      tinyrainbow: 1.2.0
+      vite: 5.0.12(@types/node@20.14.11)
+      vite-node: 2.0.4(@types/node@20.14.11)
+      why-is-node-running: 2.3.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
     dev: true
 
   /vitest@2.0.4(@types/node@20.14.11)(jsdom@24.0.0):

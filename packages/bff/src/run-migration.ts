@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import logger from '@digdir/dialogporten-node-logger';
 import { initialize } from './azure/ApplicationInsights.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
@@ -9,18 +10,18 @@ export const runMigrationApp = async () => {
     try {
       initialize();
     } catch (e) {
-      console.error(
-        'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.',
+      logger.error(
         e,
+        'Unable to initialize Application Insights: Application Insights enabled, but connection string is missing.',
       );
       throw e;
     }
   } else {
-    console.log('Application Insights is not enabled');
+    logger.info('Application Insights is not enabled');
   }
 
   try {
-    console.log(config.version, ': ', 'MIGRATION: Starting migration:');
+    logger.info(`${config.version}: Starting migration:`);
     const { dataSource } = await connectToDB();
     if (!dataSource.isInitialized) {
       throw new Error('Something went from initializing a connection to database');
@@ -30,9 +31,9 @@ export const runMigrationApp = async () => {
     // Disconnect from database
     await dataSource.destroy();
 
-    console.log('Migration successful');
+    logger.info('Migration successful');
   } catch (error) {
-    console.error('Migration failed: ', error);
+    logger.error(error, 'Migration failed: ');
     process.exit(1);
   }
 };
