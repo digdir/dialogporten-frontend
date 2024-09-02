@@ -1,3 +1,4 @@
+import logger from '@digdir/dialogporten-node-logger';
 import oauthPlugin, { type OAuth2Namespace } from '@fastify/oauth2';
 import type {
   FastifyPluginAsync,
@@ -9,7 +10,7 @@ import type {
 } from 'fastify';
 import fp from 'fastify-plugin';
 import jwt from 'jsonwebtoken';
-import logger from '@digdir/dialogporten-node-logger';
+
 declare module 'fastify' {
   interface FastifyInstance {
     idporten: OAuth2Namespace;

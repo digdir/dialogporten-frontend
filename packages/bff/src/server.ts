@@ -1,3 +1,4 @@
+import logger from '@digdir/dialogporten-node-logger';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
@@ -13,7 +14,6 @@ import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
 import graphqlApi from './graphql/api.ts';
-import logger from '@digdir/dialogporten-node-logger';
 
 const {
   version,

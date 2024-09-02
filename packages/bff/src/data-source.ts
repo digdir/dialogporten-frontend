@@ -1,9 +1,9 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import 'reflect-metadata';
+import logger from '@digdir/dialogporten-node-logger';
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import config from './config.ts';
-import logger from '@digdir/dialogporten-node-logger';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory

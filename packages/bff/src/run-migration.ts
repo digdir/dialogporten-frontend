@@ -1,8 +1,8 @@
 import 'reflect-metadata';
+import logger from '@digdir/dialogporten-node-logger';
 import { initialize } from './azure/ApplicationInsights.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
-import logger from '@digdir/dialogporten-node-logger';
 
 export const runMigrationApp = async () => {
   // App Insight setup
