@@ -9,7 +9,7 @@ import type {
 } from 'fastify';
 import fp from 'fastify-plugin';
 import jwt from 'jsonwebtoken';
-
+import logger from '@digdir/dialogporten-node-logger';
 declare module 'fastify' {
   interface FastifyInstance {
     idporten: OAuth2Namespace;
@@ -126,7 +126,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
       reply.redirect('/?loggedIn=true');
     } catch (e) {
-      console.log(e);
+      logger.error(e);
       reply.status(500);
     }
   });

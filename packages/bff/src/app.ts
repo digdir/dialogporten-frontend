@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import config from './config.ts';
 import { runMigrationApp } from './run-migration.ts';
 import startServer from './server.ts';
+import logger from '@digdir/dialogporten-node-logger';
 
 try {
   if (config.migrationRun) {
@@ -11,5 +12,5 @@ try {
     await startServer();
   }
 } catch (error) {
-  console.error(error);
+  logger.error(error);
 }

@@ -13,6 +13,7 @@ import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
 import graphqlApi from './graphql/api.ts';
+import logger from '@digdir/dialogporten-node-logger';
 
 const {
   version,
@@ -36,7 +37,7 @@ const startServer = async (): Promise<void> => {
     try {
       intitializeApplicationInsights();
     } catch (error) {
-      console.error('Error initializing Application Insights:', error);
+      logger.error(error, 'Error initializing Application Insights:');
       throw error;
     }
   }
@@ -73,10 +74,10 @@ const startServer = async (): Promise<void> => {
       }),
     });
 
-    console.log('Setting up fastify-session with a Redis store');
+    logger.info('Setting up fastify-session with a Redis store');
     server.register(session, { ...cookieSessionConfig, store });
   } else {
-    console.log('Setting up fastify-session');
+    logger.info('Setting up fastify-session');
     server.register(session, cookieSessionConfig);
   }
 
@@ -100,7 +101,7 @@ const startServer = async (): Promise<void> => {
     if (error) {
       throw error;
     }
-    console.log(`Server ${version} is running on ${address}`);
+    logger.info(`Server ${version} is running on ${address}`);
   });
 };
 
