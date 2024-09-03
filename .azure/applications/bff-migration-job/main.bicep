@@ -128,6 +128,10 @@ var containerAppEnvVars = [
     name: 'TYPEORM_SYNCHRONIZE_ENABLED'
     value: ''
   }
+  {
+    name: 'LOGGER_FORMAT'
+    value: 'json'
+  }
 ]
 
 module containerAppJob '../../modules/containerAppJob/main.bicep' = {

@@ -143,6 +143,10 @@ var containerAppEnvVars = [
     name: 'DIALOGPORTEN_URL'
     value: dialogportenURL
   }
+  {
+    name: 'LOGGER_FORMAT'
+    value: 'json'
+  }
 ]
 
 module containerApp '../../modules/containerApp/main.bicep' = {
