@@ -5,6 +5,8 @@ import { useSelectedDialogs } from '../PageLayout';
 
 import { useTranslation } from 'react-i18next';
 import type { Participant } from '../../api/useDialogById.tsx';
+import { FeatureFlagKeys } from '../../featureFlags/FeatureFlags.ts';
+import { useFeatureFlag } from '../../featureFlags/useFeatureFlag.ts';
 import { Avatar } from '../Avatar';
 import type { InboxItemMetaField } from '../MetaDataFields';
 import { MetaDataFields } from '../MetaDataFields';
@@ -93,6 +95,7 @@ export const InboxItem = ({
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
   const { t } = useTranslation();
+  const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
 
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
@@ -173,7 +176,7 @@ export const InboxItem = ({
         >
           <header className={styles.header}>
             <h2 className={styles.title}>{title}</h2>
-            {onCheckedChange && (
+            {onCheckedChange && !disableBulkActions && (
               <ProfileCheckbox
                 checked={isChecked}
                 value={checkboxValue}
