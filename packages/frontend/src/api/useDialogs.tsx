@@ -60,7 +60,7 @@ export function mapDialogDtoToInboxItem(
         name: actualReceiverParty?.name ?? '',
         isCompany: actualReceiverParty?.partyType === 'Organisation',
       },
-      metaFields: getTags(item, isSeenByEndUser, format),
+      metaFields: getMetaFields(item, isSeenByEndUser, format),
       linkTo: `/inbox/${item.id}`,
       date: item.createdAt ?? '',
       createdAt: item.createdAt ?? '',
@@ -167,7 +167,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   };
 };
 
-export const getTags = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
+export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
   const metaFields: InboxItemMetaField[] = [];
 

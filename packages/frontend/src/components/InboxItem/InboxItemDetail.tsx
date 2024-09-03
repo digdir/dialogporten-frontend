@@ -1,8 +1,9 @@
 import { Link } from '@digdir/designsystemet-react';
-import { FileIcon } from '@navikt/aksel-icons';
+import { EyeIcon, FileIcon } from '@navikt/aksel-icons';
 import { AttachmentUrlConsumer } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
 import { Avatar } from '../Avatar';
 import { MainContentReference } from '../MainContentReference';
@@ -42,11 +43,12 @@ export const InboxItemDetail = ({
     sender,
     receiver,
     guiActions,
-    tags = [],
+    metaFields = [],
     additionalInfo,
     attachments,
     mainContentReference,
     activities,
+    createdAt,
   },
 }: { dialog: DialogByIdDetails }): JSX.Element => {
   const { t } = useTranslation();
@@ -54,6 +56,7 @@ export const InboxItemDetail = ({
     (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
     0,
   );
+  const format = useFormat();
 
   return (
     <section className={styles.inboxItemDetail}>
@@ -71,6 +74,7 @@ export const InboxItemDetail = ({
         </div>
       </div>
       <div className={styles.sectionWithStatus} data-id="dialog-description">
+        <p className={styles.createdLabel}>{format(createdAt, 'do MMMM yyyy HH:mm')}</p>
         <p className={styles.description}>{description}</p>
         <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
         <section data-id="dialog-attachments">
@@ -103,9 +107,11 @@ export const InboxItemDetail = ({
           }}
         />
         <div className={styles.tags} data-id="dialog-meta-field-tags">
-          {tags.map((tag) => (
+          {metaFields.map((tag) => (
             <div key={tag.label} className={styles.tag}>
-              {tag.icon && <div className={styles.tagIcon}>{tag.icon}</div>}
+              <div className={styles.tagIcon}>
+                <EyeIcon />
+              </div>
               <span> {tag.label}</span>
             </div>
           ))}
