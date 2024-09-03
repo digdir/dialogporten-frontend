@@ -27,6 +27,13 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' 
   name: containerAppEnvironmentName
 }
 
+var environmentVariables = [
+  {
+    name: 'NODE_ENV'
+    value: 'production'
+  }
+]
+
 var healthProbes = [
   {
     periodSeconds: 5
@@ -60,6 +67,7 @@ module containerApp '../../modules/containerApp/main.bicep' = {
     minReplicas: minReplicas
     maxReplicas: maxReplicas
     tags: tags
+    environmentVariables: environmentVariables
   }
 }
 
