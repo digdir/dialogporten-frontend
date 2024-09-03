@@ -315,17 +315,19 @@ export const Inbox = ({ viewType }: InboxProps) => {
           const hideSelectAll = items.every((item) => selectedItems[item.id]);
           return (
             <InboxItems key={id}>
-              <InboxItemsHeader
-                hideSelectAll={hideSelectAll}
-                onSelectAll={() => {
-                  const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
-                  setSelectedItems({
-                    ...selectedItems,
-                    ...newItems,
-                  });
-                }}
-                title={label}
-              />
+              {!disableBulkActions && (
+                <InboxItemsHeader
+                  hideSelectAll={hideSelectAll}
+                  onSelectAll={() => {
+                    const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
+                    setSelectedItems({
+                      ...selectedItems,
+                      ...newItems,
+                    });
+                  }}
+                  title={label}
+                />
+              )}
               {items.map((item) => (
                 <InboxItem
                   key={item.id}
