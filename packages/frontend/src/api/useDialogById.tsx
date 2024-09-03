@@ -1,4 +1,3 @@
-import { ClockIcon, EyeIcon } from '@navikt/aksel-icons';
 import type {
   AttachmentFieldsFragment,
   DialogActivityFragment,
@@ -7,9 +6,8 @@ import type {
   PartyFieldsFragment,
 } from 'bff-types-generated';
 import { useQuery } from 'react-query';
-import type { GuiActionButtonProps } from '../components';
+import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
 import { i18n } from '../i18n/config.ts';
-import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
 
@@ -17,12 +15,6 @@ export interface Participant {
   name: string;
   isCompany: boolean;
   imageURL?: string;
-}
-
-interface InboxItemTag {
-  label: string;
-  icon?: JSX.Element;
-  className?: string;
 }
 
 interface MainContentReference {
@@ -42,13 +34,14 @@ export interface DialogByIdDetails {
   sender: Participant;
   receiver: Participant;
   title: string;
-  tags: InboxItemTag[];
+  metaFields: InboxItemMetaField[];
   guiActions: GuiActionButtonProps[];
   additionalInfo: string | React.ReactNode;
   attachments: AttachmentFieldsFragment[];
   dialogToken: string;
   mainContentReference?: MainContentReference;
   activities: DialogActivity[];
+  createdAt: string;
 }
 
 interface UseDialogByIdOutput {
@@ -78,17 +71,36 @@ export const getPropertyByCultureCode = (value: ValueType): string => {
   return '';
 };
 
-/* TODO: Add more tags */
-const getTags = (item: DialogByIdFieldsFragment, format: FormatFunction): { label: string; icon: JSX.Element }[] => {
-  const tags = [];
-  tags.push({ label: format(item.createdAt, 'do MMMM'), icon: <ClockIcon /> });
-  if (item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser)) {
-    tags.push({
-      label: i18n.t('word.seen'),
-      icon: <EyeIcon />,
+export const getMetaFields = (item: DialogByIdFieldsFragment, isSeenByEndUser: boolean) => {
+  const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
+  const metaFields: InboxItemMetaField[] = [];
+
+  if (isSeenByEndUser && nOtherSeen) {
+    metaFields.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')} ${i18n.t('word.and')} ${nOtherSeen} ${i18n.t('word.others')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
+    });
+  } else if (nOtherSeen) {
+    metaFields.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${nOtherSeen} ${i18n.t('word.others')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
+    });
+  } else if (isSeenByEndUser) {
+    metaFields.push({
+      type: 'seenBy',
+      label: `${i18n.t('word.seenBy')} ${i18n.t('word.you')}`,
+      options: {
+        tooltip: item.seenSinceLastUpdate.map((seenLogEntry) => seenLogEntry.seenBy.actorName).join('\n'),
+      },
     });
   }
-  return tags;
+  return metaFields;
 };
 
 const getMainContentReference = (
@@ -112,7 +124,6 @@ const getMainContentReference = (
 export function mapDialogDtoToInboxItem(
   item: DialogByIdFieldsFragment | null | undefined,
   parties: PartyFieldsFragment[],
-  format: FormatFunction,
 ): DialogByIdDetails | undefined {
   if (!item) {
     return undefined;
@@ -125,6 +136,7 @@ export function mapDialogDtoToInboxItem(
   const dialogReceiverParty = parties?.find((party) => party.party === item.party);
   const actualReceiverParty = dialogReceiverParty ?? endUserParty;
   const serviceOwner = getOrganisation(item.org, 'nb');
+  const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
   return {
     title: getPropertyByCultureCode(titleObj),
     description: getPropertyByCultureCode(summaryObj),
@@ -137,7 +149,7 @@ export function mapDialogDtoToInboxItem(
       name: actualReceiverParty?.name ?? '',
       isCompany: actualReceiverParty?.partyType === 'Organisation',
     },
-    tags: getTags(item, format),
+    metaFields: getMetaFields(item, isSeenByEndUser),
     additionalInfo: getPropertyByCultureCode(additionalInfoObj),
     guiActions: item.guiActions.map((guiAction) => ({
       id: guiAction.id,
@@ -162,10 +174,10 @@ export function mapDialogDtoToInboxItem(
         description: getPropertyByCultureCode(activity.description),
       }))
       .reverse(),
+    createdAt: item.createdAt,
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
-  const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
     queryKey: ['dialogById', id],
@@ -175,6 +187,6 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
   return {
     isLoading,
     isSuccess,
-    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties, format),
+    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties),
   };
 };

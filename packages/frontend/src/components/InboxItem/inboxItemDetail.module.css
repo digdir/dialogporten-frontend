@@ -86,6 +86,12 @@
   font-weight: 400;
 }
 
+.createdLabel {
+  color: var(--text-neutral-subtle);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
 .participantIcon {
   margin-right: 0.375em;
   height: 36px;
