@@ -347,10 +347,10 @@ importers:
         version: 5.5.3
       vite:
         specifier: ^5.0.8
-        version: 5.0.12(@types/node@20.14.11)
+        version: 5.0.12(@types/node@20.16.1)
       vitest:
         specifier: ^2.0.0
-        version: 2.0.4
+        version: 2.0.4(@types/node@20.16.1)
 
   packages/fastify-graphiql:
     dependencies:
@@ -363,7 +363,7 @@ importers:
     devDependencies:
       vitest:
         specifier: ^2.0.0
-        version: 2.0.4
+        version: 2.0.4(@types/node@20.16.1)
 
   packages/frontend:
     dependencies:
@@ -398,8 +398,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0(graphql@16.8.1)
       i18next:
-        specifier: ^23.8.2
-        version: 23.8.2
+        specifier: ^23.14.0
+        version: 23.14.0
       i18next-icu:
         specifier: ^2.3.0
         version: 2.3.0(intl-messageformat@10.5.14)
@@ -410,8 +410,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-i18next:
-        specifier: ^14.0.3
-        version: 14.0.3(i18next@23.8.2)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^15.0.1
+        version: 15.0.1(i18next@23.14.0)(react-dom@18.3.1)(react@18.3.1)
       react-query:
         specifier: ^3.39.3
         version: 3.39.3(react-dom@18.3.1)(react@18.3.1)
@@ -508,8 +508,8 @@ importers:
         specifier: workspace:*
         version: link:../frontend
       i18next:
-        specifier: ^23.8.2
-        version: 23.8.2
+        specifier: ^23.14.0
+        version: 23.14.0
       i18next-icu:
         specifier: ^2.3.0
         version: 2.3.0(intl-messageformat@10.5.14)
@@ -520,8 +520,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-i18next:
-        specifier: ^14.0.3
-        version: 14.0.3(i18next@23.8.2)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^15.0.1
+        version: 15.0.1(i18next@23.14.0)(react-dom@18.3.1)(react@18.3.1)
       react-query:
         specifier: ^3.39.3
         version: 3.39.3(react-dom@18.3.1)(react@18.3.1)
@@ -591,13 +591,13 @@ importers:
         version: 2.0.12(@storybook/blocks@8.0.0)(@storybook/channels@7.6.20)(@storybook/components@7.6.20)(@storybook/core-events@7.6.20)(@storybook/manager-api@8.0.0)(@storybook/preview-api@7.6.20)(@storybook/theming@8.0.0)(react-dom@18.3.1)(react-router-dom@6.21.3)(react@18.3.1)
       storybook-react-i18next:
         specifier: ^3.0.1
-        version: 3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.6.0)(i18next@23.8.2)(react-i18next@14.0.3)
+        version: 3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.6.0)(i18next@23.14.0)(react-i18next@15.0.1)
       typescript:
         specifier: ^5.2.2
         version: 5.3.3
       vite:
         specifier: ^5.0.8
-        version: 5.0.12(@types/node@20.14.11)
+        version: 5.0.12(@types/node@20.16.1)
 
 packages:
 
@@ -1218,7 +1218,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/highlight': 7.24.7
-      picocolors: 1.0.0
+      picocolors: 1.0.1
 
   /@babel/compat-data@7.23.5:
     resolution: {integrity: sha512-uU27kfDRlhfKl+w1U6vp16IuvSLtjAxdArVXPa9BvLkrr7CYIsxH5adpHObeAGY/41+syctUWOZ140a2Rvkgjw==}
@@ -1884,7 +1884,7 @@ packages:
       '@babel/helper-validator-identifier': 7.24.7
       chalk: 2.4.2
       js-tokens: 4.0.0
-      picocolors: 1.0.0
+      picocolors: 1.0.1
 
   /@babel/parser@7.23.9:
     resolution: {integrity: sha512-9tcKgqKbs3xGJ+NtKF2ndOBBLVwPjl1SHxPQkd36r3Dlirw3xWUeGaTbqr7uGZcTaxkVNwc+03SVP7aCdWrTlA==}
@@ -8150,7 +8150,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.3.3)
       typescript: 5.3.3
-      vite: 5.0.12(@types/node@20.14.11)
+      vite: 5.0.12(@types/node@20.16.1)
     dev: true
 
   /@jridgewell/gen-mapping@0.3.5:
@@ -11038,7 +11038,7 @@ packages:
       magic-string: 0.30.6
       ts-dedent: 2.2.0
       typescript: 5.3.3
-      vite: 5.0.12(@types/node@20.14.11)
+      vite: 5.0.12(@types/node@20.16.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -11481,7 +11481,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       resolve: 1.22.8
       tsconfig-paths: 4.2.0
-      vite: 5.0.12(@types/node@20.14.11)
+      vite: 5.0.12(@types/node@20.16.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -12146,7 +12146,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       '@babel/code-frame': 7.24.7
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       '@types/aria-query': 5.0.4
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -12177,7 +12177,7 @@ packages:
         optional: true
     dependencies:
       '@adobe/css-tools': 4.3.3
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       aria-query: 5.3.0
       chalk: 3.0.0
       css.escape: 1.5.1
@@ -12216,7 +12216,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash: 4.17.21
       redent: 3.0.0
-      vitest: 2.0.4
+      vitest: 2.0.4(@types/node@20.16.1)
     dev: true
 
   /@testing-library/react@16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.2.18)(@types/react@18.2.51)(react-dom@18.3.1)(react@18.3.1):
@@ -13074,7 +13074,7 @@ packages:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.3.107
-      vite: 5.0.12(@types/node@20.14.11)
+      vite: 5.0.12(@types/node@20.16.1)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -13090,7 +13090,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.0.12(@types/node@20.14.11)
+      vite: 5.0.12(@types/node@20.16.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14390,7 +14390,7 @@ packages:
   /broadcast-channel@3.7.0:
     resolution: {integrity: sha512-cIAKJXAxGJceNZGTZSBzMxzyOn72cVgPnKx4dc6LRjQgbaJUQqhy5rzL3zbMxkMWsGKkv2hSFkPRMEXfoMZ2Mg==}
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       detect-node: 2.1.0
       js-sha3: 0.8.0
       microseconds: 0.2.0
@@ -16086,7 +16086,7 @@ packages:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
     dev: true
 
   /date-fns@3.6.0:
@@ -18732,10 +18732,10 @@ packages:
       intl-messageformat: 10.5.14
     dev: false
 
-  /i18next@23.8.2:
-    resolution: {integrity: sha512-Z84zyEangrlERm0ZugVy4bIt485e/H8VecGUZkZWrH7BDePG6jT73QdL9EA1tRTTVVMpry/MgWIP1FjEn0DRXA==}
+  /i18next@23.14.0:
+    resolution: {integrity: sha512-Y5GL4OdA8IU2geRrt2+Uc1iIhsjICdHZzT9tNwQ3TVqdNzgxHToGCKf/TPRP80vTCAP6svg2WbbJL+Gx5MFQVA==}
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
 
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -20682,7 +20682,7 @@ packages:
   /match-sorter@6.3.3:
     resolution: {integrity: sha512-sgiXxrRijEe0SzHKGX4HouCpfHRPnqteH42UdMEW7BlWy990ZkzcvonJGv4Uu9WE7Y1f8Yocm91+4qFPCbmNww==}
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       remove-accents: 0.5.0
     dev: false
 
@@ -22661,7 +22661,7 @@ packages:
     resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
     engines: {node: '>=10'}
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
     dev: true
 
   /postcss-calc@8.2.4(postcss@8.4.33):
@@ -23951,7 +23951,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       invariant: 2.2.4
       prop-types: 15.8.1
       react: 18.2.0
@@ -23966,7 +23966,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       invariant: 2.2.4
       prop-types: 15.8.1
       react: 18.3.1
@@ -23984,8 +23984,8 @@ packages:
       react-fast-compare: 3.2.2
       shallowequal: 1.1.0
 
-  /react-i18next@14.0.3(i18next@23.8.2)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-Zav2EEnrQNmCawnzj0l7xitj7jipC7kBNG3o6Cl75NwGndvdp/wu3LSVwJpyAc3eSWMwRFYZ5uNi43CtFUDf/g==}
+  /react-i18next@15.0.1(i18next@23.14.0)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-NwxLqNM6CLbeGA9xPsjits0EnXdKgCRSS6cgkgOdNcPXqL+1fYNl8fBg1wmnnHvFy812Bt4IWTPE9zjoPmFj3w==}
     peerDependencies:
       i18next: '>= 23.2.3'
       react: '>= 16.8.0'
@@ -23997,9 +23997,9 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       html-parse-stringify: 3.0.1
-      i18next: 23.8.2
+      i18next: 23.14.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -24042,7 +24042,7 @@ packages:
       react-loadable: '*'
       webpack: '>=4.41.1 || 5.x'
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       react-loadable: /@docusaurus/react-loadable@5.5.2(react@18.2.0)
       webpack: 5.90.0
     dev: false
@@ -24054,7 +24054,7 @@ packages:
       react-loadable: '*'
       webpack: '>=4.41.1 || 5.x'
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.25.0
       react-loadable: /@docusaurus/react-loadable@6.0.0(react@18.3.1)
       webpack: 5.93.0
     dev: false
@@ -25549,7 +25549,7 @@ packages:
     resolution: {integrity: sha512-euCfw6ABqq8jSZ4fCaAIsNwk1FBIrSIr4kMP900bjUgO/mGgzZzXmrYmZaXs51mx9A2p87xo0OktPPZUuKYCTQ==}
     dev: true
 
-  /storybook-react-i18next@3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.6.0)(i18next@23.8.2)(react-i18next@14.0.3):
+  /storybook-react-i18next@3.0.1(i18next-browser-languagedetector@7.2.1)(i18next-http-backend@2.6.0)(i18next@23.14.0)(react-i18next@15.0.1):
     resolution: {integrity: sha512-zv8RkhNJdY51cXOuc3v0bCcQn0Gh8i8S9yunMXEloqaeF5rbHpPJz1jgFDvNhbUhQPWKm0qbcn8ir0/tKYvfXg==}
     peerDependencies:
       i18next: ^22.0.0 || ^23.0.0 || ^24.0.0
@@ -25557,10 +25557,10 @@ packages:
       i18next-http-backend: ^2.0.0
       react-i18next: ^12.0.0 || ^13.0.0 || ^14.0.0
     dependencies:
-      i18next: 23.8.2
+      i18next: 23.14.0
       i18next-browser-languagedetector: 7.2.1
       i18next-http-backend: 2.6.0
-      react-i18next: 14.0.3(i18next@23.8.2)(react-dom@18.3.1)(react@18.3.1)
+      react-i18next: 15.0.1(i18next@23.14.0)(react-dom@18.3.1)(react@18.3.1)
       storybook-i18n: 3.0.1
     dev: true
 
@@ -27083,60 +27083,6 @@ packages:
       rollup: 4.9.6
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
-
-  /vitest@2.0.4:
-    resolution: {integrity: sha512-luNLDpfsnxw5QSW4bISPe6tkxVvv5wn2BBs/PuDRkhXZ319doZyLOBr1sjfB5yCEpTiU7xCAdViM8TNVGPwoog==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.0.4
-      '@vitest/ui': 2.0.4
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@vitest/expect': 2.0.4
-      '@vitest/pretty-format': 2.0.4
-      '@vitest/runner': 2.0.4
-      '@vitest/snapshot': 2.0.4
-      '@vitest/spy': 2.0.4
-      '@vitest/utils': 2.0.4
-      chai: 5.1.1
-      debug: 4.3.5
-      execa: 8.0.1
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      std-env: 3.7.0
-      tinybench: 2.8.0
-      tinypool: 1.0.0
-      tinyrainbow: 1.2.0
-      vite: 5.0.12(@types/node@20.14.11)
-      vite-node: 2.0.4(@types/node@20.14.11)
-      why-is-node-running: 2.3.0
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
     dev: true
 
   /vitest@2.0.4(@types/node@20.14.11)(jsdom@24.0.0):
