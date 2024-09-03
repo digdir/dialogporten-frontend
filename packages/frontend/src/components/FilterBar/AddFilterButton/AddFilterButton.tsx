@@ -50,23 +50,25 @@ export const AddFilterButton = ({
           onClickButton={onClose}
           buttonText={t('filter_bar.add_filter')}
         />
-        {settings.map((setting: FilterSetting) => {
-          const filterActive = !!selectedFilters.find(
-            (filter) => filter.id === setting.id && filter.value !== undefined,
-          );
-          return (
-            <Fragment key={setting.id}>
-              <MenuItem
-                onClick={() => {
-                  onListItemClick(setting.id, undefined);
-                }}
-                leftContent={<span className={styles.addFilterItemLabel}>{setting.label}</span>}
-                isActive={filterActive}
-              />
-              {setting.horizontalRule && <HorizontalLine />}
-            </Fragment>
-          );
-        })}
+        {settings
+          .filter((setting) => setting.options.length > 1)
+          .map((setting: FilterSetting) => {
+            const filterActive = !!selectedFilters.find(
+              (filter) => filter.id === setting.id && filter.value !== undefined,
+            );
+            return (
+              <Fragment key={setting.id}>
+                <MenuItem
+                  onClick={() => {
+                    onListItemClick(setting.id, undefined);
+                  }}
+                  leftContent={<span className={styles.addFilterItemLabel}>{setting.label}</span>}
+                  isActive={filterActive}
+                />
+                {setting.horizontalRule && <HorizontalLine />}
+              </Fragment>
+            );
+          })}
       </DropdownList>
     </div>
   );
