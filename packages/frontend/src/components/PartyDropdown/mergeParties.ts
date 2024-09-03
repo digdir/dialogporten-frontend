@@ -25,6 +25,13 @@ type MergedParty = {
 };
 
 export function groupParties(mergedParties: MergedParty[]): MergedPartyGroup {
+  if (mergedParties.length >= 3) {
+    return {
+      Other_people: { title: '', parties: mergedParties },
+      End_user: { title: '', parties: [] },
+      Organizations: { title: '', parties: [] },
+    };
+  }
   return mergedParties.reduce<MergedPartyGroup>(
     (acc, party) => {
       if (party.isCurrentEndUser) {

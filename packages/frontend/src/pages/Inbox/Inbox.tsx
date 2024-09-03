@@ -194,7 +194,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const filterBarSettings = useMemo(() => getFilterBarSettings(itemsToDisplay, format), [itemsToDisplay, format]);
+  const filterBarSettings = useMemo(() => getFilterBarSettings(dataSource, format), [dataSource, format]);
 
   const savedSearchDisabled = !activeFilters?.length && !searchString;
 
