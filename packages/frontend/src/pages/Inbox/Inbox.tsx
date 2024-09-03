@@ -19,6 +19,8 @@ import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.ts
 import { PartyDropdown } from '../../components/PartyDropdown';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
+import { FeatureFlagKeys } from '../../featureFlags/FeatureFlags.ts';
+import { useFeatureFlag } from '../../featureFlags/useFeatureFlag.ts';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
@@ -72,6 +74,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const filterBarRef = useRef<FilterBarRef>(null);
   const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
   const queryClient = useQueryClient();
+
+  const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
 
   const location = useLocation();
   const { t } = useTranslation();
@@ -266,7 +270,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
           hideSaveButton={savedSearchDisabled}
         />
       </section>
-      {inSelectionMode && (
+      {inSelectionMode && !disableBulkActions && (
         <ActionPanel
           actionButtons={[
             {
