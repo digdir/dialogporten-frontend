@@ -95,10 +95,8 @@ export const EditSavedSearchDialog = forwardRef(
           <Modal.Footer>
             <div className={styles.searchFormFooter}>
               <div className={styles.buttons}>
-                <Button className={styles.saveButton} onClick={handleSave}>
-                  {t('editSavedSearch.save_and_close')}
-                </Button>
-                <Button variant="secondary" className={styles.deleteButton} onClick={() => onDelete?.(savedSearch)}>
+                <Button onClick={handleSave}>{t('editSavedSearch.save_and_close')}</Button>
+                <Button variant="secondary" onClick={() => onDelete?.(savedSearch)}>
                   <TrashIcon className={styles.icon} aria-hidden="true" />
                   <span>{t('word.delete')}</span>
                 </Button>
