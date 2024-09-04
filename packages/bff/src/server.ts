@@ -1,4 +1,4 @@
-import logger from '@digdir/dialogporten-node-logger';
+import { logger } from '@digdir/dialogporten-node-logger';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
@@ -31,7 +31,7 @@ const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
-    logger,
+    logger: logger.pinoLoggerInstance,
   });
 
   if (applicationInsights.enabled) {

@@ -2,12 +2,12 @@
 
 Logger for nodejs that uses [pino](https://github.com/pinojs/pino)
 as the logger tool. Allows for both a prettified log and a more
-machine readable log depending on environment. Exports an instance of `pino.Logger`
+machine readable log depending on environment.
 
 ## Usage
 
 ```typescript
-import logger from '@digdir/dialogporten-node-logger'
+import { logger } from '@digdir/dialogporten-node-logger'
 
 logger.info('Hello world')
 logger.info({such: 'context'}, 'Hello world with additional context')
@@ -19,7 +19,7 @@ You can also create a "context logger", this will add a context object
 to all log calls to that logger.
 
 ```typescript
-import logger, { createContextLogger } from '@digdir/dialgporten-node-logger'
+import { logger, createContextLogger } from '@digdir/dialgporten-node-logger'
 
 logger.info('Hello world')
 // logs: { <standard fields>, mgs: 'Hello world' }
@@ -33,6 +33,14 @@ ctxLogger.info('Hello world')
 ctxLogger.info({such: 'context'}, 'Hello world with additional context')
 // logs: { <standard fields>, foo: 'bar', such: 'context', mgs: 'Hello world' }
 ```
+
+You can also import the `pino` logger instance itself.
+
+```typescript
+import { logger } from '@digdir/dialgporten-node-logger'
+
+logger.pinoLogger.info('Hello world')
+// logs: { <standard fields>, mgs: 'Hello world' }
 
 ### Configuration
 
