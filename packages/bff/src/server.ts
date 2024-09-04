@@ -31,6 +31,7 @@ const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
+    logger,
   });
 
   if (applicationInsights.enabled) {

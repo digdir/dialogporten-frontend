@@ -2,7 +2,7 @@
 
 Logger for nodejs that uses [pino](https://github.com/pinojs/pino)
 as the logger tool. Allows for both a prettified log and a more
-machine readable log depending on environment
+machine readable log depending on environment. Exports an instance of `pino.Logger`
 
 ## Usage
 

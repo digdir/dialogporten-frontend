@@ -46,15 +46,7 @@ logger = pino(
 export const createContextLogger = (context: Record<string | number | symbol, unknown>) => {
   const child = logger.child(context);
 
-  return {
-    trace: child.trace.bind(child),
-    debug: child.debug.bind(child),
-    info: child.info.bind(child),
-    warn: child.warn.bind(child),
-    error: child.error.bind(child),
-    fatal: child.fatal.bind(child),
-    silent: child.silent.bind(child),
-  };
+  return child;
 };
 
 if (env.TEST_LOGGING) {
@@ -66,12 +58,4 @@ if (env.TEST_LOGGING) {
   logger.fatal(new Error('Test error'), 'Fatal test');
 }
 
-export default {
-  trace: logger.trace.bind(logger),
-  debug: logger.debug.bind(logger),
-  info: logger.info.bind(logger),
-  warn: logger.warn.bind(logger),
-  error: logger.error.bind(logger),
-  fatal: logger.fatal.bind(logger),
-  silent: logger.silent.bind(logger),
-};
+export default logger;
