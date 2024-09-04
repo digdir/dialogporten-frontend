@@ -147,6 +147,10 @@ var containerAppEnvVars = [
     name: 'LOGGER_FORMAT'
     value: 'json'
   }
+  {
+    name: 'NODE_ENV'
+    value: 'production'
+  }
 ]
 
 module containerApp '../../modules/containerApp/main.bicep' = {
