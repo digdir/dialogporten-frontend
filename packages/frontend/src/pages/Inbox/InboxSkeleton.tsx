@@ -1,7 +1,9 @@
 import { Skeleton } from '@digdir/designsystemet-react';
 import cx from 'classnames';
+import { useRef } from 'react';
 import { InboxItems } from '../../components';
 import styles from '../../components/InboxItem/inboxItem.module.css';
+import inboxItemsHeaderStyles from '../../components/InboxItem/inboxItemsHeader.module.css';
 
 interface InboxSkeletonProps {
   numberOfItems: number;
@@ -14,11 +16,13 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({
   withHeader = false,
   noBorder = false,
 }) => {
+  const key = useRef<string>('inbox-skeleton' + Math.random());
+
   return (
     <>
-      <InboxItems>
+      <InboxItems key={key.current}>
         {withHeader && (
-          <header className={styles.inboxItemsHeader}>
+          <header className={inboxItemsHeaderStyles.inboxItemsHeader}>
             <h2>
               <Skeleton.Text width="80px" />
             </h2>
