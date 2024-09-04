@@ -1,4 +1,4 @@
-import logger from '@digdir/dialogporten-node-logger';
+import { logger } from '@digdir/dialogporten-node-logger';
 import oauthPlugin, { type OAuth2Namespace } from '@fastify/oauth2';
 import type {
   FastifyPluginAsync,

@@ -34,9 +34,9 @@ const prettyTransport = pino.transport({
   },
 });
 
-let logger: pino.Logger;
+let pinoLogger: pino.Logger;
 
-logger = pino(
+pinoLogger = pino(
   {
     ...defaultOptions,
   },
@@ -44,7 +44,7 @@ logger = pino(
 );
 
 export const createContextLogger = (context: Record<string | number | symbol, unknown>) => {
-  const child = logger.child(context);
+  const child = pinoLogger.child(context);
 
   return {
     trace: child.trace.bind(child),
@@ -58,20 +58,21 @@ export const createContextLogger = (context: Record<string | number | symbol, un
 };
 
 if (env.TEST_LOGGING) {
-  logger.debug('Debug test');
-  logger.trace('Trace test');
-  logger.info({ some: 'object' }, 'Info test');
-  logger.warn('Consider this a warning');
-  logger.error(new Error('Test error'), 'Error test');
-  logger.fatal(new Error('Test error'), 'Fatal test');
+  pinoLogger.debug('Debug test');
+  pinoLogger.trace('Trace test');
+  pinoLogger.info({ some: 'object' }, 'Info test');
+  pinoLogger.warn('Consider this a warning');
+  pinoLogger.error(new Error('Test error'), 'Error test');
+  pinoLogger.fatal(new Error('Test error'), 'Fatal test');
 }
 
-export default {
-  trace: logger.trace.bind(logger),
-  debug: logger.debug.bind(logger),
-  info: logger.info.bind(logger),
-  warn: logger.warn.bind(logger),
-  error: logger.error.bind(logger),
-  fatal: logger.fatal.bind(logger),
-  silent: logger.silent.bind(logger),
+export const logger = {
+  trace: pinoLogger.trace.bind(pinoLogger),
+  debug: pinoLogger.debug.bind(pinoLogger),
+  info: pinoLogger.info.bind(pinoLogger),
+  warn: pinoLogger.warn.bind(pinoLogger),
+  error: pinoLogger.error.bind(pinoLogger),
+  fatal: pinoLogger.fatal.bind(pinoLogger),
+  silent: pinoLogger.silent.bind(pinoLogger),
+  pinoLoggerInstance: pinoLogger,
 };

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import 'reflect-metadata';
-import logger from '@digdir/dialogporten-node-logger';
+import { logger } from '@digdir/dialogporten-node-logger';
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import config from './config.ts';
 
