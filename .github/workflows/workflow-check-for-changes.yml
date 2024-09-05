@@ -12,6 +12,9 @@ on:
       hasMigrationChanges:
         description: "Migration related files changed"
         value: ${{ jobs.check-for-changes.outputs.hasMigrationChanges }}
+      hasNodeLoggerChanges:
+        description: "Node Logger related files changed"
+        value: ${{ jobs.check-for-changes.outputs.hasNodeLoggerChanges }}
 
 jobs:
   check-for-changes:
@@ -21,7 +24,7 @@ jobs:
       hasInfrastructureChanges: ${{ steps.filter.outputs.infrastructure_any_changed == 'true' }}
       hasApplicationChanges: ${{ steps.filter.outputs.applications_any_changed == 'true' }}
       hasMigrationChanges: ${{ steps.filter.outputs.migrations_any_changed == 'true' }}
-
+      hasNodeLoggerChanges: ${{ steps.filter.outputs.nodeLogger_any_changed == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,3 +51,6 @@ jobs:
               - 'packages/bff/src/migrations/**/*'
               - '.azure/applications/bff-migration-job/**/*'
               - '.azure/modules/containerAppJob/**/*'
+            nodeLogger:
+              - '.github/**/*'
+              - 'packages/node-logger/**/*'
