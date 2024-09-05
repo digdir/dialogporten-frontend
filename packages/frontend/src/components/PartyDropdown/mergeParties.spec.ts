@@ -1,6 +1,6 @@
 import type { PartyFieldsFragment } from 'bff-types-generated';
 import { describe, expect, it } from 'vitest';
-import { mergeParties } from './mergeParties.ts';
+import { mergePartiesByName } from './mergePartiesByName.ts';
 
 describe('mergeParties', () => {
   it('should correctly merge subparties with the same name as the parent party', () => {
@@ -16,7 +16,7 @@ describe('mergeParties', () => {
 
     const dialogs = [{ party: 'party1' }, { party: 'subParty1' }, { party: 'subParty2' }];
 
-    const result = mergeParties(party, dialogs);
+    const result = mergePartiesByName(party, dialogs);
     expect(result).toEqual({
       label: 'Acme Corp',
       isCompany: true,
@@ -36,7 +36,7 @@ describe('mergeParties', () => {
 
     const dialogs = [{ party: 'party2' }];
 
-    const result = mergeParties(party, dialogs);
+    const result = mergePartiesByName(party, dialogs);
     expect(result).toEqual({
       label: 'Solo Corp',
       isCompany: true,
@@ -57,7 +57,7 @@ describe('mergeParties', () => {
 
     const dialogs = [{ party: 'party3' }, { party: 'subParty3' }];
 
-    const result = mergeParties(party, dialogs);
+    const result = mergePartiesByName(party, dialogs);
     expect(result).toEqual({
       label: 'Main Corp',
       isCompany: true,

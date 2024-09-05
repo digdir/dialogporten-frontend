@@ -29,7 +29,7 @@
   border-radius: 6px 6px 0 0;
 }
 
-input {
+.searchInput {
   color: black;
   font-size: 1.125rem;
   font-style: normal;
@@ -40,7 +40,7 @@ input {
   align-self: flex-start;
 }
 
-input:focus-visible {
+.searchInput:focus-visible {
   outline: none;
 }
 
@@ -237,7 +237,6 @@ input:focus-visible {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* margin: 0 1rem; */
 }
 
 .rightContent {

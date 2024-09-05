@@ -93,11 +93,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                   ...(filters?.length && { filters: JSON.stringify(filters) }),
                 });
                 return (
-                  <a
-                    href={`${fromView}?${queryParams.toString()}`}
-                    className={styles.goToSavedSearchLink}
-                    key={search.id}
-                  >
+                  <a href={`${fromView}?${queryParams.toString()}`} key={search.id}>
                     <SearchDropdownItem>
                       {search.name ? (
                         <div className={styles.savedSearchItem}>

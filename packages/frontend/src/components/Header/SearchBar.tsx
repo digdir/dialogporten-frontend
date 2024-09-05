@@ -70,7 +70,7 @@ export const SearchBar: React.FC = () => {
           }}
           aria-label={t('header.searchPlaceholder')}
           placeholder={t('header.searchPlaceholder')}
-          className={cx(styles.searchInput)}
+          className={styles.searchInput}
           onChange={(e) => {
             setSearchValue(e.target.value);
           }}

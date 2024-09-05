@@ -24,6 +24,7 @@
 
 .liItem {
   margin-bottom: 0.5rem;
+  list-style: none;
 }
 
 .isLink {
@@ -37,6 +38,12 @@
   align-items: center;
   grid-area: left;
   width: 100%;
+}
+
+.rightContent {
+  display: flex;
+  align-items: center;
+  grid-area: right;
 }
 
 .displayText {

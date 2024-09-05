@@ -6,7 +6,7 @@ import { Backdrop } from '../Backdrop';
 import { DropdownList, DropdownMobileHeader } from '../DropdownMenu';
 import { ProfileButton } from '../ProfileButton';
 import type { SideBarView } from '../Sidebar';
-import { PartyList } from './PartyList.tsx';
+import { PartyListContainer } from './PartyListContainer.tsx';
 
 interface PartyDropdownRef {
   openPartyDropdown: () => void;
@@ -20,7 +20,7 @@ export const PartyDropdown = forwardRef((props: PartyDropdownProps, ref: Ref<Par
   const { counterContext } = props;
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { t } = useTranslation();
-  const { selectedParties } = useParties();
+  const { selectedParties, allOrganizationsSelected, parties } = useParties();
 
   useImperativeHandle(ref, () => ({
     openPartyDropdown: () => {
@@ -30,8 +30,10 @@ export const PartyDropdown = forwardRef((props: PartyDropdownProps, ref: Ref<Par
 
   return (
     <div>
-      <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral">
-        {selectedParties?.[0]?.name ?? t('partyDropdown.selectParty')}
+      <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral" disabled={!parties.length}>
+        {allOrganizationsSelected
+          ? t('parties.labels.all_organizations')
+          : selectedParties?.[0]?.name ?? t('partyDropdown.selectParty')}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
       <DropdownList variant="long" isExpanded={isMenuOpen}>
@@ -40,9 +42,8 @@ export const PartyDropdown = forwardRef((props: PartyDropdownProps, ref: Ref<Par
           buttonText={t('word.back')}
           buttonIcon={null}
         />
-        <PartyList onOpenMenu={setIsMenuOpen} counterContext={counterContext} />
+        <PartyListContainer onSelect={() => setIsMenuOpen(false)} counterContext={counterContext} />
       </DropdownList>
-
       <Backdrop show={isMenuOpen} onClick={() => setIsMenuOpen(false)} />
     </div>
   );

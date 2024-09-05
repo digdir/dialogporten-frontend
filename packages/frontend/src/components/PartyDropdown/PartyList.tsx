@@ -1,50 +1,93 @@
-import { Fragment, useMemo } from 'react';
-import { useQueryClient } from 'react-query';
-import { useDialogs } from '../../api/useDialogs.tsx';
-import { useParties } from '../../api/useParties.ts';
-import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
+import { Search } from '@digdir/designsystemet-react';
+import { Fragment, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
-import type { SideBarView } from '../Sidebar';
-import { type MergedPartyGroup, groupParties, mergeParties } from './mergeParties.ts';
+import type { MergedPartyGroup } from './mergePartiesByName.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyListProps {
-  onOpenMenu: (value: boolean) => void;
-  counterContext?: SideBarView;
+  optionsGroups: MergedPartyGroup;
+  selectedPartyIds: string[];
+  onSelect: (ids: string[]) => void;
+  showSearchFilter?: boolean;
 }
 
-export const PartyList = ({ onOpenMenu, counterContext = 'inbox' }: PartyListProps) => {
-  const { parties, setSelectedPartyIds, selectedParties } = useParties();
-  const { dialogsByView } = useDialogs(parties);
-  const queryClient = useQueryClient();
-  const { savedSearches } = useSavedSearches(selectedParties);
+/**
+ * Component for rendering a list of parties
+ * This component is only responsible for rendering the list of parties and certain business logic for grouping and filtering
+ * @param optionsGroups - The groups of parties to render
+ * @param selectedPartyIds - The ids of the selected parties
+ * @param onSelect - The function to call when a party is selected
+ * @param showSearchFilter - Whether to show the search filter
+ * @returns A list of parties
+ * @example
+ * <PartyList
+ *  optionsGroups={optionsGroups}
+ *  selectedPartyIds={selectedPartyIds}
+ *  onSelect={setSelectedPartyIds}
+ *  showSearchFilter
+ *  />
+ *  */
 
-  const optionsGroups: MergedPartyGroup = useMemo(() => {
-    return groupParties(
-      parties.map((party) =>
-        mergeParties(party, dialogsByView[counterContext as keyof typeof dialogsByView], savedSearches, counterContext),
-      ),
-    );
-  }, [parties, dialogsByView, savedSearches, counterContext]);
+export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearchFilter }: PartyListProps) => {
+  const [filterString, setFilterString] = useState<string>('');
+  const { t } = useTranslation();
+  const filteredOptionsGroups = useMemo(() => {
+    if (!filterString) {
+      return optionsGroups;
+    }
 
+    const allParties = Object.values(optionsGroups).flatMap((group) => group.parties);
+    const filteredParties = allParties.filter(({ label }) => label.toLowerCase().includes(filterString.toLowerCase()));
+
+    return {
+      Filtered: {
+        title: t('partyDropdown.filter_results', { count: filteredParties.length }),
+        parties: filteredParties,
+        isSearchResults: true,
+      },
+    };
+  }, [optionsGroups, filterString]);
   return (
     <>
-      {Object.entries(optionsGroups)
-        .filter(([_, group]) => group.parties.length > 0)
+      {showSearchFilter && (
+        <MenuItem
+          leftContent={
+            <Search
+              autoComplete="off"
+              size="sm"
+              aria-label={t('word.search')}
+              placeholder={t('word.search')}
+              onChange={(e) => {
+                setFilterString(e.target.value);
+              }}
+              value={filterString}
+              onClear={() => setFilterString('')}
+            />
+          }
+        />
+      )}
+      {Object.entries(filteredOptionsGroups)
+        .filter(([_, group]) => group.isSearchResults || group.parties.length > 0)
         .map(([key, group], index, list) => {
           const isLastGroup = index === list.length - 1;
-
           return (
             <Fragment key={key}>
               <MenuGroupHeader title={group.title} />
               {group.parties.map((option) => {
                 const companyName = option.isCompany ? option.label : '';
+                const isSelected = !!(
+                  selectedPartyIds.length &&
+                  selectedPartyIds.length === option.onSelectValues.length &&
+                  selectedPartyIds.every((urn) => option.onSelectValues.includes(urn))
+                );
                 return (
                   <Fragment key={option.value}>
                     <MenuItem
-                      isActive={selectedParties.every((party) => option.onSelectValues.includes(party.party))}
+                      className={styles.partyListItem}
+                      isActive={isSelected}
                       leftContent={
                         <MenuItem.LeftContent>
                           <Avatar name={option.label} companyName={companyName} size="small" />
@@ -53,10 +96,7 @@ export const PartyList = ({ onOpenMenu, counterContext = 'inbox' }: PartyListPro
                       }
                       count={option.count}
                       onClick={() => {
-                        setSelectedPartyIds(option.onSelectValues);
-                        void queryClient.invalidateQueries(['dialogs']);
-                        void queryClient.invalidateQueries(['savedSearches']);
-                        onOpenMenu(false);
+                        onSelect(option.onSelectValues);
                       }}
                     />
                     {!isLastGroup && <HorizontalLine />}

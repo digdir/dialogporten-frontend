@@ -119,7 +119,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }) => {
           count={itemsPerViewCount.deleted}
           isActive={pathname === Routes.deleted}
           path={Routes.deleted}
-          classNames={styles.lastItem}
+          className={styles.lastItem}
           useProfiledHover
           disabled
         />

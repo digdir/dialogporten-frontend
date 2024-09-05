@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
-import type { InboxItemMetaField } from '../components/index.ts';
+import type { InboxItemMetaField } from '../components';
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';

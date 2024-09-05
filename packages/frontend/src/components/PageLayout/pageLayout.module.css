@@ -11,8 +11,9 @@
 }
 
 .background {
-  background: var(--background-color);
   min-height: 100vh;
+  background: var(--background-color);
+  overflow: auto;
 }
 
 .inSelectionMode.background {
@@ -25,7 +26,6 @@
 
 .pageLayout > main {
   grid-area: main;
-  overflow: auto;
   padding: 0;
   width: 100%;
   margin-right: auto;
