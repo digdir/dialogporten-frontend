@@ -1,8 +1,11 @@
-name: Publish Node Logger to NPM
+name: Publish NPM Package
 
 on:
   workflow_call:
     inputs:
+      pathToPackage:
+        required: true
+        type: string
       version:
         required: true
         type: string
@@ -11,7 +14,7 @@ on:
         required: true
 
 env:
-  WORKING_DIRECTORY: packages/node-logger
+  WORKING_DIRECTORY: ${{ inputs.pathToPackage }}
 
 permissions:
   id-token: write
@@ -49,7 +52,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-node-logger-to-npm:
+  publish-to-npm:
     runs-on: ubuntu-latest
     needs: check-published-version
     if: needs.check-published-version.outputs.version-exists == 'false'
