@@ -21,25 +21,25 @@ interface MenuItem {
   rightContent?: React.ReactNode;
   useProfiledHover?: boolean;
   largeText?: boolean;
-  classNames?: string;
+  className?: string;
   disabled?: boolean;
 }
 
 const MenuItem = (props: MenuItem) => {
-  const { path, onClick, isExternalLink, leftContent, rightContent, classNames } = props;
+  const { path, onClick, isExternalLink, leftContent, rightContent, className } = props;
   const content = <MenuItemContent {...props} />;
 
   if (path) {
     return (
       <Link className={styles.isLink} to={path} onClick={onClick} target={isExternalLink ? '_blank' : '_self'}>
-        <li className={cx(styles.liItem, classNames)}>{content}</li>
+        <li className={cx(styles.liItem, className)}>{content}</li>
       </Link>
     );
   }
 
   if (onClick) {
     return (
-      <li className={cx(styles.isLink, styles.liItem, classNames)} onClick={onClick} onKeyUp={onClick}>
+      <li className={cx(styles.isLink, styles.liItem, className)} onClick={onClick} onKeyUp={onClick}>
         {content}
       </li>
     );

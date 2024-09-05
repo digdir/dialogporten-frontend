@@ -20,12 +20,13 @@
 
 .menuList {
   background: #fff;
-  overflow: visible;
   list-style-type: none;
   padding: 0;
   margin: 0;
   border-radius: 0.5rem;
   z-index: 1001;
+  max-height: 600px;
+  overflow: auto;
 }
 
 @media screen and (max-width: 1024px) {
@@ -37,6 +38,8 @@
     top: 10rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1002;
+    overflow: auto;
+    height: calc(100% - 12rem);
   }
 
   .menuList {

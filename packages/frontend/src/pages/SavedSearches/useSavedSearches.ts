@@ -1,4 +1,4 @@
-import type { PartyFieldsFragment, SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
+import type { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
 import { useQuery } from 'react-query';
 import { fetchSavedSearches } from '../../api/queries.ts';
 
@@ -11,23 +11,31 @@ interface UseSavedSearchesOutput {
 
 export const filterSavedSearches = (
   savedSearches: SavedSearchesFieldsFragment[],
-  selectedParties: PartyFieldsFragment[],
+  selectedPartyIds: string[],
 ): SavedSearchesFieldsFragment[] => {
   return (savedSearches ?? []).filter((savedSearch) => {
     if (!savedSearch?.data.urn?.length) {
       return true;
     }
-    if (selectedParties?.length !== savedSearch?.data?.urn?.length) {
+
+    if (savedSearch?.data?.urn?.length > 0) {
+      return selectedPartyIds.includes(savedSearch?.data.urn[0]!);
+    }
+
+    if (selectedPartyIds?.length !== savedSearch?.data?.urn?.length) {
       return false;
     }
 
-    return selectedParties?.every((party) => savedSearch?.data?.urn?.includes(party.party));
+    return selectedPartyIds?.every((party) => savedSearch?.data?.urn?.includes(party));
   });
 };
 
-export const useSavedSearches = (selectedParties?: PartyFieldsFragment[]): UseSavedSearchesOutput => {
-  const { data, isLoading, isSuccess } = useQuery<SavedSearchesQuery>('savedSearches', fetchSavedSearches);
+export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesOutput => {
+  const { data, isLoading, isSuccess } = useQuery<SavedSearchesQuery>(
+    ['savedSearches', selectedPartyIds],
+    fetchSavedSearches,
+  );
   const savedSearchesUnfiltered = data?.savedSearches as SavedSearchesFieldsFragment[];
-  const currentPartySavedSearches = filterSavedSearches(savedSearchesUnfiltered, selectedParties || []);
+  const currentPartySavedSearches = filterSavedSearches(savedSearchesUnfiltered, selectedPartyIds || []);
   return { savedSearches: savedSearchesUnfiltered, isLoading, isSuccess, currentPartySavedSearches };
 };

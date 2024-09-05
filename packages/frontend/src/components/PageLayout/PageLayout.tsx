@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import type React from 'react';
 import { memo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { Footer, Header, type ItemPerViewCount, Sidebar } from '..';
@@ -33,11 +34,12 @@ interface PageLayoutContentProps {
 
 const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
   ({ name, companyName, isCompany, notificationCount }) => {
+    const { t } = useTranslation();
     const { inSelectionMode } = useSelectedDialogs();
     const { isTabletOrSmaller } = useWindowSize();
     const showSidebar = !isTabletOrSmaller && !inSelectionMode;
-    const { selectedParties } = useParties();
-    const { currentPartySavedSearches } = useSavedSearches(selectedParties);
+    const { selectedPartyIds, selectedParties, allOrganizationsSelected } = useParties();
+    const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
     const { dialogsByView } = useDialogs(selectedParties);
     const itemsPerViewCount = {
       inbox: dialogsByView.inbox.length,
@@ -48,9 +50,11 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
       deleted: 0,
     } as ItemPerViewCount;
 
+    const usedCompanyName = allOrganizationsSelected ? t('parties.labels.all_organizations') : companyName;
+
     return (
       <>
-        <Header name={name} companyName={companyName} notificationCount={notificationCount} />
+        <Header name={name} companyName={usedCompanyName} notificationCount={notificationCount} />
         <div className={styles.pageLayout}>
           {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} isCompany={isCompany} />}
           <Outlet />

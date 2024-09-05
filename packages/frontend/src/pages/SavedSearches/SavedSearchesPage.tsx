@@ -20,9 +20,9 @@ export const SavedSearchesPage = () => {
   const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment | null>(null);
   const [selectedDeleteItem, setSelectedDeleteItem] = useState<number | undefined>(undefined);
   const { t } = useTranslation();
-  const { selectedParties } = useParties();
+  const { selectedPartyIds } = useParties();
   const { currentPartySavedSearches: savedSearches, isLoading: isLoadingSavedSearches } =
-    useSavedSearches(selectedParties);
+    useSavedSearches(selectedPartyIds);
   const deleteDialogRef = useRef<DeleteSearchDialogRef>(null);
   const editSavedSearchDialogRef = useRef<EditSavedSearchDialogRef>(null);
   const formatDistance = useFormatDistance();
