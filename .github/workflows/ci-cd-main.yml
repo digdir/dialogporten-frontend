@@ -119,7 +119,7 @@ jobs:
 
   publish-node-logger-to-npm:
     needs: [get-current-version, generate-git-short-sha, check-for-changes, deploy-apps]
-    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true') }}
+    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasNodeLoggerChanges == 'true') }}
     uses: ./.github/workflows/dispatch-publish-node-logger.yml
     with:
       version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
