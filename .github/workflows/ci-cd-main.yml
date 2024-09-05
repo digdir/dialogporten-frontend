@@ -116,13 +116,3 @@ jobs:
       region: norwayeast
       version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
       runMigration: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
-
-  publish-node-logger-to-npm:
-    needs: [get-current-version, generate-git-short-sha, check-for-changes, deploy-apps]
-    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasNodeLoggerChanges == 'true') }}
-    uses: ./.github/workflows/dispatch-publish-npm-package.yml
-    with:
-      version: ${{ needs.get-current-version.outputs.version }}-${{ needs.generate-git-short-sha.outputs.gitShortSha }}
-      pathToPackage: packages/node-logger
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
