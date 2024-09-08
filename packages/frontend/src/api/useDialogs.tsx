@@ -1,18 +1,36 @@
-import {
-  DialogStatus,
-  type GetAllDialogsForPartiesQuery,
-  type PartyFieldsFragment,
-  type SearchDialogFieldsFragment,
+import type {
+  // DialogStatus,
+  GetAllDialogsForPartiesQuery,
+  PartyFieldsFragment,
+  SearchDialogFieldsFragment,
 } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
-import type { InboxItemMetaField } from '../components/index.ts';
+import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components/index.ts';
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
+import { dataMock } from './dataMock.ts';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
+
+export enum DialogStatus {
+  /** The dialogue was completed. This typically means that the dialogue is moved to a GUI archive or similar. */
+  Completed = 'COMPLETED',
+  /** Started. In a serial process, this is used to indicate that, for example, a form filling is ongoing. */
+  InProgress = 'IN_PROGRESS',
+  /** The dialogue is considered new. Typically used for simple messages that do not require any interaction, or as an initial step for dialogues. This is the default. */
+  New = 'NEW',
+  /** For processing by the service owner. In a serial process, this is used after a submission is made. */
+  Processing = 'PROCESSING',
+  Sent = 'SENT',
+  /** Used to indicate that the dialogue is in progress/under work, but is in a state where the user must do something - for example, correct an error, or other conditions that hinder further processing. */
+  RequiresAttention = 'REQUIRES_ATTENTION',
+  /** Equivalent to 'InProgress', but will be used by the workspace/frontend for display purposes. */
+  Signing = 'SIGNING',
+  Draft = 'DRAFT',
+}
 
 export type InboxViewType = 'inbox' | 'drafts' | 'sent';
 interface UseDialogsOutput {
@@ -112,11 +130,18 @@ export const useSearchDialogs = ({
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
-  const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
+  // const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
+  const {
+    data: dataReal,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org, status],
     queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org, status),
     enabled,
   });
+  const data = dataMock;
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
@@ -132,10 +157,14 @@ export const useSearchDialogs = ({
   };
 };
 
-export const isInboxDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.New;
+export const isInboxDialog = (dialog: InboxItemInput): boolean =>
+  dialog.status === DialogStatus.New ||
+  dialog.status === DialogStatus.InProgress ||
+  dialog.status === DialogStatus.RequiresAttention ||
+  dialog.status === DialogStatus.Completed;
 export const isDraftDialog = (dialog: InboxItemInput): boolean =>
-  [DialogStatus.InProgress, DialogStatus.Signing].includes(dialog.status);
-export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Completed;
+  [DialogStatus.Draft, DialogStatus.Signing].includes(dialog.status);
+export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Sent;
 
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
   if (isSentDialog(dialog)) {
@@ -146,9 +175,15 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
   }
   return 'inbox';
 };
+
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
-  const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
+  const data = dataMock;
+  const {
+    data: dataReal,
+    isSuccess,
+    isLoading,
+  } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['dialogs', partyURIs],
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
@@ -167,12 +202,23 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   };
 };
 
+const getNewType = (type: string) => {
+  switch (type) {
+    case 'IN_PROGRESS':
+      return 'InProgress';
+    case 'NEW':
+      return 'New';
+    default:
+      return type;
+  }
+};
+
 export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
   const metaFields: InboxItemMetaField[] = [];
 
   metaFields.push({
-    type: 'status',
+    type: `status_${getNewType(item.status)}` as InboxItemMetaFieldType,
     label: `${i18n.t('word.status')}: ${item.status}`,
   });
 

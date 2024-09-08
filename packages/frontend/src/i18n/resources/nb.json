@@ -135,5 +135,9 @@
   "word.seenBy": "Sett av",
   "word.status": "Status",
   "word.to": "til",
-  "word.you": "deg"
+  "word.you": "deg",
+  "status.draft": "Utkast",
+  "status.in_progress": "Under arbeid",
+  "status.requires_attention": "Krever handling",
+  "status.completed": "Avsluttet"
 }
