@@ -1,18 +1,13 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import type { SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
+import type { DialogStatus } from 'bff-types-generated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
-import {
-  type DialogStatus,
-  type InboxViewType,
-  getViewType,
-  useDialogs,
-  useSearchDialogs,
-} from '../../api/useDialogs.tsx';
+import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { ActionPanel, InboxItem, InboxItems, SortOrderDropdown, useSearchString } from '../../components';
 import type { InboxItemMetaField } from '../../components';

@@ -1,9 +1,9 @@
 import type {
-  // DialogStatus,
   GetAllDialogsForPartiesQuery,
   PartyFieldsFragment,
   SearchDialogFieldsFragment,
 } from 'bff-types-generated';
+import { DialogStatus } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
@@ -11,26 +11,8 @@ import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components/i
 import { i18n } from '../i18n/config.ts';
 import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
-import { dataMock } from './dataMock.ts';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
-
-export enum DialogStatus {
-  /** The dialogue was completed. This typically means that the dialogue is moved to a GUI archive or similar. */
-  Completed = 'COMPLETED',
-  /** Started. In a serial process, this is used to indicate that, for example, a form filling is ongoing. */
-  InProgress = 'IN_PROGRESS',
-  /** The dialogue is considered new. Typically used for simple messages that do not require any interaction, or as an initial step for dialogues. This is the default. */
-  New = 'NEW',
-  /** For processing by the service owner. In a serial process, this is used after a submission is made. */
-  Processing = 'PROCESSING',
-  Sent = 'SENT',
-  /** Used to indicate that the dialogue is in progress/under work, but is in a state where the user must do something - for example, correct an error, or other conditions that hinder further processing. */
-  RequiresAttention = 'REQUIRES_ATTENTION',
-  /** Equivalent to 'InProgress', but will be used by the workspace/frontend for display purposes. */
-  Signing = 'SIGNING',
-  Draft = 'DRAFT',
-}
 
 export type InboxViewType = 'inbox' | 'drafts' | 'sent';
 interface UseDialogsOutput {
@@ -92,13 +74,11 @@ export const searchDialogs = (
   partyURIs: string[],
   search: string | undefined,
   org: string | undefined,
-  status: DialogStatus | undefined,
 ): Promise<GetAllDialogsForPartiesQuery> => {
   return graphQLSDK.getAllDialogsForParties({
     partyURIs,
     search,
     org,
-    status,
   });
 };
 
@@ -120,28 +100,17 @@ interface UseSearchDialogsOutput {
   isFetching: boolean;
 }
 
-export const useSearchDialogs = ({
-  parties,
-  searchString,
-  org,
-  status,
-}: searchDialogsProps): UseSearchDialogsOutput => {
+export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsProps): UseSearchDialogsOutput => {
   const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
   // const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-  const {
-    data: dataReal,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org, status],
-    queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org, status),
+  const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
+    queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org],
+    queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org),
     enabled,
   });
-  const data = dataMock;
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
@@ -178,12 +147,7 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
 
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
-  const data = dataMock;
-  const {
-    data: dataReal,
-    isSuccess,
-    isLoading,
-  } = useQuery<GetAllDialogsForPartiesQuery>({
+  const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['dialogs', partyURIs],
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
