@@ -157,7 +157,7 @@
   line-height: 1.5;
   display: flex;
   align-items: center;
-  color: var(--text-accent-suble);
+  color: var(--text-accent-subtle);
   font-size: 1.3125rem;
 }
 

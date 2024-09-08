@@ -340,6 +340,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
                   metaFields={item.metaFields}
                   linkTo={item.linkTo}
+                  viewType={viewType}
                 />
               ))}
             </InboxItems>

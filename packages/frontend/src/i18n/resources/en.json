@@ -138,5 +138,9 @@
   "word.seenBy": "Seen by",
   "word.status": "Status",
   "word.to": "to",
-  "word.you": "you"
+  "word.you": "you",
+  "status.draft": "Draft",
+  "status.in_progress": "In Progress",
+  "status.requires_attention": "Requires attention",
+  "status.completed": "Completed"
 }
