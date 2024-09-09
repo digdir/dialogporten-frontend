@@ -20,11 +20,16 @@ const envVariables = z.object({
   CLIENT_SECRET: z.string(),
   MIGRATION_RUN: z.coerce.boolean().default(false),
   DIALOGPORTEN_URL: z.string().default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
+  CONTAINER_APP_REPLICA_NAME: z.string().default(''),
 });
 
 const env = envVariables.parse(process.env);
 
 const config = {
+  info: {
+    name: 'bff',
+    instanceId: env.CONTAINER_APP_REPLICA_NAME,
+  },
   version: env.GIT_SHA,
   port: env.PORT,
   host: env.HOST,
