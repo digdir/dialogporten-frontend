@@ -196,7 +196,7 @@ export const InboxItem = ({
             <div className={styles.sender}>
               <Avatar
                 name={sender?.name ?? ''}
-                companyName={sender?.isCompany ? sender?.name : ''}
+                profile={sender?.isCompany ? 'organization' : 'person'}
                 imageUrl={sender.imageURL}
                 size="small"
               />

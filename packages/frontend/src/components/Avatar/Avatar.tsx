@@ -3,22 +3,30 @@ import { useState } from 'react';
 import { fromStringToColor } from '../../profile';
 import styles from './avatar.module.css';
 
+export type AvatarProfile = 'organization' | 'person';
+
 interface AvatarProps {
   name: string;
-  companyName?: string;
+  profile?: AvatarProfile;
   className?: string;
   imageUrl?: string;
   imageUrlAlt?: string;
   size?: 'small' | 'medium';
 }
 
-export const Avatar = ({ name, companyName, className, size = 'medium', imageUrl, imageUrlAlt }: AvatarProps) => {
+export const Avatar = ({
+  name,
+  className,
+  size = 'medium',
+  profile = 'person',
+  imageUrl,
+  imageUrlAlt,
+}: AvatarProps) => {
   const [hasImageError, setHasImageError] = useState<boolean>(false);
-  const appliedName = companyName || name || '';
-  const isOrganization = !!companyName;
-  const colorType = isOrganization ? 'dark' : 'light';
-  const { backgroundColor, foregroundColor } = fromStringToColor(appliedName, colorType);
-  const initials = (appliedName[0] ?? '').toUpperCase();
+  const isOrganization = profile === 'organization';
+  const colorSchema = isOrganization ? 'dark' : 'light';
+  const { backgroundColor, foregroundColor } = fromStringToColor(name, colorSchema);
+  const initials = (name[0] ?? '').toUpperCase();
   const usingImageUrl = imageUrl && !hasImageError;
   const initialStyles = !usingImageUrl
     ? {

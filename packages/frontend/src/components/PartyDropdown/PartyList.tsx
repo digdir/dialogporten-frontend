@@ -77,7 +77,6 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
             <Fragment key={key}>
               <MenuGroupHeader title={group.title} />
               {group.parties.map((option) => {
-                const companyName = option.isCompany ? option.label : '';
                 const isSelected = !!(
                   selectedPartyIds.length &&
                   selectedPartyIds.length === option.onSelectValues.length &&
@@ -90,7 +89,11 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                       isActive={isSelected}
                       leftContent={
                         <MenuItem.LeftContent>
-                          <Avatar name={option.label} companyName={companyName} size="small" />
+                          <Avatar
+                            name={option.label}
+                            profile={option.isCompany ? 'organization' : 'person'}
+                            size="small"
+                          />
                           <span className={styles.partyListLabel}>{option.label}</span>
                         </MenuItem.LeftContent>
                       }

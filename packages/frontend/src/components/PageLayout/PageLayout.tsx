@@ -4,7 +4,7 @@ import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
-import { Footer, Header, type ItemPerViewCount, Sidebar } from '..';
+import { type AvatarProfile, Footer, Header, type ItemPerViewCount, Sidebar } from '..';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
@@ -27,43 +27,37 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
 
 interface PageLayoutContentProps {
   name: string;
-  isCompany: boolean;
-  companyName?: string;
+  profile: AvatarProfile;
   notificationCount?: number;
 }
 
-const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
-  ({ name, companyName, isCompany, notificationCount }) => {
-    const { t } = useTranslation();
-    const { inSelectionMode } = useSelectedDialogs();
-    const { isTabletOrSmaller } = useWindowSize();
-    const showSidebar = !isTabletOrSmaller && !inSelectionMode;
-    const { selectedPartyIds, selectedParties, allOrganizationsSelected } = useParties();
-    const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
-    const { dialogsByView } = useDialogs(selectedParties);
-    const itemsPerViewCount = {
-      inbox: dialogsByView.inbox.length,
-      drafts: dialogsByView.drafts.length,
-      sent: dialogsByView.sent.length,
-      'saved-searches': currentPartySavedSearches?.length ?? 0,
-      archive: 0,
-      deleted: 0,
-    } as ItemPerViewCount;
+const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profile, notificationCount }) => {
+  const { inSelectionMode } = useSelectedDialogs();
+  const { isTabletOrSmaller } = useWindowSize();
+  const showSidebar = !isTabletOrSmaller && !inSelectionMode;
+  const { selectedPartyIds, selectedParties } = useParties();
+  const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
+  const { dialogsByView } = useDialogs(selectedParties);
+  const itemsPerViewCount = {
+    inbox: dialogsByView.inbox.length,
+    drafts: dialogsByView.drafts.length,
+    sent: dialogsByView.sent.length,
+    'saved-searches': currentPartySavedSearches?.length ?? 0,
+    archive: 0,
+    deleted: 0,
+  } as ItemPerViewCount;
 
-    const usedCompanyName = allOrganizationsSelected ? t('parties.labels.all_organizations') : companyName;
-
-    return (
-      <>
-        <Header name={name} companyName={usedCompanyName} notificationCount={notificationCount} />
-        <div className={styles.pageLayout}>
-          {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} isCompany={isCompany} />}
-          <Outlet />
-        </div>
-        <Footer />
-      </>
-    );
-  },
-);
+  return (
+    <>
+      <Header name={name} profile={profile} notificationCount={notificationCount} />
+      <div className={styles.pageLayout}>
+        {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} />}
+        <Outlet />
+      </div>
+      <Footer />
+    </>
+  );
+});
 
 const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = ({ children, isCompany }) => {
   const { inSelectionMode } = useSelectedDialogs();
@@ -82,18 +76,17 @@ const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = 
 
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const { selectedParties } = useParties();
+  const { selectedParties, allOrganizationsSelected } = useParties();
   const { dialogsByView } = useDialogs(selectedParties);
   const { inbox: dialogs } = dialogsByView;
   const notificationCount = dialogs.length;
   useProfile();
 
-  const name = selectedParties.find((party) => party.partyType === 'Person')?.name || '';
-  const isCompany = selectedParties?.some((party) => party.partyType === 'Organization');
-  const companyName = selectedParties?.some((party) => party.partyType === 'Organization')
-    ? selectedParties?.find((party) => party.partyType === 'Organization')?.name
-    : '';
+  const name = allOrganizationsSelected ? t('parties.labels.all_organizations') : selectedParties?.[0]?.name || '';
+  const isCompany = allOrganizationsSelected || selectedParties?.[0]?.partyType === 'Organization';
+  const profile = isCompany ? 'organization' : 'person';
 
   useAuthenticated();
   useUpdateOnLocationChange(() => {
@@ -105,12 +98,7 @@ export const PageLayout: React.FC = () => {
     <SelectedDialogsContainer>
       <Background isCompany={isCompany}>
         <BottomDrawerContainer>
-          <PageLayoutContent
-            name={name}
-            companyName={companyName}
-            isCompany={isCompany}
-            notificationCount={notificationCount}
-          />
+          <PageLayoutContent name={name} profile={profile} notificationCount={notificationCount} />
           <Snackbar />
         </BottomDrawerContainer>
       </Background>

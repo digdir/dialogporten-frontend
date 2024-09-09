@@ -1,7 +1,7 @@
 import { InboxFillIcon, MenuGridIcon, PersonChatIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
 import { MenuItem } from '../MenuBar';
-import { HorizontalLine } from '../index.ts';
+import { type AvatarProfile, HorizontalLine } from '../index.ts';
 import { MenuLogoutButton } from './MenuLogoutButton.tsx';
 import { NavigationDropdownSubMenu, type SubMenuSelection } from './NavigationDropdownSubMenu.tsx';
 import { UserInfo } from './UserInfo.tsx';
@@ -10,7 +10,7 @@ import styles from './navigationDropdownMenu.module.css';
 interface NavigationDropdownMenuProps {
   showDropdownMenu: boolean;
   name: string;
-  companyName?: string;
+  profile: AvatarProfile;
   onClose: () => void;
   showSubMenu: SubMenuSelection;
   setShowSubMenu: (showSubMenu: SubMenuSelection) => void;
@@ -19,7 +19,7 @@ interface NavigationDropdownMenuProps {
 export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   showDropdownMenu,
   name,
-  companyName,
+  profile,
   onClose,
   showSubMenu,
   setShowSubMenu,
@@ -45,7 +45,7 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   return (
     <div className={styles.menuItems}>
       <ul className={styles.menuList}>
-        <UserInfo name={name} companyName={companyName} onClick={() => setShowSubMenu('profile')} />
+        <UserInfo name={name} profile={profile} onClick={() => setShowSubMenu('profile')} />
         <HorizontalLine />
         <MenuItem
           displayText={t('sidebar.inbox')}
