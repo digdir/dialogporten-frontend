@@ -11,7 +11,7 @@ const meta = {
     (Story, context) => {
       const { args } = context;
       return (
-        <div className={args.companyName ? 'isCompany' : ''}>
+        <div className={args.profile === 'organization' ? 'isCompany' : ''}>
           <Story />
         </div>
       );
@@ -30,6 +30,7 @@ type Story = StoryObj<typeof Header>;
 export const Person: Story = {
   args: {
     name: 'Ola Nordmann',
+    profile: 'person',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -39,7 +40,7 @@ export const Person: Story = {
 
 export const Company: Story = {
   args: {
-    name: 'Ola Nordmann',
-    companyName: 'Aker Solutions AS',
+    name: 'Organization AS',
+    profile: 'organization',
   },
 };
