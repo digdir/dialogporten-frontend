@@ -2,7 +2,7 @@ import { XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar } from '../Avatar';
+import { Avatar, type AvatarProfile } from '../Avatar';
 import { Backdrop } from '../Backdrop';
 import { Badge } from '../Badge';
 import { NavigationDropdownMenu } from './NavigationDropdownMenu.tsx';
@@ -11,7 +11,7 @@ import styles from './globalMenuBar.module.css';
 
 interface GlobalMenuBarProps {
   name: string;
-  companyName?: string;
+  profile: AvatarProfile;
   className?: string;
   notificationCount?: number;
 }
@@ -24,12 +24,7 @@ export const CloseMenuButton = ({ className }: { className?: string }) => {
   );
 };
 
-export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({
-  name,
-  companyName,
-  notificationCount = 0,
-  className,
-}) => {
+export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, notificationCount = 0, className }) => {
   const [showBackDrop, setShowBackDrop] = useState<boolean>(false);
   const [showSubMenu, setShowSubMenu] = useState<SubMenuSelection>('none');
 
@@ -52,11 +47,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({
           <div className={cx(styles.menuText, className)} aria-hidden="true">
             <div className={styles.nameWithInitials}>
               {t('word.menu')}
-              {showBackDrop ? (
-                <CloseMenuButton className={className} />
-              ) : (
-                <Avatar name={name} companyName={companyName} />
-              )}
+              {showBackDrop ? <CloseMenuButton className={className} /> : <Avatar name={name} profile={profile} />}
             </div>
           </div>
           {showNotificationsBadge && (
@@ -68,7 +59,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({
         <NavigationDropdownMenu
           showDropdownMenu={showBackDrop}
           name={name}
-          companyName={companyName}
+          profile={profile}
           onClose={handleClose}
           showSubMenu={showSubMenu}
           setShowSubMenu={setShowSubMenu}

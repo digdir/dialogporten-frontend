@@ -22,7 +22,6 @@ export type ItemPerViewCount = {
 };
 export interface SidebarProps {
   itemsPerViewCount: ItemPerViewCount;
-  isCompany?: boolean;
 }
 
 /**
@@ -32,7 +31,6 @@ export interface SidebarProps {
  *
  * @param {SidebarProps} props - The props for the Sidebar component.
  * @param {ItemPerViewCount} props.itemsPerViewCount - An object containing the count of items for each view.
- * @param {boolean} [props.isCompany] - Optional flag to indicate if the sidebar is being used in a company context.
  *
  * @returns {React.ReactElement} The rendered Sidebar component.
  *

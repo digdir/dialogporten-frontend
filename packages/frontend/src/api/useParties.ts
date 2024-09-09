@@ -1,4 +1,5 @@
 import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
+import { useMemo } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { toTitleCase } from '../profile';
 import { graphQLSDK } from './queries.ts';
@@ -61,16 +62,24 @@ export const useParties = (): UsePartiesOutput => {
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
   };
 
+  const selectedParties = getSelectedParties();
+  const allOrganizationsSelected = useMemo(() => {
+    const allOrgParties = data?.parties.filter((party) => party.partyType === 'Organization') ?? [];
+    const selectedOrgParties = selectedParties.filter((party) => party.partyType === 'Organization');
+
+    return selectedOrgParties.length > 0 && allOrgParties.length === selectedOrgParties.length;
+  }, [selectedParties, data]);
+
   return {
     isLoading,
     isSuccess,
-    selectedParties: getSelectedParties(),
-    selectedPartyIds: getSelectedParties().map((party) => party.party) ?? [],
+    selectedParties,
+    selectedPartyIds: selectedParties.map((party) => party.party) ?? [],
     setSelectedParties,
     setSelectedPartyIds,
     parties: data?.parties ?? [],
     currentEndUser: data?.parties.find((party) => party.isCurrentEndUser),
     deletedParties: data?.deletedParties ?? [],
-    allOrganizationsSelected: getSelectedParties().every((party) => party.partyType === 'Organization'),
+    allOrganizationsSelected,
   };
 };

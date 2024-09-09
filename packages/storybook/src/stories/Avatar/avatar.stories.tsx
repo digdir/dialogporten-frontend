@@ -28,7 +28,8 @@ type Story = StoryObj<typeof Avatar>;
 
 export const ImageURL: Story = {
   args: {
-    companyName: 'NAV',
+    profile: 'organization',
+    name: 'NAV',
     imageUrl: 'https://altinncdn.no/orgs/nav/nav.png',
   },
 };
@@ -104,8 +105,8 @@ export const ColorPlayground: StoryObj<typeof Avatar> = {
           }}
         >
           <h2>The avatar will look like this: </h2>
-          <Avatar name={name} companyName={useAsCompanyName ? name : ''} size="medium" />
-          <Avatar name={name} companyName={useAsCompanyName ? name : ''} size="small" />
+          <Avatar name={name} profile={useAsCompanyName ? 'organization' : 'person'} size="medium" />
+          <Avatar name={name} profile={useAsCompanyName ? 'organization' : 'person'} size="small" />
         </div>
       </div>
     );

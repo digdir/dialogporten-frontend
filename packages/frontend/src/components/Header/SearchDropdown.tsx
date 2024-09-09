@@ -39,8 +39,8 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
       <ul className={styles.menuList}>
         <SearchDropdownItem onClick={() => onSearch(searchValue)} horizontalLine>
           <div className={styles.displayText}>
-            {searchValue?.length > 2 ? <span className={styles.searchTermText}>{`«${searchValue}»`}</span> : 'Alt'} i
-            innboks
+            {searchValue?.length > 2 ? <span className={styles.searchTermText}>{`«${searchValue}»`}</span> : 'Alt'}{' '}
+            {t('search.title.in_inbox')}
           </div>
           <div className={styles.rightContent}>
             <span className={styles.keyText}>Return</span>
@@ -70,7 +70,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 <span className={styles.timeSince}>{autoFormatRelativeTime(new Date(item.date), formatDistance)}</span>
                 <Avatar
                   name={item.sender.name}
-                  companyName={item.sender.isCompany ? item.sender.name : ''}
+                  profile={item.sender.isCompany ? 'organization' : 'person'}
                   imageUrl={item.sender.imageURL}
                   size="small"
                 />

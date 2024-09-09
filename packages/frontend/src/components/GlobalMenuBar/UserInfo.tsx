@@ -1,17 +1,17 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Avatar } from '../Avatar';
+import { Avatar, type AvatarProfile } from '../Avatar';
 import { MenuItem } from '../MenuBar';
 import styles from './userInfo.module.css';
 
 interface UserInfoProps {
   name: string;
-  companyName?: string;
+  profile: AvatarProfile;
   onClick: () => void;
 }
 
-export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
+export const UserInfo = ({ name, profile, onClick }: UserInfoProps) => {
   const { t } = useTranslation();
   return (
     <MenuItem
@@ -24,11 +24,8 @@ export const UserInfo = ({ name, companyName, onClick }: UserInfoProps) => {
           role="button"
           tabIndex={0}
         >
-          <Avatar name={name} companyName={companyName} />
-          <div>
-            <div className={styles.primaryName}>{companyName || name}</div>
-            <div className={styles.secondaryName}>{companyName ? name : t('word.private')}</div>
-          </div>
+          <Avatar name={name} profile={profile} />
+          <div className={styles.primaryName}>{name}</div>
         </MenuItem.LeftContent>
       }
       rightContent={

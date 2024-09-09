@@ -45,7 +45,7 @@ export const Activity = ({ activity, serviceOwner }: ActivityProps) => {
         <div className={styles.sender}>
           <Avatar
             name={performedByName}
-            companyName={isCompany ? performedByName : ''}
+            profile={isCompany ? 'organization' : 'person'}
             imageUrl={imageUrl}
             size="small"
           />
