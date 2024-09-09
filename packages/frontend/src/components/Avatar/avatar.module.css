@@ -22,6 +22,11 @@
   line-height: 16px;
 }
 
+.outline {
+  outline: 1px solid #ffffff;
+  box-sizing: border-box;
+}
+
 .initialsCircle.isOrganization {
   border-radius: 0.25em;
 }

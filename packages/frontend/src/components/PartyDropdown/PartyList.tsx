@@ -2,9 +2,10 @@ import { Search } from '@digdir/designsystemet-react';
 import { Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../Avatar';
+import { AvatarGroup } from '../AvatarGroup';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
-import type { MergedPartyGroup } from './mergePartiesByName.ts';
+import type { MergedParty, MergedPartyGroup } from './mergePartiesByName.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyListProps {
@@ -34,22 +35,31 @@ interface PartyListProps {
 export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearchFilter }: PartyListProps) => {
   const [filterString, setFilterString] = useState<string>('');
   const { t } = useTranslation();
-  const filteredOptionsGroups = useMemo(() => {
+
+  const { filteredOptionGroups, allParties } = useMemo(() => {
+    const allParties: MergedParty[] = Object.values(optionsGroups).flatMap((group) => group.parties);
+
     if (!filterString) {
-      return optionsGroups;
+      return {
+        filteredOptionGroups: optionsGroups,
+        allParties,
+      };
     }
 
-    const allParties = Object.values(optionsGroups).flatMap((group) => group.parties);
     const filteredParties = allParties.filter(({ label }) => label.toLowerCase().includes(filterString.toLowerCase()));
 
     return {
-      Filtered: {
-        title: t('partyDropdown.filter_results', { count: filteredParties.length }),
-        parties: filteredParties,
-        isSearchResults: true,
+      filteredOptionGroups: {
+        Filtered: {
+          title: t('partyDropdown.filter_results', { count: filteredParties.length }),
+          parties: filteredParties,
+          isSearchResults: true,
+        },
       },
+      allParties,
     };
   }, [optionsGroups, filterString]);
+
   return (
     <>
       {showSearchFilter && (
@@ -69,10 +79,11 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
           }
         />
       )}
-      {Object.entries(filteredOptionsGroups)
+      {Object.entries(filteredOptionGroups)
         .filter(([_, group]) => group.isSearchResults || group.parties.length > 0)
         .map(([key, group], index, list) => {
           const isLastGroup = index === list.length - 1;
+
           return (
             <Fragment key={key}>
               <MenuGroupHeader title={group.title} />
@@ -82,6 +93,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                   selectedPartyIds.length === option.onSelectValues.length &&
                   selectedPartyIds.every((urn) => option.onSelectValues.includes(urn))
                 );
+                const isLastItem = isLastGroup && group.parties.indexOf(option) === group.parties.length - 1;
                 return (
                   <Fragment key={option.value}>
                     <MenuItem
@@ -89,11 +101,22 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                       isActive={isSelected}
                       leftContent={
                         <MenuItem.LeftContent>
-                          <Avatar
-                            name={option.label}
-                            profile={option.isCompany ? 'organization' : 'person'}
-                            size="small"
-                          />
+                          {option.value === 'ALL_ORGANIZATIONS' ? (
+                            <AvatarGroup
+                              profile="organization"
+                              size="small"
+                              avatars={allParties
+                                .filter((party) => party.isCompany && party.value !== 'ALL_ORGANIZATIONS')
+                                .map((party) => ({ name: party.label }))}
+                            />
+                          ) : (
+                            <Avatar
+                              name={option.label}
+                              profile={option.isCompany ? 'organization' : 'person'}
+                              size="small"
+                              className={styles.avatar}
+                            />
+                          )}
                           <span className={styles.partyListLabel}>{option.label}</span>
                         </MenuItem.LeftContent>
                       }
@@ -102,7 +125,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                         onSelect(option.onSelectValues);
                       }}
                     />
-                    {!isLastGroup && <HorizontalLine />}
+                    {option.showHorizontalLine && !isLastItem && <HorizontalLine />}
                   </Fragment>
                 );
               })}

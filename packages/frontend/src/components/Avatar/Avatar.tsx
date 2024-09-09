@@ -11,6 +11,8 @@ interface AvatarProps {
   className?: string;
   imageUrl?: string;
   imageUrlAlt?: string;
+  outline?: boolean;
+  customDisplayLabel?: string;
   size?: 'small' | 'medium';
 }
 
@@ -19,8 +21,10 @@ export const Avatar = ({
   className,
   size = 'medium',
   profile = 'person',
+  outline = false,
   imageUrl,
   imageUrlAlt,
+  customDisplayLabel,
 }: AvatarProps) => {
   const [hasImageError, setHasImageError] = useState<boolean>(false);
   const isOrganization = profile === 'organization';
@@ -40,6 +44,7 @@ export const Avatar = ({
       className={cx(styles.initialsCircle, className, {
         [styles.isOrganization]: isOrganization,
         [styles.small]: size === 'small',
+        [styles.outline]: outline,
       })}
       style={initialStyles}
       aria-hidden="true"
@@ -54,7 +59,7 @@ export const Avatar = ({
           }}
         />
       ) : (
-        <span>{initials}</span>
+        <span>{customDisplayLabel || initials}</span>
       )}
     </div>
   );
