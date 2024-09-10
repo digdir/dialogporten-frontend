@@ -131,12 +131,12 @@ export const isInboxDialog = (dialog: InboxItemInput): boolean =>
   dialog.status === DialogStatus.RequiresAttention ||
   dialog.status === DialogStatus.Completed;
 
-export const isDraftDialog = (dialog: InboxItemInput): boolean =>
-  [DialogStatus.Draft, DialogStatus.Signing].includes(dialog.status);
+export const isDraftDialog = (dialog: InboxItemInput): boolean => [DialogStatus.Draft].includes(dialog.status);
 
 export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Sent;
 
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
+  console.log('dialog status', dialog.status);
   if (isSentDialog(dialog)) {
     return 'sent';
   }
@@ -167,23 +167,12 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   };
 };
 
-const getNewType = (type: string) => {
-  switch (type) {
-    case 'IN_PROGRESS':
-      return 'InProgress';
-    case 'NEW':
-      return 'New';
-    default:
-      return type;
-  }
-};
-
 export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
   const metaFields: InboxItemMetaField[] = [];
 
   metaFields.push({
-    type: `status_${getNewType(item.status)}` as InboxItemMetaFieldType,
+    type: `status_${item.status}` as InboxItemMetaFieldType,
     label: `${i18n.t('word.status')}: ${item.status}`,
   });
 

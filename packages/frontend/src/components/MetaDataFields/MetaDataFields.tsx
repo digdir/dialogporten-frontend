@@ -1,27 +1,27 @@
-import { CheckmarkCircleFillIcon, CircleIcon, ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
+import { CheckmarkCircleFillIcon, ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { t } from 'i18next';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
+import { LoadingCircle } from '../LoadingCircle/LoadingCircle.tsx';
 import { MetaDataField } from './MetaDataField.tsx';
 import styles from './metaDataFields.module.css';
 
 export type InboxItemMetaFieldType =
   | 'attachment'
-  | 'status_new'
-  | 'status_draft'
-  | 'status_inprogress'
-  | 'status_sent'
-  | 'status_requires_attention'
-  | 'status_completed'
+  | 'status_NEW'
+  | 'status_DRAFT'
+  | 'status_IN_PROGRESS'
+  | 'status_SENT'
+  | 'status_REQUIRES_ATTENTION'
+  | 'status_COMPLETED'
   | 'timestamp'
-  | 'viewType'
   | 'seenBy';
 export interface InboxItemMetaField {
   type: InboxItemMetaFieldType;
   label: string;
   viewType?: InboxViewType;
   options?: {
-    [propKey: string]: string | number | boolean;
+    [propKey: string]: string | number;
   };
 }
 
@@ -47,47 +47,44 @@ export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) =>
     <div className={styles.fields}>
       {metaFields.map((metaField, index) => {
         const icon = getIconByType(metaField?.type);
-        const metaFieldType = metaField.type.toLowerCase() as InboxItemMetaFieldType;
-        if (viewType === 'inbox' && metaFieldType === 'status_new') {
+        const metaFieldType = metaField.type as InboxItemMetaFieldType;
+        if (viewType === 'inbox' && metaFieldType === 'status_NEW') {
           return null;
         }
         switch (metaFieldType) {
-          case 'status_inprogress':
+          case 'status_IN_PROGRESS':
             return (
-              <MetaDataField key={`metaField-${index}`} classNames={cx(styles.statusSolidBorder, styles.blueBorder)}>
+              <MetaDataField key={`metaField-${index}`} className={cx(styles.statusSolidBorder, styles.blueBorder)}>
                 <div className={styles.icon}>
-                  <CircleIcon fontSize="16px" />
+                  <LoadingCircle percentage={75} />
                 </div>
                 <span className={styles.label}>{t('status.in_progress')}</span>
               </MetaDataField>
             );
-          case 'status_sent':
+          case 'status_SENT':
             return (
-              <MetaDataField key={`metaField-${index}`} classNames={styles.statusSolidBorder}>
+              <MetaDataField key={`metaField-${index}`} className={styles.statusSolidBorder}>
                 <span className={styles.label}>{t('route.sent')}</span>
               </MetaDataField>
             );
-          case 'status_completed':
+          case 'status_COMPLETED':
             return (
-              <MetaDataField key={`metaField-${index}`} classNames={cx(styles.statusSolidBorder, styles.blueText)}>
+              <MetaDataField key={`metaField-${index}`} className={cx(styles.statusSolidBorder, styles.blueText)}>
                 <div className={styles.icon}>
                   <CheckmarkCircleFillIcon fontSize="16px" />
                 </div>
                 <span className={styles.label}>{t('status.completed')}</span>
               </MetaDataField>
             );
-          case 'status_requires_attention':
+          case 'status_REQUIRES_ATTENTION':
             return (
-              <MetaDataField
-                key={`metaField-${index}`}
-                classNames={cx(styles.statusSolidBorder, styles.blueBackground)}
-              >
+              <MetaDataField key={`metaField-${index}`} className={cx(styles.statusSolidBorder, styles.blueBackground)}>
                 <span className={styles.label}>{t('status.requires_attention')}</span>
               </MetaDataField>
             );
-          case 'status_draft':
+          case 'status_DRAFT':
             return (
-              <MetaDataField key={`metaField-${index}`} classNames={cx(styles.statusSolidBorder)}>
+              <MetaDataField key={`metaField-${index}`} className={cx(styles.statusSolidBorder)}>
                 <span className={styles.label}>{t('status.draft')}</span>
               </MetaDataField>
             );
