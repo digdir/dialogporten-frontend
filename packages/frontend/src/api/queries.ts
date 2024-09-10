@@ -7,9 +7,14 @@ import {
   getSdk,
 } from 'bff-types-generated';
 import { GraphQLClient } from 'graphql-request';
+import { createClient } from 'graphql-sse';
 
 export const graphQLSDK = getSdk(new GraphQLClient('/api/graphql', { credentials: 'include' }));
-
+export const graphqlSSEClient = createClient({
+  url: '/api/graphql/stream',
+  credentials: 'include',
+  singleConnection: true,
+});
 export const profile = graphQLSDK.profile;
 export const fetchSavedSearches = (): Promise<SavedSearchesQuery> => graphQLSDK.savedSearches();
 export const deleteSavedSearch = (id: number): Promise<DeleteSavedSearchMutation> =>

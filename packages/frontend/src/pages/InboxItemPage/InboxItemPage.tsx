@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useDialogById } from '../../api/useDialogById.tsx';
+import { useDialogByIdSubscription } from '../../api/useDialogByIdSubscription.ts';
 import { useParties } from '../../api/useParties.ts';
 import { BackButton } from '../../components';
 import { InboxItemDetail } from '../../components';
@@ -12,6 +13,7 @@ export const InboxItemPage = () => {
   const { t } = useTranslation();
   const { parties } = useParties();
   const { dialog, isLoading } = useDialogById(parties, id);
+  useDialogByIdSubscription(id);
 
   if (isLoading) {
     return <InboxItemPageSkeleton />;
