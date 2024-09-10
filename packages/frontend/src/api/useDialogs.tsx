@@ -133,8 +133,7 @@ export const useSearchDialogs = ({
 };
 
 export const isInboxDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.New;
-export const isDraftDialog = (dialog: InboxItemInput): boolean =>
-  [DialogStatus.InProgress, DialogStatus.Signing].includes(dialog.status);
+export const isDraftDialog = (dialog: InboxItemInput): boolean => [DialogStatus.InProgress].includes(dialog.status);
 export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Completed;
 
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
