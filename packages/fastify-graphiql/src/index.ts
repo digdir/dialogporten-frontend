@@ -65,6 +65,7 @@ const plugin: FastifyPluginAsync<Options> = async (fastify, opts) => {
       const root = ReactDOM.createRoot(document.getElementById('graphiql'));
       const fetcher = GraphiQL.createFetcher({
         url: '${graphqlURL}',
+        subscriptionUrl: '${graphqlURL}',
       });
       const explorerPlugin = GraphiQLPluginExplorer.explorerPlugin();
       root.render(
