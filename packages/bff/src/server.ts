@@ -9,7 +9,6 @@ import Fastify from 'fastify';
 import fastifyGraphiql from 'fastify-graphiql';
 import { default as Redis } from 'ioredis';
 import { oidc, userApi, verifyToken } from './auth/index.ts';
-import { initialize as intitializeApplicationInsights } from './azure/ApplicationInsights.ts';
 import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
@@ -18,7 +17,7 @@ import graphqlApi from './graphql/api.ts';
 const {
   version,
   port,
-  applicationInsights,
+  // applicationInsights,
   host,
   oidc_url,
   hostname,
@@ -33,15 +32,6 @@ const startServer = async (): Promise<void> => {
     ignoreDuplicateSlashes: true,
     logger: logger.pinoLoggerInstance,
   });
-
-  if (applicationInsights.enabled) {
-    try {
-      intitializeApplicationInsights();
-    } catch (error) {
-      logger.error(error, 'Error initializing Application Insights');
-      throw error;
-    }
-  }
 
   await connectToDB();
   /* CORS configuration for local env, needs to be applied before routes are defined */

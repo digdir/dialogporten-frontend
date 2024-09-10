@@ -8,7 +8,7 @@ const envVariables = z.object({
   DB_CONNECTION_STRING: z.string().default('postgres://postgres:mysecretpassword@localhost:5432/dialogporten'),
   TYPEORM_SYNCHRONIZE_ENABLED: z.coerce.boolean().default(false),
   APPLICATIONINSIGHTS_CONNECTION_STRING: z.string().optional(),
-  APPLICATIONINSIGHTS_ENABLED: z.string().default('false'),
+  APPLICATIONINSIGHTS_ENABLED: z.coerce.boolean().default(false),
   PORT: z.coerce.number().default(3000),
   OIDC_URL: z.string().default('test.idporten.no'),
   HOSTNAME: z.string().default('http://localhost'),
@@ -28,7 +28,7 @@ const env = envVariables.parse(process.env);
 const config = {
   info: {
     name: 'bff',
-    instanceId: env.CONTAINER_APP_REPLICA_NAME,
+    instanceId: env.CONTAINER_APP_REPLICA_NAME, // provided by container app environment variable
   },
   version: env.GIT_SHA,
   port: env.PORT,
@@ -38,7 +38,7 @@ const config = {
   client_id: env.CLIENT_ID,
   client_secret: env.CLIENT_SECRET,
   applicationInsights: {
-    enabled: env.APPLICATIONINSIGHTS_ENABLED === 'true',
+    enabled: env.APPLICATIONINSIGHTS_ENABLED,
     connectionString: env.APPLICATIONINSIGHTS_CONNECTION_STRING,
   },
   postgresql: {

@@ -114,6 +114,8 @@ services:
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
       PORT: 80
       NODE_ENV: production
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
+      APPLICATIONINSIGHTS_ENABLED: ${APPLICATIONINSIGHTS_ENABLED}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
