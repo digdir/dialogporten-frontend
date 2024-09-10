@@ -1,4 +1,3 @@
-import { CalendarIcon, SealIcon, StarIcon } from '@navikt/aksel-icons';
 import type { Meta } from '@storybook/react';
 import { InboxItem, InboxItems } from 'frontend';
 import { useState } from 'react';
@@ -27,9 +26,20 @@ export const SimpleDesktopExample = () => {
         description="Eksempel på en beskrivelse av en ulest melding"
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        tags={[
-          { label: '19.01.2024', icon: <CalendarIcon /> },
-          { label: 'Viktig!', icon: <SealIcon /> },
+        metaFields={[
+          { type: 'status_completed', label: 'Status: Completed' },
+          { type: 'status_inprogress', label: 'Status: In Progress' },
+          { type: 'status_new', label: 'Status: New' },
+          { type: 'status_sent', label: 'Status: Sent' },
+          { type: 'status_requires_attention', label: 'Status: Requires Attention' },
+          { type: 'status_draft', label: 'Status: Draft' },
+          { type: 'timestamp', label: '5. september 15:40' },
+          { type: 'attachment', label: 'Vedlegg her' },
+          {
+            type: 'seenBy',
+            label: 'Seen By You',
+            options: { tooltip: 'This is seen by \n Every person will be listed here' },
+          },
         ]}
         checkboxValue="value1"
         isChecked={isCheckedFirst}
@@ -41,9 +51,9 @@ export const SimpleDesktopExample = () => {
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin, nisi vitae auctor accumsan, odio ipsum efficitur nulla, eu tempus sem leo et felis. Curabitur vel varius tortor. Proin semper in nisl eget venenatis. Vestibulum egestas urna id sapien iaculis, id consequat ante varius. Vestibulum vel facilisis nulla. Aenean vitae orci est. Nulla at sagittis mauris. Vestibulum nisl nibh, pulvinar non odio quis, fermentum aliquet tortor. Mauris imperdiet ante lacus. Sed pretium, lorem sed ornare vehicula, neque diam dictum massa, et aliquam lectus metus sit amet nunc. Aliquam erat volutpat. Aliquam ac massa mauris"
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        tags={[
-          { label: '16.01.2024', icon: <CalendarIcon /> },
-          { label: 'Viktig!', icon: <SealIcon /> },
+        metaFields={[
+          { type: 'timestamp', label: '5. september 15:40' },
+          { type: 'status_requires_attention', label: 'Viktig!' },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedSecond}
@@ -54,9 +64,9 @@ export const SimpleDesktopExample = () => {
         description="Integer lacinia ornare ex id consequat. Vivamus condimentum ex vitae elit dignissim convallis. Vivamus nec velit lacus. Vestibulum pharetra pharetra nibh vitae auctor."
         sender={{ isCompany: false, name: 'DigDir' }}
         receiver={{ isCompany: false, name: 'Per Person' }}
-        tags={[
-          { label: '12.01.2024', icon: <CalendarIcon /> },
-          { label: 'Viktig!', icon: <SealIcon /> },
+        metaFields={[
+          { type: 'timestamp', label: '12.01.2024' },
+          { type: 'status_requires_attention', label: 'Viktig!' },
         ]}
         checkboxValue="value2"
         isChecked={isCheckedThird}

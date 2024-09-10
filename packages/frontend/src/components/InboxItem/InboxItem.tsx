@@ -5,6 +5,7 @@ import { useSelectedDialogs } from '../PageLayout';
 
 import { useTranslation } from 'react-i18next';
 import type { Participant } from '../../api/useDialogById.tsx';
+import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { FeatureFlagKeys } from '../../featureFlags/FeatureFlags.ts';
 import { useFeatureFlag } from '../../featureFlags/useFeatureFlag.ts';
 import { Avatar } from '../Avatar';
@@ -27,6 +28,7 @@ interface InboxItemProps {
   isMinimalistic?: boolean;
   onClose?: () => void;
   isSeenByEndUser?: boolean;
+  viewType?: InboxViewType;
 }
 
 export const OptionalLinkContent = ({
@@ -92,6 +94,7 @@ export const InboxItem = ({
   isUnread = false,
   isMinimalistic = false,
   isChecked = false,
+  viewType,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();
   const { t } = useTranslation();
@@ -207,7 +210,7 @@ export const InboxItem = ({
             </div>
           </div>
           <p className={styles.description}>{description}</p>
-          <MetaDataFields metaFields={metaFields || []} />
+          <MetaDataFields metaFields={metaFields || []} viewType={viewType} />
         </section>
       </OptionalLinkContent>
     </li>

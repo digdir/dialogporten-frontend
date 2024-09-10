@@ -8,7 +8,7 @@ type Dialog = {
   party: string;
 };
 
-type PartyGroupType = 'End_user' | 'Other_people' | 'Organizations';
+type PartyGroupType = 'End_user' | 'All_other_people' | 'Other_organization';
 
 export type MergedPartyGroup = {
   [key in PartyGroupType]: {
@@ -18,13 +18,14 @@ export type MergedPartyGroup = {
   };
 };
 
-type MergedParty = {
+export type MergedParty = {
   label: string;
   isCompany: boolean;
   value: string;
   onSelectValues: string[];
   count: number;
   isCurrentEndUser: boolean;
+  showHorizontalLine?: boolean;
 };
 
 export const getOptionsGroups = (
@@ -45,51 +46,72 @@ export function groupParties(parties: MergedParty[]): MergedPartyGroup {
 
   if (parties.length <= groupingThreshold) {
     return {
-      Other_people: { title: '', parties },
-      End_user: { title: '', parties: [] },
-      Organizations: { title: '', parties: [] },
+      End_user: {
+        title: 'parties.labels.you',
+        parties: parties
+          .filter((party) => party.isCurrentEndUser)
+          .map((party) => ({
+            ...party,
+            showHorizontalLine: true,
+          })),
+      },
+      All_other_people: { title: '', parties: parties.filter((party) => !party.isCurrentEndUser) },
+      Other_organization: { title: '', parties: [] },
     };
   }
 
   const initialGroup: MergedPartyGroup = {
-    End_user: { title: '', parties: [] },
-    Other_people: { title: 'parties.labels.persons', parties: [] },
-    Organizations: { title: 'parties.labels.organizations', parties: [] },
+    End_user: { title: 'parties.labels.you', parties: [] },
+    All_other_people: { title: 'parties.labels.persons', parties: [] },
+    Other_organization: { title: '', parties: [] },
   };
 
   const grouped = parties.reduce<MergedPartyGroup>((acc, party) => {
     if (party.isCurrentEndUser) {
-      acc.End_user.parties.push(party);
+      acc.End_user.parties.push({ ...party, showHorizontalLine: true });
     } else if (party.isCompany) {
-      acc.Organizations.parties.push(party);
+      acc.Other_organization.parties.push(party);
     } else {
-      acc.Other_people.parties.push(party);
+      acc.All_other_people.parties.push(party);
     }
     return acc;
   }, initialGroup);
 
   /* add 'All organizations' option if there are more than one organization */
-  const updatedOrganizations =
-    grouped.Organizations.parties.length > 1
+  const organizations = parties.filter((party) => party.isCompany);
+  const updatedEndUserGroup =
+    organizations.length > 1
       ? {
-          ...grouped.Organizations,
+          ...grouped.End_user,
           parties: [
-            ...grouped.Organizations.parties,
+            ...grouped.End_user.parties,
             {
               label: t('parties.labels.all_organizations'),
               isCompany: true,
               value: 'ALL_ORGANIZATIONS',
-              onSelectValues: grouped.Organizations.parties.map((party) => party.value),
-              count: grouped.Organizations.parties.reduce((acc, party) => acc + party.count, 0),
+              onSelectValues: organizations.map((party) => party.value),
+              count: organizations.reduce((acc, party) => acc + party.count, 0),
               isCurrentEndUser: false,
+              showHorizontalLine: true,
             },
           ],
         }
-      : grouped.Organizations;
+      : grouped.End_user;
+
+  const updatedOtherPeopleGroup = {
+    ...grouped.All_other_people,
+    parties: [
+      ...grouped.All_other_people.parties.map((party, index, list) => ({
+        ...party,
+        showHorizontalLine: list.length - 1 === index,
+      })),
+    ],
+  };
 
   return {
     ...grouped,
-    Organizations: updatedOrganizations,
+    All_other_people: updatedOtherPeopleGroup,
+    End_user: updatedEndUserGroup,
   };
 }
 

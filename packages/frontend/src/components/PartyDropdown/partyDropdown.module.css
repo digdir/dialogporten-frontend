@@ -6,3 +6,7 @@
 .partyListItem {
   list-style: none;
 }
+
+.avatar {
+  margin-left: 0.5rem;
+}
