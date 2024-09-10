@@ -1,5 +1,6 @@
 import { useAzureMonitor } from '@azure/monitor-opentelemetry';
-import { metrics, trace } from '@opentelemetry/api';
+import { metrics, trace, ProxyTracerProvider } from '@opentelemetry/api';
+
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { FastifyInstrumentation } from '@opentelemetry/instrumentation-fastify';
 import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
@@ -26,20 +27,8 @@ const initializeApplicationInsights = () => {
       [ATTR_SERVICE_NAME]: config.info.name,
       [SEMRESATTRS_SERVICE_INSTANCE_ID]: config.info.instanceId,
     });
-
-    const instrumentations = [
-      new HttpInstrumentation(),
-      new FastifyInstrumentation(),
-      new GraphQLInstrumentation(),
-      new IORedisInstrumentation(),
-    ];
-
-    registerInstrumentations({
-      tracerProvider: trace.getTracerProvider(),
-      meterProvider: metrics.getMeterProvider(),
-      instrumentations: instrumentations,
-    });
-
+    
+    // register the azure monitor exporter
     useAzureMonitor({
       resource: customResource,
       azureMonitorExporterOptions: {
@@ -52,6 +41,23 @@ const initializeApplicationInsights = () => {
       },
     });
 
+    // register additional instrumentations that are not included in the azure monitor exporter
+    const instrumentations = [
+      new HttpInstrumentation(),
+      new FastifyInstrumentation(),
+      new GraphQLInstrumentation(),
+      new IORedisInstrumentation(),
+    ];
+
+    const tracerProvider = (trace.getTracerProvider() as ProxyTracerProvider).getDelegate();
+    const meterProvider = metrics.getMeterProvider();
+ 
+    registerInstrumentations({
+      tracerProvider: tracerProvider,
+      meterProvider: meterProvider,
+      instrumentations: instrumentations,
+    });
+    
     logger.info('Application Insights initialized');
   } catch (error) {
     logger.error('Error initializing Application Insights:', error);
