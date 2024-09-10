@@ -14,16 +14,7 @@ import config from './config.ts';
 import { connectToDB } from './db.ts';
 import graphqlApi from './graphql/api.ts';
 
-const {
-  version,
-  port,
-  host,
-  oidc_url,
-  hostname,
-  client_id,
-  client_secret,
-  redisConnectionString,
-} = config;
+const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
 
 const startServer = async (): Promise<void> => {
   const server = Fastify({
