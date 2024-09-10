@@ -1,6 +1,5 @@
 import { useAzureMonitor } from '@azure/monitor-opentelemetry';
-import { metrics, trace, ProxyTracerProvider } from '@opentelemetry/api';
-
+import { metrics, trace, type ProxyTracerProvider } from '@opentelemetry/api';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { FastifyInstrumentation } from '@opentelemetry/instrumentation-fastify';
 import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
