@@ -17,7 +17,6 @@ import graphqlApi from './graphql/api.ts';
 const {
   version,
   port,
-  // applicationInsights,
   host,
   oidc_url,
   hostname,
