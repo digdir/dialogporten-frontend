@@ -46,7 +46,7 @@ export interface SidebarProps {
  *
  * <Sidebar itemsPerViewCount={itemsPerViewCount} />
  */
-export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }: SidebarProps): React.ReactElement => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
 
