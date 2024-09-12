@@ -19,6 +19,10 @@ declare module 'fastify' {
     ) => (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => void;
   }
 
+  interface FastifyRequest {
+    tokenIsValid: boolean;
+  }
+
   interface IdportenToken {
     access_token: string;
     refresh_token: string;
@@ -136,7 +140,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
     '/api/logout',
     { preHandler: fastify.verifyToken(false) },
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const token: SessionStorageToken = request.session.get('token');
+      const token: SessionStorageToken | undefined = request.session.get('token');
       const postLogoutRedirectUri = `${hostname}/loggedout`;
 
       if (token?.id_token) {

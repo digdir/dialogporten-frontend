@@ -8,6 +8,7 @@ import '@digdir/designsystemet-css';
 import '@digdir/designsystemet-theme';
 
 import App from './App.tsx';
+import { AuthProvider } from './components/Login/AuthContext.tsx';
 import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
 async function enableMocking() {
@@ -31,7 +32,9 @@ if (element) {
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <FeatureFlagProvider flags={featureFlags}>
-              <App />
+              <AuthProvider>
+                <App />
+              </AuthProvider>
             </FeatureFlagProvider>
           </BrowserRouter>
         </QueryClientProvider>

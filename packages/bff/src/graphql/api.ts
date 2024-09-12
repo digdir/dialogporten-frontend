@@ -8,10 +8,8 @@ import { createHandler } from 'graphql-http/lib/use/fastify';
 import config from '../config.ts';
 import { bffSchema, dialogportenSchema } from './schema.ts';
 
-const plugin: FastifyPluginAsync = async (fastify, options) => {
+const plugin: FastifyPluginAsync = async (fastify) => {
   const remoteExecutor: AsyncExecutor = async ({ document, variables, operationName, context }) => {
-    const token = context!.session.get('token');
-
     const query = print(document);
 
     const response = await axios({
@@ -19,7 +17,7 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
       url: config.dialogportenURL,
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token!.access_token}`,
+        Authorization: `Bearer ${context!.token.access_token}`,
       },
       data: JSON.stringify({ query, variables, operationName }),
     });
@@ -36,18 +34,19 @@ const plugin: FastifyPluginAsync = async (fastify, options) => {
     subschemas: [remoteExecutorSubschema, bffSchema],
   });
 
-  fastify.post(
-    '/api/graphql',
-    { preHandler: fastify.verifyToken(false) },
-    createHandler({
-      schema: stitchedSchema,
-      context(request) {
-        return {
-          session: request.raw.session,
-        };
-      },
-    }),
-  );
+  const handler = createHandler({
+    schema: stitchedSchema,
+    context(request) {
+      return {
+        token: request.raw.session.get('token'),
+      };
+    },
+  });
+
+  fastify.post('/api/graphql', { preHandler: fastify.verifyToken(false) }, async (request, reply) => {
+    await handler.call(fastify, request, reply);
+    return reply;
+  });
 };
 
 export default fp(plugin, {

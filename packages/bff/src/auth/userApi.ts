@@ -1,18 +1,24 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 
-const plugin: FastifyPluginAsync = async (fastify, options) => {
+const plugin: FastifyPluginAsync = async (fastify) => {
   fastify.get(
     '/api/isAuthenticated',
     { preHandler: fastify.verifyToken(true) },
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
-        reply.send({
-          isAuthenticated: true,
+        if (request.tokenIsValid) {
+          return reply.status(200).send({
+            isAuthenticated: true,
+          });
+        }
+        return reply.status(401).send({
+          isAuthenticated: false,
         });
-      } catch (e) {
-        console.error('Error fetching isAuthenticated endpoint:', e);
-        reply.status(500).send({ error: 'Internal Server Error' });
+      } catch (_) {
+        return reply.status(401).send({
+          isAuthenticated: false,
+        });
       }
     },
   );

@@ -21,6 +21,7 @@ export const handlers = [
             "isAccessManager": true,
             "isMainAdministrator": false,
             "name": "HJELPELINJE ORDINÆR",
+            "isCurrentEndUser": true,
             "subParties": []
           },
         ]

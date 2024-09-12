@@ -8,11 +8,17 @@ export const sanitizeURL = (url: string) => {
 };
 
 export const saveURL = (url: string) => {
-  localStorage.setItem(LOGIN_REDIRECT_STORAGE_KEY, sanitizeURL(url));
+  if (!isLogoutURL(url)) {
+    localStorage.setItem(LOGIN_REDIRECT_STORAGE_KEY, sanitizeURL(url));
+  }
 };
 
 export const isRedirectURL = (url: string): boolean => {
   return url.includes(LOGIN_REDIRECT_QUERY_KEY);
+};
+
+export const isLogoutURL = (url: string): boolean => {
+  return url.includes('loggedout');
 };
 
 export const removeStoredURL = () => {

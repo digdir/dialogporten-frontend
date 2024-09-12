@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { SelectedDialogsContainer } from '..';
 import { FeatureFlagProvider, featureFlags } from '../src/featureFlags';
 import '../src/i18n/config.ts';
+import { MockAuthProvider } from '../src/components/Login/MockAuthContext.tsx';
 
 interface IExtendedRenderOptions extends RenderOptions {
   initialEntries?: string[];
@@ -28,9 +29,11 @@ export const createCustomWrapper = (
     return (
       <QueryClientProvider client={queryClient}>
         <FeatureFlagProvider flags={featureFlags}>
-          <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>
-            <SelectedDialogsContainer>{children}</SelectedDialogsContainer>
-          </MemoryRouter>
+          <MockAuthProvider>
+            <MemoryRouter initialEntries={options?.initialEntries ?? ['/']}>
+              <SelectedDialogsContainer>{children}</SelectedDialogsContainer>
+            </MemoryRouter>
+          </MockAuthProvider>
         </FeatureFlagProvider>
       </QueryClientProvider>
     );
