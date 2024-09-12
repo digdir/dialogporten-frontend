@@ -31,7 +31,6 @@ const refreshAllTokens = async (request: FastifyRequest) => {
   );
 
   const updatedToken: IdPortenUpdatedToken = refreshResponse?.data;
-  console.log('Updated token:', updatedToken);
 
   if (updatedToken) {
     const refreshTokenExpiresAt = new Date(Date.now() + updatedToken.refresh_token_expires_in * 1000).toISOString();
