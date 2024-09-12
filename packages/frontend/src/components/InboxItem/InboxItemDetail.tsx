@@ -10,6 +10,10 @@ import { MainContentReference } from '../MainContentReference';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
+interface InboxItemDetailProps {
+  dialog: DialogByIdDetails | undefined;
+}
+
 /**
  * Displays detailed information about an inbox item, including title, description, sender, receiver, attachments, tags, and GUI actions.
  * This component is intended to be used for presenting a full view of an inbox item, with comprehensive details not shown in the summary view.
@@ -35,8 +39,21 @@ import styles from './inboxItemDetail.module.css';
  * />
  */
 
-export const InboxItemDetail = ({
-  dialog: {
+export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element => {
+  const { t } = useTranslation();
+  const format = useFormat();
+  if (!dialog) {
+    return (
+      <section className={styles.inboxItemDetail}>
+        <header className={styles.header} data-id="dialog-header">
+          <h1 className={styles.title}>{t('error.dialog.not_found')}</h1>
+        </header>
+        <p className={styles.description}>{t('dialog.error_message')}</p>
+      </section>
+    );
+  }
+
+  const {
     title,
     dialogToken,
     description,
@@ -49,14 +66,11 @@ export const InboxItemDetail = ({
     mainContentReference,
     activities,
     createdAt,
-  },
-}: { dialog: DialogByIdDetails }): JSX.Element => {
-  const { t } = useTranslation();
+  } = dialog;
   const attachmentCount = attachments.reduce(
     (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
     0,
   );
-  const format = useFormat();
 
   return (
     <section className={styles.inboxItemDetail}>
