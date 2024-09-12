@@ -1,17 +1,12 @@
+import { logger } from '@digdir/dialogporten-node-logger';
 import axios from 'axios';
-import type {
-  FastifyPluginAsync,
-  FastifyReply,
-  FastifyRequest,
-  HookHandlerDoneFunction,
-  IdPortenUpdatedToken,
-} from 'fastify';
+import type { FastifyPluginAsync, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.ts';
 import type { SessionStorageToken } from './oidc.ts';
 
 const refreshAllTokens = async (request: FastifyRequest) => {
-  const token: SessionStorageToken = request.session.get('token');
+  const token: SessionStorageToken | undefined = request.session.get('token');
 
   if (!token) {
     return;
@@ -36,6 +31,7 @@ const refreshAllTokens = async (request: FastifyRequest) => {
   );
 
   const updatedToken: IdPortenUpdatedToken = refreshResponse?.data;
+  console.log('Updated token:', updatedToken);
 
   if (updatedToken) {
     const refreshTokenExpiresAt = new Date(Date.now() + updatedToken.refresh_token_expires_in * 1000).toISOString();
@@ -70,7 +66,7 @@ const refreshAllTokens = async (request: FastifyRequest) => {
  * 6. If the refresh operation succeeds, returns `true`; otherwise, returns `false`.
  */
 const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boolean): Promise<boolean> => {
-  const token: SessionStorageToken = request.session.get('token');
+  const token: SessionStorageToken | undefined = request.session.get('token');
 
   if (!token) {
     return false;
@@ -79,9 +75,10 @@ const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boole
   const now = new Date();
   const accessTokenExpiresAt = new Date(token.access_token_expires_at);
   const isRefreshTokenValid = new Date(token.refresh_token_expires_at) > now;
+  const accessTokenWillExpireNextMinute = accessTokenExpiresAt.getTime() - now.getTime() < 60 * 1000;
   const isAccessTokenValid = accessTokenExpiresAt > now;
 
-  if (isAccessTokenValid) {
+  if (isAccessTokenValid && !accessTokenWillExpireNextMinute) {
     return true;
   }
 
@@ -103,20 +100,16 @@ const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boole
 
 const plugin: FastifyPluginAsync = async (fastify, _) => {
   fastify.decorate('verifyToken', (allowTokenRefresh: boolean) => {
-    return (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => {
-      getIsTokenValid(request, allowTokenRefresh)
-        .then((isValid) => {
-          if (isValid) {
-            done();
-          } else {
-            done(new Error('unauthenticated'));
-          }
-        })
-        .catch(done);
+    return async (request: FastifyRequest) => {
+      try {
+        request.tokenIsValid = await getIsTokenValid(request, allowTokenRefresh);
+      } catch (e) {
+        logger.error(e, 'Unable to verify token');
+        request.tokenIsValid = false;
+      }
     };
   });
 };
-
 export default fp(plugin, {
   fastify: '4.x',
   name: 'fastify-verify-token',

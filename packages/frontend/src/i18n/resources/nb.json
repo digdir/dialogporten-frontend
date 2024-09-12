@@ -66,6 +66,7 @@
   "inbox.heading.search_results.inbox": "{count, plural, =0 {Ingen treff} one {# treff} other {# treff}} i innboks",
   "inbox.heading.search_results.sent": "{count, plural, =0 {Ingen treff} one {# treff} other {# treff}} i sendte elementer",
   "inbox.title": "Innboks",
+  "logout.title": "Du er blitt logget ut ...",
   "link.goToAllServices": "Gå til alle tjenester",
   "link.goToInbox": "Gå til innboks",
   "link.goToMain": "Gå til hovedsiden",
