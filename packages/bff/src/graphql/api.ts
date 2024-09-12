@@ -11,13 +11,13 @@ import { bffSchema, dialogportenSchema } from './schema.ts';
 const plugin: FastifyPluginAsync = async (fastify) => {
   const remoteExecutor: AsyncExecutor = async ({ document, variables, operationName, context }) => {
     const query = print(document);
-
+    const token = context!.session.get('token');
     const response = await axios({
       method: 'POST',
       url: config.dialogportenURL,
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${context!.token.access_token}`,
+        Authorization: `Bearer ${token.access_token}`,
       },
       data: JSON.stringify({ query, variables, operationName }),
     });
@@ -38,7 +38,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
     schema: stitchedSchema,
     context(request) {
       return {
-        token: request.raw.session.get('token'),
+        session: request.raw.session,
       };
     },
   });
