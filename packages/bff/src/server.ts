@@ -14,7 +14,6 @@ import config from './config.ts';
 import { connectToDB } from './db.ts';
 import graphqlApi from './graphql/api.ts';
 import graphqlStream from './graphql/subscription.ts';
-import graphqlStreamTest from './graphql/testsub.ts';
 
 const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
 
@@ -22,7 +21,6 @@ const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
-    //logger: logger.pinoLoggerInstance,
   });
 
   await connectToDB();
@@ -75,7 +73,6 @@ const startServer = async (): Promise<void> => {
   server.register(userApi);
   server.register(graphqlApi);
   server.register(graphqlStream);
-  server.register(graphqlStreamTest);
 
   server.register(fastifyGraphiql, {
     url: '/api/graphiql',

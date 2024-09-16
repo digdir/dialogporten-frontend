@@ -29,7 +29,6 @@
     "embeddable-markdown-html": "workspace:*",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
-    "graphql-sse": "^2.5.3",
     "i18next": "^23.14.0",
     "i18next-icu": "^2.3.0",
     "react": "^18.3.1",
