@@ -4,12 +4,13 @@ import { type ProxyTracerProvider, metrics, trace } from '@opentelemetry/api';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { FastifyInstrumentation } from '@opentelemetry/instrumentation-fastify';
 import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
-import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { HttpInstrumentation, type HttpInstrumentationConfig } from '@opentelemetry/instrumentation-http';
 import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis';
 import { Resource } from '@opentelemetry/resources';
 // SEMRESATTRS_SERVICE_INSTANCE_ID is deprecaed, but the replacement ATTR_SERVICE_INSTANCE_ID is not available in the semantic-conventions package
 import { ATTR_SERVICE_NAME, SEMRESATTRS_SERVICE_INSTANCE_ID } from '@opentelemetry/semantic-conventions';
 import config from './config.ts';
+import type { IncomingMessage } from 'node:http';
 
 const { applicationInsights } = config;
 
@@ -40,9 +41,24 @@ const initializeApplicationInsights = () => {
       },
     });
 
+    const httpInstrumentationConfig: HttpInstrumentationConfig = {
+      enabled: true,
+      ignoreIncomingRequestHook: (request: IncomingMessage) => {
+        // Ignore OPTIONS incoming requests
+        if (request.method === 'OPTIONS') {
+          return true;
+        }
+        // Ignore readiness and liveness probes
+        if (request.url === '/api/liveness' || request.url === '/api/readiness') {
+          return true;
+        }
+        return false;
+      },
+    };
+
     // register additional instrumentations that are not included in the azure monitor exporter
     const instrumentations = [
-      new HttpInstrumentation(),
+      new HttpInstrumentation(httpInstrumentationConfig),
       new FastifyInstrumentation(),
       new GraphQLInstrumentation(),
       new IORedisInstrumentation(),
