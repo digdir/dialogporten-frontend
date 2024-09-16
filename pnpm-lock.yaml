@@ -131,9 +131,6 @@ importers:
       graphql-http:
         specifier: ^1.22.0
         version: 1.22.1(graphql@16.8.1)
-      graphql-sse:
-        specifier: ^2.5.3
-        version: 2.5.3(graphql@16.8.1)
       graphql-tools:
         specifier: ^9.0.1
         version: 9.0.1(graphql@16.8.1)
@@ -427,9 +424,6 @@ importers:
       graphql-request:
         specifier: ^6.1.0
         version: 6.1.0(graphql@16.8.1)
-      graphql-sse:
-        specifier: ^2.5.3
-        version: 2.5.3(graphql@16.8.1)
       i18next:
         specifier: ^23.14.0
         version: 23.14.0
@@ -18246,15 +18240,6 @@ packages:
       graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
-
-  /graphql-sse@2.5.3(graphql@16.8.1):
-    resolution: {integrity: sha512-5IcFW3e7fPOG7oFkK1v3X1wWtCJArQKB/H1UJeNotjy7a/9EYA5K+EiHJF1BiDSVNx7y64bd0FlDETrNBSvIHQ==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      graphql: '>=0.11 <=16'
-    dependencies:
-      graphql: 16.8.1
-    dev: false
 
   /graphql-tag@2.12.6(graphql@16.8.1):
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
