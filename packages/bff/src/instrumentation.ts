@@ -1,3 +1,4 @@
+import type { IncomingMessage } from 'node:http';
 import { useAzureMonitor } from '@azure/monitor-opentelemetry';
 import { logger } from '@digdir/dialogporten-node-logger';
 import { type ProxyTracerProvider, metrics, trace } from '@opentelemetry/api';
@@ -10,7 +11,6 @@ import { Resource } from '@opentelemetry/resources';
 // SEMRESATTRS_SERVICE_INSTANCE_ID is deprecaed, but the replacement ATTR_SERVICE_INSTANCE_ID is not available in the semantic-conventions package
 import { ATTR_SERVICE_NAME, SEMRESATTRS_SERVICE_INSTANCE_ID } from '@opentelemetry/semantic-conventions';
 import config from './config.ts';
-import type { IncomingMessage } from 'node:http';
 
 const { applicationInsights } = config;
 
