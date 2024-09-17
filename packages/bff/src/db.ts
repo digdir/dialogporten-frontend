@@ -1,6 +1,6 @@
 import { DataSource, type Repository } from 'typeorm';
-import { ProfileTable, SavedSearch } from './entities.ts';
 import { connectionOptions } from './data-source.ts';
+import { ProfileTable, SavedSearch } from './entities.ts';
 
 export let ProfileRepository: Repository<ProfileTable> | undefined = undefined;
 export let SavedSearchRepository: Repository<SavedSearch> | undefined = undefined;

@@ -1,11 +1,11 @@
 import { setTimeout } from 'node:timers/promises';
 import { logger } from '@digdir/dialogporten-node-logger';
+import axios from 'axios';
 import type { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
+import config from '../config.ts';
 import { dataSource } from '../db.ts';
 import redisClient from '../redisClient.ts';
-import axios from 'axios';
-import config from '../config.ts';
 
 interface Props {
   version: string;

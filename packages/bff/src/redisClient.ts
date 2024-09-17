@@ -1,6 +1,6 @@
+import { logger } from '@digdir/dialogporten-node-logger';
 import Redis from 'ioredis';
 import config from './config.ts';
-import { logger } from '@digdir/dialogporten-node-logger';
 
 const redisClient = new Redis.default(config.redisConnectionString, {
   enableAutoPipelining: true,
