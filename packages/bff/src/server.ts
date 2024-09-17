@@ -79,7 +79,6 @@ const startServer = async (): Promise<void> => {
     graphqlURL: '/api/graphql',
   });
 
-  // Start the server
   server.listen({ port, host }, (error, address) => {
     if (error) {
       throw error;

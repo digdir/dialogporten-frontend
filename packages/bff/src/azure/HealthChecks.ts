@@ -7,6 +7,17 @@ import config from '../config.ts';
 import { dataSource } from '../db.ts';
 import redisClient from '../redisClient.ts';
 
+/**
+ * Health Check System
+ * 
+ * - Provides a '/api/health' endpoint that:
+ *   1. Runs all health checks concurrently with timeouts
+ *   2. Calculates overall status ('ok', 'error', 'degraded')
+ *   3. Measures total latency
+ *   4. Returns JSON with overall status, individual check results, and latency
+ * - Handles errors and returns 503 status if checks fail
+ */
+
 interface Props {
   version: string;
 }
