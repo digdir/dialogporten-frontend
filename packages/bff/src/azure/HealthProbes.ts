@@ -8,16 +8,16 @@ interface Props {
 
 const plugin: FastifyPluginAsync<Props> = async (fastify, options) => {
   const { version } = options;
-  const startTimeStamp = new Date();
-  const secondsAfterStart = (new Date().getTime() - startTimeStamp.getTime()) / 1000;
+  const startTimeStamp = Date.now();
+  const secondsAfterStart = (Date.now() - startTimeStamp) / 1000;
 
   logger.info(`${version} starting /api/readiness probe after ${secondsAfterStart} seconds`);
-  fastify.get('/api/readiness', (req: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/api/readiness', async (req, reply) => {
     reply.status(200).send();
   });
 
   logger.info(`${version} starting /api/liveness probe after ${secondsAfterStart} seconds`);
-  fastify.get('/api/liveness', (req: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/api/liveness', async (req, reply) => {
     reply.status(200).send();
   });
 };
