@@ -7,7 +7,7 @@ export let SavedSearchRepository: Repository<SavedSearch> | undefined = undefine
 export let dataSource: DataSource | undefined = undefined;
 
 export const connectToDB = async () => {
-  // we don't want to import data-source.ts in the initial import, because it loads config.ts 
+  // we don't want to import data-source.ts in the initial import, because it loads config.ts
   // which is not needed for example for generating bff-types
   const { connectionOptions } = await import('./data-source.ts');
   dataSource = await new DataSource(connectionOptions).initialize();
