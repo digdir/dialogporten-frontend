@@ -49,6 +49,6 @@
     "storybook-addon-react-router-v6": "^2.0.12",
     "storybook-react-i18next": "^3.0.1",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.1.8"
   }
 }
