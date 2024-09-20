@@ -20,18 +20,10 @@ export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = 
       <ul className={styles.menuList}>
         <MenuItem
           leftContent={
-            <div
-              role="button"
-              tabIndex={0}
-              className={styles.linkContent}
-              onClick={onBack}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onBack();
-              }}
-            >
+            <button type="button" className={styles.backButton} onClick={onBack}>
               <ArrowLeftIcon className={styles.backButtonIcon} />
               <span className={styles.subMenuTitle}>{t('word.main_menu')}</span>
-            </div>
+            </button>
           }
           isWhiteBackground
         />

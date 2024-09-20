@@ -1,15 +1,15 @@
 fragment SavedSearchesFields on SavedSearches {
-    id
-    name
-    createdAt
-    updatedAt
-    data {
-      urn
-      searchString
-      fromView
-      filters {
-        id
-        value
-      }
+  id
+  name
+  createdAt
+  updatedAt
+  data {
+    urn
+    searchString
+    fromView
+    filters {
+      id
+      value
     }
+  }
 }

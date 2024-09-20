@@ -59,10 +59,7 @@ export const SimpleExample = () => {
     'saved-searches': [],
   };
 
-  const optionsGroups: MergedPartyGroup = useMemo(
-    () => getOptionsGroups(parties, dialogsByView, [], 'inbox'),
-    [parties],
-  );
+  const optionsGroups: MergedPartyGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
 
   return (
     <div style={{ width: 400 }}>
@@ -94,18 +91,11 @@ export const MultiplePeople = () => {
     },
   ];
 
-  const optionsGroups: MergedPartyGroup = useMemo(
-    () => getOptionsGroups(customParties, dialogsByView, [], 'inbox'),
-    [customParties],
-  );
+  const optionsGroups: MergedPartyGroup = getOptionsGroups(customParties, dialogsByView, [], 'inbox');
 
   return (
     <div style={{ width: 400 }}>
-      <PartyList
-        optionsGroups={optionsGroups}
-        selectedPartyIds={selectedPartyIds}
-        setSelectedPartyIds={setSelectedPartyIds}
-      />
+      <PartyList optionsGroups={optionsGroups} selectedPartyIds={selectedPartyIds} onSelect={setSelectedPartyIds} />
     </div>
   );
 };
@@ -116,10 +106,7 @@ export const ExampleWithFilter = () => {
     inbox: [],
     'saved-searches': [],
   };
-  const optionsGroups: MergedPartyGroup = useMemo(
-    () => getOptionsGroups(parties, dialogsByView, [], 'inbox'),
-    [parties],
-  );
+  const optionsGroups: MergedPartyGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
 
   return (
     <div style={{ width: 400 }}>

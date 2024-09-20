@@ -16,29 +16,21 @@ export const UserInfo = ({ name, profile, onClick }: UserInfoProps) => {
   return (
     <MenuItem
       leftContent={
-        <MenuItem.LeftContent
-          className={cx(styles.menuColumn, styles.menuColumnLeft)}
-          title={name}
-          onClick={onClick}
-          onKeyUp={onClick}
-          role="button"
-          tabIndex={0}
-        >
+        <MenuItem.LeftContent className={cx(styles.menuColumn, styles.menuColumnLeft)} title={name} onClick={onClick}>
           <Avatar name={name} profile={profile} />
           <div className={styles.primaryName}>{name}</div>
         </MenuItem.LeftContent>
       }
       rightContent={
-        <div
-          className={cx(styles.menuColumn, styles.menuColumnRight)}
+        <button
+          type="button"
+          className={cx(styles.resetButton, styles.menuColumn, styles.menuColumnRight)}
           onClick={onClick}
-          onKeyUp={onClick}
-          role="button"
           tabIndex={0}
         >
           <span className={styles.wordChange}>{t('word.change')}</span>
           <ChevronRightIcon className={styles.arrowIcon} />
-        </div>
+        </button>
       }
       isWhiteBackground
     />

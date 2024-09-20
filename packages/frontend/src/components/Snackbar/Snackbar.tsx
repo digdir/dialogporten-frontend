@@ -20,33 +20,21 @@ const SnackbarItem = ({
   closeSnackbarItem: (id: string) => void;
 }): JSX.Element => {
   return (
-    <div
-      className={cx(styles.snackbarItem, styles.bottomLeft, styles[item.variant])}
-      key={item.id}
-      role="status"
-      aria-live="polite"
-    >
+    <div className={cx(styles.snackbarItem, styles.bottomLeft, styles[item.variant])} key={item.id} aria-live="polite">
       <div className={styles.snackbarItemContent}>
-        <span
-          className={styles.leftIcon}
-          onClick={() => closeSnackbarItem(item.id)}
-          onKeyUp={(e) => e.key === 'Enter' && closeSnackbarItem(item.id)}
-          tabIndex={0}
-          role="button"
-        >
+        <span className={styles.leftIcon}>
           <BellIcon />
         </span>
         <span className={styles.message}>{item.message}</span>
         {item.dismissable && (
-          <span
+          <button
+            type="button"
             className={styles.closeIcon}
             onClick={() => closeSnackbarItem(item.id)}
             onKeyUp={(e) => e.key === 'Enter' && closeSnackbarItem(item.id)}
-            tabIndex={0}
-            role="button"
           >
             <XMarkIcon />
-          </span>
+          </button>
         )}
       </div>
     </div>

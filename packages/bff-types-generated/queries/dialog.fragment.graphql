@@ -48,7 +48,7 @@ fragment DialogByIdFields on Dialog {
     ...AttachmentFields
   }
   activities {
-  	...DialogActivity
+    ...DialogActivity
   }
   guiActions {
     ...GuiActionFields
@@ -102,11 +102,11 @@ fragment GuiActionFields on GuiAction {
 }
 
 fragment DialogContentFields on ContentValue {
-    mediaType
-    value {
-      value
-      languageCode
-    }
+  mediaType
+  value {
+    value
+    languageCode
+  }
 }
 
 fragment AttachmentUrlFields on AttachmentUrl {
@@ -116,14 +116,14 @@ fragment AttachmentUrlFields on AttachmentUrl {
 }
 
 fragment AttachmentFields on Attachment {
-    id
-    displayName {
-      value
-      languageCode
-    }
-    urls {
-      ...AttachmentUrlFields
-    }
+  id
+  displayName {
+    value
+    languageCode
+  }
+  urls {
+    ...AttachmentUrlFields
+  }
 }
 
 fragment DialogActivity on Activity {
@@ -143,12 +143,12 @@ fragment DialogActivity on Activity {
 }
 
 fragment SeenLogFields on SeenLog {
-    id
-    seenAt
-    seenBy {
-      actorType
-      actorId
-      actorName
-    }
-    isCurrentEndUser
+  id
+  seenAt
+  seenBy {
+    actorType
+    actorId
+    actorName
+  }
+  isCurrentEndUser
 }

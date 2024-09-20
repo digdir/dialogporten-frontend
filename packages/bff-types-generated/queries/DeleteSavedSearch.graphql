@@ -1,6 +1,6 @@
 mutation DeleteSavedSearch($id: Int!) {
-    deleteSavedSearch(id: $id) {
-    success,
+  deleteSavedSearch(id: $id) {
+    success
     message
   }
 }

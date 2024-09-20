@@ -33,7 +33,7 @@ export const PartyDropdown = forwardRef((props: PartyDropdownProps, ref: Ref<Par
       <ProfileButton size="xs" onClick={() => setIsMenuOpen(!isMenuOpen)} color="neutral" disabled={!parties.length}>
         {allOrganizationsSelected
           ? t('parties.labels.all_organizations')
-          : selectedParties?.[0]?.name ?? t('partyDropdown.selectParty')}
+          : (selectedParties?.[0]?.name ?? t('partyDropdown.selectParty'))}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
       <DropdownList variant="long" isExpanded={isMenuOpen}>
