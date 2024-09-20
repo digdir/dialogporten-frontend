@@ -48,18 +48,10 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
   const [endDate, setEndDate] = useState<string>('');
   return (
     <section className={styles.filterDateContent}>
-      <div
-        role="button"
-        tabIndex={0}
-        className={styles.menuColumn}
-        onClick={onBack}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') onBack();
-        }}
-      >
+      <button type="button" className={styles.menuColumn} onClick={onBack}>
         <ArrowLeftIcon className={styles.backButtonIcon} />
         <span className={styles.subMenuTitle}>{t('word.back')}</span>
-      </div>
+      </button>
       <HorizontalLine />
       <label htmlFor="fromDate">{t('filter_bar.from_date_label')}</label>
       <div className={styles.dateInputWrapper}>

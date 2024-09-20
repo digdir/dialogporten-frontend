@@ -35,7 +35,7 @@ export const Activity = ({ activity, serviceOwner }: ActivityProps) => {
   const isCompany =
     activity.performedBy.actorType === ActorType.ServiceOwner ||
     (activity.performedBy.actorId ?? '').includes('urn:altinn:organization:');
-  const performedByName = isCompany ? serviceOwner?.name ?? '' : activity.performedBy.actorName ?? '';
+  const performedByName = isCompany ? (serviceOwner?.name ?? '') : (activity.performedBy.actorName ?? '');
   const imageUrl = isCompany ? serviceOwner?.imageURL : undefined;
   const text = getActivityText(activity);
 

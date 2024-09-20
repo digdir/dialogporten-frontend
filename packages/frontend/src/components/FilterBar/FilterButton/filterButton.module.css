@@ -46,10 +46,21 @@
 }
 
 .menuColumn {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .menuColumn {
+    display: none;
+  }
 }
 
 .backButtonIcon {

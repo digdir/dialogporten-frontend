@@ -58,7 +58,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
       },
       allParties,
     };
-  }, [optionsGroups, filterString]);
+  }, [optionsGroups, filterString, t]);
 
   return (
     <>
