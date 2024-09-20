@@ -29,8 +29,9 @@ const plugin: FastifyPluginAsync = async (fastify) => {
           },
           data: JSON.stringify({
             query: `subscription sub {
-           dialogUpdated(dialogId: "${dialogId}") {
+           dialogEvents(dialogId: "${dialogId}") {
              id
+             type
            }
           }`,
             variables: {},
