@@ -99,7 +99,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
                 .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
                 .map((url) => (
                   <li key={url.id} className={styles.attachmentItem}>
-                    <FileIcon fontSize="1.5rem" />
+                    <FileIcon className={styles.attachmentIcon} />
                     <Link
                       href={url.url}
                       aria-label={t('inbox.attachment.link', {
