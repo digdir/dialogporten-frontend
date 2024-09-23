@@ -19,6 +19,9 @@ dev: ## Runs Docker compose in watch mode for development
 compose-down: ## Runs `docker compose down`
 	docker compose down
 
+pull: ## Pulls and stores images locally and builds project
+	docker compose pull && docker pull node:20-slim && docker compose build
+
 # ---------------------
 # - Helper functions  -
 # ---------------------
