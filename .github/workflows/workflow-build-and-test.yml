@@ -1,11 +1,7 @@
 name: CI
 
 on:
-  workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
+  workflow_call
 
 permissions:
     pull-requests: write

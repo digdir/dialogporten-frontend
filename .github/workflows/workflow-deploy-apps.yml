@@ -42,6 +42,7 @@ on:
         required: false
         type: boolean
         default: false
+
 concurrency:
   # Existing runs are cancelled if someone repeatedly commits to their own Pull Request (PR). However, it does not stop others' dry runs or actual deployments from the main branch.
   # Also, the cancellation does not occur on merges to the main branch. Therefore, if multiple merges to main are performed simultaneously, they will just be queued up.
@@ -146,6 +147,7 @@ jobs:
       fail-fast: true
       matrix:
         include:
+          # todo: this is very ugly. Figure out another way to pass the pr number to the deployment job
           - name: bff
           - name: frontend
     environment: ${{ inputs.environment }}
@@ -198,6 +200,7 @@ jobs:
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
           APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
           ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         with:
           scope: resourcegroup
           template: ./.azure/applications/${{ matrix.name }}/main.bicep
@@ -206,7 +209,9 @@ jobs:
           deploymentName: dp-fe-${{ inputs.environment }}-${{ matrix.name }}-${{ inputs.version }}
           region: ${{ inputs.region }}
           failOnStdErr: false
-          parameters: ./.azure/applications/${{ matrix.name }}/${{ inputs.environment }}.bicepparam
+          # todo: for testing only. Revert to inputs.environment.bicepparam when ready
+          parameters: ./.azure/applications/${{ matrix.name }}/ephemeral.bicepparam
+          # parameters: ./.azure/applications/${{ matrix.name }}/${{ inputs.environment }}.bicepparam
 
       - name: Verify deployment (${{ matrix.name }})
         uses: azure/CLI@v2
