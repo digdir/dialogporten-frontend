@@ -29,7 +29,7 @@ interface InboxItemDetailProps {
  * <InboxItemDetail
  *   dialog={{
  *     title: "Project Update",
- *     description: "Here's the latest update on the project...",
+ *     summary: "Here's the latest update on the project...",
  *     sender: { name: "Alice", icon: <PersonIcon /> },
  *     receiver: { name: "Bob", icon: <PersonIcon /> },
  *     attachment: [{ label: "Project Plan", href: "/path/to/document", mime: "application/pdf" }],
@@ -56,7 +56,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
   const {
     title,
     dialogToken,
-    description,
+    summary,
     sender,
     receiver,
     guiActions,
@@ -89,7 +89,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
       </div>
       <div className={styles.sectionWithStatus} data-id="dialog-description">
         <p className={styles.createdLabel}>{format(createdAt, 'do MMMM yyyy HH:mm')}</p>
-        <p className={styles.description}>{description}</p>
+        <p className={styles.summary}>{summary}</p>
         <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
         <section data-id="dialog-attachments">
           <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
@@ -99,7 +99,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
                 .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
                 .map((url) => (
                   <li key={url.id} className={styles.attachmentItem}>
-                    <FileIcon className={styles.attachmentIcon} />
+                    <FileIcon fontSize={20} className={styles.attachmentIcon} />
                     <Link
                       href={url.url}
                       aria-label={t('inbox.attachment.link', {
