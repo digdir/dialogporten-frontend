@@ -40,6 +40,12 @@
   align-self: flex-start;
 }
 
+.isLink {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
 .searchInput:focus-visible {
   outline: none;
 }

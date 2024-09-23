@@ -44,7 +44,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
           </div>
           <div className={styles.rightContent}>
             <span className={styles.keyText}>Return</span>
-            <ChevronRightIcon fontSize={24} className={styles.arrowIcon} />
+            <ChevronRightIcon fontSize="1.5rem" className={styles.arrowIcon} />
           </div>
         </SearchDropdownItem>
 
@@ -93,7 +93,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                   ...(filters?.length && { filters: JSON.stringify(filters) }),
                 });
                 return (
-                  <a href={`${fromView}?${queryParams.toString()}`} key={search.id}>
+                  <a href={`${fromView}?${queryParams.toString()}`} key={search.id} className={styles.isLink}>
                     <SearchDropdownItem>
                       {search.name ? (
                         <div className={styles.savedSearchItem}>
