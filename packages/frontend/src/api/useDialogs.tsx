@@ -136,7 +136,6 @@ export const isDraftDialog = (dialog: InboxItemInput): boolean => [DialogStatus.
 export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Sent;
 
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
-  console.log('dialog status', dialog.status);
   if (isSentDialog(dialog)) {
     return 'sent';
   }

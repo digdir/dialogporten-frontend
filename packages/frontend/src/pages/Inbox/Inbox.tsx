@@ -139,15 +139,20 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
     return itemsToDisplay.reduce((acc, item, _, list) => {
       const createdAt = new Date(item.createdAt);
+      const viewType = getViewType(item);
       const key = shouldShowSearchResults
-        ? getViewType(item)
+        ? viewType
         : allWithinSameYear
           ? format(createdAt, 'LLLL')
           : format(createdAt, 'yyyy');
 
-      const label = shouldShowSearchResults
-        ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
-        : key;
+      let label = key;
+
+      if (shouldShowSearchResults) {
+        label = t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length });
+      } else if (['drafts', 'sent'].includes(viewType)) {
+        label = t(`inbox.heading.title.${viewType}`, { count: list.length });
+      }
 
       const existingCategory = acc.find((c) => c.id === key);
 
@@ -315,19 +320,17 @@ export const Inbox = ({ viewType }: InboxProps) => {
           const hideSelectAll = items.every((item) => selectedItems[item.id]);
           return (
             <InboxItems key={id}>
-              {!disableBulkActions && (
-                <InboxItemsHeader
-                  hideSelectAll={hideSelectAll}
-                  onSelectAll={() => {
-                    const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
-                    setSelectedItems({
-                      ...selectedItems,
-                      ...newItems,
-                    });
-                  }}
-                  title={label}
-                />
-              )}
+              <InboxItemsHeader
+                hideSelectAll={hideSelectAll}
+                onSelectAll={() => {
+                  const newItems = Object.fromEntries(items.map((item) => [item.id, true]));
+                  setSelectedItems({
+                    ...selectedItems,
+                    ...newItems,
+                  });
+                }}
+                title={label}
+              />
               {items.map((item) => (
                 <InboxItem
                   key={item.id}

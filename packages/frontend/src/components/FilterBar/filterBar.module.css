@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  column-gap: 1em;
+  column-gap: 0.5rem;
   position: relative;
 }
 
@@ -10,7 +10,7 @@
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  column-gap: 1em;
-  row-gap: 1em;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
   position: relative;
 }
