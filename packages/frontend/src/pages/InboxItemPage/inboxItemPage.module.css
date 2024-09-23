@@ -23,13 +23,11 @@
 .itemInboxNav {
   display: flex;
   align-items: center;
+  min-height: 44px;
+  max-height: 44px;
+  margin: 0.5rem;
 }
 
 .itemInboxPageContent {
   padding: 0.5rem;
-}
-
-.itemInboxNav {
-  display: flex;
-  align-items: center;
 }
