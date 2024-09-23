@@ -43,5 +43,6 @@ CLIENT_SECRET=<secret_password_keep_this_private>
 Running Docker in watch mode:
 
 ```bash
+make pull (optional)
 make dev
 ```
