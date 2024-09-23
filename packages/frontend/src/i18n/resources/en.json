@@ -66,6 +66,8 @@
   "inbox.heading.search_results.draft": "{count, plural, =0 {No hits} one {# hit} other {# hits}} in drafts",
   "inbox.heading.search_results.inbox": "{count, plural, =0 {No hits} one {# hit} other {# hits}} in inbox",
   "inbox.heading.search_results.sent": "{count, plural, =0 {No hits} one {# hit} other {# hits}} in sent items",
+  "inbox.heading.title.drafts": "{count, plural, =0 {No drafts} one {# draft} other {# drafts}}",
+  "inbox.heading.title.sent": "{count, plural, =0 {No sent} one {# sent} other {# sent}}",
   "inbox.title": "Inbox",
   "link.goToAllServices": "Go to all services",
   "link.goToInbox": "Go to inbox",

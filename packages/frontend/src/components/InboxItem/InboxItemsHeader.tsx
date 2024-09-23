@@ -1,6 +1,7 @@
 import { Button } from '@digdir/designsystemet-react';
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
+import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import styles from './inboxItemsHeader.module.css';
 
 interface InboxItemsHeaderProps {
@@ -25,10 +26,12 @@ interface InboxItemsHeaderProps {
  */
 export const InboxItemsHeader = ({ title, onSelectAll, hideSelectAll = false }: InboxItemsHeaderProps) => {
   const { t } = useTranslation();
+  const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
+
   return (
     <header className={styles.inboxItemsHeader}>
       <h2 className={styles.title}>{title}</h2>
-      {typeof onSelectAll === 'function' && !hideSelectAll && (
+      {typeof onSelectAll === 'function' && !disableBulkActions && !hideSelectAll && (
         <Button size="sm" onClick={onSelectAll} variant="tertiary" color="neutral">
           <CheckmarkIcon fontSize="1.5rem" />
           {t('inbox.heading.choose_all')}
