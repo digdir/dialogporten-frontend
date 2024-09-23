@@ -41,12 +41,22 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
   const showNotificationsBadge = notificationCount > 0 && !showBackDrop;
   return (
     <>
-      <div className={styles.globalMenuBar}>
-        <div onClick={toggleShowBackdrop} onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}>
+      <div
+        className={styles.globalMenuBar}
+        onClick={toggleShowBackdrop}
+        onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}
+      >
+        <section>
           <div className={styles.menuText} aria-hidden="true">
             <div className={styles.menuButtonWrapper}>
               {t('word.menu')}
-              <button type="button" className={styles.toggleOpenButton} tabIndex={0}>
+              <button
+                type="button"
+                className={styles.toggleOpenButton}
+                aria-label={showBackDrop ? t('menuBar.close') : t('menuBar.open')}
+                aria-expanded={showBackDrop}
+                aria-controls="global-menu"
+              >
                 {showBackDrop ? (
                   <CloseMenuButton className={styles.closeMenuButton} />
                 ) : (
@@ -60,7 +70,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
               <Badge label={notificationCount} variant="strong" />
             </div>
           )}
-        </div>
+        </section>
         <NavigationDropdownMenu
           showDropdownMenu={showBackDrop}
           name={name}
