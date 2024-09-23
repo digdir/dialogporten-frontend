@@ -12,7 +12,6 @@ import styles from './globalMenuBar.module.css';
 interface GlobalMenuBarProps {
   name: string;
   profile: AvatarProfile;
-  className?: string;
   notificationCount?: number;
 }
 
@@ -24,7 +23,7 @@ export const CloseMenuButton = ({ className }: { className?: string }) => {
   );
 };
 
-export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, notificationCount = 0, className }) => {
+export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, notificationCount = 0 }) => {
   const [showBackDrop, setShowBackDrop] = useState<boolean>(false);
   const [showSubMenu, setShowSubMenu] = useState<SubMenuSelection>('none');
 
@@ -44,10 +43,16 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
     <>
       <div className={styles.globalMenuBar}>
         <div onClick={toggleShowBackdrop} onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}>
-          <div className={cx(styles.menuText, className)} aria-hidden="true">
-            <div className={styles.nameWithInitials}>
+          <div className={styles.menuText} aria-hidden="true">
+            <div className={styles.menuButtonWrapper}>
               {t('word.menu')}
-              {showBackDrop ? <CloseMenuButton className={className} /> : <Avatar name={name} profile={profile} />}
+              <button type="button" className={styles.toggleOpenButton} tabIndex={0}>
+                {showBackDrop ? (
+                  <CloseMenuButton className={styles.closeMenuButton} />
+                ) : (
+                  <Avatar name={name} profile={profile} />
+                )}
+              </button>
             </div>
           </div>
           {showNotificationsBadge && (
