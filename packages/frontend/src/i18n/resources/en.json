@@ -75,6 +75,8 @@
   "menuBar.all_services": "All services",
   "menuBar.chat": "Get help on chat",
   "menuBar.chat.label": "Press here to go to chat",
+  "menuBar.open": "Open menu",
+  "menuBar.close": "Close menu",
   "notifications.count": "{count, plural, one {# unread message} other {# unread messages}}",
   "parties.labels.all_organizations": "All organizations",
   "parties.labels.organizations": "Organizations",

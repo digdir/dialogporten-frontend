@@ -74,6 +74,8 @@
   "logout.title": "Du er blitt logget ut ...",
   "menuBar.all_services": "Alle tjenester",
   "menuBar.chat": "Få hjelp på chat",
+  "menuBar.open": "Åpne meny",
+  "menuBar.close": "Lukk meny",
   "menuBar.chat.label": "Trykk her for å gå til chat",
   "notifications.count": "{count, plural, one {# ulest melding} other {# uleste meldinger}}",
   "parties.labels.all_organizations": "Alle virksomheter",
