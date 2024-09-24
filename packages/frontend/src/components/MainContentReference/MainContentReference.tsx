@@ -1,6 +1,7 @@
 import { Markdown } from 'embeddable-markdown-html';
 import { useQuery } from 'react-query';
 import type { DialogByIdDetails } from '../../api/useDialogById.tsx';
+
 export const MainContentReference = ({
   args,
   dialogToken,
