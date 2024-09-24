@@ -1,7 +1,7 @@
 {
   "release-type": "simple",
   "pull-request-header": "New release!",
-  "initial-version": "1.0.0",
+  "initial-version": "0.8.0",
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "bootstrap-sha": "62da0e35a12d4508b5a9e5c6a64b5a3666356cfb"
 }
