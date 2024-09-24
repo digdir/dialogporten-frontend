@@ -1,6 +1,5 @@
 import { ArrowLeftIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
-import { useParties } from '../../api/useParties.ts';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuItem } from '../MenuBar';
 import { PartyListContainer } from '../PartyDropdown/PartyListContainer.tsx';
@@ -10,10 +9,6 @@ import styles from './navigationDropdownMenu.module.css';
 
 export const NavigationDropdownSubMenuProfile: React.FC<DropdownSubMenuProps> = ({ onClose, onBack }) => {
   const { t } = useTranslation();
-  const { parties } = useParties();
-  if (!parties.length) {
-    return null;
-  }
 
   return (
     <div className={styles.menuItems}>

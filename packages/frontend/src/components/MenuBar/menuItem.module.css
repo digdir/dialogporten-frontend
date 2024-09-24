@@ -67,7 +67,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--button-color);
   border-radius: 4px;
   background: #fff;
   width: 2rem;

@@ -49,7 +49,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
         <section>
           <div className={styles.menuText} aria-hidden="true">
             <div className={styles.menuButtonWrapper}>
-              {t('word.menu')}
+              <span className={styles.menuButtonText}>{t('word.menu')}</span>
               <button
                 type="button"
                 className={styles.toggleOpenButton}
