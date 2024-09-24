@@ -1,4 +1,4 @@
-import { CheckmarkCircleFillIcon, ClockIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
+import { CheckmarkCircleFillIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { t } from 'i18next';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
@@ -35,8 +35,6 @@ export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) =>
     switch (type) {
       case 'attachment':
         return <PaperclipIcon />;
-      case 'timestamp':
-        return <ClockIcon />;
       case 'seenBy':
         return <EyeIcon />;
       default:
@@ -91,7 +89,6 @@ export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) =>
           case 'timestamp':
             return (
               <MetaDataField key={`metaField-${index}`}>
-                {icon && <div className={styles.icon}>{icon}</div>}
                 <span className={styles.label}>{metaField.label}</span>
               </MetaDataField>
             );
