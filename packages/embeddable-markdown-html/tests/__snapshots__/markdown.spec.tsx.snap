@@ -1,7 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Markdown > should render content 1`] = `
-<h1>
+<h1
+  class="__markdown-header-1"
+>
   header
 </h1>
 `;
