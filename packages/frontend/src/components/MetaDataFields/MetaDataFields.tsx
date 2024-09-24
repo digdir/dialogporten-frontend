@@ -77,7 +77,7 @@ export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) =>
           case 'status_REQUIRES_ATTENTION':
             return (
               <MetaDataField key={`metaField-${index}`} className={cx(styles.statusSolidBorder, styles.blueBackground)}>
-                <span className={styles.label}>{t('status.requires_attention')}</span>
+                <span className={cx(styles.label, styles.requiresAttention)}>{t('status.requires_attention')}</span>
               </MetaDataField>
             );
           case 'status_DRAFT':
