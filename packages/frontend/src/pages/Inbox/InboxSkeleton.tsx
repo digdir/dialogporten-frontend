@@ -40,8 +40,8 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({
                   <Skeleton.Text width="400px" height="24px" />
                 </h2>
               </header>
-              <Skeleton.Text width="40%" height="36px" className={styles.description} />
-              <Skeleton.Text width="100%" className={styles.description} />
+              <Skeleton.Text width="40%" height="36px" className={styles.summary} />
+              <Skeleton.Text width="100%" className={styles.summary} />
               <div className={styles.participants}>
                 <div className={styles.sender}>
                   <span>

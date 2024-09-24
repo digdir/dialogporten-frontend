@@ -17,7 +17,7 @@ import styles from './inboxItem.module.css';
 interface InboxItemProps {
   checkboxValue: string;
   title: string;
-  description: string;
+  summary: string;
   sender: Participant;
   receiver: Participant;
   isChecked?: boolean;
@@ -50,7 +50,7 @@ export const OptionalLinkContent = ({
 
 /**
  * Represents an individual inbox item, displaying information such as the title,
- * description, sender, and receiver, along with optional tags. It includes a checkbox
+ * summary, sender, and receiver, along with optional tags. It includes a checkbox
  * to mark the item as checked/unchecked and can visually indicate if it is unread.
  * Should only be used as child of InboxItems
  *
@@ -58,7 +58,7 @@ export const OptionalLinkContent = ({
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.checkboxValue - The value attribute for the checkbox input.
  * @param {string} props.title - The title of the inbox item.
- * @param {string} props.description - The description or content of the inbox item.
+ * @param {string} props.summary - The summary or content of the inbox item.
  * @param {Participant} props.sender - The sender of the inbox item, including label and optional icon.
  * @param {Participant} props.receiver - The receiver of the inbox item, including label and optional icon.
  * @param {boolean} props.isChecked - Whether the inbox item is checked. This can support batch operations.
@@ -72,7 +72,7 @@ export const OptionalLinkContent = ({
  * <InboxItem
  *   checkboxValue="item1"
  *   title="Meeting Reminder"
- *   description="Don't forget the meeting tomorrow at 10am."
+ *   summary="Don't forget the meeting tomorrow at 10am."
  *   sender={{ label: "Alice", icon: <MailIcon /> }}
  *   receiver={{ label: "Bob", icon: <PersonIcon /> }}
  *   isChecked={false}
@@ -83,7 +83,7 @@ export const OptionalLinkContent = ({
  */
 export const InboxItem = ({
   title,
-  description,
+  summary,
   sender,
   receiver,
   metaFields = [],
@@ -149,7 +149,7 @@ export const InboxItem = ({
                 />
               )}
             </header>
-            <p className={styles.description}>{description}</p>
+            <p className={styles.summary}>{summary}</p>
           </section>
         </OptionalLinkContent>
       </div>
@@ -209,7 +209,7 @@ export const InboxItem = ({
               <span className={styles.participantLabel}>{`${t('word.to')} ${receiver?.name}`}</span>
             </div>
           </div>
-          <p className={styles.description}>{description}</p>
+          <p className={styles.summary}>{summary}</p>
           <MetaDataFields metaFields={metaFields || []} viewType={viewType} />
         </section>
       </OptionalLinkContent>

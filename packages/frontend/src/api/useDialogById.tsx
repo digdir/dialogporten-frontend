@@ -30,7 +30,7 @@ export interface DialogActivity {
   performedBy: DialogActivityFragment['performedBy'];
 }
 export interface DialogByIdDetails {
-  description: string;
+  summary: string;
   sender: Participant;
   receiver: Participant;
   title: string;
@@ -139,7 +139,7 @@ export function mapDialogDtoToInboxItem(
   const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
   return {
     title: getPropertyByCultureCode(titleObj),
-    description: getPropertyByCultureCode(summaryObj),
+    summary: getPropertyByCultureCode(summaryObj),
     sender: {
       name: serviceOwner?.name ?? '',
       isCompany: true,

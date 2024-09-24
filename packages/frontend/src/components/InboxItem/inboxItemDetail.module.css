@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media (max-width: 1024px) {
@@ -29,6 +29,7 @@
   font-weight: 500;
   font-size: 1.5rem;
   line-height: 1.25;
+  margin-top: 0;
 }
 
 .icon {
@@ -76,12 +77,16 @@
   column-gap: 0.5rem;
 }
 
+.receiver {
+  color: var(--text-neutral-subtle);
+}
+
 .sender {
   font-weight: 500;
 }
 
-.description {
-  color: #000;
+.summary {
+  color: var(--text-neutral-subtle);
   font-size: 1rem;
   font-weight: 400;
 }
@@ -158,14 +163,15 @@
   display: flex;
   align-items: center;
   color: var(--text-accent-subtle);
-  font-size: 1.3125rem;
+  font-size: 1.125rem;
 }
 
 .attachmentIcon {
-  min-height: 1.5em;
-  min-width: 1.5em;
-  max-height: 1.5em;
-  max-width: 1.5em;
+  --icon-size: 1.25rem;
+  min-height: var(--icon-size);
+  min-width: var(--icon-size);
+  max-height: var(--icon-size);
+  max-width: var(--icon-size);
 }
 
 .attachmentItemIcon {
