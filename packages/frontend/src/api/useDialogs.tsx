@@ -50,7 +50,7 @@ export function mapDialogDtoToInboxItem(
       id: item.id,
       party: item.party,
       title: getPropertyByCultureCode(titleObj),
-      description: getPropertyByCultureCode(summaryObj),
+      summary: getPropertyByCultureCode(summaryObj),
       sender: {
         name: serviceOwner?.name ?? '',
         isCompany: true,

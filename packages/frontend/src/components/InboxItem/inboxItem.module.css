@@ -124,7 +124,7 @@
   }
 }
 
-.description {
+.summary {
   color: #000;
   font-size: 1rem;
   font-weight: 400;
@@ -136,7 +136,7 @@
   margin-bottom: 1rem;
 }
 
-.minimalistic .description {
+.minimalistic .summary {
   color: rgba(0, 0, 0, 0.75);
   font-size: 12px;
   font-style: normal;
