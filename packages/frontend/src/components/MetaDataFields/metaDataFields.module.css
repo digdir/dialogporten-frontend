@@ -4,26 +4,30 @@
   align-items: center;
   flex-wrap: wrap;
   row-gap: 6px;
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
 }
 
 .field {
   display: flex;
   align-items: center;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   font-weight: 400;
   display: flex;
   height: 16px;
-
+  font-size: var(--font-size-1, 14px);
+  line-height: 20px;
   justify-content: center;
   align-items: center;
 }
 
 .label {
   align-self: center;
+  color: var(--color-neutral-text-subtle, #6c757d);
 }
 
 .icon {
-  margin-right: 0.375em;
+  margin-right: 0.25rem;
   flex-shrink: 0;
   align-self: flex-start;
 
@@ -40,12 +44,12 @@
   min-width: var(--sizing-8, 32px);
   padding: 0.25rem 0.5rem;
   align-items: flex-start;
-
   color: var(--color-neutral-text-default, #202c3d);
-  font-size: var(--font-size-1, 12px);
   font-style: normal;
   font-weight: 500;
   line-height: 100%;
+  box-sizing: border-box;
+  height: 1.5rem;
 }
 
 .blueText {

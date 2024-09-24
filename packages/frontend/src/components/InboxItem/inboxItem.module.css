@@ -89,6 +89,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
 }
 
 .receiver,
@@ -104,6 +106,7 @@
   align-items: center;
   flex-wrap: wrap;
   font-weight: 400;
+  color: var(--text-neutral-subtle);
 }
 
 .senderIcon {
