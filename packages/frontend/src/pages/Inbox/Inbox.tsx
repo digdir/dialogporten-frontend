@@ -44,7 +44,7 @@ export interface InboxItemInput {
   id: string;
   party: string;
   title: string;
-  description: string;
+  summary: string;
   sender: Participant;
   receiver: Participant;
   metaFields: InboxItemMetaField[];
@@ -336,7 +336,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   key={item.id}
                   checkboxValue={item.id}
                   title={item.title}
-                  description={item.description}
+                  summary={item.summary}
                   sender={item.sender}
                   receiver={item.receiver}
                   isChecked={selectedItems[item.id]}
