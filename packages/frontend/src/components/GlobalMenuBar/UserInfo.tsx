@@ -26,7 +26,6 @@ export const UserInfo = ({ name, profile, onClick }: UserInfoProps) => {
           type="button"
           className={cx(styles.resetButton, styles.menuColumn, styles.menuColumnRight)}
           onClick={onClick}
-          tabIndex={0}
         >
           <span className={styles.wordChange}>{t('word.change')}</span>
           <ChevronRightIcon className={styles.arrowIcon} />
