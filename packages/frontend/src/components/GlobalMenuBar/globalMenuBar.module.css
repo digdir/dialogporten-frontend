@@ -22,7 +22,7 @@
   align-items: center;
   cursor: pointer;
   border-radius: 50%;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   position: relative;
   padding-left: 0.25rem;
 }
@@ -55,7 +55,7 @@
   right: 4px;
 }
 
-.nameWithInitials {
+.menuButtonWrapper {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -64,6 +64,24 @@
   color: #fff;
   height: 2.25rem;
   max-height: 36px;
+}
+
+.closeMenuButton {
+  font-size: 1.5rem;
+}
+
+.toggleOpenButton {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  min-width: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  max-width: 36px;
 }
 
 .crossSquare {
