@@ -27,6 +27,10 @@
   color: var(--color-neutral-text-subtle, #6c757d);
 }
 
+.requiresAttention {
+  color: #fff;
+}
+
 .icon {
   margin-right: 0.25rem;
   flex-shrink: 0;
