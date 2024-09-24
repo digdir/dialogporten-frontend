@@ -175,12 +175,12 @@ export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser:
     label: `${i18n.t('word.status')}: ${item.status}`,
   });
 
-  metaFields.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH:mm') });
+  metaFields.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH.mm') });
 
   if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
     metaFields.push({
       type: 'attachment',
-      label: i18n.t('dialogs.attachment_count', { count: item.guiAttachmentCount }),
+      label: item.guiAttachmentCount.toString(),
     });
   }
 
