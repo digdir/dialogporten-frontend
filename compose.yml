@@ -237,6 +237,13 @@ services:
             - node_modules/
             - .azure/
             - .git/
+        - action: sync
+          path: ./packages/embeddable-markdown-html/
+          target: /app/packages/embeddable-markdown-html/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
         - action: rebuild
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml

@@ -91,7 +91,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
         <p className={styles.createdLabel}>{format(createdAt, 'do MMMM yyyy HH:mm')}</p>
         <p className={styles.summary}>{summary}</p>
         <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
-        <section data-id="dialog-attachments">
+        <section data-id="dialog-attachments" className={styles.dialogAttachments}>
           <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
           <ul className={styles.attachments} data-id="dialog-attachments-list">
             {attachments.map((attachment) =>
@@ -99,13 +99,13 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
                 .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
                 .map((url) => (
                   <li key={url.id} className={styles.attachmentItem}>
-                    <FileIcon fontSize={20} className={styles.attachmentIcon} />
                     <Link
                       href={url.url}
                       aria-label={t('inbox.attachment.link', {
                         label: url.url,
                       })}
                     >
+                      <FileIcon className={styles.attachmentIcon} />
                       {getPropertyByCultureCode(attachment.displayName) || url.url}
                     </Link>
                   </li>
