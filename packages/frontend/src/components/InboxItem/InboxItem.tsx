@@ -178,7 +178,7 @@ export const InboxItem = ({
           })}
         >
           <header className={styles.header}>
-            <h2 className={styles.title}>{title}</h2>
+            <h2 className={classNames(styles.title, { [styles.title__unread]: isUnread })}>{title}</h2>
             {onCheckedChange && !disableBulkActions && (
               <ProfileCheckbox
                 checked={isChecked}
