@@ -8,6 +8,7 @@ export const useDialogByIdSubscription = (dialogId: string | undefined) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  // biome-ignore lint: lint/correctness/useExhaustiveDependencies
   useEffect(() => {
     if (!dialogId) return;
 

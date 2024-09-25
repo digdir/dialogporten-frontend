@@ -14,6 +14,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     queryKey: ['isAuthenticated'],
     queryFn: async () => getIsAuthenticated(),
     refetchInterval: 20 * 1000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: 'always',
+    retry: 3,
   });
 
   useEffect(() => {
