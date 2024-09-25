@@ -30,7 +30,7 @@ interface MetaDataFieldsProps {
   viewType?: InboxViewType;
 }
 
-export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) => {
+export const MetaDataFields = ({ metaFields }: MetaDataFieldsProps) => {
   const getIconByType = (type?: InboxItemMetaField['type']): JSX.Element | null => {
     switch (type) {
       case 'attachment':
@@ -46,7 +46,7 @@ export const MetaDataFields = ({ metaFields, viewType }: MetaDataFieldsProps) =>
       {metaFields.map((metaField, index) => {
         const icon = getIconByType(metaField?.type);
         const metaFieldType = metaField.type as InboxItemMetaFieldType;
-        if (viewType === 'inbox' && metaFieldType === 'status_NEW') {
+        if (metaFieldType === 'status_NEW') {
           return null;
         }
         switch (metaFieldType) {
