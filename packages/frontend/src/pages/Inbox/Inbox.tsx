@@ -137,6 +137,17 @@ export const Inbox = ({ viewType }: InboxProps) => {
       (d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear(),
     );
 
+    const allAreDraftOrSent = itemsToDisplay.every((d) => ['drafts', 'sent'].includes(getViewType(d)));
+    if (!shouldShowSearchResults && allAreDraftOrSent) {
+      return [
+        {
+          label: t(`inbox.heading.title.${viewType}`, { count: itemsToDisplay.length }),
+          id: viewType,
+          items: itemsToDisplay,
+        },
+      ];
+    }
+
     return itemsToDisplay.reduce((acc, item, _, list) => {
       const createdAt = new Date(item.createdAt);
       const viewType = getViewType(item);
@@ -146,13 +157,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
           ? format(createdAt, 'LLLL')
           : format(createdAt, 'yyyy');
 
-      let label = key;
-
-      if (shouldShowSearchResults) {
-        label = t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length });
-      } else if (['drafts', 'sent'].includes(viewType)) {
-        label = t(`inbox.heading.title.${viewType}`, { count: list.length });
-      }
+      const label = shouldShowSearchResults
+        ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
+        : key;
 
       const existingCategory = acc.find((c) => c.id === key);
 
