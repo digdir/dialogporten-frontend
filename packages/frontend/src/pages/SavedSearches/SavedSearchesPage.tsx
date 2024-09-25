@@ -2,7 +2,7 @@ import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParties } from '../../api/useParties.ts';
-import { PartyDropdown } from '../../components/PartyDropdown/PartyDropdown.tsx';
+import { PartyDropdown } from '../../components';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import { ConfirmDeleteDialog, type DeleteSearchDialogRef } from './ConfirmDeleteDialog/ConfirmDeleteDialog.tsx';
 import {

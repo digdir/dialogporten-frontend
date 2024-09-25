@@ -108,6 +108,7 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org],
     queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org),
+    cacheTime: 1000 * 60 * 10,
     enabled,
   });
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
@@ -149,6 +150,8 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
     queryKey: ['dialogs', partyURIs],
+    cacheTime: 1000 * 60 * 10,
+    retry: 3,
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });

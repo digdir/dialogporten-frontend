@@ -31,8 +31,7 @@ const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapt
 
   const onSelect = (ids: string[]) => {
     setSelectedPartyIds(ids);
-    void queryClient.invalidateQueries(['dialogs']);
-    void queryClient.invalidateQueries(['savedSearches']);
+    void queryClient.invalidateQueries({ queryKey: [['dialogs'], ['savedSearches']] });
   };
 
   const optionsGroups: MergedPartyGroup = useMemo(() => {
