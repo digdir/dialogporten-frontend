@@ -339,6 +339,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   summary={item.summary}
                   sender={item.sender}
                   receiver={item.receiver}
+                  isUnread={!item.isSeenByEndUser}
                   isChecked={selectedItems[item.id]}
                   onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
                   metaFields={item.metaFields}
