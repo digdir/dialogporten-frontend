@@ -82,7 +82,11 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
       </header>
       <div className={styles.participants} data-id="dialog-sender-receiver">
         <div className={styles.sender}>
-          <Avatar name={sender?.name ?? ''} imageUrl={sender?.imageURL} />
+          <Avatar
+            name={sender?.name ?? ''}
+            imageUrl={sender?.imageURL}
+            profile={sender?.isCompany ? 'organization' : 'person'}
+          />
           <span className={styles.participantLabel}>{sender?.name}</span>
         </div>
         <span>{t('word.to')}</span>
