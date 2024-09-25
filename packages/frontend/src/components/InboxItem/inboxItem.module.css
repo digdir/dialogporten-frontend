@@ -61,12 +61,16 @@
 }
 
 .title {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 25px;
   margin-top: 0;
   margin-bottom: 0.25rem;
+}
+
+.title__unread {
+  font-weight: 600;
 }
 
 .minimalistic .title {
