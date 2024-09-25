@@ -1,3 +1,5 @@
+import { ApplicationInsightsBLAE } from "../Analytics";
+
 export const getIsAuthenticated = async (): Promise<boolean> => {
   try {
     const response = await fetch('/api/isAuthenticated', {
@@ -7,6 +9,7 @@ export const getIsAuthenticated = async (): Promise<boolean> => {
     return response.ok;
   } catch (error) {
     console.log('error', error);
+    ApplicationInsightsBLAE.trackError(error, 'Error happened in getIsAuthenticated');
     return false;
   }
 };
