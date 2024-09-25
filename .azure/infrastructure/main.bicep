@@ -52,7 +52,7 @@ var tags = {
 var namePrefix = 'dp-fe-${environment}'
 
 // Create resource groups
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-07-01' = {
   name: '${namePrefix}-rg'
   location: location
 }
