@@ -64,6 +64,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 metaFields={item.metaFields}
                 linkTo={item.linkTo}
                 onClose={() => handleClose()}
+                isUnread={!item.isSeenByEndUser}
                 isMinimalistic
               />
               <div className={cx(styles.rightContent)}>
