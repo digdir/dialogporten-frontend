@@ -4,7 +4,6 @@ import styles from './guiActions.module.css';
 
 export interface GuiActionProps {
   actions: GuiActionButtonProps[];
-  onDeleteSuccess: () => void;
   dialogToken: string;
 }
 
@@ -22,7 +21,6 @@ export interface GuiActionButtonProps {
 interface GuiActionsProps {
   actions: GuiActionButtonProps;
   dialogToken: string;
-  onDeleteSuccess: () => void;
 }
 
 /**
@@ -30,10 +28,9 @@ interface GuiActionsProps {
  *
  * @param {GuiActionButton} props - The properties passed to the button component.
  * @param dialogToken - The dialog token used for authorization.
- * @param onDeleteSuccess - The callback function to execute after a successful delete action.
  */
-const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: string, onDeleteSuccess?: () => void) => {
-  const { url, httpMethod, prompt, isDeleteAction } = props;
+const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: string) => {
+  const { url, httpMethod, prompt } = props;
 
   if (prompt && !window.confirm(prompt)) {
     return;
@@ -53,10 +50,6 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
       if (!response.ok) {
         console.log(`Error: ${response.statusText}`);
       }
-
-      if (isDeleteAction) {
-        onDeleteSuccess?.();
-      }
     } catch (error) {
       console.error('Error performing action:', error);
     }
@@ -70,17 +63,12 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
  * @param {GuiActionButton} props - The properties passed to the button component.
  * @returns {JSX.Element | null} The rendered button or null if hidden.
  */
-const GuiActionButton = ({ actions, dialogToken, onDeleteSuccess }: GuiActionsProps): JSX.Element | null => {
+const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): JSX.Element | null => {
   const { priority, id, title, disabled = false } = actions;
   const variant = priority.toLowerCase() as 'primary' | 'secondary' | 'tertiary';
 
   return (
-    <Button
-      id={id}
-      variant={variant}
-      disabled={disabled}
-      onClick={() => handleButtonClick(actions, dialogToken, onDeleteSuccess)}
-    >
+    <Button id={id} variant={variant} disabled={disabled} onClick={() => handleButtonClick(actions, dialogToken)}>
       {title}
     </Button>
   );
@@ -103,16 +91,11 @@ const GuiActionButton = ({ actions, dialogToken, onDeleteSuccess }: GuiActionsPr
  *   dialogToken="your-dialog-token"
  * />
  */
-export const GuiActions = ({ actions, dialogToken, onDeleteSuccess }: GuiActionProps): JSX.Element => {
+export const GuiActions = ({ actions, dialogToken }: GuiActionProps): JSX.Element => {
   return (
     <section className={styles.guiActions} data-id="dialog-gui-actions">
       {actions.map((actionProps) => (
-        <GuiActionButton
-          key={actionProps.id}
-          actions={actionProps}
-          dialogToken={dialogToken}
-          onDeleteSuccess={onDeleteSuccess}
-        />
+        <GuiActionButton key={actionProps.id} actions={actionProps} dialogToken={dialogToken} />
       ))}
     </section>
   );

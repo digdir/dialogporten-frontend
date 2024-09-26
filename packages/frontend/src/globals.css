@@ -34,12 +34,14 @@
   --background-color: var(--Person-Paper);
   --button-color: var(--Person-Primary);
   --background-color-accented: var(--Person-300);
+  --border-color-accented: var(--Person-800);
 }
 
 .isCompany {
   --background-color: var(--Company-Paper);
   --button-color: var(--Company-Primary);
   --background-color-accented: var(--Company-300);
+  --border-color-accented: var(--Company-800);
 }
 
 body,

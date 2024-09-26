@@ -1,6 +1,7 @@
 .backButton {
   text-decoration: none;
-  padding-left: 1rem;
+  font-size: 1rem;
+  padding: 8px 10px;
 }
 
 .backLink {
