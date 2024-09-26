@@ -181,6 +181,8 @@ services:
 
   frontend:
     container_name: frontend
+    environment:
+      APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: TORETORE
     build:
       context: .
       dockerfile: packages/frontend/Dockerfile

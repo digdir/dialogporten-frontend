@@ -17,9 +17,23 @@ CMD ["pnpm", "--filter", "frontend", "run", "dev", "--host", "0.0.0.0"]
 # ---
 
 FROM nginx:1.25-alpine
+
+# Install envsubst for environment variable substitution
+RUN apk add --no-cache gettext
+
+# Copy the generated frontend build
 COPY --from=build /app/packages/frontend/dist/ /usr/share/nginx/html/
+COPY --from=build /app/packages/frontend/src/config.json /usr/share/nginx/html/config.template.json
+
+# Copy nginx configuration
 COPY ./packages/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Add the startup script
+COPY ./packages/frontend/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Expose port 80
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Use the custom entrypoint script
+CMD ["/start.sh"]
