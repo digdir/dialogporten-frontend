@@ -1,6 +1,6 @@
+import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 import type { ITelemetryPlugin } from '@microsoft/applicationinsights-web';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 
 const config = {
   instrumentationKey: process.env.APP_INSIGHTS_INSTRUMENTATION_KEY,
