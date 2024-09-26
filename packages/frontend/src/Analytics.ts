@@ -22,6 +22,8 @@ if (config.applicationInsightsInstrumentationKey) {
 
 const noop = () => {};
 
-export const trackPageView = applicationInsights?.trackPageView || noop;
-export const trackEvent = applicationInsights?.trackEvent || noop;
-export const trackException = applicationInsights?.trackException || noop;
+export const Analytics = {
+  trackPageView: applicationInsights?.trackPageView.bind(applicationInsights) || noop,
+  trackEvent: applicationInsights?.trackEvent.bind(applicationInsights) || noop,
+  trackException: applicationInsights?.trackException.bind(applicationInsights) || noop,
+};
