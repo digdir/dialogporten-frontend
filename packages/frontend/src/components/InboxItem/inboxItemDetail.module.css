@@ -1,21 +1,38 @@
+.inboxItemDetailWrapper {
+  padding: 1.5rem;
+}
+
 .inboxItemDetail {
   display: flex;
   flex-direction: column;
   background: #fff;
-  padding: 1rem;
 }
 
 @media (max-width: 1024px) {
-  .inboxItemDetail {
-    padding: 0.5rem;
+  .inboxItemDetailWrapper {
+    padding: 1.5rem 1rem;
   }
 }
 
 .sectionWithStatus {
   margin-left: 1rem;
-  padding: 0 1.0625rem 1.0625rem;
   border-left: 4px solid rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  padding: 1rem;
+}
+
+.sectionWithStatus > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.summarySection {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
 }
 
 .header {
@@ -40,41 +57,42 @@
 }
 
 .additionalInfo {
-  padding: 1rem 0.5rem;
+  padding: 1.5rem 0;
+  line-height: 1.5;
 }
 
 .activities {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   row-gap: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 1.5rem 0;
 }
 
 .activitiesTitle {
   font-size: 1.25rem;
   font-weight: 500;
+  margin: 0;
 }
 
 .participants {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  column-gap: 5px;
-  row-gap: 5px;
+  gap: 0.5rem;
 }
 
-.participantLabel {
+.senderInfo {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.25rem;
 }
 
 .receiver,
 .sender {
   font-size: 1rem;
-  display: flex;
   align-items: center;
-  column-gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .receiver {
@@ -90,6 +108,7 @@
   line-height: 1.5;
   font-weight: 400;
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 .updatedLabel {
@@ -136,6 +155,8 @@
   align-items: center;
   margin-right: 1rem;
   font-weight: 400;
+  font-size: 1rem;
+  color: var(--text-neutral-subtle);
 }
 
 .tagIcon {
@@ -155,6 +176,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .attachmentItem {
@@ -168,11 +190,12 @@
 }
 
 .attachmentIcon {
-  --icon-size: 1.5rem;
+  --icon-size: 1.6875rem;
   min-height: var(--icon-size);
   min-width: var(--icon-size);
   max-height: var(--icon-size);
   max-width: var(--icon-size);
+  align-self: baseline;
 }
 
 .attachmentItemIcon {
@@ -185,9 +208,5 @@
   color: var(--text-neutral-subtle);
   font-weight: 400;
   font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.dialogAttachments {
-  margin: 1.5rem 0;
+  margin-bottom: 0.5rem;
 }

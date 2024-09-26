@@ -51,7 +51,7 @@
 }
 
 .isUnread {
-  border-left: 4px solid var(--Company-Secondary, #4badf7);
+  border-left: 4px solid var(--border-color-accented);
 }
 
 .header {

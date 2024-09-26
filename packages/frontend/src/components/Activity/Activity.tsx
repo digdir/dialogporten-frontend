@@ -38,6 +38,8 @@ export const Activity = ({ activity, serviceOwner }: ActivityProps) => {
   const performedByName = isCompany ? (serviceOwner?.name ?? '') : (activity.performedBy.actorName ?? '');
   const imageUrl = isCompany ? serviceOwner?.imageURL : undefined;
   const text = getActivityText(activity);
+  const clockPrefix = t('word.clock_prefix');
+  const formatString = clockPrefix ? `do MMMM yyyy '${clockPrefix}' HH.mm` : `do MMMM yyyy HH.mm`;
 
   return (
     <div key={activity.id}>
@@ -51,7 +53,7 @@ export const Activity = ({ activity, serviceOwner }: ActivityProps) => {
           />
           <span className={styles.participantLabel}>{performedByName}</span>
         </div>
-        <span className={styles.dateLabel}>{format(activity.createdAt, 'do MMMM yyyy HH:mm')}</span>
+        <span className={styles.dateLabel}>{format(activity.createdAt, formatString)}</span>
       </div>
       <div className={styles.statusSection}>
         <div className={styles.activityContent}>

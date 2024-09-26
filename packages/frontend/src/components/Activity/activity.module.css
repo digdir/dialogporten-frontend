@@ -8,7 +8,7 @@
 }
 
 .sender {
-  font-size: 1rem;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
@@ -17,7 +17,6 @@
 
 .participantLabel {
   display: flex;
-  font-size: 1rem;
   font-weight: 500;
   align-items: center;
   flex-wrap: wrap;
@@ -25,7 +24,7 @@
 
 .dateLabel {
   color: var(--text-neutral-subtle);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
 }
 
