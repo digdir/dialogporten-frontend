@@ -9,7 +9,7 @@ import { MenuItem } from '../MenuBar';
 import { ProfileButton } from '../ProfileButton';
 import styles from './sortOrderDropdown.module.css';
 
-export type SortingOrder = 'created_desc' | 'created_asc';
+export type SortingOrder = 'updated_desc' | 'updated_asc';
 
 export type SortOrderDropdownRef = {
   openSortOrder: () => void;
@@ -28,12 +28,12 @@ interface SortOrderDropdownProps {
 
 const defaultSortOrderOptions = [
   {
-    id: 'created_desc' as SortingOrder,
-    label: t('sort_order.created_desc'),
+    id: 'updated_desc' as SortingOrder,
+    label: t('sort_order.updated_desc'),
   },
   {
-    id: 'created_asc' as SortingOrder,
-    label: t('sort_order.created_asc'),
+    id: 'updated_asc' as SortingOrder,
+    label: t('sort_order.updated_asc'),
   },
 ];
 

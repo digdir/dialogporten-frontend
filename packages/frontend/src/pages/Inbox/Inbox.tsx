@@ -49,8 +49,8 @@ export interface InboxItemInput {
   receiver: Participant;
   metaFields: InboxItemMetaField[];
   linkTo: string;
-  date: string;
   createdAt: string;
+  updatedAt: string;
   status: DialogStatus;
   isSeenByEndUser: boolean;
 }
@@ -62,10 +62,10 @@ interface DialogCategory {
 
 const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxItemInput[] => {
   return dialogs.sort((a, b) => {
-    if (sortOrder === 'created_desc') {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    if (sortOrder === 'updated_desc') {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     }
-    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
   });
 };
 
@@ -83,7 +83,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
-  const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('created_desc');
+  const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('updated_desc');
 
   const { selectedParties } = useParties();
   const { searchString } = useSearchString();
