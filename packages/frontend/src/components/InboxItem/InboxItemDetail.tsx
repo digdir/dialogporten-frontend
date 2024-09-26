@@ -11,7 +11,7 @@ import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
 interface InboxItemDetailProps {
-  dialog: DialogByIdDetails | undefined;
+  dialog: DialogByIdDetails | undefined | null;
 }
 
 /**
@@ -42,14 +42,17 @@ interface InboxItemDetailProps {
 export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element => {
   const { t } = useTranslation();
   const format = useFormat();
+
   if (!dialog) {
     return (
-      <section className={styles.inboxItemDetail}>
-        <header className={styles.header} data-id="dialog-header">
-          <h1 className={styles.title}>{t('error.dialog.not_found')}</h1>
-        </header>
-        <p className={styles.summary}>{t('dialog.error_message')}</p>
-      </section>
+      <div className={styles.inboxItemDetailWrapper}>
+        <section className={styles.inboxItemDetail}>
+          <header className={styles.header} data-id="dialog-header">
+            <h1 className={styles.title}>{t('error.dialog.not_found')}</h1>
+          </header>
+          <p className={styles.summary}>{t('dialog.error_message')}</p>
+        </section>
+      </div>
     );
   }
 
