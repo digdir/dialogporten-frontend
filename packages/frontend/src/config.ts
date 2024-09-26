@@ -1,7 +1,12 @@
 interface Config {
+  /**
+   * The instrumentation key for Application Insights.
+   * If undefined, Application Insights tracking should be disabled.
+   */
   applicationInsightsInstrumentationKey: string | undefined;
 }
 
+// todo: refactor to expose this in nginx instead: https://github.com/digdir/dialogporten-frontend/pull/1177
 const getEnvironmentConfig = (): Config => {
   const currentUrl = window.location.host;
 
@@ -28,9 +33,7 @@ const getEnvironmentConfig = (): Config => {
   }
   // Default configuration
   return {
-    applicationInsightsInstrumentationKey:
-      'InstrumentationKey=8b99e68d-215b-4424-aeaa-884d7510e892;IngestionEndpoint=https://norwayeast-0.in.applicationinsights.azure.com/;LiveEndpoint=https://norwayeast.livediagnostics.monitor.azure.com/;ApplicationId=c5ce3f61-16e0-43f2-917b-c73c7c31356f',
-    // applicationInsightsInstrumentationKey: undefined,
+    applicationInsightsInstrumentationKey: undefined,
   };
 };
 
