@@ -7,6 +7,7 @@ const LoggerContext = createContext<typeof Analytics | null>(null);
 type LoggerContextProviderProps = {
   children: ReactNode;
 };
+
 export const LoggerContextProvider = ({ children }: LoggerContextProviderProps): JSX.Element => {
   useEffect(() => {
     const handleWindowError = (event: ErrorEvent) => {

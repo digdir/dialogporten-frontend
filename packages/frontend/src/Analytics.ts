@@ -19,11 +19,11 @@ if (config.instrumentationKey) {
   });
 
   applicationInsights.loadAppInsights();
+} else {
+  console.warn('ApplicationInsights not initialized');
 }
 
-const noop = () => {
-  console.debug('ApplicationInsights not initialized');
-};
+const noop = () => {};
 
 export const trackPageView = applicationInsights?.trackPageView || noop;
 export const trackEvent = applicationInsights?.trackEvent || noop;
