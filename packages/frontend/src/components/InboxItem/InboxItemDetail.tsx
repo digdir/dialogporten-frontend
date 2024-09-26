@@ -92,7 +92,9 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
         <p className={styles.summary}>{summary}</p>
         <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
         <section data-id="dialog-attachments" className={styles.dialogAttachments}>
-          <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
+          {attachmentCount > 0 && (
+            <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
+          )}
           <ul className={styles.attachments} data-id="dialog-attachments-list">
             {attachments.map((attachment) =>
               attachment.urls
@@ -137,7 +139,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
         </section>
       )}
       <section data-id="dialog-activity-history" className={styles.activities}>
-        <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
+        {activities.length > 0 && <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>}
         {activities.map((activity) => (
           <Activity key={activity.id} activity={activity} serviceOwner={sender} />
         ))}
