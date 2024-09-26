@@ -92,7 +92,7 @@
   margin-top: 0;
 }
 
-.createdLabel {
+.updatedLabel {
   color: var(--text-neutral-subtle);
   font-size: 1rem;
   font-weight: 400;

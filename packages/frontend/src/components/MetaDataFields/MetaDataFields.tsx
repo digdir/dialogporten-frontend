@@ -2,6 +2,7 @@ import { CheckmarkCircleFillIcon, EyeIcon, PaperclipIcon } from '@navikt/aksel-i
 import cx from 'classnames';
 import { t } from 'i18next';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
+import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle.tsx';
 import { MetaDataField } from './MetaDataField.tsx';
 import styles from './metaDataFields.module.css';
@@ -31,6 +32,7 @@ interface MetaDataFieldsProps {
 }
 
 export const MetaDataFields = ({ metaFields }: MetaDataFieldsProps) => {
+  const format = useFormat();
   const getIconByType = (type?: InboxItemMetaField['type']): JSX.Element | null => {
     switch (type) {
       case 'attachment':
@@ -86,12 +88,15 @@ export const MetaDataFields = ({ metaFields }: MetaDataFieldsProps) => {
                 <span className={styles.label}>{t('status.draft')}</span>
               </MetaDataField>
             );
-          case 'timestamp':
+          case 'timestamp': {
+            const clockPrefix = t('word.clock_prefix');
+            const formatString = clockPrefix ? `do MMMM yyyy '${clockPrefix}' HH.mm` : `do MMMM yyyy HH.mm`;
             return (
               <MetaDataField key={`metaField-${index}`}>
-                <span className={styles.label}>{metaField.label}</span>
+                <span className={styles.label}>{format(metaField.label, formatString)}</span>
               </MetaDataField>
             );
+          }
           default:
             return (
               <MetaDataField key={`metaField-${index}`}>

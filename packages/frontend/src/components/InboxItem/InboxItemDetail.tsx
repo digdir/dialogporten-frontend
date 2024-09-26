@@ -65,12 +65,15 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
     attachments,
     mainContentReference,
     activities,
-    createdAt,
+    updatedAt,
   } = dialog;
   const attachmentCount = attachments.reduce(
     (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
     0,
   );
+
+  const clockPrefix = t('word.clock_prefix');
+  const formatString = clockPrefix ? `do MMMM yyyy '${clockPrefix}' HH.mm` : `do MMMM yyyy HH.mm`;
 
   return (
     <section className={styles.inboxItemDetail}>
@@ -88,7 +91,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
         </div>
       </div>
       <div className={styles.sectionWithStatus} data-id="dialog-summary">
-        <p className={styles.createdLabel}>{format(createdAt, 'do MMMM yyyy HH:mm')}</p>
+        <p className={styles.updatedLabel}>{format(updatedAt, formatString)}</p>
         <p className={styles.summary}>{summary}</p>
         <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
         <section data-id="dialog-attachments" className={styles.dialogAttachments}>

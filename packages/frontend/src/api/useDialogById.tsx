@@ -41,6 +41,7 @@ export interface DialogByIdDetails {
   dialogToken: string;
   mainContentReference?: MainContentReference;
   activities: DialogActivity[];
+  updatedAt: string;
   createdAt: string;
 }
 
@@ -175,6 +176,7 @@ export function mapDialogDtoToInboxItem(
       }))
       .reverse(),
     createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {

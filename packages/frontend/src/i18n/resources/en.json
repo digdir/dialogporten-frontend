@@ -123,8 +123,8 @@
   "sidebar.settings": "Settings",
   "sidebar.unread_messages.aria_count": "{count, plural, =0 {No saved messages} one {one saved message} other {# saved messages}}",
   "sort_order.choose.label": "Sort by",
-  "sort_order.created_asc": "Oldest first",
-  "sort_order.created_desc": "Newest first",
+  "sort_order.updated_asc": "Oldest first",
+  "sort_order.updated_desc": "Newest first",
   "status.completed": "Completed",
   "status.draft": "Draft",
   "status.in_progress": "In Progress",
@@ -148,5 +148,6 @@
   "word.seenBy": "Seen by",
   "word.status": "Status",
   "word.to": "to",
-  "word.you": "you"
+  "word.you": "you",
+  "word.clock_prefix": ""
 }

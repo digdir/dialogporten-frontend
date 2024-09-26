@@ -7,9 +7,8 @@ import { DialogStatus } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
-import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components/index.ts';
+import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
 import { i18n } from '../i18n/config.ts';
-import { type FormatFunction, useFormat } from '../i18n/useDateFnsLocale.tsx';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
@@ -35,7 +34,6 @@ const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): 
 export function mapDialogDtoToInboxItem(
   input: SearchDialogFieldsFragment[],
   parties: PartyFieldsFragment[],
-  format: FormatFunction,
 ): InboxItemInput[] {
   return input.map((item) => {
     const titleObj = item.content.title.value;
@@ -60,10 +58,10 @@ export function mapDialogDtoToInboxItem(
         name: actualReceiverParty?.name ?? '',
         isCompany: actualReceiverParty?.partyType === 'Organisation',
       },
-      metaFields: getMetaFields(item, isSeenByEndUser, format),
+      metaFields: getMetaFields(item, isSeenByEndUser),
       linkTo: `/inbox/${item.id}`,
-      date: item.createdAt ?? '',
-      createdAt: item.createdAt ?? '',
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
       status: item.status ?? 'UnknownStatus',
       isSeenByEndUser,
     };
@@ -101,7 +99,6 @@ interface UseSearchDialogsOutput {
 }
 
 export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsProps): UseSearchDialogsOutput => {
-  const format = useFormat();
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
@@ -114,7 +111,7 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, format) : []);
+    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties) : []);
   }, [setSearchResults, data?.searchDialogs?.items, enabled]);
 
   return {
@@ -152,8 +149,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
-  const format = useFormat();
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, format);
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
   return {
     isLoading,
     isSuccess,
@@ -166,7 +162,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   };
 };
 
-export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean, format: FormatFunction) => {
+export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
   const metaFields: InboxItemMetaField[] = [];
 
@@ -175,7 +171,7 @@ export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser:
     label: `${i18n.t('word.status')}: ${item.status}`,
   });
 
-  metaFields.push({ type: 'timestamp', label: format(item.createdAt, 'do MMMM HH.mm') });
+  metaFields.push({ type: 'timestamp', label: item.updatedAt });
 
   if (typeof item.guiAttachmentCount === 'number' && item.guiAttachmentCount > 0) {
     metaFields.push({

@@ -67,7 +67,9 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 isMinimalistic
               />
               <div className={cx(styles.rightContent)}>
-                <span className={styles.timeSince}>{autoFormatRelativeTime(new Date(item.date), formatDistance)}</span>
+                <span className={styles.timeSince}>
+                  {autoFormatRelativeTime(new Date(item.updatedAt), formatDistance)}
+                </span>
                 <Avatar
                   name={item.sender.name}
                   profile={item.sender.isCompany ? 'organization' : 'person'}
