@@ -42,8 +42,8 @@ importers:
         specifier: 1.18.0-162ce9a
         version: 1.18.0-162ce9a
       '@fastify/cookie':
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^10.0.0
+        version: 10.0.1
       '@fastify/cors':
         specifier: ^9.0.1
         version: 9.0.1
@@ -6851,6 +6851,13 @@ packages:
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-uri: 2.3.0
+    dev: false
+
+  /@fastify/cookie@10.0.1:
+    resolution: {integrity: sha512-NV/wbCUv4ETJ5KM1KMu0fLx0nSCm9idIxwg66NZnNbfPQH3rdbx6k0qRs5uy0y+MhBgvDudYRA30KlK659chyw==}
+    dependencies:
+      cookie-signature: 1.2.1
+      fastify-plugin: 5.0.1
     dev: false
 
   /@fastify/cookie@9.3.1:
@@ -17463,6 +17470,10 @@ packages:
 
   /fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
+    dev: false
+
+  /fastify-plugin@5.0.1:
+    resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
     dev: false
 
   /fastify@4.28.1:
