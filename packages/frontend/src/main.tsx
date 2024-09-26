@@ -9,6 +9,7 @@ import '@digdir/designsystemet-theme';
 
 import App from './App.tsx';
 import { AuthProvider } from './components/Login/AuthContext.tsx';
+import { LoggerContextProvider } from './contexts/LoggerContext.tsx';
 import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
 async function enableMocking() {
@@ -28,17 +29,19 @@ if (element) {
   const queryClient = new QueryClient();
   enableMocking().then(() => {
     root.render(
-      <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <FeatureFlagProvider flags={featureFlags}>
-              <AuthProvider>
-                <App />
-              </AuthProvider>
-            </FeatureFlagProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </React.StrictMode>,
+      <LoggerContextProvider>
+        <React.StrictMode>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <FeatureFlagProvider flags={featureFlags}>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </FeatureFlagProvider>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </React.StrictMode>
+      </LoggerContextProvider>,
     );
   });
 } else {
