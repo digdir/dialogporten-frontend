@@ -11,6 +11,7 @@ import { useParties } from '../../api/useParties.ts';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { useProfile } from '../../profile';
+import { BetaBanner } from '../BetaBanner/BetaBanner.tsx';
 import { BottomDrawerContainer } from '../BottomDrawer';
 import { useAuth } from '../Login/AuthContext.tsx';
 import { Snackbar } from '../Snackbar';
@@ -105,6 +106,7 @@ export const PageLayout: React.FC = () => {
     <SelectedDialogsContainer>
       <Background isCompany={isCompany}>
         <BottomDrawerContainer>
+          <BetaBanner />
           <PageLayoutContent name={name} profile={profile} notificationCount={notificationCount} />
           <Snackbar />
         </BottomDrawerContainer>

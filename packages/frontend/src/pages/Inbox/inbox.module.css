@@ -8,10 +8,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 1.25rem;
+  padding-top: 1.275rem;
 
   @media (max-width: 1024px) {
-    padding: 1.5rem;
+    padding: 2rem 1rem;
   }
 }
 
