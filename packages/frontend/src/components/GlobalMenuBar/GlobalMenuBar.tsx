@@ -47,29 +47,29 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
         onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}
       >
         <section>
-          <div className={styles.menuText} aria-hidden="true">
-            <div className={styles.menuButtonWrapper}>
-              <span className={styles.menuButtonText}>{t('word.menu')}</span>
-              <button
-                type="button"
-                className={styles.toggleOpenButton}
-                aria-label={showBackDrop ? t('menuBar.close') : t('menuBar.open')}
-                aria-expanded={showBackDrop}
-                aria-controls="global-menu"
-              >
+          <button
+            type="button"
+            className={styles.toggleOpenButton}
+            aria-label={showBackDrop ? t('menuBar.close') : t('menuBar.open')}
+            aria-expanded={showBackDrop}
+            aria-controls="global-menu"
+          >
+            <div className={styles.menuText} aria-hidden="true">
+              <div className={styles.menuButtonWrapper}>
+                <div className={styles.menuButtonText}>{t('word.menu')}</div>
                 {showBackDrop ? (
                   <CloseMenuButton className={styles.closeMenuButton} />
                 ) : (
                   <Avatar name={name} profile={profile} />
                 )}
-              </button>
+              </div>
             </div>
-          </div>
-          {showNotificationsBadge && (
-            <div className={styles.notificationWrapper}>
-              <Badge label={notificationCount} variant="strong" />
-            </div>
-          )}
+            {showNotificationsBadge && (
+              <div className={styles.notificationWrapper}>
+                <Badge label={notificationCount} variant="strong" />
+              </div>
+            )}
+          </button>
         </section>
         <NavigationDropdownMenu
           showDropdownMenu={showBackDrop}
