@@ -65,83 +65,91 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
     attachments,
     mainContentReference,
     activities,
-    createdAt,
+    updatedAt,
   } = dialog;
   const attachmentCount = attachments.reduce(
     (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
     0,
   );
 
+  const clockPrefix = t('word.clock_prefix');
+  const formatString = clockPrefix ? `do MMMM yyyy '${clockPrefix}' HH.mm` : `do MMMM yyyy HH.mm`;
+
   return (
-    <section className={styles.inboxItemDetail}>
-      <header className={styles.header} data-id="dialog-header">
-        <h1 className={styles.title}>{title}</h1>
-      </header>
-      <div className={styles.participants} data-id="dialog-sender-receiver">
-        <div className={styles.sender}>
-          <Avatar name={sender?.name ?? ''} imageUrl={sender?.imageURL} />
-          <span className={styles.participantLabel}>{sender?.name}</span>
-        </div>
-        <span>{t('word.to')}</span>
-        <div className={styles.receiver}>
-          <span className={styles.participantLabel}>{receiver?.name}</span>
-        </div>
-      </div>
-      <div className={styles.sectionWithStatus} data-id="dialog-summary">
-        <p className={styles.createdLabel}>{format(createdAt, 'do MMMM yyyy HH:mm')}</p>
-        <p className={styles.summary}>{summary}</p>
-        <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
-        <section data-id="dialog-attachments" className={styles.dialogAttachments}>
-          <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
-          <ul className={styles.attachments} data-id="dialog-attachments-list">
-            {attachments.map((attachment) =>
-              attachment.urls
-                .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
-                .map((url) => (
-                  <li key={url.id} className={styles.attachmentItem}>
-                    <Link
-                      href={url.url}
-                      aria-label={t('inbox.attachment.link', {
-                        label: url.url,
-                      })}
-                    >
-                      <FileIcon className={styles.attachmentIcon} />
-                      {getPropertyByCultureCode(attachment.displayName) || url.url}
-                    </Link>
-                  </li>
-                )),
-            )}
-          </ul>
-        </section>
-        <GuiActions
-          actions={guiActions}
-          dialogToken={dialogToken}
-          onDeleteSuccess={() => {
-            // TODO: Redirect to inbox
-          }}
-        />
-        <div className={styles.tags} data-id="dialog-meta-field-tags">
-          {metaFields.map((tag) => (
-            <div key={tag.label} className={styles.tag}>
-              <div className={styles.tagIcon}>
-                <EyeIcon />
-              </div>
-              <span> {tag.label}</span>
+    <div className={styles.inboxItemDetailWrapper}>
+      <article className={styles.inboxItemDetail}>
+        <header className={styles.header} data-id="dialog-header">
+          <h1 className={styles.title}>{title}</h1>
+        </header>
+        <div className={styles.participants} data-id="dialog-sender-receiver">
+          <Avatar
+            name={sender?.name ?? ''}
+            imageUrl={sender?.imageURL}
+            profile={sender?.isCompany ? 'organization' : 'person'}
+          />
+          <div className={styles.senderInfo}>
+            <div className={styles.sender}>{sender?.name}</div>
+            <div className={styles.receiver}>
+              {t('word.to')} {receiver?.name}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-      {additionalInfo && (
-        <section className={styles.additionalInfo} data-id="dialog-additional-info">
-          {additionalInfo}
-        </section>
-      )}
+        <div className={styles.sectionWithStatus} data-id="dialog-summary">
+          <section className={styles.summarySection}>
+            <time className={styles.updatedLabel} dateTime={updatedAt}>
+              {format(updatedAt, formatString)}
+            </time>
+            <p className={styles.summary}>{summary}</p>
+          </section>
+          <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
+          <section data-id="dialog-attachments">
+            {attachmentCount > 0 && (
+              <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>
+            )}
+            <ul className={styles.attachments} data-id="dialog-attachments-list">
+              {attachments.map((attachment) =>
+                attachment.urls
+                  .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
+                  .map((url) => (
+                    <li key={url.id} className={styles.attachmentItem}>
+                      <Link
+                        href={url.url}
+                        aria-label={t('inbox.attachment.link', {
+                          label: url.url,
+                        })}
+                      >
+                        <FileIcon className={styles.attachmentIcon} />
+                        {getPropertyByCultureCode(attachment.displayName) || url.url}
+                      </Link>
+                    </li>
+                  )),
+              )}
+            </ul>
+          </section>
+          {guiActions.length > 0 && <GuiActions actions={guiActions} dialogToken={dialogToken} />}
+          <div className={styles.tags} data-id="dialog-meta-field-tags">
+            {metaFields.map((tag) => (
+              <div key={tag.label} className={styles.tag}>
+                <div className={styles.tagIcon}>
+                  <EyeIcon />
+                </div>
+                <span> {tag.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {additionalInfo && (
+          <section className={styles.additionalInfo} data-id="dialog-additional-info">
+            {additionalInfo}
+          </section>
+        )}
+      </article>
       <section data-id="dialog-activity-history" className={styles.activities}>
-        <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
+        {activities.length > 0 && <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>}
         {activities.map((activity) => (
           <Activity key={activity.id} activity={activity} serviceOwner={sender} />
         ))}
       </section>
-    </section>
+    </div>
   );
 };

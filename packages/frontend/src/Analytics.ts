@@ -1,7 +1,7 @@
 import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 import type { ITelemetryPlugin } from '@microsoft/applicationinsights-web';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { config } from './config';
+import { config } from './config.ts';
 
 let applicationInsights: ApplicationInsights | null = null;
 
@@ -22,6 +22,8 @@ if (config.applicationInsightsInstrumentationKey) {
 
 const noop = () => {};
 
-export const trackPageView = applicationInsights?.trackPageView || noop;
-export const trackEvent = applicationInsights?.trackEvent || noop;
-export const trackException = applicationInsights?.trackException || noop;
+export const Analytics = {
+  trackPageView: applicationInsights?.trackPageView.bind(applicationInsights) || noop,
+  trackEvent: applicationInsights?.trackEvent.bind(applicationInsights) || noop,
+  trackException: applicationInsights?.trackException.bind(applicationInsights) || noop,
+};

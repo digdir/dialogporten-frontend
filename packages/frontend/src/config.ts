@@ -1,7 +1,12 @@
 interface Config {
+  /**
+   * The instrumentation key for Application Insights.
+   * If undefined, Application Insights tracking should be disabled.
+   */
   applicationInsightsInstrumentationKey: string | undefined;
 }
 
+// todo: refactor to expose this in nginx instead: https://github.com/digdir/dialogporten-frontend/pull/1177
 const getEnvironmentConfig = (): Config => {
   const currentUrl = window.location.host;
 

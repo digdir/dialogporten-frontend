@@ -34,6 +34,10 @@ export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesO
   const { data, isLoading, isSuccess } = useQuery<SavedSearchesQuery>(
     ['savedSearches', selectedPartyIds],
     fetchSavedSearches,
+    {
+      retry: 3,
+      cacheTime: 1000 * 60 * 20,
+    },
   );
   const savedSearchesUnfiltered = data?.savedSearches as SavedSearchesFieldsFragment[];
   const currentPartySavedSearches = filterSavedSearches(savedSearchesUnfiltered, selectedPartyIds || []);
