@@ -120,7 +120,7 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
         const status = dialogs.map((p) => p.status);
         const statusCount = countOccurrences(status);
         return Array.from(new Set(status)).map((statusLabel) => ({
-          displayLabel: t(`dialog.status.${statusLabel.toLowerCase()}`),
+          displayLabel: t(`status.${statusLabel.toLowerCase()}`),
           value: statusLabel,
           count: statusCount[statusLabel],
         }));

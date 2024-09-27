@@ -1,6 +1,7 @@
 import { Markdown } from 'embeddable-markdown-html';
 import { useQuery } from 'react-query';
 import type { DialogByIdDetails } from '../../api/useDialogById.tsx';
+import styles from './mainContentReference.module.css';
 
 export const MainContentReference = ({
   args,
@@ -28,7 +29,7 @@ export const MainContentReference = ({
 
   if (typeof data === 'string' && isSuccess) {
     return (
-      <section data-id="dialog-main-content-reference">
+      <section data-id="dialog-main-content-reference" className={styles.mainContentReference}>
         <Markdown>{data}</Markdown>
       </section>
     );

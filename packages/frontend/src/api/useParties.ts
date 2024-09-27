@@ -26,6 +26,11 @@ const fetchParties = (): Promise<PartiesQuery> => graphQLSDK.parties();
 
 export const useParties = (): UsePartiesOutput => {
   const queryClient = useQueryClient();
+  const { data: selectedParties = [] } = useQuery<PartyFieldsFragment[]>(['selectedParties'], {
+    enabled: false,
+    staleTime: Number.POSITIVE_INFINITY,
+    initialData: [],
+  });
   const { data, isLoading, isSuccess } = useQuery<PartiesResult>(
     'parties',
     async () => {
@@ -41,8 +46,9 @@ export const useParties = (): UsePartiesOutput => {
       };
     },
     {
+      cacheTime: Number.POSITIVE_INFINITY,
       onSuccess: (data: PartiesResult) => {
-        if (!getSelectedParties().length && data?.parties?.length > 0) {
+        if (!selectedParties.length && data?.parties?.length > 0) {
           const currentEndUser = data.parties.find((party) => party.isCurrentEndUser);
           if (currentEndUser) {
             setSelectedParties([currentEndUser]);
@@ -53,16 +59,17 @@ export const useParties = (): UsePartiesOutput => {
       },
     },
   );
-  const getSelectedParties = () => queryClient.getQueryData<PartyFieldsFragment[]>('selectedParties') ?? [];
+
   const setSelectedParties = (parties: PartyFieldsFragment[] | null) => {
-    queryClient.setQueryData('selectedParties', parties);
+    if (parties?.length) {
+      queryClient.setQueryData('selectedParties', parties);
+    }
   };
 
   const setSelectedPartyIds = (partyIds: string[]) => {
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
   };
 
-  const selectedParties = getSelectedParties();
   const allOrganizationsSelected = useMemo(() => {
     const allOrgParties = data?.parties.filter((party) => party.partyType === 'Organization') ?? [];
     const selectedOrgParties = selectedParties.filter((party) => party.partyType === 'Organization');

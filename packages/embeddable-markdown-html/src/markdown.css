@@ -2,6 +2,7 @@
   --markdown-base-size: 1.125rem;
   --markdown-base-line-height: 1.5;
 }
+
 .__markdown-paragraph {
   font-size: var(--markdown-base-size);
   line-height: var(--markdown-base-line-height);

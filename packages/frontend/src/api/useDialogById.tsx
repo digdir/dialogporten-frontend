@@ -41,6 +41,7 @@ export interface DialogByIdDetails {
   dialogToken: string;
   mainContentReference?: MainContentReference;
   activities: DialogActivity[];
+  updatedAt: string;
   createdAt: string;
 }
 
@@ -175,12 +176,15 @@ export function mapDialogDtoToInboxItem(
       }))
       .reverse(),
     createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
     queryKey: ['dialogById', id],
+    cacheTime: 1000 * 60 * 10,
+    retry: 3,
     queryFn: () => getDialogsById(id!),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
