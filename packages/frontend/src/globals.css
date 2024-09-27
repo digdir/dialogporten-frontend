@@ -34,6 +34,7 @@
   --background-color: var(--Person-Paper);
   --button-color: var(--Person-Primary);
   --background-color-accented: var(--Person-300);
+  --border-color-subtle: var(--Person-600);
   --border-color-accented: var(--Person-800);
 }
 
@@ -42,6 +43,7 @@
   --button-color: var(--Company-Primary);
   --background-color-accented: var(--Company-300);
   --border-color-accented: var(--Company-800);
+  --border-color-subtle: var(--Company-600);
 }
 
 body,

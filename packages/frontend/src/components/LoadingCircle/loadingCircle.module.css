@@ -4,15 +4,15 @@
   height: var(--size);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: conic-gradient(var(--text-accent-subtle) var(--progress, 0), #d1e3f3 0);
+  background: conic-gradient(var(--border-color-accented) var(--progress, 0), var(--background-color-accented) 0);
   display: grid;
   place-content: center;
   transform: scaleX(-1);
 }
 
 .progress:after {
-  width: calc(var(--size) * 0.6);
-  height: calc(var(--size) * 0.6);
+  width: calc(var(--size) * 0.5);
+  height: calc(var(--size) * 0.5);
   aspect-ratio: 1;
   content: attr(data-value);
   display: grid;
