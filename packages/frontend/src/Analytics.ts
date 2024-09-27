@@ -1,13 +1,12 @@
 import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 import type { ITelemetryPlugin } from '@microsoft/applicationinsights-web';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { config } from './config.ts';
+import { config } from './config';
 
 let applicationInsights: ApplicationInsights | null = null;
 
 if (config.applicationInsightsInstrumentationKey) {
   const reactPlugin = new ReactPlugin();
-
   applicationInsights = new ApplicationInsights({
     config: {
       instrumentationKey: config.applicationInsightsInstrumentationKey,
@@ -17,7 +16,7 @@ if (config.applicationInsightsInstrumentationKey) {
 
   applicationInsights.loadAppInsights();
 } else {
-  console.warn('ApplicationInsights not initialized');
+  console.warn('ApplicationInsightsInstrumentationKey is undefined. Tracking is disabled.');
 }
 
 const noop = () => {};

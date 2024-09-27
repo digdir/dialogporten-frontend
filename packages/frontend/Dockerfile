@@ -23,7 +23,6 @@ RUN apk add --no-cache gettext
 
 # Copy the generated frontend build
 COPY --from=build /app/packages/frontend/dist/ /usr/share/nginx/html/
-COPY --from=build /app/packages/frontend/src/config.json /usr/share/nginx/html/config.template.json
 
 # Copy nginx configuration
 COPY ./packages/frontend/nginx.conf /etc/nginx/conf.d/default.conf
