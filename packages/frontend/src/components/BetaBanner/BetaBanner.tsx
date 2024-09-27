@@ -23,7 +23,8 @@ export const BetaBanner = () => {
       <div className={styles.betaBannerTitle}>
         <InformationSquareIcon className={styles.infoIcon} />
         <span>
-          Du ser nå på en beta-versjon av nye Altinn Innboks. Innholdet du ser er ikke reelt og kun ment for demo.
+          Du ser nå på en beta-versjon av nye Altinn Innboks i et testmiljø. Alt innhold du ser her er basert på
+          testdata og kun ment for demonstrasjon.
         </span>
       </div>
       <Button variant="tertiary" onClick={handleClick} type="button" className={styles.closeButton}>
