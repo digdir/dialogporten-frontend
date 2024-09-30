@@ -1,9 +1,11 @@
-export interface Config {
-  /**
-   * The instrumentation key for Application Insights.
-   * If undefined, Application Insights tracking should be disabled.
-   */
-  applicationInsightsInstrumentationKey: string | undefined;
+interface Window {
+  __CONFIG__: {
+    applicationInsightsInstrumentationKey: string | undefined;
+  };
 }
+
+declare const window: Window;
+
+export type Config = typeof window.__CONFIG__;
 
 export const config: Config = window.__CONFIG__;
