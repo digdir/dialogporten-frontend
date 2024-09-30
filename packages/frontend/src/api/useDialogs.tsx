@@ -168,7 +168,6 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
 export const getMetaFields = (item: SearchDialogFieldsFragment, isSeenByEndUser: boolean) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
   const metaFields: InboxItemMetaField[] = [];
-
   metaFields.push({
     type: `status_${item.status}` as InboxItemMetaFieldType,
     label: `${i18n.t('word.status')}: ${item.status}`,
