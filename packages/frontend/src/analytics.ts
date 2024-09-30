@@ -7,15 +7,20 @@ let applicationInsights: ApplicationInsights | null = null;
 
 if (config.applicationInsightsInstrumentationKey) {
   const reactPlugin = new ReactPlugin();
-  applicationInsights = new ApplicationInsights({
-    config: {
-      instrumentationKey: config.applicationInsightsInstrumentationKey,
-      extensions: [reactPlugin as ITelemetryPlugin],
-      enableAutoRouteTracking: true,
-    },
-  });
+  try {
+    applicationInsights = new ApplicationInsights({
+      config: {
+        instrumentationKey: config.applicationInsightsInstrumentationKey,
+        extensions: [reactPlugin as ITelemetryPlugin],
+        enableAutoRouteTracking: true,
+      },
+    });
 
-  applicationInsights.loadAppInsights();
+    applicationInsights.loadAppInsights();
+  } catch (error) {
+    console.error('Failed to initialize Application Insights:', error);
+    applicationInsights = null;
+  }
 } else {
   console.warn('ApplicationInsightsInstrumentationKey is undefined. Tracking is disabled.');
 }
