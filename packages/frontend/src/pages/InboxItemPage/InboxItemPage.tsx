@@ -11,7 +11,7 @@ export const InboxItemPage = () => {
   const { id } = useParams();
   const { parties } = useParties();
   const { dialog, isLoading } = useDialogById(parties, id);
-  useDialogByIdSubscription(id);
+  useDialogByIdSubscription(id, dialog?.dialogToken);
 
   if (isLoading) {
     return <InboxItemPageSkeleton />;
