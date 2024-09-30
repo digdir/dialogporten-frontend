@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   GetAllDialogsForPartiesQuery,
   PartyFieldsFragment,
@@ -5,9 +6,9 @@ import type {
 } from 'bff-types-generated';
 import { DialogStatus } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
 import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
+import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { getOrganisation } from './organisations.ts';
@@ -103,9 +104,9 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: ['searchDialogs', partyURIs, debouncedSearchString, org],
+    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, partyURIs, debouncedSearchString, org],
     queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org),
-    cacheTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
     enabled,
   });
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
@@ -146,8 +147,8 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: ['dialogs', partyURIs],
-    cacheTime: 1000 * 60 * 10,
+    queryKey: [QUERY_KEYS.DIALOGS, partyURIs],
+    staleTime: 1000 * 60 * 10,
     retry: 3,
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,

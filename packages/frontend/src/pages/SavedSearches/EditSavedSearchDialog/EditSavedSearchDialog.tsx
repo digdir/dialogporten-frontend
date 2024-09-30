@@ -1,11 +1,12 @@
 import { Button, Modal } from '@digdir/designsystemet-react';
 import { TrashIcon } from '@navikt/aksel-icons';
+import { useQueryClient } from '@tanstack/react-query';
 import type { SavedSearchData, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { type ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
 import { updateSavedSearch } from '../../../api/queries.ts';
 import { HorizontalLine, useSnackbar } from '../../../components';
+import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 import { useFormatDistance } from '../../../i18n/useDateFnsLocale.tsx';
 import { autoFormatRelativeTime } from '../searchUtils.ts';
 import styles from './editSavedSearchDialog.module.css';
@@ -50,7 +51,7 @@ export const EditSavedSearchDialog = forwardRef(
           message: t('savedSearches.update_success'),
           variant: 'success',
         });
-        void queryClient.invalidateQueries('savedSearches');
+        void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
         onClose?.();
       });
     };

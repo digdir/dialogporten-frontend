@@ -1,8 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { DialogEventType } from 'bff-types-generated';
 import { useEffect } from 'react';
-import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { SSE } from 'sse.js';
+import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { Routes } from '../pages/Inbox/Inbox.tsx';
 
 export const useDialogByIdSubscription = (dialogId: string | undefined, dialogToken: string | undefined) => {
@@ -29,7 +30,7 @@ export const useDialogByIdSubscription = (dialogId: string | undefined, dialogTo
           // Redirect to inbox if the dialog was deleted
           navigate(Routes.inbox);
         } else if (updatedType && updatedType === DialogEventType.DialogUpdated) {
-          void queryClient.invalidateQueries('dialogById');
+          void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOG_BY_ID] });
         }
       } catch (e) {
         console.error('Error parsing event data:', e);

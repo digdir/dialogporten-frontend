@@ -7,7 +7,7 @@ import { SelectedDialogsContainer } from 'frontend';
 import 'frontend/src/globals.css';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { nbResources } from '../../frontend';
 import customTheme from './customTheme';
 
