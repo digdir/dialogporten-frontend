@@ -1,3 +1,4 @@
+import { logger } from '@digdir/dialogporten-node-logger';
 import axios from 'axios';
 import type { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
@@ -26,6 +27,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
             'Content-Type': 'application/json; charset=utf-8',
             Authorization: `Bearer ${token!.access_token}`,
             accept: 'text/event-stream',
+            'digdir-dialog-token': request.headers['digdir-dialog-token'],
           },
           data: JSON.stringify({
             query: `subscription sub {

@@ -2,17 +2,21 @@ import { DialogEventType } from 'bff-types-generated';
 import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { SSE } from 'sse.js';
 import { Routes } from '../pages/Inbox/Inbox.tsx';
 
-export const useDialogByIdSubscription = (dialogId: string | undefined) => {
+export const useDialogByIdSubscription = (dialogId: string | undefined, dialogToken: string | undefined) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   // biome-ignore lint: lint/correctness/useExhaustiveDependencies
   useEffect(() => {
-    if (!dialogId) return;
+    if (!dialogId || !dialogToken) return;
 
-    const eventSource = new EventSource(`/api/graphql/stream?dialogId=${dialogId}`, { withCredentials: true });
+    const eventSource = new SSE(`/api/graphql/stream?dialogId=${dialogId}`, {
+      headers: { 'digdir-dialog-token': dialogToken },
+      withCredentials: true,
+    });
     const onError = (err: Event) => {
       console.error('EventSource error:', err);
     };
@@ -40,5 +44,5 @@ export const useDialogByIdSubscription = (dialogId: string | undefined) => {
       eventSource.removeEventListener('error', onError);
       eventSource.close();
     };
-  }, [dialogId, queryClient]);
+  }, [dialogId, dialogToken, queryClient]);
 };
