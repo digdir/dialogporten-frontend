@@ -16,6 +16,7 @@
     "@digdir/designsystemet-react": "1.0.0-next.15",
     "@digdir/designsystemet-theme": "1.0.0-next.14",
     "@navikt/aksel-icons": "^6.12.0",
+    "@tanstack/react-query": "^5.56.2",
     "embeddable-markdown-html": "workspace:*",
     "frontend": "workspace:*",
     "i18next": "^23.14.0",
@@ -23,7 +24,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.0.1",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0"
   },
   "devDependencies": {

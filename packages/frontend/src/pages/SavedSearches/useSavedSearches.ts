@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import type { SavedSearchesFieldsFragment, SavedSearchesQuery } from 'bff-types-generated';
-import { useQuery } from 'react-query';
 import { fetchSavedSearches } from '../../api/queries.ts';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 
 interface UseSavedSearchesOutput {
   savedSearches: SavedSearchesFieldsFragment[];
@@ -31,14 +32,12 @@ export const filterSavedSearches = (
 };
 
 export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesOutput => {
-  const { data, isLoading, isSuccess } = useQuery<SavedSearchesQuery>(
-    ['savedSearches', selectedPartyIds],
-    fetchSavedSearches,
-    {
-      retry: 3,
-      cacheTime: 1000 * 60 * 20,
-    },
-  );
+  const { data, isLoading, isSuccess } = useQuery<SavedSearchesQuery>({
+    queryKey: [QUERY_KEYS.SAVED_SEARCHES, selectedPartyIds],
+    queryFn: fetchSavedSearches,
+    retry: 3,
+    staleTime: 1000 * 60 * 20,
+  });
   const savedSearchesUnfiltered = data?.savedSearches as SavedSearchesFieldsFragment[];
   const currentPartySavedSearches = filterSavedSearches(savedSearchesUnfiltered, selectedPartyIds || []);
   return { savedSearches: savedSearchesUnfiltered, isLoading, isSuccess, currentPartySavedSearches };

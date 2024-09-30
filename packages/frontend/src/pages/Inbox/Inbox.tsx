@@ -1,8 +1,8 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
+import { useQueryClient } from '@tanstack/react-query';
 import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
@@ -19,6 +19,7 @@ import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { FeatureFlagKeys } from '../../featureFlags';
 import { useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
@@ -195,7 +196,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       console.error('Error creating saved search: ', error);
     } finally {
       setIsSavingSearch(false);
-      void queryClient.invalidateQueries(['savedSearches']);
+      void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
     }
   };
 

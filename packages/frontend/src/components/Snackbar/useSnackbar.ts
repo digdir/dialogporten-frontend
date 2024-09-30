@@ -1,5 +1,5 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
 
 export enum SnackbarDuration {
   infinite = 0,
@@ -51,7 +51,9 @@ export function useSnackbar(): SnackbarOutput {
     storedMessages: [],
   };
 
-  const { data } = useQuery<SnackbarConfig>([queryKey], () => initialData, {
+  const { data } = useQuery<SnackbarConfig>({
+    queryKey: [queryKey],
+    queryFn: () => initialData,
     enabled: false,
     staleTime: Number.POSITIVE_INFINITY,
   });
@@ -92,7 +94,7 @@ export function useSnackbar(): SnackbarOutput {
   );
 
   useEffect(() => {
-    const storedMessageItem = data?.storedMessages?.filter((item) => item.duration > 0)[0];
+    const storedMessageItem = data?.storedMessages?.filter((item: SnackbarStoreRecord) => item.duration > 0)[0];
     if (typeof storedMessageItem !== 'undefined') {
       closingTime.current = setTimeout(() => {
         closeSnackbarItem(storedMessageItem?.id);

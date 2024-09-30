@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { createContext, useContext, useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { getIsAuthenticated, getStoredURL, isRedirectURL, removeStoredURL, saveURL } from '../../auth';
 
 interface AuthContextProps {
