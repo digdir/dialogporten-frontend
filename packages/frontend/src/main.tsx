@@ -29,8 +29,8 @@ if (element) {
   const queryClient = new QueryClient();
   enableMocking().then(() => {
     root.render(
-      <LoggerContextProvider>
-        <React.StrictMode>
+      <React.StrictMode>
+        <LoggerContextProvider>
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
               <FeatureFlagProvider flags={featureFlags}>
@@ -40,8 +40,8 @@ if (element) {
               </FeatureFlagProvider>
             </BrowserRouter>
           </QueryClientProvider>
-        </React.StrictMode>
-      </LoggerContextProvider>,
+        </LoggerContextProvider>
+      </React.StrictMode>,
     );
   });
 } else {

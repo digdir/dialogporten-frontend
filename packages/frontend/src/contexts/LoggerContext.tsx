@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { createContext, useEffect } from 'react';
-import { Analytics } from '../Analytics';
+import { Analytics } from '../analytics.ts';
 
 const LoggerContext = createContext<typeof Analytics | null>(null);
 

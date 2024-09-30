@@ -10,7 +10,8 @@ if (config.applicationInsightsInstrumentationKey) {
   applicationInsights = new ApplicationInsights({
     config: {
       instrumentationKey: config.applicationInsightsInstrumentationKey,
-      extensions: [reactPlugin as unknown as ITelemetryPlugin],
+      extensions: [reactPlugin as ITelemetryPlugin],
+      enableAutoRouteTracking: true,
     },
   });
 
