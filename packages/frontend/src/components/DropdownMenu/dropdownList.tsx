@@ -6,9 +6,16 @@ interface DropdownListProps {
   isExpanded: boolean;
   variant?: 'short' | 'medium' | 'long';
   className?: string;
+  disableMobileDrawer?: boolean;
 }
 
-export const DropdownList = ({ children, className, variant = 'short', isExpanded }: DropdownListProps) => {
+export const DropdownList = ({
+  children,
+  className,
+  variant = 'short',
+  isExpanded,
+  disableMobileDrawer = false,
+}: DropdownListProps) => {
   if (!isExpanded) {
     return null;
   }
@@ -19,6 +26,7 @@ export const DropdownList = ({ children, className, variant = 'short', isExpande
         [styles.short]: variant === 'short',
         [styles.short]: variant === 'medium',
         [styles.long]: variant === 'long',
+        [styles.mobileDrawer]: !disableMobileDrawer,
       })}
     >
       {children}

@@ -30,7 +30,9 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
   const { t } = useTranslation();
 
   const toggleShowBackdrop = () => {
-    setShowBackDrop((prev) => !prev);
+    if (!showBackDrop) {
+      setShowBackDrop((prev) => !prev);
+    }
   };
 
   const handleClose = () => {

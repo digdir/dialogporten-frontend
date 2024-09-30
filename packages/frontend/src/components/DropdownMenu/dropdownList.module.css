@@ -25,7 +25,7 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .dropdownList {
+  .mobileDrawer {
     position: fixed;
     left: 0;
     top: 100px;
