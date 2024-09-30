@@ -20,6 +20,8 @@ on:
         required: true
       AZURE_APP_CONFIGURATION_NAME:
         required: true
+      AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY:
+        required: true
 
     inputs:
       region:
@@ -175,6 +177,7 @@ jobs:
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
           APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
           ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+          AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
         with:
           scope: resourcegroup
           template: ./.azure/applications/${{ matrix.name }}/main.bicep
@@ -198,6 +201,7 @@ jobs:
           APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
           APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
           ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+          AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
         with:
           scope: resourcegroup
           template: ./.azure/applications/${{ matrix.name }}/main.bicep

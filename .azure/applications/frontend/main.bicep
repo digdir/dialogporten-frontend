@@ -14,6 +14,9 @@ param maxReplicas int
 @secure()
 param containerAppEnvironmentName string
 
+@secure()
+param applicationInsightsInstrumentationKey string
+
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
 var serviceName = 'frontend'
@@ -31,6 +34,10 @@ var environmentVariables = [
   {
     name: 'NODE_ENV'
     value: 'production'
+  }
+  {
+    name: 'APPLICATION_INSIGHTS_INSTRUMENTATION_KEY'
+    value: applicationInsightsInstrumentationKey
   }
 ]
 
