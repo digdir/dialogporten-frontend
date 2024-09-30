@@ -12,11 +12,13 @@ export const LoggerContextProvider = ({ children }: LoggerContextProviderProps):
   useEffect(() => {
     const handleWindowError = (event: ErrorEvent) => {
       Analytics.trackException({
-        error: event.error,
-        message: event.message,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno
+        exception: event.error,
+        properties: {
+          message: event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+        },
       });
     };
 
