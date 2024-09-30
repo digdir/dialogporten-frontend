@@ -138,6 +138,7 @@ export function mapDialogDtoToInboxItem(
   const actualReceiverParty = dialogReceiverParty ?? endUserParty;
   const serviceOwner = getOrganisation(item.org, 'nb');
   const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
+
   return {
     title: getPropertyByCultureCode(titleObj),
     summary: getPropertyByCultureCode(summaryObj),
