@@ -1,50 +1,21 @@
-.renderButtons {
+.savedSearchesActions {
   display: flex;
   align-items: center;
 }
-
-.linkButton {
-  border: none;
-  background-color: #fff;
-  color: var(--black-50, rgba(0, 0, 0, 0.5));
-  cursor: pointer;
-}
-
-.linkButton:hover {
-  background-color: #fff;
-  color: var(--black-50, rgba(0, 0, 0, 0.5));
-}
-
 .icon {
-  width: 24px;
-  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  color: #000;
 }
 
-.dropdownContent {
-  border-radius: 0;
-
-  li {
-    margin: 0;
-  }
-
-  button {
-    border-radius: 2px;
-    padding: 0;
-    height: auto;
-  }
+.leftInnerContent {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
 }
 
-.dropdownEditSearch {
-  width: 100%;
-  display: grid;
-  grid-template-columns: min-content auto min-content;
-  align-items: start;
-  text-align: left;
-  gap: 6px;
-  padding: 6px;
-
-  & > svg,
-  & > span {
-    padding: 4px;
-  }
+.contextMenu {
+  right: 1rem;
 }

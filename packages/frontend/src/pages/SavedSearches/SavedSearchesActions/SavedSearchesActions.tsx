@@ -1,70 +1,76 @@
-import { DropdownMenu } from '@digdir/designsystemet-react';
+import { Button } from '@digdir/designsystemet-react';
 import { MenuElipsisHorizontalIcon, TrashIcon } from '@navikt/aksel-icons';
-import { ChevronRightIcon, PencilIcon } from '@navikt/aksel-icons';
+import { PencilIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { HorizontalLine } from '../../../components';
+import { DropdownList, HorizontalLine } from '../../../components';
+import { useClickoutside } from '../../../components/Backdrop/useClickOutside.ts';
+import { useEscapeKey } from '../../../components/Backdrop/useEscapeKey.ts';
+import { MenuItem } from '../../../components/MenuBar';
 import styles from './savedSearchesActions.module.css';
+
 interface SaveSearchesActionsProps {
   savedSearch: SavedSearchesFieldsFragment;
   onDeleteBtnClick?: (savedSearchToDelete: SavedSearchesFieldsFragment) => void;
   onEditBtnClick?: (savedSearch: SavedSearchesFieldsFragment) => void;
 }
-const SaveSearchesActions = ({ savedSearch, onDeleteBtnClick, onEditBtnClick }: SaveSearchesActionsProps) => {
+export const SaveSearchesActions = ({ savedSearch, onDeleteBtnClick, onEditBtnClick }: SaveSearchesActionsProps) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-
-  if (!savedSearch?.data) return null;
+  useEscapeKey(() => setIsMenuOpen(false));
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const handleOpenEditModal = () => {
     onEditBtnClick?.(savedSearch);
+    setIsMenuOpen(false);
   };
 
+  const handleDelete = () => {
+    onDeleteBtnClick?.(savedSearch);
+    setIsMenuOpen(false);
+  };
+
+  const ref = useClickoutside(() => {
+    setIsMenuOpen(false);
+  });
+
   return (
-    <div className={styles.renderButtons}>
-      <DropdownMenu.Root open={open} onClose={() => setOpen(false)}>
-        <DropdownMenu.Trigger className={styles.linkButton} onClick={() => setOpen(!open)}>
-          <MenuElipsisHorizontalIcon className={styles.icon} />
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content className={styles.dropdownContent}>
-          <DropdownMenu.Group>
-            <DropdownMenu.Item onClick={handleOpenEditModal}>
-              <div className={styles.dropdownEditSearch}>
-                <PencilIcon fontSize="1.5rem" aria-hidden="true" />
+    <div className={styles.savedSearchesActions} ref={ref}>
+      <Button
+        type="button"
+        variant="tertiary"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className={styles.triggerButton}
+      >
+        <MenuElipsisHorizontalIcon className={styles.icon} />
+      </Button>
+      <DropdownList variant="medium" isExpanded={isMenuOpen} disableMobileDrawer className={styles.contextMenu}>
+        <MenuItem
+          onClick={handleOpenEditModal}
+          leftContent={
+            <MenuItem.LeftContent>
+              <div className={styles.leftInnerContent}>
+                <PencilIcon className={styles.icon} />
                 <span>{t('savedSearches.change_name')}</span>
-                <ChevronRightIcon fontSize={24} className={styles.icon} />
               </div>
-            </DropdownMenu.Item>
-            <HorizontalLine />
-            <DropdownMenu.Item onClick={() => onDeleteBtnClick?.(savedSearch)}>
-              <div className={styles.dropdownEditSearch}>
-                <TrashIcon className={styles.icon} aria-hidden="true" />
+            </MenuItem.LeftContent>
+          }
+          count={0}
+        />
+        <HorizontalLine />
+        <MenuItem
+          onClick={handleDelete}
+          leftContent={
+            <MenuItem.LeftContent>
+              <div className={styles.leftInnerContent}>
+                <TrashIcon className={styles.icon} />
                 <span>{t('savedSearches.delete_search')}</span>
               </div>
-            </DropdownMenu.Item>
-          </DropdownMenu.Group>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
+            </MenuItem.LeftContent>
+          }
+          count={0}
+        />
+      </DropdownList>
     </div>
   );
 };
-
-export interface OpenSavedSearchLinkProps {
-  savedSearch: SavedSearchesFieldsFragment;
-  onClick?: () => void;
-}
-const OpenSavedSearchLink = ({ savedSearch, onClick }: OpenSavedSearchLinkProps) => {
-  const { searchString, filters, fromView } = savedSearch.data;
-  const queryParams = new URLSearchParams({
-    ...(searchString && { search: searchString }),
-    ...(filters?.length && { filters: JSON.stringify(filters) }),
-  });
-  return (
-    <a href={`${fromView}?${queryParams.toString()}`}>
-      <ChevronRightIcon fontSize={24} className={styles.icon} onClick={onClick} />
-    </a>
-  );
-};
-
-export { OpenSavedSearchLink, SaveSearchesActions };

@@ -27,8 +27,8 @@ export const NavigationDropdownMenu: React.FC<NavigationDropdownMenuProps> = ({
   const { t } = useTranslation();
 
   const handleClose = () => {
-    onClose?.();
     setShowSubMenu('none');
+    onClose?.();
   };
 
   if (showSubMenu !== 'none')

@@ -59,8 +59,6 @@ export const EditSavedSearchDialog = forwardRef(
       editDialogRef.current?.close();
     };
 
-    if (typeof savedSearch?.id === 'undefined') return null;
-
     return (
       <Modal.Root>
         <Modal.Dialog onClose={onClose} ref={editDialogRef} onInteractOutside={onClose}>
@@ -96,14 +94,15 @@ export const EditSavedSearchDialog = forwardRef(
             <div className={styles.searchFormFooter}>
               <div className={styles.buttons}>
                 <Button onClick={handleSave}>{t('editSavedSearch.save_and_close')}</Button>
-                <Button variant="secondary" onClick={() => onDelete?.(savedSearch)}>
+                <Button variant="secondary" onClick={() => savedSearch && onDelete?.(savedSearch)}>
                   <TrashIcon className={styles.icon} aria-hidden="true" />
                   <span>{t('word.delete')}</span>
                 </Button>
               </div>
               <span className={styles.updateTime}>
                 {t('savedSearches.lastUpdated')}
-                {autoFormatRelativeTime(new Date(Number.parseInt(savedSearch?.updatedAt, 10)), formatDistance)}
+                {savedSearch?.updatedAt &&
+                  autoFormatRelativeTime(new Date(Number.parseInt(savedSearch.updatedAt, 10)), formatDistance)}
               </span>
             </div>
           </Modal.Footer>
