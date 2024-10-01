@@ -13,7 +13,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { data: isAuthenticated, isFetchedAfterMount } = useQuery({
     queryKey: ['isAuthenticated'],
     queryFn: async () => getIsAuthenticated(),
-    refetchInterval: 20 * 1000,
+    refetchInterval: 30 * 1000,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: 'always',
     retry: 3,
