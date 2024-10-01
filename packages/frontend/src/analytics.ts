@@ -5,9 +5,8 @@ import { config } from './config';
 
 let applicationInsights: ApplicationInsights | null = null;
 
-// Function to validate the instrumentation key format
+// Application Insights expects a GUID format for the instrumentation key
 function isValidInstrumentationKey(key: string): boolean {
-  // Basic format check: GUID format
   const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return guidRegex.test(key);
 }
