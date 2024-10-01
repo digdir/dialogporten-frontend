@@ -5,21 +5,32 @@ import { config } from './config';
 
 let applicationInsights: ApplicationInsights | null = null;
 
-if (config.applicationInsightsInstrumentationKey) {
-  const reactPlugin = new ReactPlugin();
-  try {
-    applicationInsights = new ApplicationInsights({
-      config: {
-        instrumentationKey: config.applicationInsightsInstrumentationKey,
-        extensions: [reactPlugin as ITelemetryPlugin],
-        enableAutoRouteTracking: true,
-      },
-    });
+// Function to validate the instrumentation key format
+function isValidInstrumentationKey(key: string): boolean {
+  // Basic format check: GUID format
+  const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return guidRegex.test(key);
+}
 
-    applicationInsights.loadAppInsights();
-  } catch (error) {
-    console.error('Failed to initialize Application Insights:', error);
-    applicationInsights = null;
+if (config.applicationInsightsInstrumentationKey) {
+  if (isValidInstrumentationKey(config.applicationInsightsInstrumentationKey)) {
+    const reactPlugin = new ReactPlugin();
+    try {
+      applicationInsights = new ApplicationInsights({
+        config: {
+          instrumentationKey: config.applicationInsightsInstrumentationKey,
+          extensions: [reactPlugin as ITelemetryPlugin],
+          enableAutoRouteTracking: true,
+        },
+      });
+      applicationInsights.loadAppInsights();
+      console.log('Application Insights initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize Application Insights:', error);
+      applicationInsights = null;
+    }
+  } else {
+    console.error('Invalid Application Insights instrumentation key format');
   }
 } else {
   console.warn('ApplicationInsightsInstrumentationKey is undefined. Tracking is disabled.');
