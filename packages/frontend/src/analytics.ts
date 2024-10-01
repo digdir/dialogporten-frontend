@@ -5,7 +5,7 @@ import { config } from './config';
 
 let applicationInsights: ApplicationInsights | null = null;
 
-if (config.applicationInsightsInstrumentationKey) {
+if (config.applicationInsightsInstrumentationKey && import.meta.env.PROD) {
   const reactPlugin = new ReactPlugin();
   try {
     applicationInsights = new ApplicationInsights({
@@ -15,8 +15,8 @@ if (config.applicationInsightsInstrumentationKey) {
         enableAutoRouteTracking: true,
       },
     });
-
     applicationInsights.loadAppInsights();
+    console.log('Application Insights initialized successfully');
   } catch (error) {
     console.error('Failed to initialize Application Insights:', error);
     applicationInsights = null;
