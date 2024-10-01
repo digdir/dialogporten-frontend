@@ -5,14 +5,12 @@ import { config } from './config';
 
 let applicationInsights: ApplicationInsights | null = null;
 
-// Application Insights expects a GUID format for the instrumentation key
-function isValidInstrumentationKey(key: string): boolean {
-  const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return guidRegex.test(key);
-}
-
 if (config.applicationInsightsInstrumentationKey) {
-  if (isValidInstrumentationKey(config.applicationInsightsInstrumentationKey)) {
+  if (!import.meta.env.PROD) {
+    console.warn(
+      'ApplicationInsightsInstrumentationKey is defined but not enabled in non-production builds. Tracking is disabled.',
+    );
+  } else {
     const reactPlugin = new ReactPlugin();
     try {
       applicationInsights = new ApplicationInsights({
@@ -28,8 +26,6 @@ if (config.applicationInsightsInstrumentationKey) {
       console.error('Failed to initialize Application Insights:', error);
       applicationInsights = null;
     }
-  } else {
-    console.error('Invalid Application Insights instrumentation key format');
   }
 } else {
   console.warn('ApplicationInsightsInstrumentationKey is undefined. Tracking is disabled.');
