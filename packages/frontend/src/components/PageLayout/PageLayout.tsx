@@ -1,8 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import cx from 'classnames';
 import type React from 'react';
 import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { type AvatarProfile, Footer, Header, type ItemPerViewCount, Sidebar } from '..';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';

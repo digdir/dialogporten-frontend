@@ -1,7 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { useQueryClient } from 'react-query';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import type { SideBarView } from '../Sidebar';
 import { PartyList } from './PartyList.tsx';
@@ -31,7 +32,7 @@ const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapt
 
   const onSelect = (ids: string[]) => {
     setSelectedPartyIds(ids);
-    void queryClient.invalidateQueries({ queryKey: [['dialogs'], ['savedSearches']] });
+    void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS, QUERY_KEYS.SAVED_SEARCHES] });
   };
 
   const optionsGroups: MergedPartyGroup = useMemo(() => {

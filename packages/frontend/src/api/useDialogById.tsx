@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   AttachmentFieldsFragment,
   DialogActivityFragment,
@@ -5,8 +6,8 @@ import type {
   GetDialogByIdQuery,
   PartyFieldsFragment,
 } from 'bff-types-generated';
-import { useQuery } from 'react-query';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
+import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
 import { getOrganisation } from './organisations.ts';
 import { graphQLSDK } from './queries.ts';
@@ -183,8 +184,8 @@ export function mapDialogDtoToInboxItem(
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
-    queryKey: ['dialogById', id],
-    cacheTime: 1000 * 60 * 10,
+    queryKey: [QUERY_KEYS.DIALOG_BY_ID, id],
+    staleTime: 1000 * 60 * 10,
     retry: 3,
     queryFn: () => getDialogsById(id!),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,

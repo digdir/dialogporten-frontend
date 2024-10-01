@@ -1,9 +1,10 @@
 import { Button, Modal } from '@digdir/designsystemet-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { type ForwardedRef, forwardRef, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
 import { deleteSavedSearch } from '../../../api/queries.ts';
 import { HorizontalLine, useSnackbar } from '../../../components';
+import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 
 interface DeleteSearchDialogProps {
   savedSearchId?: number;
@@ -38,7 +39,7 @@ export const ConfirmDeleteDialog = forwardRef(
           message: t('savedSearches.deleted_success'),
           variant: 'success',
         });
-        await queryClient.invalidateQueries('savedSearches');
+        await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
       } catch (error) {
         console.error('Failed to delete saved search:', error);
         openSnackbar({

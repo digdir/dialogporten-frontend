@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { Markdown } from 'embeddable-markdown-html';
-import { useQuery } from 'react-query';
 import type { DialogByIdDetails } from '../../api/useDialogById.tsx';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import styles from './mainContentReference.module.css';
 
 export const MainContentReference = ({
@@ -8,7 +9,7 @@ export const MainContentReference = ({
   dialogToken,
 }: { args: DialogByIdDetails['mainContentReference']; dialogToken: string }) => {
   const { data, isSuccess, error } = useQuery({
-    queryKey: ['mainContentReference', args?.url],
+    queryKey: [QUERY_KEYS.MAIN_CONTENT_REFERENCE, args?.url],
     queryFn: () =>
       fetch(args!.url, {
         headers: {

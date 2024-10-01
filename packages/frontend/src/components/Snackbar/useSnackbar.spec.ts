@@ -1,5 +1,5 @@
+import { QueryClient } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient } from 'react-query';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createCustomWrapper } from '../../../utils/test-utils.tsx';
 import { SnackbarDuration, useSnackbar } from './useSnackbar';
