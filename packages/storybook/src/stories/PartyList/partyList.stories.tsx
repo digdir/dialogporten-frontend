@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 import { PartyList } from 'frontend';
-import { type MergedPartyGroup, getOptionsGroups } from 'frontend/src/components/PartyDropdown/mergePartiesByName.ts';
+import { type PartyOptionGroup, getOptionsGroups } from 'frontend/src/components/PartyDropdown/mapToPartyOption.ts';
 import { useMemo, useState } from 'react';
 
 export default {
@@ -25,30 +25,43 @@ const parties = [
     partyType: 'Person',
     name: 'Me Messon',
     isCurrentEndUser: true,
+    isDeleted: false,
   },
   {
     party: 'urn:altinn:organization:identifier-no:1',
     partyType: 'Organization',
     name: 'Digitaliseringsdirektoratet',
     isCurrentEndUser: false,
+    isDeleted: false,
+    isAccessManager: true,
+    isMainAdministrator: true,
   },
   {
     party: 'urn:altinn:organization:identifier-no:2',
     partyType: 'Organization',
     name: 'Testbedrift AS',
     isCurrentEndUser: false,
+    isDeleted: false,
+    isAccessManager: true,
+    isMainAdministrator: true,
   },
   {
     party: 'urn:altinn:organization:identifier-no:3',
     partyType: 'Organization',
     name: 'Testdirektoratet AS',
     isCurrentEndUser: false,
+    isDeleted: false,
+    isAccessManager: true,
+    isMainAdministrator: true,
   },
   {
     party: 'urn:altinn:organization:identifier-no:4',
     partyType: 'Organization',
     name: 'TestTestTest AS',
     isCurrentEndUser: false,
+    isDeleted: false,
+    isAccessManager: true,
+    isMainAdministrator: true,
   },
 ];
 
@@ -59,7 +72,7 @@ export const SimpleExample = () => {
     'saved-searches': [],
   };
 
-  const optionsGroups: MergedPartyGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
+  const optionsGroups: PartyOptionGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
 
   return (
     <div style={{ width: 400 }}>
@@ -82,16 +95,18 @@ export const MultiplePeople = () => {
       partyType: 'Person',
       name: 'My Loving Daughter',
       isCurrentEndUser: false,
+      isDeleted: false,
     },
     {
       party: 'urn:altinn:person:identifier-no:3',
       partyType: 'Person',
       name: 'My Loving Son',
-      isCurrentEndUser: false,
+      isCurrentEndUser: true,
+      isDeleted: false,
     },
   ];
 
-  const optionsGroups: MergedPartyGroup = getOptionsGroups(customParties, dialogsByView, [], 'inbox');
+  const optionsGroups: PartyOptionGroup = getOptionsGroups(customParties, dialogsByView, [], 'inbox');
 
   return (
     <div style={{ width: 400 }}>
@@ -106,7 +121,7 @@ export const ExampleWithFilter = () => {
     inbox: [],
     'saved-searches': [],
   };
-  const optionsGroups: MergedPartyGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
+  const optionsGroups: PartyOptionGroup = useMemo(() => getOptionsGroups(parties, dialogsByView, [], 'inbox'), []);
 
   return (
     <div style={{ width: 400 }}>

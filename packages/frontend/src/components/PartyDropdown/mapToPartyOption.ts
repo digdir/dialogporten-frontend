@@ -10,15 +10,15 @@ type Dialog = {
 
 type PartyGroupType = 'End_user' | 'All_other_people' | 'Other_organization';
 
-export type MergedPartyGroup = {
+export type PartyOptionGroup = {
   [key in PartyGroupType]: {
     title: string;
-    parties: MergedParty[];
+    parties: PartyOption[];
     isSearchResults?: boolean;
   };
 };
 
-export type MergedParty = {
+export type PartyOption = {
   label: string;
   isCompany: boolean;
   value: string;
@@ -33,15 +33,14 @@ export const getOptionsGroups = (
   dialogsByCounterContext: Record<string, InboxItemInput[]>,
   savedSearches: SavedSearchesFieldsFragment[] | undefined,
   counterContext: SideBarView = 'inbox',
-): MergedPartyGroup => {
-  return groupParties(
-    parties.map((party) =>
-      mergePartiesByName(party, dialogsByCounterContext[counterContext], savedSearches, counterContext),
-    ),
+): PartyOptionGroup => {
+  const partyOptions = parties.map((party) =>
+    mapToPartyOption(party, dialogsByCounterContext[counterContext], savedSearches, counterContext),
   );
+  return groupParties(partyOptions);
 };
 
-export function groupParties(parties: MergedParty[]): MergedPartyGroup {
+export function groupParties(parties: PartyOption[]): PartyOptionGroup {
   const groupingThreshold = 3;
 
   if (parties.length <= groupingThreshold) {
@@ -60,13 +59,13 @@ export function groupParties(parties: MergedParty[]): MergedPartyGroup {
     };
   }
 
-  const initialGroup: MergedPartyGroup = {
+  const initialGroup: PartyOptionGroup = {
     End_user: { title: 'parties.labels.you', parties: [] },
     All_other_people: { title: 'parties.labels.persons', parties: [] },
     Other_organization: { title: '', parties: [] },
   };
 
-  const grouped = parties.reduce<MergedPartyGroup>((acc, party) => {
+  const grouped = parties.reduce<PartyOptionGroup>((acc, party) => {
     if (party.isCurrentEndUser) {
       acc.End_user.parties.push({ ...party, showHorizontalLine: true });
     } else if (party.isCompany) {
@@ -115,36 +114,25 @@ export function groupParties(parties: MergedParty[]): MergedPartyGroup {
   };
 }
 
-export function mergePartiesByName(
+export function mapToPartyOption(
   party: PartyFieldsFragment,
   dialogs: Dialog[],
   savedSearches?: SavedSearchesFieldsFragment[],
   counterContext?: SideBarView,
-): MergedParty {
+): PartyOption {
+  const partyIds = [party.party, ...(party.subParties?.flatMap((subParty) => subParty.party) ?? [])];
   let count: number;
   if (counterContext === 'saved-searches') {
     count = filterSavedSearches(savedSearches ?? [], [party.party]).length ?? 0;
   } else {
-    count = dialogs.filter((dialogs) => dialogs?.party === party.party).length ?? 0;
+    count = dialogs.filter((dialog) => partyIds.includes(dialog.party)).length ?? 0;
   }
-
-  const mergedParties = party.subParties?.reduce(
-    (acc, subParty) => {
-      if (subParty.name === party.name) {
-        acc.push(subParty.party);
-      } else {
-        acc.push(subParty.party);
-      }
-      return acc;
-    },
-    [party.party],
-  ) ?? [party.party];
 
   return {
     label: party.name,
     isCompany: party.partyType === 'Organization',
     value: party.party,
-    onSelectValues: mergedParties,
+    onSelectValues: partyIds,
     count,
     isCurrentEndUser: party.isCurrentEndUser ?? false,
   };
