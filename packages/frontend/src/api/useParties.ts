@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
 import { useEffect, useMemo } from 'react';
+import { normalizeParties } from '../components/PartyDropdown/normalizeParties.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
-import { toTitleCase } from '../profile';
 import { graphQLSDK } from './queries.ts';
 
 interface UsePartiesOutput {
@@ -41,14 +41,10 @@ export const useParties = (): UsePartiesOutput => {
     queryKey: [QUERY_KEYS.PARTIES],
     queryFn: async () => {
       const response = await fetchParties();
-      const partiesWithNormalizedNames =
-        response.parties.map((party) => ({
-          ...party,
-          name: toTitleCase(party.name),
-        })) ?? [];
+      const normalizedParties = normalizeParties(response.parties);
       return {
-        parties: partiesWithNormalizedNames.filter((party) => !party.isDeleted),
-        deletedParties: partiesWithNormalizedNames.filter((party) => party.isDeleted),
+        parties: normalizedParties.filter((party) => !party.isDeleted),
+        deletedParties: normalizedParties.filter((party) => party.isDeleted),
       };
     },
     staleTime: Number.POSITIVE_INFINITY,
@@ -80,7 +76,15 @@ export const useParties = (): UsePartiesOutput => {
   const allOrganizationsSelected = useMemo(() => {
     const allOrgParties = data?.parties.filter((party) => party.partyType === 'Organization') ?? [];
     const selectedOrgParties = selectedParties.filter((party) => party.partyType === 'Organization');
-    return selectedOrgParties.length > 0 && allOrgParties.length === selectedOrgParties.length;
+
+    const allOrgPartyIds = new Set(allOrgParties.map((party) => party.party));
+    const selectedOrgPartyIds = new Set(selectedOrgParties.map((party) => party.party));
+
+    return (
+      selectedOrgParties.length >= 2 &&
+      allOrgPartyIds.size === selectedOrgPartyIds.size &&
+      [...selectedOrgPartyIds].every((id) => allOrgPartyIds.has(id))
+    );
   }, [selectedParties, data]);
 
   return {

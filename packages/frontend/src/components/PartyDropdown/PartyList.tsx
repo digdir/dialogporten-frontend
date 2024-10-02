@@ -5,11 +5,11 @@ import { Avatar } from '../Avatar';
 import { AvatarGroup } from '../AvatarGroup';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
-import type { MergedParty, MergedPartyGroup } from './mergePartiesByName.ts';
+import type { PartyOption, PartyOptionGroup } from './mapToPartyOption.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyListProps {
-  optionsGroups: MergedPartyGroup;
+  optionsGroups: PartyOptionGroup;
   selectedPartyIds: string[];
   onSelect: (ids: string[]) => void;
   showSearchFilter?: boolean;
@@ -37,7 +37,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
   const { t } = useTranslation();
 
   const { filteredOptionGroups, allParties } = useMemo(() => {
-    const allParties: MergedParty[] = Object.values(optionsGroups).flatMap((group) => group.parties);
+    const allParties: PartyOption[] = Object.values(optionsGroups).flatMap((group) => group.parties);
 
     if (!filterString) {
       return {
@@ -46,7 +46,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
       };
     }
 
-    const filteredParties = allParties.filter(({ label }) => label.toLowerCase().includes(filterString.toLowerCase()));
+    const filteredParties = allParties.filter(({ label }) => label.includes(filterString));
 
     return {
       filteredOptionGroups: {

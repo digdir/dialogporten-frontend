@@ -6,12 +6,12 @@ import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import type { SideBarView } from '../Sidebar';
 import { PartyList } from './PartyList.tsx';
-import { type MergedPartyGroup, getOptionsGroups } from './mergePartiesByName.ts';
+import { type PartyOptionGroup, getOptionsGroups } from './mapToPartyOption.ts';
 
 interface PartyListAdapterProps {
   counterContext?: SideBarView;
   children: (props: {
-    optionsGroups: MergedPartyGroup;
+    optionsGroups: PartyOptionGroup;
     selectedPartyIds: string[];
     onSelect: (values: string[]) => void;
     showSearchFilter: boolean;
@@ -35,7 +35,7 @@ const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapt
     void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS, QUERY_KEYS.SAVED_SEARCHES] });
   };
 
-  const optionsGroups: MergedPartyGroup = useMemo(() => {
+  const optionsGroups: PartyOptionGroup = useMemo(() => {
     return getOptionsGroups(parties, dialogsByView, savedSearches, counterContext);
   }, [parties, dialogsByView, savedSearches, counterContext]);
 
