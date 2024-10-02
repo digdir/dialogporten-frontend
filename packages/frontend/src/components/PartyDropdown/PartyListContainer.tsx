@@ -31,8 +31,8 @@ const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapt
   const showSearchFilter = parties.length > 10;
 
   const onSelect = (ids: string[], allOrganizationsSelected: boolean) => {
-    setSelectedPartyIds(ids);
     setAllOrganizationsSelected(allOrganizationsSelected);
+    setSelectedPartyIds(ids);
     void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS, QUERY_KEYS.SAVED_SEARCHES] });
   };
 

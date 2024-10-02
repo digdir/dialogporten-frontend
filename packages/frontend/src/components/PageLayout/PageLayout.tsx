@@ -86,11 +86,12 @@ export const ProtectedPageLayout = () => {
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
   const { selectedParties, allOrganizationsSelected } = useParties();
   const { dialogsByView } = useDialogs(selectedParties);
   const { inbox: dialogs } = dialogsByView;
   const notificationCount = dialogs.length;
+  const [searchParams] = useSearchParams();
+
   useProfile();
 
   const name = allOrganizationsSelected ? t('parties.labels.all_organizations') : selectedParties?.[0]?.name || '';
