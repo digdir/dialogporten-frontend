@@ -5,13 +5,13 @@ import { Avatar } from '../Avatar';
 import { AvatarGroup } from '../AvatarGroup';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
-import type { MergedParty, MergedPartyGroup } from './mergePartiesByName.ts';
+import type { PartyOption, PartyOptionGroup } from './mapToPartyOption.ts';
 import styles from './partyDropdown.module.css';
 
 interface PartyListProps {
-  optionsGroups: MergedPartyGroup;
+  optionsGroups: PartyOptionGroup;
   selectedPartyIds: string[];
-  onSelect: (ids: string[]) => void;
+  onSelect: (ids: string[], allOrganizations: boolean) => void;
   showSearchFilter?: boolean;
 }
 
@@ -20,6 +20,7 @@ interface PartyListProps {
  * This component is only responsible for rendering the list of parties and certain business logic for grouping and filtering
  * @param optionsGroups - The groups of parties to render
  * @param selectedPartyIds - The ids of the selected parties
+ * @param allOrganizations - Determine whether all organizations are selected
  * @param onSelect - The function to call when a party is selected
  * @param showSearchFilter - Whether to show the search filter
  * @returns A list of parties
@@ -27,7 +28,7 @@ interface PartyListProps {
  * <PartyList
  *  optionsGroups={optionsGroups}
  *  selectedPartyIds={selectedPartyIds}
- *  onSelect={setSelectedPartyIds}
+ *  onSelect={setSelectedPartyIds, false}
  *  showSearchFilter
  *  />
  *  */
@@ -37,7 +38,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
   const { t } = useTranslation();
 
   const { filteredOptionGroups, allParties } = useMemo(() => {
-    const allParties: MergedParty[] = Object.values(optionsGroups).flatMap((group) => group.parties);
+    const allParties: PartyOption[] = Object.values(optionsGroups).flatMap((group) => group.parties);
 
     if (!filterString) {
       return {
@@ -46,7 +47,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
       };
     }
 
-    const filteredParties = allParties.filter(({ label }) => label.toLowerCase().includes(filterString.toLowerCase()));
+    const filteredParties = allParties.filter(({ label }) => label.includes(filterString));
 
     return {
       filteredOptionGroups: {
@@ -83,7 +84,6 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
         .filter(([_, group]) => group.isSearchResults || group.parties.length > 0)
         .map(([key, group], index, list) => {
           const isLastGroup = index === list.length - 1;
-
           return (
             <Fragment key={key}>
               <MenuGroupHeader title={group.title} />
@@ -94,6 +94,7 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                   selectedPartyIds.every((urn) => option.onSelectValues.includes(urn))
                 );
                 const isLastItem = isLastGroup && group.parties.indexOf(option) === group.parties.length - 1;
+
                 return (
                   <Fragment key={option.value}>
                     <MenuItem
@@ -122,7 +123,8 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                       }
                       count={option.count}
                       onClick={() => {
-                        onSelect(option.onSelectValues);
+                        const allOrganizations = option.value === 'ALL_ORGANIZATIONS';
+                        onSelect(option.onSelectValues, allOrganizations);
                       }}
                     />
                     {option.showHorizontalLine && !isLastItem && <HorizontalLine />}

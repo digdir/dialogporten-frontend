@@ -6,14 +6,14 @@ import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import type { SideBarView } from '../Sidebar';
 import { PartyList } from './PartyList.tsx';
-import { type MergedPartyGroup, getOptionsGroups } from './mergePartiesByName.ts';
+import { type PartyOptionGroup, getOptionsGroups } from './mapToPartyOption.ts';
 
 interface PartyListAdapterProps {
   counterContext?: SideBarView;
   children: (props: {
-    optionsGroups: MergedPartyGroup;
+    optionsGroups: PartyOptionGroup;
     selectedPartyIds: string[];
-    onSelect: (values: string[]) => void;
+    onSelect: (values: string[], allOrganizationsSelected: boolean) => void;
     showSearchFilter: boolean;
   }) => JSX.Element;
 }
@@ -25,17 +25,18 @@ interface PartyListContainerProps {
 
 const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapterProps) => {
   const queryClient = useQueryClient();
-  const { parties, setSelectedPartyIds, selectedPartyIds } = useParties();
+  const { parties, setSelectedPartyIds, selectedPartyIds, setAllOrganizationsSelected } = useParties();
   const { dialogsByView } = useDialogs(parties);
   const { savedSearches } = useSavedSearches(selectedPartyIds);
   const showSearchFilter = parties.length > 10;
 
-  const onSelect = (ids: string[]) => {
+  const onSelect = (ids: string[], allOrganizationsSelected: boolean) => {
     setSelectedPartyIds(ids);
+    setAllOrganizationsSelected(allOrganizationsSelected);
     void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS, QUERY_KEYS.SAVED_SEARCHES] });
   };
 
-  const optionsGroups: MergedPartyGroup = useMemo(() => {
+  const optionsGroups: PartyOptionGroup = useMemo(() => {
     return getOptionsGroups(parties, dialogsByView, savedSearches, counterContext);
   }, [parties, dialogsByView, savedSearches, counterContext]);
 
@@ -48,8 +49,8 @@ export const PartyListContainer = ({ counterContext, onSelect }: PartyListContai
       <PartyList
         optionsGroups={optionsGroups}
         selectedPartyIds={selectedPartyIds}
-        onSelect={(ids: string[]) => {
-          onAdapterSelect(ids);
+        onSelect={(ids: string[], allOrganizations: boolean) => {
+          onAdapterSelect(ids, allOrganizations);
           onSelect?.();
         }}
         showSearchFilter={showSearchFilter}
