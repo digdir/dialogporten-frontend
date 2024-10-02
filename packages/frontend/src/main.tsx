@@ -16,6 +16,7 @@ async function enableMocking() {
   if (import.meta.env.MODE === 'development') {
     const urlParams = new URLSearchParams(window.location.search);
     const enableMocking = urlParams.get('mock') === 'true';
+    // Todo: should we enable mock through a feature flag?
     if (enableMocking) {
       const { worker } = await import('./mocks/browser');
       return worker.start();

@@ -2,6 +2,7 @@ import { graphql, HttpResponse } from 'msw';
 import { dialogs as mockedDialogs } from './dialogs.tsx';
 
 export const handlers = [
+
   graphql.query('getAllDialogsForParties', () => {
     return HttpResponse.json({
       data: {
@@ -11,6 +12,7 @@ export const handlers = [
       }
     });
   }),
+
   graphql.query('parties', () => {
     return HttpResponse.json({
       "data": {
