@@ -31,7 +31,7 @@
     "date-fns": "^3.6.0",
     "embeddable-markdown-html": "workspace:*",
     "graphql": "^16.8.1",
-    "graphql-request": "^6.1.0",
+    "graphql-request": "^7.0.0",
     "i18next": "^23.14.0",
     "i18next-icu": "^2.3.0",
     "react": "^18.3.1",
