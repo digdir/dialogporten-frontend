@@ -13,3 +13,7 @@ export const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): S
 export const getSearchStringFromQueryParams = (searchParams: URLSearchParams): string => {
   return searchParams.get('search') || '';
 };
+
+export const getSelectedPartyFromQueryParams = (searchParams: URLSearchParams): string => {
+  return searchParams.get('party') || '';
+};
