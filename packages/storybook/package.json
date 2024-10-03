@@ -15,7 +15,7 @@
     "@digdir/designsystemet-css": "0.11.0-next.10",
     "@digdir/designsystemet-react": "1.0.0-next.15",
     "@digdir/designsystemet-theme": "1.0.0-next.14",
-    "@navikt/aksel-icons": "^6.12.0",
+    "@navikt/aksel-icons": "^7.0.0",
     "@tanstack/react-query": "^5.56.2",
     "embeddable-markdown-html": "workspace:*",
     "frontend": "workspace:*",

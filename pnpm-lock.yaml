@@ -413,8 +413,8 @@ importers:
         specifier: 3.3.3
         version: 3.3.3(tslib@2.6.3)
       '@navikt/aksel-icons':
-        specifier: ^6.16.1
-        version: 6.16.1
+        specifier: ^7.0.0
+        version: 7.1.0
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.56.2(react@18.3.1)
@@ -538,8 +538,8 @@ importers:
         specifier: 1.0.0-next.14
         version: 1.0.0-next.14
       '@navikt/aksel-icons':
-        specifier: ^6.12.0
-        version: 6.12.0
+        specifier: ^7.0.0
+        version: 7.1.0
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.56.2(react@18.3.1)
@@ -8482,12 +8482,8 @@ packages:
     resolution: {integrity: sha512-kytq0BT1xsJBrG7/eyDuMQLddQZA4OMT3Fw3VLGHsJNqjEWEVOl3uYCGL70Thvg0+du0s/Z3mXPQUQpIaDt7rg==}
     dev: false
 
-  /@navikt/aksel-icons@6.12.0:
-    resolution: {integrity: sha512-c4GldYSw1EOovrMhMPEoaKrIbWUwEhVWI6nNlz+qkyfK+5HcSzo0DPK1javMWkEhIBBvyY9D6q1VxJy2gnfQVg==}
-    dev: false
-
-  /@navikt/aksel-icons@6.16.1:
-    resolution: {integrity: sha512-+tThCr7SAJNyKZBRT1gjRlaGqjbsDRlYOhBCfrV79CIDu5fSBpTQMFzPjpooTz3QU8QKxlH7iDE8BwTlSSRMyg==}
+  /@navikt/aksel-icons@7.1.0:
+    resolution: {integrity: sha512-1dwuT6KraLJyfeNQDVjzzZAPy/bBWlAP+ufHcrPGoTMuZHTWYj9db8wKgwqesZkHRwUCmqzOMDPk9lr+0Pczng==}
     dev: false
 
   /@ndelangen/get-tarball@3.0.9:
