@@ -51,8 +51,8 @@ importers:
         specifier: ^7.4.0
         version: 7.4.0
       '@fastify/oauth2':
-        specifier: ^7.8.0
-        version: 7.8.0
+        specifier: ^8.0.0
+        version: 8.0.1
       '@fastify/session':
         specifier: ^10.9.0
         version: 10.9.0
@@ -1244,7 +1244,7 @@ packages:
       '@babel/traverse': 7.24.7
       '@babel/types': 7.23.9
       convert-source-map: 2.0.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -4998,7 +4998,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.9
       '@babel/types': 7.23.9
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -5015,7 +5015,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.24.7
       '@babel/types': 7.24.7
-      debug: 4.3.5
+      debug: 4.3.6
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -6215,7 +6215,7 @@ packages:
     dependencies:
       '@docusaurus/logger': 3.1.1
       '@docusaurus/utils': 3.1.1
-      joi: 17.12.1
+      joi: 17.13.3
       js-yaml: 4.1.0
       tslib: 2.6.3
     transitivePeerDependencies:
@@ -6862,6 +6862,13 @@ packages:
       fast-uri: 2.3.0
     dev: false
 
+  /@fastify/cookie@10.0.1:
+    resolution: {integrity: sha512-NV/wbCUv4ETJ5KM1KMu0fLx0nSCm9idIxwg66NZnNbfPQH3rdbx6k0qRs5uy0y+MhBgvDudYRA30KlK659chyw==}
+    dependencies:
+      cookie-signature: 1.2.1
+      fastify-plugin: 5.0.1
+    dev: false
+
   /@fastify/cookie@9.3.1:
     resolution: {integrity: sha512-h1NAEhB266+ZbZ0e9qUE6NnNR07i7DnNXWG9VbbZ8uC6O/hxHpl+Zoe5sw1yfdZ2U6XhToUGDnzQtWJdCaPwfg==}
     dependencies:
@@ -6899,11 +6906,11 @@ packages:
       fast-deep-equal: 3.1.3
     dev: false
 
-  /@fastify/oauth2@7.8.0:
-    resolution: {integrity: sha512-piQldGFUfAH0+SXM7Cw6hlanFmYnTWYtDC3EcbxNiQedAbr9SbGNxJynTHsvyKzRO7dupdxIdWA81k1egxKftQ==}
+  /@fastify/oauth2@8.0.1:
+    resolution: {integrity: sha512-QJTsIfprMwpOS+Ms3tV6B+8awZu1gAMrtsM9BvaGo2s8uo+nBqPhaM7ersMfVYlN2Gl6VoMCce3zHx2OXxSjog==}
     dependencies:
-      '@fastify/cookie': 9.3.1
-      fastify-plugin: 4.5.1
+      '@fastify/cookie': 10.0.1
+      fastify-plugin: 5.0.1
       simple-oauth2: 5.0.0
     transitivePeerDependencies:
       - supports-color
@@ -7681,7 +7688,7 @@ packages:
       '@types/json-stable-stringify': 1.0.36
       '@whatwg-node/fetch': 0.9.17
       chalk: 4.1.2
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       dotenv: 16.4.1
       graphql: 16.8.1
       graphql-request: 6.1.0(graphql@16.8.1)
@@ -13361,7 +13368,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 6.20.0(typescript@5.3.3)
       '@typescript-eslint/utils': 6.20.0(eslint@8.57.0)(typescript@5.3.3)
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       eslint: 8.57.0
       ts-api-utils: 1.0.3(typescript@5.3.3)
       typescript: 5.3.3
@@ -13385,7 +13392,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.20.0
       '@typescript-eslint/visitor-keys': 6.20.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
@@ -14027,7 +14034,7 @@ packages:
     resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
     engines: {node: '>= 14'}
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -16782,7 +16789,7 @@ packages:
     hasBin: true
     dependencies:
       address: 1.2.2
-      debug: 4.3.5
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -17138,7 +17145,7 @@ packages:
     peerDependencies:
       esbuild: '>=0.12 <1'
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
       esbuild: 0.19.12
     transitivePeerDependencies:
       - supports-color
@@ -17689,6 +17696,10 @@ packages:
 
   /fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
+    dev: false
+
+  /fastify-plugin@5.0.1:
+    resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
     dev: false
 
   /fastify@4.28.1:
@@ -19057,7 +19068,7 @@ packages:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -19066,7 +19077,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -19113,7 +19124,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -19122,7 +19133,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -20421,15 +20432,6 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
     dev: false
-
-  /joi@17.12.1:
-    resolution: {integrity: sha512-vtxmq+Lsc5SlfqotnfVjlViWfOL9nt/avKNbKYizwf6gsCfq9NYY/ceYRMFD8XDdrjJ9abJyScWmhmIiy+XRtQ==}
-    dependencies:
-      '@hapi/hoek': 9.3.0
-      '@hapi/topo': 5.1.0
-      '@sideway/address': 4.1.5
-      '@sideway/formula': 3.0.1
-      '@sideway/pinpoint': 2.0.0
 
   /joi@17.13.3:
     resolution: {integrity: sha512-otDA4ldcIx+ZXsKHWmp0YizCweVRZG96J10b0FevjfuncLO1oX59THoAmHkNubYJ+9gWsYsp5k8v4ib6oDv1fA==}
@@ -25587,8 +25589,8 @@ packages:
     dependencies:
       '@hapi/hoek': 10.0.1
       '@hapi/wreck': 18.0.1
-      debug: 4.3.4(supports-color@5.5.0)
-      joi: 17.12.1
+      debug: 4.3.6
+      joi: 17.13.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -27347,7 +27349,7 @@ packages:
     hasBin: true
     dependencies:
       cac: 6.7.14
-      debug: 4.3.5
+      debug: 4.3.6
       pathe: 1.1.2
       tinyrainbow: 1.2.0
       vite: 5.0.12(@types/node@20.14.11)
@@ -27367,7 +27369,7 @@ packages:
     hasBin: true
     dependencies:
       cac: 6.7.14
-      debug: 4.3.5
+      debug: 4.3.6
       pathe: 1.1.2
       tinyrainbow: 1.2.0
       vite: 5.0.12(@types/node@20.16.1)
@@ -27654,7 +27656,7 @@ packages:
     hasBin: true
     dependencies:
       axios: 1.6.7
-      joi: 17.12.1
+      joi: 17.13.3
       lodash: 4.17.21
       minimist: 1.2.8
       rxjs: 7.8.1
