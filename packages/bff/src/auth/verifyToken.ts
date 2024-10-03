@@ -1,9 +1,9 @@
 import { logger } from '@digdir/dialogporten-node-logger';
 import axios from 'axios';
-import type { FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
+import type { FastifyInstance, FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.ts';
-import { type SessionStorageToken, handleAuthRequest, handleLogout } from './oidc.ts';
+import { type SessionStorageToken, handleLogout } from './oidc.ts';
 
 export const refreshToken = async (request: FastifyRequest) => {
   const token: SessionStorageToken | undefined = request.session.get('token');
@@ -48,19 +48,26 @@ export const refreshToken = async (request: FastifyRequest) => {
   }
 };
 
+type ValidationStatus = 'refresh_token_expired' | 'refreshed' | 'missing_token' | 'access_token_valid';
+
 /**
  * Checks the validity of the session token in the request and optionally refreshes the token if necessary.
  *
  * @param {FastifyRequest} request - The Fastify request object containing the session token.
  * @param {boolean} allowTokenRefresh - Flag indicating whether the function should attempt to refresh tokens if the access token has expired.
+ * @param fastify
  * @returns {Promise<boolean>} - Returns `true` if the access token is still valid or if it has been successfully refreshed.
  *                               Returns `false` if the token is invalid or cannot be refreshed.
  */
-const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boolean): Promise<boolean> => {
+const getIsTokenValid = async (
+  request: FastifyRequest,
+  allowTokenRefresh: boolean,
+  fastify: FastifyInstance,
+): Promise<ValidationStatus> => {
   const token: SessionStorageToken | undefined = request.session.get('token');
 
   if (!token) {
-    return false;
+    return 'missing_token';
   }
 
   const now = new Date();
@@ -76,31 +83,30 @@ const getIsTokenValid = async (request: FastifyRequest, allowTokenRefresh: boole
       // Ensure that the token has been updated and valid after the refresh
       const updatedToken: SessionStorageToken | undefined = request.session.get('token');
       const updatedAccessTokenExpiresAt = new Date(updatedToken?.access_token_expires_at || '');
-      return updatedAccessTokenExpiresAt > now;
+      if (updatedAccessTokenExpiresAt > now) {
+        return 'refreshed';
+      }
+      return 'refresh_token_expired';
     } catch (error) {
       logger.error(error, 'Unable to refresh token');
+      return 'refresh_token_expired';
     }
   }
 
-  return isAccessTokenValid;
+  return isAccessTokenValid ? 'access_token_valid' : 'refresh_token_expired';
 };
 
 const plugin: FastifyPluginAsync = async (fastify, _) => {
   fastify.decorate('verifyToken', (allowTokenRefresh: boolean) => {
     return async (request: FastifyRequest, reply: FastifyReply) => {
       try {
-        request.tokenIsValid = await getIsTokenValid(request, allowTokenRefresh);
+        const validationStatus: ValidationStatus = await getIsTokenValid(request, allowTokenRefresh, fastify);
 
-        if (!request.tokenIsValid && allowTokenRefresh) {
-          // No point in trying to refresh the token again
-          const token: SessionStorageToken | undefined = request.session.get('token');
-          if (token) {
-            await handleAuthRequest(request, reply, fastify);
-            request.tokenIsValid = true;
-          } else {
-            await handleLogout(request, reply);
-          }
+        if (validationStatus === 'refresh_token_expired' || validationStatus === 'missing_token') {
+          // Redirect to force a new login if the refresh token has expired or if the token is missing
+          return handleLogout(request, reply);
         }
+        request.tokenIsValid = validationStatus === 'access_token_valid' || validationStatus === 'refreshed';
       } catch (e) {
         logger.error(e, 'Unable to verify token');
         request.tokenIsValid = false;
