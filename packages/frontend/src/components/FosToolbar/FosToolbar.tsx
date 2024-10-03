@@ -5,8 +5,8 @@ import { ProfileButton } from '../ProfileButton';
 import styles from './fosToolbar.module.css';
 
 interface FosToolbarProps {
-  onFilterBtnClick: () => void;
-  onSortBtnClick: () => void;
+  onFilterBtnClick?: () => void;
+  onSortBtnClick?: () => void;
   onSaveBtnClick: () => void;
   hideSaveButton?: boolean;
 }
@@ -28,12 +28,16 @@ export const FosToolbar = ({
   return (
     <div className={styles.fosToolbar}>
       <div className={styles.buttons}>
-        <ProfileButton onClick={onFilterBtnClick} size="sm" variant="tertiary">
-          <PlusIcon fontSize="1.5rem" /> {t('fos.buttons.filter')}
-        </ProfileButton>
-        <ProfileButton onClick={onSortBtnClick} size="sm" variant="tertiary">
-          <ArrowsUpDownIcon fontSize="1.5rem" /> {t('fos.buttons.sort')}
-        </ProfileButton>
+        {onFilterBtnClick && (
+          <ProfileButton onClick={onFilterBtnClick} size="sm" variant="tertiary">
+            <PlusIcon fontSize="1.5rem" /> {t('fos.buttons.filter')}
+          </ProfileButton>
+        )}
+        {onSortBtnClick && (
+          <ProfileButton onClick={onSortBtnClick} size="sm" variant="tertiary">
+            <ArrowsUpDownIcon fontSize="1.5rem" /> {t('fos.buttons.sort')}
+          </ProfileButton>
+        )}
         {hideSaveButton ? null : (
           <ProfileButton onClick={onSaveBtnClick} size="sm" variant="tertiary">
             <BookmarkIcon fontSize="1.5rem" /> {t('fos.buttons.save_search')}
