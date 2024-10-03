@@ -110,9 +110,10 @@ export const handleLogout = async (request: FastifyRequest, reply: FastifyReply)
 
 export const handleAuthRequest = async (request: FastifyRequest, reply: FastifyReply, fastify: FastifyInstance) => {
   try {
+    const now = new Date();
     const { token } = await fastify.idporten.getAccessTokenFromAuthorizationCodeFlow(request);
     const customToken: IdportenToken = token as unknown as IdportenToken;
-    const refreshTokenExpiresAt = new Date(Date.now() + customToken.refresh_token_expires_in * 1000).toISOString();
+    const refreshTokenExpiresAt = new Date(now.getTime() + customToken.refresh_token_expires_in * 1000).toISOString();
     const { sub, locale = 'nb' } = jwt.decode(token.id_token as string) as unknown as IdTokenPayload;
     const sessionStorageToken: SessionStorageToken = {
       access_token: customToken.access_token,
