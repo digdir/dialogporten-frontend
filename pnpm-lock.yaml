@@ -54,8 +54,8 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0
       '@fastify/session':
-        specifier: ^10.9.0
-        version: 10.9.0
+        specifier: ^11.0.0
+        version: 11.0.1
       '@graphql-tools/executor-http':
         specifier: ^1.1.6
         version: 1.1.6(@types/node@20.14.11)(graphql@16.8.1)
@@ -6909,8 +6909,8 @@ packages:
       - supports-color
     dev: false
 
-  /@fastify/session@10.9.0:
-    resolution: {integrity: sha512-u/c42RuAaxCeEuRCAwK2+/SfGqKOd0NSyRzEvDwFBWySQoKUZQyb9OmmJSWJBbOP1OfaU2OsDrjbPbghE1l/YQ==}
+  /@fastify/session@11.0.1:
+    resolution: {integrity: sha512-I/CRrC6vWktZor9aF5eG9HZh/hxQQ4HY8GntIpeSjl97Q3ly0KnqD+BBGGNtRWOK369tclvL8FEQx3pWTgzSHQ==}
     dependencies:
       fastify-plugin: 4.5.1
       safe-stable-stringify: 2.4.3
