@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
-import { useEffect, useMemo } from 'react';
-import { normalizeParties } from '../components/PartyDropdown/normalizeParties.ts';
+import { useEffect } from 'react';
+import { normalizeFlattenParties } from '../components/PartyDropdown/normalizeFlattenParties.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { graphQLSDK } from './queries.ts';
 
@@ -16,6 +16,7 @@ interface UsePartiesOutput {
   setSelectedPartyIds: (parties: string[]) => void;
   currentEndUser: PartyFieldsFragment | undefined;
   allOrganizationsSelected: boolean;
+  setAllOrganizationsSelected: (allOrganizations: boolean) => void;
 }
 
 interface PartiesResult {
@@ -35,13 +36,20 @@ export const useParties = (): UsePartiesOutput => {
     initialData: [],
   });
 
+  const { data: allOrganizationsSelected } = useQuery<boolean>({
+    queryKey: [QUERY_KEYS.ALL_ORGANIZATIONS_SELECTED],
+    enabled: false,
+    staleTime: Number.POSITIVE_INFINITY,
+    initialData: false,
+  });
+
   const selectedParties = selectedPartiesQuery.data ?? [];
 
   const { data, isLoading, isSuccess } = useQuery<PartiesResult>({
     queryKey: [QUERY_KEYS.PARTIES],
     queryFn: async () => {
       const response = await fetchParties();
-      const normalizedParties = normalizeParties(response.parties);
+      const normalizedParties = normalizeFlattenParties(response.parties);
       return {
         parties: normalizedParties.filter((party) => !party.isDeleted),
         deletedParties: normalizedParties.filter((party) => party.isDeleted),
@@ -55,6 +63,10 @@ export const useParties = (): UsePartiesOutput => {
     if (parties?.length) {
       queryClient.setQueryData([QUERY_KEYS.SELECTED_PARTIES], parties);
     }
+  };
+
+  const setAllOrganizationsSelected = (allOrganizations: boolean) => {
+    queryClient.setQueryData([QUERY_KEYS.ALL_ORGANIZATIONS_SELECTED], allOrganizations);
   };
 
   const setSelectedPartyIds = (partyIds: string[]) => {
@@ -73,20 +85,6 @@ export const useParties = (): UsePartiesOutput => {
     }
   }, [isSuccess, selectedParties.length, data?.parties]);
 
-  const allOrganizationsSelected = useMemo(() => {
-    const allOrgParties = data?.parties.filter((party) => party.partyType === 'Organization') ?? [];
-    const selectedOrgParties = selectedParties.filter((party) => party.partyType === 'Organization');
-
-    const allOrgPartyIds = new Set(allOrgParties.map((party) => party.party));
-    const selectedOrgPartyIds = new Set(selectedOrgParties.map((party) => party.party));
-
-    return (
-      selectedOrgParties.length >= 2 &&
-      allOrgPartyIds.size === selectedOrgPartyIds.size &&
-      [...selectedOrgPartyIds].every((id) => allOrgPartyIds.has(id))
-    );
-  }, [selectedParties, data]);
-
   return {
     isLoading,
     isSuccess,
@@ -98,5 +96,6 @@ export const useParties = (): UsePartiesOutput => {
     currentEndUser: data?.parties.find((party) => party.isCurrentEndUser),
     deletedParties: data?.deletedParties ?? [],
     allOrganizationsSelected,
+    setAllOrganizationsSelected,
   };
 };

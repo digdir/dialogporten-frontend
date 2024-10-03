@@ -4,7 +4,7 @@ import { toTitleCase } from '../../profile';
 /* normalizes the parties and sub parties to title case and returns a flatten lists of PartyFieldsFragment
  where name of parent differs from sub parties
  */
-export const normalizeParties = (parties: PartyFieldsFragment[]): PartyFieldsFragment[] => {
+export const normalizeFlattenParties = (parties: PartyFieldsFragment[]): PartyFieldsFragment[] => {
   const partiesInTitleCase =
     parties.map((party) => ({
       ...party,
@@ -19,10 +19,17 @@ export const normalizeParties = (parties: PartyFieldsFragment[]): PartyFieldsFra
 
   return partiesInTitleCase.reduce<PartyFieldsFragment[]>((acc, party) => {
     const subParties = party.subParties ?? [];
-    const subPartiesNotMatchingParent = subParties.filter((subParty) => subParty.name !== party.name);
-
-    acc.push(party);
-    acc.push(...subPartiesNotMatchingParent);
+    const subPartiesNotMatchingParentByName = subParties.filter(
+      (subParty) => subParty.name.toLowerCase() !== party.name.toLowerCase(),
+    );
+    const subPartiesMatchingParentByName = subParties.filter(
+      (subParty) => subParty.name.toLowerCase() === party.name.toLowerCase(),
+    );
+    acc.push({
+      ...party,
+      subParties: subPartiesMatchingParentByName,
+    });
+    acc.push(...subPartiesNotMatchingParentByName);
 
     return acc;
   }, []);

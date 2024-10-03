@@ -1,6 +1,6 @@
 import type { PartyFieldsFragment } from 'bff-types-generated';
 import { describe, expect, it } from 'vitest';
-import { normalizeParties } from './normalizeParties.ts';
+import { normalizeFlattenParties } from './normalizeFlattenParties.ts';
 
 describe('normalizeParties', () => {
   const parties: PartyFieldsFragment[] = [
@@ -36,7 +36,7 @@ describe('normalizeParties', () => {
   ];
 
   it('should return sub-parties where name differs from parent', () => {
-    const result = normalizeParties(parties);
+    const result = normalizeFlattenParties(parties);
 
     expect(result.length).toBe(3);
     expect(result[0].name).toBe('Edel Reiersen');
@@ -59,14 +59,14 @@ describe('normalizeParties', () => {
       },
     ];
 
-    const result = normalizeParties(partiesWithMatchingSubParty);
+    const result = normalizeFlattenParties(partiesWithMatchingSubParty);
 
     expect(result.length).toBe(1);
     expect(result[0].name).toBe('Matching Party');
   });
 
   it('should copy parent properties to sub-parties correctly', () => {
-    const result = normalizeParties(parties);
+    const result = normalizeFlattenParties(parties);
     expect(result[2].isDeleted).toBe(false);
     expect(result[2].isCurrentEndUser).toBe(false);
   });

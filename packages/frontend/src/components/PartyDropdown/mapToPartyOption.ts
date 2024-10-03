@@ -34,11 +34,10 @@ export const getOptionsGroups = (
   savedSearches: SavedSearchesFieldsFragment[] | undefined,
   counterContext: SideBarView = 'inbox',
 ): PartyOptionGroup => {
-  return groupParties(
-    parties.map((party) =>
-      mapToPartyOption(party, dialogsByCounterContext[counterContext], savedSearches, counterContext),
-    ),
+  const partyOptions = parties.map((party) =>
+    mapToPartyOption(party, dialogsByCounterContext[counterContext], savedSearches, counterContext),
   );
+  return groupParties(partyOptions);
 };
 
 export function groupParties(parties: PartyOption[]): PartyOptionGroup {
