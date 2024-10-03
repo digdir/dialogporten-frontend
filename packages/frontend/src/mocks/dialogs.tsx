@@ -1,649 +1,468 @@
-export const dialogs = [
-  {
-    id: 'e8e28f01-573b-a971-a728-3b4164f95224',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 5,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-06-04T11:00:21.463Z',
-    updatedAt: '2024-06-04T11:00:21.463Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: 'a66cbfb8-4bec-4642-a10c-bb06f806b87c',
-      performedBy: null,
+import {ActorType, DialogStatus, SearchDialogFieldsFragment} from "bff-types-generated";
+
+export const dialogs: SearchDialogFieldsFragment[] = [
+    {
+      "id": "019241f7-6f45-72fd-a574-f19d358aaf4e",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "ok",
+      "progress": null,
+      "guiAttachmentCount": 1,
+      "status": DialogStatus.RequiresAttention,
+      "createdAt": "2023-12-23T23:00:00.000Z",
+      "updatedAt": "2023-12-25T11:34:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "c4f4d846-2fe7-4172-badc-abc48f9af8a5",
+          "seenAt": "2024-09-30T11:36:01.572Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
+          },
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": {
+        "description": [
+          {
+            "value": "Meldingen ble sendt.",
+            "languageCode": "nb"
+          }
+        ],
+        "performedBy": {
+          "actorType": ActorType.PartyRepresentative,
+          "actorId": null,
+          "actorName": "Rakel Engelsvik"
+        }
+      },
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Melding om bortkjøring av snø",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Melding om bortkjøring av snø mangler opplysninger om adresse.\n\nSe over opplysninger og send inn skjema på nytt.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '82ce8f01-94bd-4775-b8fe-781506f0d348',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-31T11:57:05.811Z',
-    updatedAt: '2024-05-31T11:57:05.811Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: '7a4fbe60-ecc9-4dad-839f-1c92dc694b17',
-        seenAt: '2024-06-03T18:21:24.440Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: '8de45330-bf40-4e7d-8541-fa2eeeb979fa',
-      performedBy: null,
+    {
+      "id": "019241f7-67dc-7562-a56f-1634796039e5",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "ok",
+      "progress": null,
+      "guiAttachmentCount": 1,
+      "status": DialogStatus.Sent,
+      "createdAt": "2023-12-15T06:33:00.000Z",
+      "updatedAt": "2023-12-15T06:33:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Melding om hull i veien",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Meldingen ble sendt.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
+    {
+      "id": "019241f7-8375-75a3-8bdb-2cebee9cb585",
+      "party": "urn:altinn:organization:identifier-sub:2",
+      "org": "fors",
+      "progress": null,
+      "guiAttachmentCount": 1,
+      "status": DialogStatus.New,
+      "createdAt": "2023-12-12T09:15:00.000Z",
+      "updatedAt": "2023-12-12T09:15:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "03d5e075-9a8b-48b7-bb0a-99733ee3e572",
+          "seenAt": "2024-09-30T11:36:29.692Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
           },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'a6c48f01-3a40-1177-a13e-5ad8b2eca569',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-29T13:59:40.858Z',
-    updatedAt: '2024-05-29T13:59:40.858Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: '2181c0c1-b219-45b1-8079-fdcc6b66dde3',
-      performedBy: null,
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Innkalling til sesjon",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Du er innkalt til sesjon og skal møte ved Oslo sesjonssenter.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
+    {
+      "id": "019241f7-8218-7756-be82-5310042c3d95",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "nav",
+      "progress": null,
+      "guiAttachmentCount": 0,
+      "status": DialogStatus.RequiresAttention,
+      "createdAt": "2023-12-04T11:45:00.000Z",
+      "updatedAt": "2023-12-04T11:45:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [],
+      "latestActivity": {
+        "description": [
           {
-            value: 'Fin tittel',
-            languageCode: 'nb',
-          },
+            "value": "Du leverte søknad on arbeidsavklaringspenger.",
+            "languageCode": "nb"
+          }
         ],
+        "performedBy": {
+          "actorType": ActorType.PartyRepresentative,
+          "actorId": null,
+          "actorName": "Erik Huseklepp"
+        }
       },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'a4c48f01-eead-f672-81b9-7be80f8c4b80',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-29T13:57:57.870Z',
-    updatedAt: '2024-05-29T13:57:57.870Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: 'fde216bc-b1cc-4684-a930-5be2e844c58b',
-      performedBy: null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Arbeidsavklaringspenger",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Søknaden om arbeidsavklaringspenger er klar til signering.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
+    {
+      "id": "019241f7-812c-71c8-8e68-94a0b771fa10",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "ssb",
+      "progress": null,
+      "guiAttachmentCount": 0,
+      "status": DialogStatus.RequiresAttention,
+      "createdAt": "2023-05-17T09:30:00.000Z",
+      "updatedAt": "2023-05-17T09:30:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "268edfdb-1843-4a18-a8c7-5d45fe7f7fc8",
+          "seenAt": "2024-09-30T11:37:05.020Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
           },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'a4c48f01-ce99-1471-b2d0-edf25a8aaac8',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-29T13:57:52.718Z',
-    updatedAt: '2024-05-29T13:57:52.718Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: '68f2f740-4478-438f-a64b-f4349011893f',
-      performedBy: null,
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Undersøkelse om levekår",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Du er en av 6.000 personer som er trukket ut fra folkeregisteret til å delta i SSBs undersøkelse om levekår.\n\n",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
+    {
+      "id": "019241f7-78e6-7702-8724-a95e049d491e",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "dibk",
+      "progress": null,
+      "guiAttachmentCount": 8,
+      "status": DialogStatus.New,
+      "createdAt": "2023-04-18T10:55:00.000Z",
+      "updatedAt": "2023-04-18T10:55:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "a06fa273-7aa7-41dc-911c-b0fb60640a6b",
+          "seenAt": "2024-10-01T07:17:14.541Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
           },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'a4c48f01-5241-df73-8345-cb5c1ef4ca99',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-29T13:57:30.065Z',
-    updatedAt: '2024-05-29T13:57:30.065Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: '3411fdc2-b8ec-416f-8fc4-beec70a968e6',
-      performedBy: null,
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Nabovarsel for Louises gate 15",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Nabovarsel for byggeplaner i for Louises gate 15, 0169 Oslo (gårdsnr. 118, bruksnr. 366).",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
+    {
+      "id": "019241f7-5fa0-7336-934d-716a8e5bbb49",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "skd",
+      "progress": null,
+      "guiAttachmentCount": 1,
+      "status": DialogStatus.Completed,
+      "createdAt": "2023-03-11T07:00:00.000Z",
+      "updatedAt": "2023-07-15T08:45:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [],
+      "latestActivity": {
+        "description": [
           {
-            value: 'Fin tittel',
-            languageCode: 'nb',
-          },
+            "value": "Skattemeldingen ble levert.",
+            "languageCode": "nb"
+          }
         ],
+        "performedBy": {
+          "actorType": ActorType.PartyRepresentative,
+          "actorId": null,
+          "actorName": "Erik Huseklepp"
+        }
       },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '69c08f01-7586-7972-8d6e-39765fda45f1',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-28T18:14:52.272Z',
-    updatedAt: '2024-05-28T18:14:52.272Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [],
-    latestActivity: {
-      description: [],
-      dialogElementId: '4c07dd98-315d-4476-ac13-1b2f077dac07',
-      performedBy: null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Skatten din for 2022",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Skatteoppgjøret for 2022 er klart. Du kan fortsatt gjøre endringer.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
+    {
+      "id": "019241f7-7f61-778d-9ef8-f6bae5e80579",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "dibk",
+      "progress": null,
+      "guiAttachmentCount": 9,
+      "status": DialogStatus.New,
+      "createdAt": "2022-04-13T09:25:00.000Z",
+      "updatedAt": "2022-04-13T09:25:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "90801e39-23a4-4086-9e9a-f56811f75ff3",
+          "seenAt": "2024-09-30T08:34:31.801Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
           },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '24bf8f01-0891-a370-a70a-b2b428a959b1',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-28T12:19:55.784Z',
-    updatedAt: '2024-05-28T12:19:55.784Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: 'b0f1bc05-4cfb-4a78-a998-140b2326f5f3',
-        seenAt: '2024-05-28T12:58:37.369Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: '7feace6b-6001-4358-925f-e9d067353755',
-      performedBy: null,
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Nabovarsel for Wilhelms gate 10",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Nabovarsel for byggeplaner i for Wilhelms gate 10, 0169 Oslo (gårdsnr. 217, bruksnr. 486).",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
+    {
+      "id": "019241f7-8698-7293-90aa-6c65a784c15e",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "svv",
+      "progress": null,
+      "guiAttachmentCount": 1,
+      "status": DialogStatus.Completed,
+      "createdAt": "2022-01-05T07:00:00.000Z",
+      "updatedAt": "2022-02-20T08:35:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [
+        {
+          "id": "3553a0ad-1458-47b2-b1b0-8d325b39f4b0",
+          "seenAt": "2024-10-01T07:17:21.025Z",
+          "seenBy": {
+            "actorType": null,
+            "actorId": "urn:altinn:person:identifier-ephemeral:2b34ab491b",
+            "actorName": "SØSTER FANTASIFULL"
           },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
+          "isCurrentEndUser": true
+        }
+      ],
+      "latestActivity": {
+        "description": [
           {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
+            "value": "Søknad om bilskilt personlig med påskrift DIGDIR ble sendt.",
+            "languageCode": "nb"
+          }
         ],
+        "performedBy": {
+          "actorType": ActorType.PartyRepresentative,
+          "actorId": null,
+          "actorName": "Erik Huseklepp"
+        }
       },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'd6be8f01-51a0-a375-a92b-6a35b3915bcc',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-28T10:54:47.889Z',
-    updatedAt: '2024-05-28T10:54:47.889Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: 'f6ae03a9-2cfd-4b86-9551-4dfbf321b2ac',
-        seenAt: '2024-05-28T10:57:04.339Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: 'f608f467-6fd4-41ae-acf8-c423f6616390',
-      performedBy: null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Søknad om personlig bilskilt",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Søknaden ble avslått. Se tilbakemelding for detaljer.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
     },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Fin tittel',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '7fbb8f01-d59c-a274-9498-2a47015f6935',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-27T19:20:53.717Z',
-    updatedAt: '2024-05-27T19:20:53.717Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: '912ef7b5-250e-44ac-bdc9-4a53174c3f68',
-        seenAt: '2024-05-28T05:09:46.876Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: '489f8477-39df-4602-8d9f-8f6940b986a8',
-      performedBy: null,
-    },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'arst',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '7dbb8f01-4790-3972-9054-729f3885fa34',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-27T19:18:39.431Z',
-    updatedAt: '2024-05-27T19:18:39.431Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: 'd5134c40-d859-47df-920c-ae3092fad2c1',
-        seenAt: '2024-05-28T07:09:46.850Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: '4a75326c-2da0-426a-acf9-cdcefc47488b',
-      performedBy: null,
-    },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'arst',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '38aa8f01-3c9c-e474-910f-a51f5bce31aa',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 0,
-    guiAttachmentCount: 2,
-    status: 'NEW',
-    createdAt: '2024-05-24T10:49:47.836Z',
-    updatedAt: '2024-05-24T10:49:47.836Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: 'fbc92a91-1fd8-44cc-91c8-364878e24a9f',
-        seenAt: '2024-05-24T10:50:18.653Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: '42d372c8-2e8d-4e7d-bb28-fbee483dfab6',
-      performedBy: null,
-    },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'Din skattemelding for 2023',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: '10a58f01-b599-4f72-950b-2ddc2c5e8b54',
-    party: 'urn:altinn:organization:identifier-no:212475912',
-    org: 'digdir',
-    progress: 90,
-    guiAttachmentCount: 2,
-    status: 'IN_PROGRESS',
-    createdAt: '2024-05-23T10:47:59.669Z',
-    updatedAt: '2024-05-23T10:47:59.669Z',
-    extendedStatus: null,
-    seenSinceLastUpdate: [
-      {
-        id: '3164dce1-7a15-4281-bf32-0037baf6037d',
-        seenAt: '2024-05-23T11:32:05.482Z',
-        endUserName: 'HJELPELINJE ORDINÆR',
-        isCurrentEndUser: true,
-      },
-    ],
-    latestActivity: {
-      description: [],
-      dialogElementId: 'f997ff01-d7bd-427a-ba29-9560d779424d',
-      performedBy: null,
-    },
-    content: [
-      {
-        type: 'TITLE',
-        value: [
-          {
-            value: 'arst',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'SUMMARY',
-        value: [
-          {
-            value: 'Et sammendrag her. Maks 200 tegn, ingen HTML-støtte. Påkrevd. Vises i liste.',
-            languageCode: 'nb',
-          },
-        ],
-      },
-      {
-        type: 'EXTENDED_STATUS',
-        value: [
-          {
-            value: 'some status max 20',
-            languageCode: 'nb',
-          },
-        ],
-      },
-    ],
-  },
-];
+    {
+      "id": "019241f7-85ed-72fd-922a-fa784d7e4228",
+      "party": "urn:altinn:person:identifier-no:1",
+      "org": "svv",
+      "progress": null,
+      "guiAttachmentCount": 0,
+      "status": DialogStatus.Draft,
+      "createdAt": "2001-04-05T22:00:00.000Z",
+      "updatedAt": "2001-04-05T22:00:00.000Z",
+      "extendedStatus": null,
+      "seenSinceLastUpdate": [],
+      "latestActivity": null,
+      "content": {
+        "title": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Klage på EU-kontroll",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "summary": {
+          "mediaType": "text/plain",
+          "value": [
+            {
+              "value": "Utkast til klage er opprettet.",
+              "languageCode": "nb"
+            }
+          ]
+        },
+        "senderName": null,
+        "extendedStatus": null
+      }
+    }
+  ]

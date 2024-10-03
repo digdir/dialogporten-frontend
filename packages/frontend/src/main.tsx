@@ -15,7 +15,7 @@ import { FeatureFlagProvider, featureFlags } from './featureFlags';
 async function enableMocking() {
   if (import.meta.env.MODE === 'development') {
     const urlParams = new URLSearchParams(window.location.search);
-    const enableMocking = urlParams.get('mock') === 'true';
+    const enableMocking = true; //urlParams.get('mock') === 'true';
     if (enableMocking) {
       const { worker } = await import('./mocks/browser');
       return worker.start();
