@@ -13,7 +13,7 @@ import { LoggerContextProvider } from './contexts/LoggerContext.tsx';
 import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
 async function enableMocking() {
-  if (import.meta.env.MODE === 'development') {
+  if (import.meta.env.DEV) {
     const urlParams = new URLSearchParams(window.location.search);
     const enableMocking = urlParams.get('mock') === 'true';
     if (enableMocking) {
