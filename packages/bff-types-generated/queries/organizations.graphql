@@ -1,0 +1,5 @@
+query organizations {
+  organizations {
+    ...OrganizationFields
+  }
+}

@@ -16,7 +16,6 @@ export const InboxItemPage = () => {
   if (isLoading) {
     return <InboxItemPageSkeleton />;
   }
-
   return (
     <main className={styles.itemInboxPage}>
       <section className={styles.itemInboxPageContent}>

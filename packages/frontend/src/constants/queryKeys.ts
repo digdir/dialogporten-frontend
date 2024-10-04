@@ -8,4 +8,5 @@ export const QUERY_KEYS = {
   MAIN_CONTENT_REFERENCE: 'mainContentReference',
   SAVED_SEARCHES: 'savedSearches',
   PROFILE: 'profile',
+  ORGANIZATIONS: 'organizations',
 };

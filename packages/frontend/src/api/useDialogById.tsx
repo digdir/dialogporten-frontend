@@ -4,12 +4,14 @@ import type {
   DialogActivityFragment,
   DialogByIdFieldsFragment,
   GetDialogByIdQuery,
+  OrganizationFieldsFragment,
   PartyFieldsFragment,
 } from 'bff-types-generated';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
-import { getOrganisation } from './organisations.ts';
+import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
+import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
 
 export interface Participant {
@@ -126,6 +128,7 @@ const getMainContentReference = (
 export function mapDialogDtoToInboxItem(
   item: DialogByIdFieldsFragment | null | undefined,
   parties: PartyFieldsFragment[],
+  organizations: OrganizationFieldsFragment[],
 ): DialogByIdDetails | undefined {
   if (!item) {
     return undefined;
@@ -137,7 +140,7 @@ export function mapDialogDtoToInboxItem(
   const endUserParty = parties?.find((party) => party.isCurrentEndUser);
   const dialogReceiverParty = parties?.find((party) => party.party === item.party);
   const actualReceiverParty = dialogReceiverParty ?? endUserParty;
-  const serviceOwner = getOrganisation(item.org, 'nb');
+  const serviceOwner = getOrganization(organizations || [], item.org, 'nb');
   const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
 
   return {
@@ -150,7 +153,7 @@ export function mapDialogDtoToInboxItem(
     },
     receiver: {
       name: actualReceiverParty?.name ?? '',
-      isCompany: actualReceiverParty?.partyType === 'Organisation',
+      isCompany: actualReceiverParty?.partyType === 'Organization',
     },
     metaFields: getMetaFields(item, isSeenByEndUser),
     additionalInfo: getPropertyByCultureCode(additionalInfoObj),
@@ -182,17 +185,21 @@ export function mapDialogDtoToInboxItem(
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
+  const { organizations, isLoading: isOrganizationsLoading } = useOrganizations();
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
-    queryKey: [QUERY_KEYS.DIALOG_BY_ID, id],
+    queryKey: [QUERY_KEYS.DIALOG_BY_ID, id, organizations],
     staleTime: 1000 * 60 * 10,
     retry: 3,
     queryFn: () => getDialogsById(id!),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
+  if (isOrganizationsLoading) {
+    return { isLoading: true, isSuccess: false };
+  }
   return {
     isLoading,
     isSuccess,
-    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties),
+    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties, organizations),
   };
 };
