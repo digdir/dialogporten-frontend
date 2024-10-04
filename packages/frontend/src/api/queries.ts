@@ -1,6 +1,7 @@
 import {
   type CreateSavedSearchMutation,
   type DeleteSavedSearchMutation,
+  type OrganizationsQuery,
   type SavedSearchInput,
   type SavedSearchesQuery,
   type UpdateSavedSearchMutation,
@@ -11,6 +12,7 @@ import { GraphQLClient } from 'graphql-request';
 export const graphQLSDK = getSdk(new GraphQLClient('/api/graphql', { credentials: 'include' }));
 export const profile = graphQLSDK.profile;
 export const fetchSavedSearches = (): Promise<SavedSearchesQuery> => graphQLSDK.savedSearches();
+export const fetchOrganizations = (): Promise<OrganizationsQuery> => graphQLSDK.organizations();
 export const deleteSavedSearch = (id: number): Promise<DeleteSavedSearchMutation> =>
   graphQLSDK.DeleteSavedSearch({ id });
 export const updateSavedSearch = (id: number, name: string): Promise<UpdateSavedSearchMutation> =>

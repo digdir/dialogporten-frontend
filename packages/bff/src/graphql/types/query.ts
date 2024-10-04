@@ -1,6 +1,8 @@
 import { list, objectType } from 'nexus';
 import { SavedSearchRepository } from '../../db.ts';
 import { getOrCreateProfile } from '../../entities.ts';
+import { getOrganizationsFromRedis } from './organization.ts';
+
 export const Query = objectType({
   name: 'Query',
   definition(t) {
@@ -17,6 +19,19 @@ export const Query = objectType({
         };
       },
     });
+
+    t.field('organizations', {
+      type: list('Organization'),
+      resolve: async (source, args, ctx, info) => {
+        try {
+          return await getOrganizationsFromRedis();
+        } catch (error) {
+          console.error('Failed to fetch organizations from Redis:', error);
+          throw new Error('Failed to fetch organizations');
+        }
+      },
+    });
+
     t.field('savedSearches', {
       type: list('SavedSearches'),
       resolve: async (source, args, ctx, info) => {
@@ -27,12 +42,6 @@ export const Query = objectType({
           });
         }
         return [];
-      },
-    });
-    t.field('hello', {
-      type: 'String',
-      resolve: () => {
-        return 'Hello, World!';
       },
     });
   },

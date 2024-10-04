@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
   GetAllDialogsForPartiesQuery,
+  OrganizationFieldsFragment,
   PartyFieldsFragment,
   SearchDialogFieldsFragment,
 } from 'bff-types-generated';
@@ -11,7 +12,8 @@ import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
-import { getOrganisation } from './organisations.ts';
+import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
+import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
 
 export type InboxViewType = 'inbox' | 'drafts' | 'sent';
@@ -35,6 +37,7 @@ const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): 
 export function mapDialogDtoToInboxItem(
   input: SearchDialogFieldsFragment[],
   parties: PartyFieldsFragment[],
+  organizations: OrganizationFieldsFragment[],
 ): InboxItemInput[] {
   return input.map((item) => {
     const titleObj = item.content.title.value;
@@ -42,7 +45,7 @@ export function mapDialogDtoToInboxItem(
     const endUserParty = parties?.find((party) => party.isCurrentEndUser);
     const dialogReceiverParty = parties?.find((party) => party.party === item.party);
     const actualReceiverParty = dialogReceiverParty ?? endUserParty;
-    const serviceOwner = getOrganisation(item.org, 'nb');
+    const serviceOwner = getOrganization(organizations || [], item.org, 'nb');
     const isSeenByEndUser =
       item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
     return {
@@ -57,7 +60,7 @@ export function mapDialogDtoToInboxItem(
       },
       receiver: {
         name: actualReceiverParty?.name ?? '',
-        isCompany: actualReceiverParty?.partyType === 'Organisation',
+        isCompany: actualReceiverParty?.partyType === 'Organization',
       },
       metaFields: getMetaFields(item, isSeenByEndUser),
       linkTo: `/inbox/${item.id}`,
@@ -100,6 +103,7 @@ interface UseSearchDialogsOutput {
 }
 
 export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsProps): UseSearchDialogsOutput => {
+  const { organizations } = useOrganizations();
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
@@ -113,7 +117,9 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties) : []);
+    setSearchResults(
+      enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations || []) : [],
+    );
   }, [setSearchResults, data?.searchDialogs?.items, enabled]);
 
   return {
@@ -145,15 +151,16 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
 };
 
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
+  const { organizations } = useOrganizations();
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: [QUERY_KEYS.DIALOGS, partyURIs],
+    queryKey: [QUERY_KEYS.DIALOGS, partyURIs, organizations],
     staleTime: 1000 * 60 * 10,
     retry: 3,
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties);
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations || []);
   return {
     isLoading,
     isSuccess,
