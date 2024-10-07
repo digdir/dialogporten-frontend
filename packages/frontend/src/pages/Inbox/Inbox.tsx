@@ -207,9 +207,13 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const filterBarSettings = useMemo(() => getFilterBarSettings(dataSource, format), [dataSource, format]);
+  const filterBarSettings = useMemo(
+    () => getFilterBarSettings(dataSource, format).filter((setting) => setting.options.length > 1),
+    [dataSource, format],
+  );
 
   const savedSearchDisabled = !activeFilters?.length && !searchString;
+  const showFilterButton = filterBarSettings.length > 0;
 
   if (isFetchingSearchResults) {
     return (
@@ -273,9 +277,13 @@ export const Inbox = ({ viewType }: InboxProps) => {
           </div>
         </div>
         <FosToolbar
-          onFilterBtnClick={() => {
-            filterBarRef?.current?.openFilter();
-          }}
+          onFilterBtnClick={
+            showFilterButton
+              ? () => {
+                  filterBarRef?.current?.openFilter();
+                }
+              : undefined
+          }
           onSortBtnClick={() => {
             sortOrderDropdownRef?.current?.openSortOrder();
           }}

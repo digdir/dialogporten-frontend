@@ -191,6 +191,11 @@ export const FilterBar = forwardRef(
     );
 
     const isAddFilterMenuOpen = listOpenForTarget === 'add_filter';
+
+    if (!settings.length) {
+      return null;
+    }
+
     return (
       <section className={styles.filterBar}>
         <div className={styles.filterButtons}>
