@@ -44,8 +44,8 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profil
     drafts: dialogsByView.drafts.length,
     sent: dialogsByView.sent.length,
     'saved-searches': currentPartySavedSearches?.length ?? 0,
-    archive: 0,
-    deleted: 0,
+    archive: dialogsByView.archive.length,
+    bin: dialogsByView.bin.length,
   } as ItemPerViewCount;
 
   return (

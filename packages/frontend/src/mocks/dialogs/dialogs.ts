@@ -1,8 +1,9 @@
-import {ActorType, DialogStatus, SearchDialogFieldsFragment} from "bff-types-generated";
+import {ActorType, DialogStatus, SearchDialogFieldsFragment, SystemLabel} from "bff-types-generated";
 
 export const dialogs: SearchDialogFieldsFragment[] = [
   {
     "id": "019241f7-6f45-72fd-a574-f19d358aaf4e",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "ok",
     "progress": null,
@@ -61,6 +62,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-67dc-7562-a56f-1634796039e5",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "ok",
     "progress": null,
@@ -96,6 +98,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-8375-75a3-8bdb-2cebee9cb585",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:organization:identifier-sub:2",
     "org": "fors",
     "progress": null,
@@ -142,6 +145,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-8218-7756-be82-5310042c3d95",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "nav",
     "progress": null,
@@ -189,6 +193,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-812c-71c8-8e68-94a0b771fa10",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "ssb",
     "progress": null,
@@ -235,6 +240,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-78e6-7702-8724-a95e049d491e",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "dibk",
     "progress": null,
@@ -281,6 +287,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-5fa0-7336-934d-716a8e5bbb49",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "skd", 
     "progress": null,
@@ -328,6 +335,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-7f61-778d-9ef8-f6bae5e80579",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "dibk",
     "progress": null,
@@ -374,6 +382,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-8698-7293-90aa-6c65a784c15e",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "svv",
     "progress": null,
@@ -432,6 +441,7 @@ export const dialogs: SearchDialogFieldsFragment[] = [
   },
   {
     "id": "019241f7-85ed-72fd-922a-fa784d7e4228",
+    systemLabel: SystemLabel.Default,
     "party": "urn:altinn:person:identifier-no:1",
     "org": "svv",
     "progress": null,

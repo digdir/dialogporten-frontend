@@ -15,7 +15,7 @@ import { HorizontalLine } from '../HorizontalLine/';
 import { MenuItem } from '../MenuBar';
 import styles from './sidebar.module.css';
 
-export type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'deleted';
+export type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'bin';
 
 export type ItemPerViewCount = {
   [key in SideBarView]: number;
@@ -46,7 +46,7 @@ export interface SidebarProps {
  *
  * <Sidebar itemsPerViewCount={itemsPerViewCount} />
  */
-export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }: SidebarProps): React.ReactElement => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
 
@@ -107,19 +107,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ itemsPerViewCount }) => {
           path={Routes.archive}
           isActive={pathname === Routes.archive}
           useProfiledHover
-          disabled
         />
         <MenuItem
           displayText={t('sidebar.deleted')}
           toolTipText={t('sidebar.deleted.label')}
           isWhiteBackground
           leftIcon={<TrashIcon />}
-          count={itemsPerViewCount.deleted}
-          isActive={pathname === Routes.deleted}
-          path={Routes.deleted}
+          count={itemsPerViewCount.bin}
+          isActive={pathname === Routes.bin}
+          path={Routes.bin}
           className={styles.lastItem}
           useProfiledHover
-          disabled
         />
       </ul>
     </aside>

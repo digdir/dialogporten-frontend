@@ -1,6 +1,6 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useQueryClient } from '@tanstack/react-query';
-import type { DialogStatus, SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
+import type { DialogStatus, SavedSearchData, SearchDataValueFilter, SystemLabel } from 'bff-types-generated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -8,20 +8,26 @@ import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
 import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import { ActionPanel, InboxItem, InboxItems, SortOrderDropdown, useSearchString } from '../../components';
 import type { InboxItemMetaField } from '../../components';
-import { type Filter, FilterBar } from '../../components';
-import { useSelectedDialogs } from '../../components';
-import { useSnackbar } from '../../components';
-import { PartyDropdown } from '../../components';
+import {
+  ActionPanel,
+  type Filter,
+  FilterBar,
+  InboxItem,
+  InboxItems,
+  PartyDropdown,
+  SortOrderDropdown,
+  useSearchString,
+  useSelectedDialogs,
+  useSnackbar,
+} from '../../components';
 import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
 import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
-import { FeatureFlagKeys } from '../../featureFlags';
-import { useFeatureFlag } from '../../featureFlags';
+import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
@@ -34,11 +40,12 @@ interface InboxProps {
 
 export enum Routes {
   inbox = '/',
+  inboxItem = '/inbox/:id',
   sent = '/sent',
   drafts = '/drafts',
   savedSearches = '/saved-searches',
   archive = '/archive',
-  deleted = '/deleted',
+  bin = '/bin',
 }
 
 export interface InboxItemInput {
@@ -54,7 +61,9 @@ export interface InboxItemInput {
   updatedAt: string;
   status: DialogStatus;
   isSeenByEndUser: boolean;
+  label: SystemLabel;
 }
+
 interface DialogCategory {
   label: string;
   id: string;
@@ -138,8 +147,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
       (d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear(),
     );
 
-    const allAreDraftOrSent = itemsToDisplay.every((d) => ['drafts', 'sent'].includes(getViewType(d)));
-    if (!shouldShowSearchResults && allAreDraftOrSent) {
+    const areNotInInbox = itemsToDisplay.every((d) => ['drafts', 'sent', 'bin', 'archive'].includes(getViewType(d)));
+    if (!shouldShowSearchResults && areNotInInbox) {
       return [
         {
           label: t(`inbox.heading.title.${viewType}`, { count: itemsToDisplay.length }),

@@ -66,6 +66,8 @@
   "inbox.heading.title.drafts": "{count, plural, =0 {No drafts} one {# draft} other {# drafts}}",
   "inbox.heading.title.sent": "{count, plural, =0 {No sent} one {# sent} other {# sent}}",
   "inbox.heading.title.inbox": "{count, plural, =0 {No messages} one {# message} other {# messages}}",
+  "inbox.heading.title.bin": "{count, plural, =0 {in bin} one {# in bin} other {# in bin}}",
+  "inbox.heading.title.archive": "{count, plural, =0 {None archived} one {# archived} other {# archived}}",
   "inbox.title": "Inbox",
   "link.goToAllServices": "Go to all services",
   "link.goToInbox": "Go to inbox",
@@ -77,6 +79,9 @@
   "menuBar.chat.label": "Press here to go to chat",
   "menuBar.close": "Close menu",
   "menuBar.open": "Open menu",
+  "dialog.toolbar.move_to_archive": "Move to archive",
+  "dialog.toolbar.move_to_bin": "Move to bin",
+  "dialog.toolbar.move_undo": "Move to inbox",
   "notifications.count": "{count, plural, one {# unread message} other {# unread messages}}",
   "parties.labels.all_organizations": "All organizations",
   "parties.labels.organizations": "Organizations",
@@ -149,5 +154,11 @@
   "word.status": "Status",
   "word.to": "to",
   "word.you": "you",
-  "word.clock_prefix": ""
+  "word.clock_prefix": "",
+  "dialog.toolbar.toast.move_to_bin_failed": "Failed to move to bin",
+  "dialog.toolbar.toast.move_to_bin_success": "Moved to bin",
+  "dialog.toolbar.toast.move_to_archive_failed": "Failed to move to archive",
+  "dialog.toolbar.toast.move_to_archive_success": "Moved to archive",
+  "dialog.toolbar.toast.move_to_inbox_success": "Moved to inbox",
+  "dialog.toolbar.toast.move_to_inbox_failed": "Failed to move to inbox"
 }

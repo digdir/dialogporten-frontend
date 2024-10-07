@@ -3,11 +3,12 @@ import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelectedDialogs } from '../PageLayout';
 
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import type { Participant } from '../../api/useDialogById.tsx';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
-import { FeatureFlagKeys } from '../../featureFlags/FeatureFlags.ts';
-import { useFeatureFlag } from '../../featureFlags/useFeatureFlag.ts';
+import { FeatureFlagKeys } from '../../featureFlags';
+import { useFeatureFlag } from '../../featureFlags';
 import { Avatar } from '../Avatar';
 import type { InboxItemMetaField } from '../MetaDataFields';
 import { MetaDataFields } from '../MetaDataFields';
@@ -99,6 +100,8 @@ export const InboxItem = ({
   const { inSelectionMode } = useSelectedDialogs();
   const { t } = useTranslation();
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
+
+  const hideSummaryAndMeta = !summary || viewType === 'archive' || viewType === 'bin';
 
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
@@ -195,7 +198,7 @@ export const InboxItem = ({
               />
             )}
           </header>
-          <div className={styles.participants}>
+          <div className={cx(styles.participants, { [styles.bottomPadding]: hideSummaryAndMeta })}>
             <div className={styles.sender}>
               <Avatar
                 name={sender?.name ?? ''}
@@ -209,8 +212,12 @@ export const InboxItem = ({
               <span className={styles.participantLabel}>{`${t('word.to')} ${receiver?.name}`}</span>
             </div>
           </div>
-          <p className={styles.summary}>{summary}</p>
-          <MetaDataFields metaFields={metaFields || []} viewType={viewType} />
+          {hideSummaryAndMeta ? null : (
+            <>
+              <p className={styles.summary}>{summary}</p>
+              <MetaDataFields metaFields={metaFields || []} viewType={viewType} />
+            </>
+          )}
         </section>
       </OptionalLinkContent>
     </li>

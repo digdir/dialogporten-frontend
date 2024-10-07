@@ -65,6 +65,8 @@
   "inbox.heading.title.drafts": "{count, plural, =0 {Ingen utkast} one {# utkast} other {# utkast}}",
   "inbox.heading.title.sent": "{count, plural, =0 {Ingen sendte} one {# sendt} other {# sendte}}",
   "inbox.heading.title.inbox": "{count, plural, =0 {Ingen meldinger} one {# melding} other {# meldinger}}",
+  "inbox.heading.title.bin": "{count, plural, =0 {Ingen i papirkurv} one {# i papirkurv} other {# i papirkurv}}",
+  "inbox.heading.title.archive": "{count, plural, =0 {Ingen arkiverte} one {# arkivert} other {# arkiverte}}",
   "inbox.title": "Innboks",
   "link.goToAllServices": "Gå til alle tjenester",
   "link.goToInbox": "Gå til innboks",
@@ -76,6 +78,9 @@
   "menuBar.chat.label": "Trykk her for å gå til chat",
   "menuBar.close": "Lukk meny",
   "menuBar.open": "Åpne meny",
+  "dialog.toolbar.move_to_archive": "Flytt til arkiv",
+  "dialog.toolbar.move_to_bin": "Flytt til papirkurv",
+  "dialog.toolbar.move_undo": "Flytt til innboks",
   "notifications.count": "{count, plural, one {# ulest melding} other {# uleste meldinger}}",
   "parties.labels.all_organizations": "Alle virksomheter",
   "parties.labels.organizations": "Organisasjoner",
@@ -148,5 +153,11 @@
   "word.status": "Status",
   "word.to": "til",
   "word.you": "deg",
-  "word.clock_prefix": "kl"
+  "word.clock_prefix": "kl",
+  "dialog.toolbar.toast.move_to_bin_failed": "Flytting til papirkurv feilet",
+  "dialog.toolbar.toast.move_to_bin_success": "Flyttet til papirkurv",
+  "dialog.toolbar.toast.move_to_archive_failed": "Flytting til arkiv feilet",
+  "dialog.toolbar.toast.move_to_archive_success": "Flyttet til arkiv",
+  "dialog.toolbar.toast.move_to_inbox_success": "Flyttet til innboks",
+  "dialog.toolbar.toast.move_to_inbox_failed": "Flytting til innboks feilet"
 }

@@ -95,8 +95,8 @@ export const NavigationDropdownSubMenuInbox: React.FC<DropdownSubMenuProps> = ({
           toolTipText={t('sidebar.deleted.label')}
           leftIcon={<TrashIcon />}
           count={0}
-          isActive={pathname === Routes.deleted}
-          path={Routes.deleted}
+          isActive={pathname === Routes.bin}
+          path={Routes.bin}
           disabled
           onClick={onClose}
         />

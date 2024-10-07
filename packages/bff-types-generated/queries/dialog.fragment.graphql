@@ -36,6 +36,7 @@ fragment SearchDialogFields on SearchDialog {
       ...DialogContentFields
     }
   }
+  systemLabel
 }
 
 fragment DialogByIdFields on Dialog {
@@ -60,6 +61,7 @@ fragment DialogByIdFields on Dialog {
   createdAt
   updatedAt
   extendedStatus
+  systemLabel
   content {
     title {
       ...DialogContentFields
