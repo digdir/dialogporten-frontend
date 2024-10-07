@@ -117,9 +117,7 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    setSearchResults(
-      enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations || []) : [],
-    );
+    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations) : []);
   }, [setSearchResults, data?.searchDialogs?.items, enabled]);
 
   return {
@@ -160,7 +158,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(partyURIs),
     enabled: partyURIs.length > 0,
   });
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations || []);
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations);
   return {
     isLoading,
     isSuccess,
