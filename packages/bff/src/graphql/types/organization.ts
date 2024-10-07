@@ -31,7 +31,10 @@ interface TransformedOrganization {
   environments: string[];
 }
 
+const organizationsRedisKey = 'transformedOrganizations';
+
 async function fetchOrganizations() {
+  const { default: logger } = await import('@digdir/dialogporten-node-logger');
   try {
     const response = await fetch('https://altinncdn.no/orgs/altinn-orgs.json');
     if (!response.ok) {
@@ -52,7 +55,7 @@ async function storeOrganizationsInRedis() {
     const { default: redisClient } = await import('../../redisClient.ts');
     const organizations = await fetchOrganizations();
     const transformedOrganizations = organizations!.flatMap((org) => convertOrgsToJson(org));
-    await redisClient.set('transformedOrganizations', JSON.stringify(transformedOrganizations), 'EX', 86400);
+    await redisClient.set(organizationsRedisKey, JSON.stringify(transformedOrganizations), 'EX', 86400);
   } catch (error) {
     console.error('Error storing organizations in Redis:', error);
   }
@@ -60,20 +63,20 @@ async function storeOrganizationsInRedis() {
 export async function deleteOrganizationsFromRedis() {
   try {
     const { default: redisClient } = await import('../../redisClient.ts');
-    await redisClient.del('transformedOrganizations');
+    await redisClient.del(organizationsRedisKey);
   } catch (error) {
     console.error('Error deleting organizations from Redis:', error);
   }
 }
+
 deleteOrganizationsFromRedis();
+
 export async function getOrganizationsFromRedis() {
   try {
     const { default: redisClient } = await import('../../redisClient.ts');
-    const data = await redisClient.get('transformedOrganizations');
+    const data = await redisClient.get(organizationsRedisKey);
     if (data) {
-      const d = JSON.parse(data);
-      const transformedOrganizations = JSON.parse(data);
-      return transformedOrganizations;
+      return JSON.parse(data);
     }
     await storeOrganizationsInRedis();
     return await getOrganizationsFromRedis();
@@ -89,11 +92,7 @@ function convertOrgsToJson(orgs: Orgs): TransformedOrganization[] {
     const { name, logo, orgnr, homepage, environments } = details;
     result.push({
       id,
-      name: {
-        en: name.en,
-        nb: name.nb,
-        nn: name.nn,
-      },
+      name,
       logo,
       orgnr,
       homepage,
