@@ -6,6 +6,7 @@ import type {
   GetDialogByIdQuery,
   OrganizationFieldsFragment,
   PartyFieldsFragment,
+  SystemLabel,
 } from 'bff-types-generated';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
@@ -46,6 +47,7 @@ export interface DialogByIdDetails {
   activities: DialogActivity[];
   updatedAt: string;
   createdAt: string;
+  label: SystemLabel;
 }
 
 interface UseDialogByIdOutput {
@@ -182,6 +184,7 @@ export function mapDialogDtoToInboxItem(
       .reverse(),
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
+    label: item.systemLabel,
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {

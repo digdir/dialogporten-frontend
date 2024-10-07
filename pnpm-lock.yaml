@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../node-logger
       '@digdir/dialogporten-schema':
-        specifier: 1.19.0-651ca62
-        version: 1.19.0-651ca62
+        specifier: 1.21.0-3031d8d
+        version: 1.21.0-3031d8d
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.3.1
@@ -5213,8 +5213,8 @@ packages:
     resolution: {integrity: sha512-JWCLhXxDlMYwatg7mLkptfEkeiv/EKSaUOXX4nUoV8HjqyxMnLaaZZe6NKqx2SH1GPKOeSL5bEcs2NAEoFlGXg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.19.0-651ca62:
-    resolution: {integrity: sha512-+RUvPZJ0LzpE5IJXKDdRo8F75LIiTP+Pum9H6deshZwFF5b8GgQmwyTnfgsaCdmE9TaCYjynk7FQf1aLcZmKcA==}
+  /@digdir/dialogporten-schema@1.21.0-3031d8d:
+    resolution: {integrity: sha512-6su49yojwmXGM8payIn1jYLW467pov2XttUkkxYFRCXJHopu//AxQvv/gyRQmabDpK6XV4gYnK2Mh8lK7655AA==}
     engines: {node: '20'}
     dev: false
 
@@ -17273,6 +17273,7 @@ packages:
   /eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)

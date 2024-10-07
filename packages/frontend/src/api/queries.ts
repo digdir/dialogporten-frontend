@@ -4,7 +4,9 @@ import {
   type OrganizationsQuery,
   type SavedSearchInput,
   type SavedSearchesQuery,
+  type SystemLabel,
   type UpdateSavedSearchMutation,
+  type UpdateSystemLabelMutation,
   getSdk,
 } from 'bff-types-generated';
 import { GraphQLClient } from 'graphql-request';
@@ -19,3 +21,8 @@ export const updateSavedSearch = (id: number, name: string): Promise<UpdateSaved
   graphQLSDK.UpdateSavedSearch({ id, name });
 export const createSavedSearch = (name: string, data: SavedSearchInput): Promise<CreateSavedSearchMutation> =>
   graphQLSDK.CreateSavedSearch({ name, data });
+export const updateSystemLabel = (dialogId: string, label: SystemLabel): Promise<UpdateSystemLabelMutation> =>
+  graphQLSDK.updateSystemLabel({
+    dialogId,
+    label,
+  });

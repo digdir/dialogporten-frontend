@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import type {
-  GetAllDialogsForPartiesQuery,
-  OrganizationFieldsFragment,
-  PartyFieldsFragment,
-  SearchDialogFieldsFragment,
+
+import {
+  DialogStatus,
+  type GetAllDialogsForPartiesQuery,
+  type OrganizationFieldsFragment,
+  type PartyFieldsFragment,
+  type SearchDialogFieldsFragment,
+  SystemLabel,
 } from 'bff-types-generated';
-import { DialogStatus } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
@@ -16,7 +18,7 @@ import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
 
-export type InboxViewType = 'inbox' | 'drafts' | 'sent';
+export type InboxViewType = 'inbox' | 'drafts' | 'sent' | 'archive' | 'bin';
 interface UseDialogsOutput {
   dialogs: InboxItemInput[];
   dialogsByView: {
@@ -68,6 +70,7 @@ export function mapDialogDtoToInboxItem(
       updatedAt: item.updatedAt,
       status: item.status ?? 'UnknownStatus',
       isSeenByEndUser,
+      label: item.systemLabel,
     };
   });
 }
@@ -128,22 +131,35 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
   };
 };
 
+export const isBinDialog = (dialog: InboxItemInput): boolean => dialog.label === SystemLabel.Bin;
+
+export const isArchivedDialog = (dialog: InboxItemInput): boolean => dialog.label === SystemLabel.Archive;
+
 export const isInboxDialog = (dialog: InboxItemInput): boolean =>
-  dialog.status === DialogStatus.New ||
-  dialog.status === DialogStatus.InProgress ||
-  dialog.status === DialogStatus.RequiresAttention ||
-  dialog.status === DialogStatus.Completed;
+  !isBinDialog(dialog) &&
+  !isArchivedDialog(dialog) &&
+  [DialogStatus.New, DialogStatus.InProgress, DialogStatus.RequiresAttention, DialogStatus.Completed].includes(
+    dialog.status,
+  );
 
-export const isDraftDialog = (dialog: InboxItemInput): boolean => [DialogStatus.Draft].includes(dialog.status);
+export const isDraftDialog = (dialog: InboxItemInput): boolean =>
+  !isBinDialog(dialog) && !isArchivedDialog(dialog) && dialog.status === DialogStatus.Draft;
 
-export const isSentDialog = (dialog: InboxItemInput): boolean => dialog.status === DialogStatus.Sent;
+export const isSentDialog = (dialog: InboxItemInput): boolean =>
+  !isBinDialog(dialog) && !isArchivedDialog(dialog) && dialog.status === DialogStatus.Sent;
 
 export const getViewType = (dialog: InboxItemInput): InboxViewType => {
+  if (isDraftDialog(dialog)) {
+    return 'drafts';
+  }
+  if (isArchivedDialog(dialog)) {
+    return 'archive';
+  }
   if (isSentDialog(dialog)) {
     return 'sent';
   }
-  if (isDraftDialog(dialog)) {
-    return 'drafts';
+  if (isBinDialog(dialog)) {
+    return 'bin';
   }
   return 'inbox';
 };
@@ -167,6 +183,8 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
       inbox: dialogs.filter(isInboxDialog),
       drafts: dialogs.filter(isDraftDialog),
       sent: dialogs.filter(isSentDialog),
+      archive: dialogs.filter(isArchivedDialog),
+      bin: dialogs.filter(isBinDialog),
     },
   };
 };

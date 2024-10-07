@@ -147,12 +147,14 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
           </section>
         )}
       </article>
-      <section data-id="dialog-activity-history" className={styles.activities}>
-        {activities.length > 0 && <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>}
-        {activities.map((activity) => (
-          <Activity key={activity.id} activity={activity} serviceOwner={sender} />
-        ))}
-      </section>
+      {activities.length > 0 && (
+        <section data-id="dialog-activity-history" className={styles.activities}>
+          <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
+          {activities.map((activity) => (
+            <Activity key={activity.id} activity={activity} serviceOwner={sender} />
+          ))}
+        </section>
+      )}
     </div>
   );
 };

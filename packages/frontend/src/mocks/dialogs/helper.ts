@@ -15,6 +15,7 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
     party: input.party,
     org: input.org,
     progress: input.progress,
+    systemLabel: input.systemLabel,
     attachments: [
       {
         id: input.id,

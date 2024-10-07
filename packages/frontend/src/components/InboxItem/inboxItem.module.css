@@ -97,6 +97,10 @@
   margin-bottom: 0.125rem;
 }
 
+.bottomPadding {
+  padding-bottom: 0.5rem;
+}
+
 .receiver,
 .sender {
   display: flex;
