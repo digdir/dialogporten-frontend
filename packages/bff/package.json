@@ -48,7 +48,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
-    "fastify": "^4.28.1",
+    "fastify": "^5.0.0",
     "fastify-graphiql": "workspace:*",
     "fastify-plugin": "^4.5.1",
     "graphql": "^16.8.1",
