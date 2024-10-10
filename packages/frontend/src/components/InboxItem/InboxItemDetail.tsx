@@ -1,6 +1,5 @@
 import { Link } from '@digdir/designsystemet-react';
 import { EyeIcon, FileIcon } from '@navikt/aksel-icons';
-import { AttachmentUrlConsumer } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
@@ -70,11 +69,8 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
     activities,
     updatedAt,
   } = dialog;
-  const attachmentCount = attachments.reduce(
-    (count, { urls }) => count + urls.map((url) => url.consumerType === 'GUI').length,
-    0,
-  );
 
+  const attachmentCount = attachments.reduce((count, { urls }) => count + urls.length, 0);
   const clockPrefix = t('word.clock_prefix');
   const formatString = clockPrefix ? `do MMMM yyyy '${clockPrefix}' HH.mm` : `do MMMM yyyy HH.mm`;
 
@@ -111,21 +107,19 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
             )}
             <ul className={styles.attachments} data-id="dialog-attachments-list">
               {attachments.map((attachment) =>
-                attachment.urls
-                  .filter((url) => url.consumerType === AttachmentUrlConsumer.Gui)
-                  .map((url) => (
-                    <li key={url.id} className={styles.attachmentItem}>
-                      <Link
-                        href={url.url}
-                        aria-label={t('inbox.attachment.link', {
-                          label: url.url,
-                        })}
-                      >
-                        <FileIcon className={styles.attachmentIcon} />
-                        {getPropertyByCultureCode(attachment.displayName) || url.url}
-                      </Link>
-                    </li>
-                  )),
+                attachment.urls.map((url) => (
+                  <li key={url.id} className={styles.attachmentItem}>
+                    <Link
+                      href={url.url}
+                      aria-label={t('inbox.attachment.link', {
+                        label: url.url,
+                      })}
+                    >
+                      <FileIcon className={styles.attachmentIcon} />
+                      {getPropertyByCultureCode(attachment.displayName) || url.url}
+                    </Link>
+                  </li>
+                )),
               )}
             </ul>
           </section>

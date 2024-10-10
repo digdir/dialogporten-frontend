@@ -115,6 +115,7 @@ fragment AttachmentUrlFields on AttachmentUrl {
   id
   url
   consumerType
+  mediaType
 }
 
 fragment AttachmentFields on Attachment {
