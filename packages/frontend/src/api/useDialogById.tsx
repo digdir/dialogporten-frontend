@@ -170,7 +170,7 @@ export function mapDialogDtoToInboxItem(
       isDeleteAction: guiAction.isDeleteDialogAction,
       disabled: !guiAction.isAuthorized,
     })),
-    attachments: item.attachments.filter((attachment) => attachment.urls.length > 0),
+    attachments: item.attachments.filter((a) => a.urls.filter((url) => url.consumerType === 'GUI').length > 0),
     mainContentReference: getMainContentReference(mainContentReference),
     dialogToken: item.dialogToken!,
     activities: item.activities
