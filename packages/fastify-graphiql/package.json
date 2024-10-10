@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "fastify": "^4.28.1",
-    "fastify-plugin": "^4.5.1"
+    "fastify-plugin": "^5.0.0"
   },
   "type": "module",
   "devDependencies": {
