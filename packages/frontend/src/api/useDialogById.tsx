@@ -8,6 +8,7 @@ import type {
   PartyFieldsFragment,
   SystemLabel,
 } from 'bff-types-generated';
+import { AttachmentUrlConsumer } from 'bff-types-generated';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
@@ -170,7 +171,9 @@ export function mapDialogDtoToInboxItem(
       isDeleteAction: guiAction.isDeleteDialogAction,
       disabled: !guiAction.isAuthorized,
     })),
-    attachments: item.attachments.filter((attachment) => attachment.urls.length > 0),
+    attachments: item.attachments.filter(
+      (a) => a.urls.filter((url) => url.consumerType === AttachmentUrlConsumer.Gui).length > 0,
+    ),
     mainContentReference: getMainContentReference(mainContentReference),
     dialogToken: item.dialogToken!,
     activities: item.activities
