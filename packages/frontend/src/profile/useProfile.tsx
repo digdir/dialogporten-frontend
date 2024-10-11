@@ -15,7 +15,7 @@ export const useProfile = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     if (language !== i18n.language) {
-      void i18n.changeLanguage('en');
+      void i18n.changeLanguage(language);
     }
   }, [language]);
 };

@@ -42,7 +42,7 @@ export interface DialogByIdDetails {
   title: string;
   metaFields: InboxItemMetaField[];
   guiActions: GuiActionButtonProps[];
-  additionalInfo: string;
+  additionalInfo: { value: string; mediaType: string } | undefined;
   attachments: AttachmentFieldsFragment[];
   dialogToken: string;
   mainContentReference?: MainContentReference;
@@ -146,7 +146,10 @@ export function mapDialogDtoToInboxItem(
       isCompany: actualReceiverParty?.partyType === 'Organization',
     },
     metaFields: getMetaFields(item, isSeenByEndUser),
-    additionalInfo: getPreferredPropertyByLocale(additionalInfoObj)?.value ?? '',
+    additionalInfo: {
+      value: getPreferredPropertyByLocale(additionalInfoObj)?.value ?? '',
+      mediaType: item.content?.additionalInfo?.mediaType ?? '',
+    },
     guiActions: item.guiActions.map((guiAction) => ({
       id: guiAction.id,
       url: guiAction.url,
