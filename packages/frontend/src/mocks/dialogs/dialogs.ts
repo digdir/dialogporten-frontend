@@ -44,6 +44,10 @@ export const dialogs: SearchDialogFieldsFragment[] = [
           {
             "value": "Melding om bortkjøring av snø",
             "languageCode": "nb"
+          },
+          {
+            "value": "Notification of snow removal",
+            "languageCode": "en"
           }
         ]
       },

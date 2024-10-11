@@ -1,7 +1,8 @@
 import { Link } from '@digdir/designsystemet-react';
 import { EyeIcon, FileIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
-import { type DialogByIdDetails, getPropertyByCultureCode } from '../../api/useDialogById.tsx';
+import type { DialogActivity, DialogByIdDetails } from '../../api/useDialogById.tsx';
+import { getPreferredPropertyByLocale } from '../../i18n/property.ts';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
 import { Avatar } from '../Avatar';
@@ -116,7 +117,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
                       })}
                     >
                       <FileIcon className={styles.attachmentIcon} />
-                      {getPropertyByCultureCode(attachment.displayName) || url.url}
+                      {getPreferredPropertyByLocale(attachment.displayName)?.value || url.url}
                     </Link>
                   </li>
                 )),
@@ -144,7 +145,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
       {activities.length > 0 && (
         <section data-id="dialog-activity-history" className={styles.activities}>
           <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
-          {activities.map((activity) => (
+          {activities.map((activity: DialogActivity) => (
             <Activity key={activity.id} activity={activity} serviceOwner={sender} />
           ))}
         </section>

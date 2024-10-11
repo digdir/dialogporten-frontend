@@ -12,6 +12,7 @@ import { AttachmentUrlConsumer } from 'bff-types-generated';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
+import { type ValueType, getPreferredPropertyByLocale } from '../i18n/property.ts';
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
@@ -41,7 +42,7 @@ export interface DialogByIdDetails {
   title: string;
   metaFields: InboxItemMetaField[];
   guiActions: GuiActionButtonProps[];
-  additionalInfo: string | React.ReactNode;
+  additionalInfo: string;
   attachments: AttachmentFieldsFragment[];
   dialogToken: string;
   mainContentReference?: MainContentReference;
@@ -60,23 +61,6 @@ export const getDialogsById = (id: string): Promise<GetDialogByIdQuery> =>
   graphQLSDK.getDialogById({
     id,
   });
-
-type ValueType =
-  | Array<{
-      __typename?: 'Localization';
-      value: string;
-      languageCode: string;
-    }>
-  | null
-  | undefined;
-
-export const getPropertyByCultureCode = (value: ValueType): string => {
-  const defaultCultureCodes = ['nb'];
-  if (value) {
-    return value.find((item) => defaultCultureCodes.includes(item.languageCode))?.value ?? '';
-  }
-  return '';
-};
 
 export const getMetaFields = (item: DialogByIdFieldsFragment, isSeenByEndUser: boolean) => {
   const nOtherSeen = item.seenSinceLastUpdate?.filter((seenLogEntry) => !seenLogEntry.isCurrentEndUser).length ?? 0;
@@ -116,15 +100,17 @@ const getMainContentReference = (
   if (typeof args === 'undefined' || args === null) return undefined;
 
   const { value, mediaType } = args;
-  const url = getPropertyByCultureCode(value);
+  const url = getPreferredPropertyByLocale(value);
+
+  if (!url) return undefined;
 
   /* TODO: add support for frontchannelembed+json;type=html */
   switch (mediaType) {
     case 'text/markdown':
     case 'application/vnd.dialogporten.frontchannelembed+json;type=markdown':
-      return { url, mediaType: 'markdown' };
+      return { url: url.value, mediaType: 'markdown' };
     default:
-      return { url, mediaType: 'unknown' };
+      return { url: url.value, mediaType: 'unknown' };
   }
 };
 
@@ -136,6 +122,7 @@ export function mapDialogDtoToInboxItem(
   if (!item) {
     return undefined;
   }
+
   const titleObj = item?.content?.title?.value;
   const additionalInfoObj = item?.content?.additionalInfo?.value;
   const summaryObj = item?.content?.summary?.value;
@@ -147,8 +134,8 @@ export function mapDialogDtoToInboxItem(
   const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
 
   return {
-    title: getPropertyByCultureCode(titleObj),
-    summary: getPropertyByCultureCode(summaryObj),
+    title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
+    summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
     sender: {
       name: serviceOwner?.name ?? '',
       isCompany: true,
@@ -159,15 +146,15 @@ export function mapDialogDtoToInboxItem(
       isCompany: actualReceiverParty?.partyType === 'Organization',
     },
     metaFields: getMetaFields(item, isSeenByEndUser),
-    additionalInfo: getPropertyByCultureCode(additionalInfoObj),
+    additionalInfo: getPreferredPropertyByLocale(additionalInfoObj)?.value ?? '',
     guiActions: item.guiActions.map((guiAction) => ({
       id: guiAction.id,
       url: guiAction.url,
       hidden: !guiAction.isAuthorized,
       priority: guiAction.priority,
       httpMethod: guiAction.httpMethod,
-      title: getPropertyByCultureCode(guiAction.title),
-      prompt: getPropertyByCultureCode(guiAction.prompt),
+      title: getPreferredPropertyByLocale(guiAction.title)?.value ?? '',
+      prompt: getPreferredPropertyByLocale(guiAction.prompt)?.value,
       isDeleteAction: guiAction.isDeleteDialogAction,
       disabled: !guiAction.isAuthorized,
     })),
@@ -182,7 +169,7 @@ export function mapDialogDtoToInboxItem(
         type: activity.type,
         createdAt: activity.createdAt,
         performedBy: activity.performedBy,
-        description: getPropertyByCultureCode(activity.description),
+        description: getPreferredPropertyByLocale(activity.description)?.value ?? '',
       }))
       .reverse(),
     createdAt: item.createdAt,
@@ -200,9 +187,11 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
     queryFn: () => getDialogsById(id!),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
+
   if (isOrganizationsLoading) {
     return { isLoading: true, isSuccess: false };
   }
+
   return {
     isLoading,
     isSuccess,

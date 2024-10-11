@@ -13,6 +13,7 @@ import { useDebounce } from 'use-debounce';
 import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
+import { getPreferredPropertyByLocale } from '../i18n/property.ts';
 import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
@@ -27,14 +28,6 @@ interface UseDialogsOutput {
   isSuccess: boolean;
   isLoading: boolean;
 }
-
-const getPropertyByCultureCode = (value: Record<string, string>[] | undefined): string => {
-  const defaultCultureCode = 'nb';
-  if (value) {
-    return value.find((item) => item.languageCode === defaultCultureCode)?.value ?? '';
-  }
-  return '';
-};
 
 export function mapDialogDtoToInboxItem(
   input: SearchDialogFieldsFragment[],
@@ -53,8 +46,8 @@ export function mapDialogDtoToInboxItem(
     return {
       id: item.id,
       party: item.party,
-      title: getPropertyByCultureCode(titleObj),
-      summary: getPropertyByCultureCode(summaryObj),
+      title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
+      summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
       sender: {
         name: serviceOwner?.name ?? '',
         isCompany: true,
