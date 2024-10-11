@@ -10,13 +10,12 @@ export const useProfile = () => {
     queryFn: () => profile(),
   });
   const { i18n } = useTranslation();
-
   const language = data?.profile?.language || i18n.language || 'nb';
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     if (language !== i18n.language) {
-      i18n.changeLanguage(language);
+      void i18n.changeLanguage('en');
     }
   }, [language]);
 };
