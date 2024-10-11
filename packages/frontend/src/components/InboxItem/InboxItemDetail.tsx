@@ -5,6 +5,7 @@ import type { DialogActivity, DialogByIdDetails } from '../../api/useDialogById.
 import { getPreferredPropertyByLocale } from '../../i18n/property.ts';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
+import { AdditionalInfoContent } from '../AdditonalInfoContent';
 import { Avatar } from '../Avatar';
 import { MainContentReference } from '../MainContentReference';
 import { GuiActions } from './GuiActions.tsx';
@@ -136,11 +137,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
             ))}
           </div>
         </div>
-        {additionalInfo && (
-          <section className={styles.additionalInfo} data-id="dialog-additional-info">
-            {additionalInfo}
-          </section>
-        )}
+        <AdditionalInfoContent mediaType={additionalInfo?.mediaType} value={additionalInfo?.value} />
       </article>
       {activities.length > 0 && (
         <section data-id="dialog-activity-history" className={styles.activities}>
