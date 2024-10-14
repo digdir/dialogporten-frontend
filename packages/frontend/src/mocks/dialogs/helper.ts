@@ -45,7 +45,6 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
         description: input.latestActivity!.description,
         type: ActivityType.Information,
         createdAt: input.createdAt,
-        relatedActivityId: null
       }
     ],
     guiActions: [
