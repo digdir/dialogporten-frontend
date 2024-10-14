@@ -142,7 +142,6 @@ fragment DialogActivity on Activity {
   }
   type
   createdAt
-  relatedActivityId
 }
 
 fragment SeenLogFields on SeenLog {
