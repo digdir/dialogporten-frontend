@@ -91,3 +91,25 @@ jobs:
       pathToPackage: packages/node-logger
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+  send-slack-message-on-failure:
+    name: Send Slack message on failure
+    needs: [
+      docker-build-and-push,
+      deploy-infrastructure,
+      deploy-apps,
+      publish-node-logger-to-npm,
+    ]
+    if: ${{ always() && failure() && !cancelled() }}
+    uses: ./.github/workflows/workflow-send-ci-cd-status-slack-message.yml
+    with:
+      environment: test
+      docker_build_and_push_status: ${{ needs.docker-build-and-push.result }}
+      infra_status: ${{ needs.deploy-infrastructure.result }}
+      apps_status: ${{ needs.deploy-apps.result }}
+      publish_node_logger_to_npm_status: ${{ needs.publish-node-logger-to-npm.result }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID_FOR_CI_CD_STATUS }}
+    

@@ -114,3 +114,19 @@ jobs:
       region: norwayeast
       version: ${{ needs.get-current-version.outputs.version }}
       runMigration: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
+
+  send-slack-message-on-failure:
+    name: Send Slack message on failure
+    needs: [
+      deploy-infrastructure,
+      deploy-apps,
+    ]
+    if: ${{ always() && failure() && !cancelled() }}
+    uses: ./.github/workflows/workflow-send-ci-cd-status-slack-message.yml
+    with:
+      environment: prod
+      infra_status: ${{ needs.deploy-infrastructure.result }}
+      apps_status: ${{ needs.deploy-apps.result }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID_FOR_CI_CD_STATUS }}

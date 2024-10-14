@@ -1,0 +1,54 @@
+{
+  "attachments": [
+    {
+      "color": "#FF0000",
+      "blocks": [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain_text",
+            "text": "Github pipeline failed",
+            "emoji": true
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "*Environment:* ${{ env.ENVIRONMENT }}"
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "*Job Status:*\n• Infrastructure: ${{ env.INFRA_STATUS }}\n• Apps: ${{ env.APPS_STATUS }}\n• Build and Test: ${{ env.BUILD_AND_TEST_STATUS }}\n• Docker Build and Push: ${{ env.DOCKER_BUILD_AND_PUSH_STATUS }}\n• Publish Node Logger to NPM: ${{ env.PUBLISH_NODE_LOGGER_TO_NPM_STATUS }}"
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Please check the workflow for more details."
+          }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "View Run"
+              },
+              "url": "${{ env.RUN_URL }}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
