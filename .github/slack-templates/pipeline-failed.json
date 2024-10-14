@@ -7,7 +7,7 @@
           "type": "header",
           "text": {
             "type": "plain_text",
-            "text": "Github pipeline status",
+            "text": "Github pipeline failed",
             "emoji": true
           }
         },
