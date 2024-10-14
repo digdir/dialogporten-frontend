@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/digdir/dialogporten-frontend/compare/v1.4.0...v1.5.0) (2024-10-14)
+
+
+### Features
+
+* refactor to support more flexibility when picking valueType based on langueCode ([2db72e9](https://github.com/digdir/dialogporten-frontend/commit/2db72e994faceda9ae76cef376767dfd5001855e))
+* support text/markdown and text/html for additional info section in inbox details ([7b46733](https://github.com/digdir/dialogporten-frontend/commit/7b46733ea4b7c8c6ad7a38989637cf09b138a65a))
+
+
+### Bug Fixes
+
+* ensure attachment are only counted if they have urls with consumer type GUI ([18a7600](https://github.com/digdir/dialogporten-frontend/commit/18a7600d9fe64f62a57f47691a3a9b4708d96ed1))
+* remove deprecated relatedActivityId ([046b2af](https://github.com/digdir/dialogporten-frontend/commit/046b2afd64b2ce933fedae64bb3572d8858acc81))
+
 ## [1.4.0](https://github.com/digdir/dialogporten-frontend/compare/v1.3.1...v1.4.0) (2024-10-07)
 
 
