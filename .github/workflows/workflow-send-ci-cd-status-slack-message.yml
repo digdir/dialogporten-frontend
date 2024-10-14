@@ -1,0 +1,79 @@
+name: Send CI/CD Status Slack Message
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      infra_status:
+        type: string
+        description: "Status of the infrastructure deployment job"
+        default: "skipped"
+      apps_status:
+        type: string
+        description: "Status of the apps deployment job"
+        default: "skipped"
+      docker_build_and_push_status:
+        type: string
+        description: "Status of the docker image publishing job"
+        default: "skipped"
+      build_and_test_status:
+        type: string
+        description: "Status of the build and test job"
+        default: "skipped"
+      publish_node_logger_to_npm_status:
+        type: string
+        description: "Status of the publish node logger to npm job"
+        default: "skipped"
+    secrets:
+      SLACK_BOT_TOKEN:
+        required: true
+      SLACK_CHANNEL_ID:
+        required: true
+
+jobs:
+  send-slack-message:
+    name: Send Slack message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine status emojis
+        id: status-emojis
+        run: |
+          determine_emoji() {
+            local -A emoji_map=(
+              [success]=":white_check_mark:"
+              [failure]=":x:"
+              [cancelled]=":warning:"
+              [skipped]=":ballot_box_with_check:"
+            )
+            echo "${emoji_map[$1]:-Invalid status: $1}"
+          }
+
+          {
+            echo "INFRA_EMOJI=$(determine_emoji "${{ inputs.infra_status }}")"
+            echo "APPS_EMOJI=$(determine_emoji "${{ inputs.apps_status }}")"
+            echo "BUILD_AND_TEST_EMOJI=$(determine_emoji "${{ inputs.build_and_test_status }}")"
+            echo "DOCKER_BUILD_AND_PUSH_EMOJI=$(determine_emoji "${{ inputs.docker_build_and_push_status }}")"
+            echo "PUBLISH_NODE_LOGGER_TO_NPM_EMOJI=$(determine_emoji "${{ inputs.publish_node_logger_to_npm_status }}")"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Send GitHub slack message
+        id: slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          # statuses
+          INFRA_STATUS: "${{ steps.status-emojis.outputs.INFRA_EMOJI }}"
+          APPS_STATUS: "${{ steps.status-emojis.outputs.APPS_EMOJI }}"
+          BUILD_AND_TEST_STATUS: "${{ steps.status-emojis.outputs.BUILD_AND_TEST_EMOJI }}"
+          DOCKER_BUILD_AND_PUSH_STATUS: "${{ steps.status-emojis.outputs.DOCKER_BUILD_AND_PUSH_EMOJI }}"
+          PUBLISH_NODE_LOGGER_TO_NPM_STATUS: "${{ steps.status-emojis.outputs.PUBLISH_NODE_LOGGER_TO_NPM_EMOJI }}"
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload-file-path: "./.github/slack-templates/pipeline-failed.json"
