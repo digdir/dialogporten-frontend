@@ -15,9 +15,22 @@ interface GlobalMenuBarProps {
   notificationCount?: number;
 }
 
-export const CloseMenuButton = ({ className }: { className?: string }) => {
+interface CloseMenuButtonProps {
+  className?: string;
+  onClose: () => void;
+}
+
+export const CloseMenuButton = ({ className, onClose }: CloseMenuButtonProps) => {
   return (
-    <div className={cx(styles.crossSquare, className)} aria-hidden="true">
+    <div
+      className={cx(styles.crossSquare, className)}
+      onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClose();
+        }
+      }}
+    >
       <XMarkIcon />
     </div>
   );
@@ -60,7 +73,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
               <div className={styles.menuButtonWrapper}>
                 <div className={styles.menuButtonText}>{t('word.menu')}</div>
                 {showBackDrop ? (
-                  <CloseMenuButton className={styles.closeMenuButton} />
+                  <CloseMenuButton className={styles.closeMenuButton} onClose={handleClose} />
                 ) : (
                   <Avatar name={name} profile={profile} />
                 )}
