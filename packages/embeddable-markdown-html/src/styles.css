@@ -1,0 +1,65 @@
+:root {
+  --fce-base-size: 1.125rem;
+  --fce-base-line-height: 1.5;
+}
+
+.__fce-paragraph {
+  font-size: var(--fce-base-size);
+  line-height: var(--fce-base-line-height);
+}
+
+.__fce-list-item {
+  font-size: var(--fce-base-size);
+  line-height: var(--fce-base-line-height);
+}
+
+.__fce-header-3,
+.__fce-header-4,
+.__fce-header-5,
+.__fce-header-6 {
+  font-size: var(--fce-base-size);
+  line-height: var(--fce-base-line-height);
+}
+
+.__fce-header-1,
+.__fce-header-2,
+.__fce-header-3,
+.__fce-header-4,
+.__fce-header-5,
+.__fce-header-6 {
+  margin: 0.75rem 0;
+}
+
+.__fce-header-1 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+.__fce-header-2 {
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.__fce-header-3 {
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.__fce-header-4 {
+  font-weight: 600;
+}
+
+.__fce-header-5 {
+  font-weight: 500;
+}
+
+.__fce-header-6 {
+  font-weight: 500;
+}
+
+.__fce-strong {
+  font-weight: 500;
+}

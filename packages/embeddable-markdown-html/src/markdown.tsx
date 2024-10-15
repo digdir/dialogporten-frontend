@@ -7,24 +7,12 @@ import rehypeSanitize from 'rehype-sanitize';
 import remarkParse, { type Options as RemarkParseOptions } from 'remark-parse';
 import remarkToRehype from 'remark-rehype';
 import { unified } from 'unified';
+import { defaultClassMap } from './classMap.ts';
 
-import './markdown.css';
+import './styles.css';
 
-type ClassMap = Partial<Record<string, string>>;
 // @ts-expect-error: the react types are missing.
 const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
-
-const defaultClassMap: ClassMap = {
-  p: '__markdown-paragraph',
-  li: '__markdown-list-item',
-  h1: '__markdown-header-1',
-  h2: '__markdown-header-2',
-  h3: '__markdown-header-3',
-  h4: '__markdown-header-4',
-  h5: '__markdown-header-5',
-  h6: '__markdown-header-6',
-  strong: '__markdown-strong',
-};
 
 /**
  * Renders markdown as React elements.
@@ -37,11 +25,9 @@ const defaultClassMap: ClassMap = {
 export const Markdown: ({
   children,
   onError,
-  classMap,
-}: { children: string; onError?: (error: unknown) => void; classMap?: ClassMap }) => ReactElement | null = ({
+}: { children: string; onError?: (error: unknown) => void }) => ReactElement | null = ({
   children,
   onError = () => {},
-  classMap = defaultClassMap,
 }) => {
   const [reactContent, setReactContent] = useState<ReactElement | null>(null);
 
@@ -51,7 +37,7 @@ export const Markdown: ({
       .use(remarkParse, {} as RemarkParseOptions)
       .use(remarkToRehype, {} as RemarkRehypeOptions)
       .use(rehypeSanitize)
-      .use(addClasses, classMap)
+      .use(addClasses, defaultClassMap)
       .use(rehypeReact, production)
       .process(children)
       .then((vfile) => setReactContent(vfile.result as ReactElement))

@@ -39,7 +39,7 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
 })
 
 
-const getMainContentMock = http.get('https://dialogporten-serviceprovider.net/fce', () => {
+const getMainContentMarkdownMock = http.get('https://dialogporten-serviceprovider.net/fce-markdown', () => {
   return HttpResponse.text(`# Info i markdown
 
 Dette er HTML som er generert fra markdown.
@@ -52,6 +52,11 @@ Dette er HTML som er generert fra markdown.
 4. **Fet tekst**: Bruk \`**\` eller \`__\` for å lage fet tekst. F.eks. \`**dette er viktig**\`.
 5. **Kodeblokker**: Bruk tre backticks (\`\`\`) for å lage kodeblokker eller enkel backtick for inline kode (f.eks. \`\` \`kode\` \`\`).
 `);
+});
+
+
+const getMainContentHtmlMock = http.get('https://dialogporten-serviceprovider.net/fce-html', () => {
+  return HttpResponse.text(`<html><body><h1>Tittel i arvet HTML</h1><p>Brødtekst!</p></body></html>`);
 });
 
 const getAllPartiesMock = graphql.query('parties', () => {
@@ -103,7 +108,8 @@ export const handlers = [
   getAllDialogsForPartiesMock,
   getAllPartiesMock,
   getDialogByIdMock,
-  getMainContentMock,
+  getMainContentMarkdownMock,
+  getMainContentHtmlMock,
   getSavedSearchesMock,
   getProfileMock,
   mutateSavedSearchMock,
