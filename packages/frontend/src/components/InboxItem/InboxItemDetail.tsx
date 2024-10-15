@@ -102,7 +102,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
             </time>
             <p className={styles.summary}>{summary}</p>
           </section>
-          <MainContentReference args={mainContentReference} dialogToken={dialogToken} />
+          <MainContentReference content={mainContentReference} dialogToken={dialogToken} />
           <section data-id="dialog-attachments">
             {attachmentCount > 0 && (
               <h2 className={styles.attachmentTitle}>{t('inbox.heading.attachments', { count: attachmentCount })}</h2>

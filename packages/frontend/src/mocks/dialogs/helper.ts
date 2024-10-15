@@ -8,6 +8,34 @@ import {
   SearchDialogFieldsFragment
 } from "bff-types-generated";
 
+
+export const getMockedMainContent = (dialogId: string) => {
+  const idWithLegacyHTML = "019241f7-6f45-72fd-a574-f19d358aaf4e";
+
+  if (idWithLegacyHTML === dialogId) {
+    return {
+      "mediaType": "application/vnd.dialogporten.frontchannelembed+json;type=html",
+      "value": [
+        {
+          "value": "https://dialogporten-serviceprovider.net/fce-html",
+          "languageCode": "nb"
+        }
+      ]
+    }
+  }
+
+  return {
+    "mediaType": "application/vnd.dialogporten.frontchannelembed+json;type=markdown",
+    "value": [
+      {
+        "value": "https://dialogporten-serviceprovider.net/fce-markdown",
+        "languageCode": "nb"
+      }
+    ]
+  }
+}
+
+
 export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): DialogByIdFieldsFragment => {
   return {
     id: input.id,
@@ -94,15 +122,7 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
         ]
       },
       extendedStatus: input.content.extendedStatus,
-      mainContentReference:{
-        "mediaType": "application/vnd.dialogporten.frontchannelembed+json;type=markdown",
-        "value": [
-          {
-            "value": "https://dialogporten-serviceprovider.net/fce",
-            "languageCode": "nb"
-          }
-        ]
-      }
+      mainContentReference: getMockedMainContent(input.id),
     }
   };
 }

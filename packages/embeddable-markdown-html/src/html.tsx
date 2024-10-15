@@ -1,9 +1,13 @@
 import { type ReactElement, useEffect, useState } from 'react';
 import * as prod from 'react/jsx-runtime';
+import addClasses from 'rehype-class-names';
 import rehypeParse, { type Options as RehypeParseOptions } from 'rehype-parse';
 import rehypeReact from 'rehype-react';
 import rehypeSanitize from 'rehype-sanitize';
 import { unified } from 'unified';
+
+import './styles.css';
+import { defaultClassMap } from './classMap.ts';
 
 // @ts-expect-error: the react types are missing.
 const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
@@ -18,6 +22,7 @@ export const Html: React.FC<{
     unified()
       .use(rehypeParse, {} as RehypeParseOptions)
       .use(rehypeSanitize)
+      .use(addClasses, defaultClassMap)
       .use(rehypeReact, production)
       .process(children)
       .then((vfile) => setReactContent(vfile.result as ReactElement))

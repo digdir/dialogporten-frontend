@@ -1,7 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Html > should render content 1`] = `
-<h1>
+<h1
+  class="__fce-header-1"
+>
    header 
 </h1>
 `;

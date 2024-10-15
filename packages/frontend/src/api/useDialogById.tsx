@@ -23,9 +23,14 @@ export interface Participant {
   imageURL?: string;
 }
 
-interface MainContentReference {
+export enum EmbeddableMediaType {
+  markdown = 'application/vnd.dialogporten.frontchannelembed+json;type=markdown',
+  html = 'application/vnd.dialogporten.frontchannelembed+json;type=html',
+}
+
+export interface EmbeddedContent {
   url: string;
-  mediaType: 'markdown' | 'html' | 'unknown';
+  mediaType: EmbeddableMediaType;
 }
 
 export interface DialogActivity {
@@ -45,7 +50,7 @@ export interface DialogByIdDetails {
   additionalInfo: { value: string; mediaType: string } | undefined;
   attachments: AttachmentFieldsFragment[];
   dialogToken: string;
-  mainContentReference?: MainContentReference;
+  mainContentReference?: EmbeddedContent;
   activities: DialogActivity[];
   updatedAt: string;
   createdAt: string;
@@ -96,22 +101,19 @@ export const getMetaFields = (item: DialogByIdFieldsFragment, isSeenByEndUser: b
 
 const getMainContentReference = (
   args: { value: ValueType; mediaType: string } | undefined | null,
-): MainContentReference | undefined => {
+): EmbeddedContent | undefined => {
   if (typeof args === 'undefined' || args === null) return undefined;
 
   const { value, mediaType } = args;
-  const url = getPreferredPropertyByLocale(value);
+  const content = getPreferredPropertyByLocale(value);
+  const isValidMediaType = Object.values(EmbeddableMediaType).includes(mediaType as EmbeddableMediaType);
 
-  if (!url) return undefined;
+  if (!content || !isValidMediaType) return undefined;
 
-  /* TODO: add support for frontchannelembed+json;type=html */
-  switch (mediaType) {
-    case 'text/markdown':
-    case 'application/vnd.dialogporten.frontchannelembed+json;type=markdown':
-      return { url: url.value, mediaType: 'markdown' };
-    default:
-      return { url: url.value, mediaType: 'unknown' };
-  }
+  return {
+    url: content.value,
+    mediaType: mediaType as EmbeddableMediaType,
+  };
 };
 
 export function mapDialogDtoToInboxItem(

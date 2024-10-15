@@ -2,7 +2,7 @@
 
 exports[`Markdown > should render content 1`] = `
 <h1
-  class="__markdown-header-1"
+  class="__fce-header-1"
 >
   header
 </h1>

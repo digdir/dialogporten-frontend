@@ -1,40 +1,39 @@
 import { useQuery } from '@tanstack/react-query';
-import { Markdown } from 'embeddable-markdown-html';
-import type { DialogByIdDetails } from '../../api/useDialogById.tsx';
+import { Html, Markdown } from 'embeddable-markdown-html';
+import { type DialogByIdDetails, EmbeddableMediaType } from '../../api/useDialogById.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import styles from './mainContentReference.module.css';
 
+const getContent = (mediaType: EmbeddableMediaType, data: string) => {
+  switch (mediaType) {
+    case EmbeddableMediaType.markdown:
+      return <Markdown>{data}</Markdown>;
+    case EmbeddableMediaType.html:
+      return <Html>{data}</Html>;
+    default:
+      return data;
+  }
+};
+
 export const MainContentReference = ({
-  args,
+  content,
   dialogToken,
-}: { args: DialogByIdDetails['mainContentReference']; dialogToken: string }) => {
-  const { data, isSuccess, error } = useQuery({
-    queryKey: [QUERY_KEYS.MAIN_CONTENT_REFERENCE, args?.url],
+}: { content: DialogByIdDetails['mainContentReference']; dialogToken: string }) => {
+  const { data, isSuccess } = useQuery({
+    queryKey: [QUERY_KEYS.MAIN_CONTENT_REFERENCE, content?.url, content?.mediaType],
     queryFn: () =>
-      fetch(args!.url, {
+      fetch(content!.url, {
         headers: {
           'Content-Type': 'text/plain',
           Authorization: `Bearer ${dialogToken}`,
         },
       }).then((res) => res.text()),
-    enabled: args?.url !== undefined && args?.mediaType === 'markdown',
+    enabled: content?.url !== undefined && Object.values(EmbeddableMediaType).includes(content.mediaType),
   });
 
-  if (!args) {
+  if (!content || !isSuccess) {
     return null;
   }
 
-  if (typeof error === 'string') {
-    return <div data-id="dialog-main-content-reference-error">Error parsing 'mainContentReference': {error}</div>;
-  }
-
-  if (typeof data === 'string' && isSuccess) {
-    return (
-      <section data-id="dialog-main-content-reference" className={styles.mainContentReference}>
-        <Markdown>{data}</Markdown>
-      </section>
-    );
-  }
-
-  return null;
+  return <section className={styles.mainContentReference}>{getContent(content.mediaType, data)}</section>;
 };
