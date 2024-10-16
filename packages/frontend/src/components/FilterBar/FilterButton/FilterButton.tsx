@@ -46,6 +46,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
   const maxDate = format(new Date(end), 'yyyy-MM-dd');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+
   return (
     <section className={styles.filterDateContent}>
       <button type="button" className={styles.menuColumn} onClick={onBack}>
@@ -53,13 +54,15 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
         <span className={styles.subMenuTitle}>{t('word.back')}</span>
       </button>
       <HorizontalLine />
-      <label htmlFor="fromDate">{t('filter_bar.from_date_label')}</label>
+      <label className={styles.dateInputLabel} htmlFor="fromDate">
+        {t('filter_bar.from_date_label')}
+      </label>
       <div className={styles.dateInputWrapper}>
         <input
           id="fromDate"
           key="fromDate"
           type="date"
-          value={startDate || minDate}
+          value={startDate ? startDate : ''}
           min={minDate}
           max={maxDate}
           className={styles.dateInputField}
@@ -76,7 +79,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
         <input
           key="toDate"
           type="date"
-          value={endDate || maxDate}
+          value={endDate ? endDate : ''}
           min={minDate}
           className={styles.dateInputField}
           max={maxDate}
