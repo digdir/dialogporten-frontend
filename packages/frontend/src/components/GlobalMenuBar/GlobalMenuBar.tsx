@@ -17,20 +17,11 @@ interface GlobalMenuBarProps {
 
 interface CloseMenuButtonProps {
   className?: string;
-  onClose: () => void;
 }
 
-export const CloseMenuButton = ({ className, onClose }: CloseMenuButtonProps) => {
+export const CloseMenuButton = ({ className }: CloseMenuButtonProps) => {
   return (
-    <div
-      className={cx(styles.crossSquare, className)}
-      onClick={onClose}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          onClose();
-        }
-      }}
-    >
+    <div className={cx(styles.crossSquare, className)}>
       <XMarkIcon />
     </div>
   );
@@ -43,9 +34,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
   const { t } = useTranslation();
 
   const toggleShowBackdrop = () => {
-    if (!showBackDrop) {
-      setShowBackDrop((prev) => !prev);
-    }
+    setShowBackDrop((prev) => !prev);
   };
 
   const handleClose = () => {
@@ -56,13 +45,11 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
   const showNotificationsBadge = notificationCount > 0 && !showBackDrop;
   return (
     <>
-      <div
-        className={styles.globalMenuBar}
-        onClick={toggleShowBackdrop}
-        onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}
-      >
+      <div className={styles.globalMenuBar}>
         <section>
           <button
+            onClick={toggleShowBackdrop}
+            onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}
             type="button"
             className={styles.toggleOpenButton}
             aria-label={showBackDrop ? t('menuBar.close') : t('menuBar.open')}
@@ -73,7 +60,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
               <div className={styles.menuButtonWrapper}>
                 <div className={styles.menuButtonText}>{t('word.menu')}</div>
                 {showBackDrop ? (
-                  <CloseMenuButton className={styles.closeMenuButton} onClose={handleClose} />
+                  <CloseMenuButton className={styles.closeMenuButton} />
                 ) : (
                   <Avatar name={name} profile={profile} />
                 )}
