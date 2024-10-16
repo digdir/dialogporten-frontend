@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.6.0](https://github.com/digdir/dialogporten-frontend/compare/v1.5.0...v1.6.0) (2024-10-16)
+
+
+### Features
+
+* support legacy html as front channel embeds for main content reference ([85045f5](https://github.com/digdir/dialogporten-frontend/commit/85045f5db029b41b2d3e8865daae10f8bda05040))
+
+
+### Bug Fixes
+
+* Filter menu no longer covers global menu bar ([a3c8fb7](https://github.com/digdir/dialogporten-frontend/commit/a3c8fb7659feeefbb8182bc8dd1cc04f0ed425b8))
+* Fixed menu button toggle button not closing the menu ([afe336e](https://github.com/digdir/dialogporten-frontend/commit/afe336e6520b5d12aa6431accbd1b6e807483438))
+* Fixed menu button toggle button not closing the menu ([c990958](https://github.com/digdir/dialogporten-frontend/commit/c9909589672d409a70c9d134833cf13c5f43b233))
+* SavedSearch action menu showing correctly on large screen sizes ([2427e3e](https://github.com/digdir/dialogporten-frontend/commit/2427e3ea03f5b26a0a6bcc5ef17261c20e77c8e0))
+
 ## [1.5.0](https://github.com/digdir/dialogporten-frontend/compare/v1.4.0...v1.5.0) (2024-10-14)
 
 
