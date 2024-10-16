@@ -1,5 +1,5 @@
-import { Skeleton } from '@digdir/designsystemet-react';
 import { Fragment } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import styles from './savedSearchesPage.module.css';
 
 interface SavedSearchesSkeletonProps {
@@ -11,14 +11,14 @@ export const SavedSearchesSkeleton: React.FC<SavedSearchesSkeletonProps> = ({ nu
     <main>
       <section className={styles.savedSearchesWrapper}>
         <div className={styles.title}>
-          <Skeleton.Text width="140px" />
+          <Skeleton width="140px" />
         </div>
         <div className={styles.savedSearchesContainer}>
           {Array.from({ length: numberOfItems }).map((_, index) => (
             <Fragment key={index}>
               <div className={styles.savedSearchItem} style={{ minHeight: 48 }}>
                 <div className={styles.searchDetails}>
-                  <Skeleton.Text width="140px" />
+                  <Skeleton width="140px" />
                 </div>
               </div>
               <hr style={{ opacity: 0.4 }} />
@@ -26,7 +26,7 @@ export const SavedSearchesSkeleton: React.FC<SavedSearchesSkeletonProps> = ({ nu
           ))}
         </div>
         <div className={styles.lastUpdated}>
-          <Skeleton.Text width="250px" />
+          <Skeleton width="250px" />
         </div>
       </section>
     </main>

@@ -1,9 +1,10 @@
-import { Skeleton } from '@digdir/designsystemet-react';
 import cx from 'classnames';
 import { useRef } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { InboxItems } from '../../components';
 import styles from '../../components/InboxItem/inboxItem.module.css';
 import inboxItemsHeaderStyles from '../../components/InboxItem/inboxItemsHeader.module.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 interface InboxSkeletonProps {
   numberOfItems: number;
@@ -24,7 +25,7 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({
         {withHeader && (
           <header className={inboxItemsHeaderStyles.inboxItemsHeader}>
             <h2>
-              <Skeleton.Text width="80px" />
+              <Skeleton width="80px" />
             </h2>
           </header>
         )}
@@ -37,23 +38,23 @@ export const InboxSkeleton: React.FC<InboxSkeletonProps> = ({
             <section className={styles.inboxItem}>
               <header className={styles.header}>
                 <h2 className={styles.title}>
-                  <Skeleton.Text width="400px" height="24px" />
+                  <Skeleton width="400px" height="24px" />
                 </h2>
               </header>
-              <Skeleton.Text width="40%" height="36px" className={styles.summary} />
-              <Skeleton.Text width="100%" className={styles.summary} />
+              <Skeleton width="40%" height="36px" className={styles.summary} />
+              <Skeleton width="100%" className={styles.summary} />
               <div className={styles.participants}>
                 <div className={styles.sender}>
                   <span>
-                    <Skeleton.Text width="80px" />
+                    <Skeleton width="80px" />
                   </span>
                 </div>
                 <span>
-                  <Skeleton.Text width="80px" />
+                  <Skeleton width="80px" />
                 </span>
                 <div className={styles.receiver}>
                   <span>
-                    <Skeleton.Text width="80px" />
+                    <Skeleton width="80px" />
                   </span>
                 </div>
               </div>
