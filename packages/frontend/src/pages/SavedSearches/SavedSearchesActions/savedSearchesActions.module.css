@@ -1,7 +1,9 @@
 .savedSearchesActions {
   display: flex;
   align-items: center;
+  position: relative;
 }
+
 .icon {
   min-width: 24px;
   min-height: 24px;
@@ -17,5 +19,7 @@
 }
 
 .contextMenu {
-  right: 1rem;
+  position: absolute;
+  top: 100%;
+  right: 0;
 }
