@@ -34,7 +34,6 @@ interface TransformedOrganization {
 const organizationsRedisKey = 'transformedOrganizations';
 
 async function fetchOrganizations() {
-  const { default: logger } = await import('@digdir/dialogporten-node-logger');
   try {
     const response = await fetch('https://altinncdn.no/orgs/altinn-orgs.json');
     if (!response.ok) {
@@ -97,19 +96,19 @@ export const OrganizationNames = objectType({
   definition(t) {
     t.string('en', {
       description: 'Localized english name of the organization',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.en;
       },
     });
     t.string('nb', {
       description: 'Localized norwegian name of the organization',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.nb;
       },
     });
     t.string('nn', {
       description: 'Localized new norwegian name of the organization',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.nn;
       },
     });
@@ -121,38 +120,38 @@ export const Organization = objectType({
   definition(t) {
     t.string('id', {
       description: 'Organization id',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.id;
       },
     });
     t.field('name', {
       type: 'OrganizationNames',
       description: 'Localized name of the organization',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.name;
       },
     });
     t.string('logo', {
       description: 'URL to the organization logo',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.logo;
       },
     });
     t.string('orgnr', {
       description: 'Organization number',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.orgnr;
       },
     });
     t.string('homepage', {
       description: 'Homepage URL of the organization',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.homepage;
       },
     });
     t.list.string('environments', {
       description: 'Environments the organization operates in',
-      resolve: (organization, args, ctx, info) => {
+      resolve: (organization) => {
         return organization.environments;
       },
     });
@@ -165,7 +164,7 @@ export const OrganizationQuery = extendType({
     t.list.field('organizations', {
       type: 'Organization',
       description: 'List of organizations',
-      resolve: async (_, args, ctx) => {
+      resolve: async () => {
         return await getOrganizationsFromRedis();
       },
     });
