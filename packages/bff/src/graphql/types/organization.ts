@@ -60,16 +60,6 @@ async function storeOrganizationsInRedis() {
     console.error('Error storing organizations in Redis:', error);
   }
 }
-export async function deleteOrganizationsFromRedis() {
-  try {
-    const { default: redisClient } = await import('../../redisClient.ts');
-    await redisClient.del(organizationsRedisKey);
-  } catch (error) {
-    console.error('Error deleting organizations from Redis:', error);
-  }
-}
-
-deleteOrganizationsFromRedis();
 
 export async function getOrganizationsFromRedis() {
   try {
