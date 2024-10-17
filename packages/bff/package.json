@@ -20,7 +20,7 @@
     "@azure/app-configuration": "^1.4.1",
     "@azure/identity": "^4.0.0",
     "@azure/keyvault-keys": "^4.7.2",
-    "@azure/monitor-opentelemetry": "1.7.0",
+    "@azure/monitor-opentelemetry": "1.7.1",
     "@digdir/dialogporten-node-logger": "workspace:*",
     "@digdir/dialogporten-schema": "1.23.2",
     "@fastify/cookie": "^9.3.1",

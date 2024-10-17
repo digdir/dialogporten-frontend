@@ -9,10 +9,10 @@
     "biome:fix-staged": "pnpm husky check --staged --fix"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.2",
+    "@biomejs/biome": "1.9.3",
     "lint-staged": "^15.2.7",
     "mprocs": "^0.6.4",
-    "turbo": "2.0.5"
+    "turbo": "2.1.3"
   },
   "engines": {
     "node": ">=20.0"
@@ -20,5 +20,5 @@
   "lint-staged": {
     "**/*.*": "biome check --staged --no-errors-on-unmatched --write"
   },
-  "packageManager": "pnpm@8.15.4"
+  "packageManager": "pnpm@8.15.9"
 }
