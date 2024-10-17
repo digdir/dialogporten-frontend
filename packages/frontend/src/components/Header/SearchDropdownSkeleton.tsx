@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import styles from './search.module.css';
 
-import { Skeleton } from '@digdir/designsystemet-react';
+import Skeleton from 'react-loading-skeleton';
 import { SearchDropdownItem } from './SearchDropdownItem';
 
 interface SearchDropdownSkeletonProps {
@@ -14,14 +14,14 @@ export const SearchDropdownSkeleton: React.FC<SearchDropdownSkeletonProps> = ({ 
       {Array.from({ length: numberOfItems }).map((_, index) => (
         <SearchDropdownItem key={`${index}-search-result`}>
           <div style={{ width: '100%' }}>
-            <Skeleton.Text width="40%" />
-            <Skeleton.Text width="100%" />
+            <Skeleton width="40%" />
+            <Skeleton width="100%" />
           </div>
           <div className={cx(styles.rightContent)}>
             <span className={styles.timeSince}>
-              <Skeleton.Text width="70%" />
+              <Skeleton width="70%" />
             </span>
-            <Skeleton.Circle width="20px" height="20px" style={{ marginRight: 12 }} />
+            <Skeleton width="20px" height="20px" circle style={{ marginRight: 12 }} />
           </div>
         </SearchDropdownItem>
       ))}

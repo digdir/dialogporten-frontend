@@ -1,7 +1,6 @@
-import { Skeleton } from '@digdir/designsystemet-react';
-import styles from './inboxItemPageSkeleton.module.css';
-
+import Skeleton from 'react-loading-skeleton';
 import { InboxSkeleton } from '../Inbox/InboxSkeleton';
+import styles from './inboxItemPageSkeleton.module.css';
 
 export const InboxItemPageSkeleton = () => {
   return (
@@ -9,14 +8,14 @@ export const InboxItemPageSkeleton = () => {
       <nav>
         <div className={styles.backLink}>
           <div className={styles.backButton}>
-            <Skeleton.Rectangle width="130px" height="48px" />
+            <Skeleton width="130px" height="48px" />
           </div>
         </div>
       </nav>
-      <Skeleton.Text className={styles.titleOne} height="2.5rem" width="25rem" />
-      <Skeleton.Text width="15rem" className={styles.subTitle} />
+      <Skeleton className={styles.titleOne} height="2.5rem" width="25rem" />
+      <Skeleton width="15rem" className={styles.subTitle} />
       <InboxSkeleton numberOfItems={1} noBorder />
-      <Skeleton.Text width="8.75rem" className={styles.titleTwo} />
+      <Skeleton width="8.75rem" className={styles.titleTwo} />
     </main>
   );
 };
