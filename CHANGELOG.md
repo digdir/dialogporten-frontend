@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.1](https://github.com/digdir/dialogporten-frontend/compare/v1.6.0...v1.6.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* date range of custom date period in filters was based on created date of dialogs, not updated date ([66811b7](https://github.com/digdir/dialogporten-frontend/commit/66811b707d8af5fc9b3667943e55a1d518d17c71))
+* fix date input field styles and popup not showing ([#1243](https://github.com/digdir/dialogporten-frontend/issues/1243)) ([d9c5616](https://github.com/digdir/dialogporten-frontend/commit/d9c561615d49c423a90acd9a9cc71c028a26fc66))
+* Fixed crashing behaviour when refreshing with query params ([#1247](https://github.com/digdir/dialogporten-frontend/issues/1247)) ([871ae5f](https://github.com/digdir/dialogporten-frontend/commit/871ae5f5bbd64f05162212030d230b16f58aad37))
+
 ## [1.6.0](https://github.com/digdir/dialogporten-frontend/compare/v1.5.0...v1.6.0) (2024-10-16)
 
 
