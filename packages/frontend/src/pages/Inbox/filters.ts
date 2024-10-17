@@ -133,7 +133,7 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       unSelectedLabel: t('filter_bar.label.all_dates'),
       operation: 'equals',
       options: generateDateOptions(
-        dialogs.map((p) => new Date(p.createdAt)),
+        dialogs.map((p) => new Date(p.updatedAt)),
         format,
       ),
     },
