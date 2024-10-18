@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/digdir/dialogporten-frontend/compare/v1.6.1...v1.6.2) (2024-10-18)
+
+
+### Bug Fixes
+
+* allow refreshing of access token when graphql request is executed through graphiql IDE ([5ba3c5d](https://github.com/digdir/dialogporten-frontend/commit/5ba3c5db86460b96dda7289dee803cb853d944fe))
+
 ## [1.6.1](https://github.com/digdir/dialogporten-frontend/compare/v1.6.0...v1.6.1) (2024-10-17)
 
 
