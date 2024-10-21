@@ -41,8 +41,8 @@ export const UpdateSavedSearch = extendType({
           await SavedSearchRepository!.update(id, { name });
           return { success: true, message: 'Saved search updated successfully' };
         } catch (error) {
-          logger.error(error, 'Failed to updated saved search');
-          return { success: false, message: 'Failed to updated saved search' };
+          logger.error(error, 'Failed to update saved search');
+          return { success: false, message: 'Failed to update saved search' };
         }
       },
     });
