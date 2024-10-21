@@ -1,3 +1,4 @@
+import { logger } from '@digdir/dialogporten-node-logger';
 import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
 import { SavedSearchRepository } from '../../db.ts';
 import { SavedSearch, getOrCreateProfile } from '../../entities.ts';
@@ -17,7 +18,7 @@ export const Mutation = extendType({
           const result = await SavedSearchRepository!.delete({ id });
           return { success: result?.affected && result?.affected > 0, message: 'Saved search deleted successfully' };
         } catch (error) {
-          console.error('Failed to delete saved search:', error);
+          logger.error(error, 'Failed to delete saved search');
           return { success: false, message: 'Failed to delete saved search' };
         }
       },
@@ -40,8 +41,8 @@ export const UpdateSavedSearch = extendType({
           await SavedSearchRepository!.update(id, { name });
           return { success: true, message: 'Saved search updated successfully' };
         } catch (error) {
-          console.error('Failed to updated saved search:', error);
-          return { success: false, message: 'Failed to updated saved search' };
+          logger.error(error, 'Failed to update saved search');
+          return { success: false, message: 'Failed to update saved search' };
         }
       },
     });
@@ -66,7 +67,7 @@ export const CreateSavedSearch = extendType({
           newSavedSearch.profile = profile;
           return await SavedSearchRepository!.save(newSavedSearch);
         } catch (error) {
-          console.error('Failed to create saved search:', error);
+          logger.error(error, 'Failed to create saved search');
           return error;
         }
       },

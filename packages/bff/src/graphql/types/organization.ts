@@ -1,3 +1,4 @@
+import { logger } from '@digdir/dialogporten-node-logger';
 import { extendType, objectType } from 'nexus';
 
 interface Organization {
@@ -45,7 +46,7 @@ async function fetchOrganizations() {
     }
     throw new Error('Data is not an object');
   } catch (error) {
-    console.error('There was a problem with the fetch operation:', error);
+    logger.error(error, 'unable to fetch organizations');
     throw error;
   }
 }
@@ -56,7 +57,7 @@ async function storeOrganizationsInRedis() {
     const transformedOrganizations = organizations!.flatMap((org) => convertOrgsToJson(org));
     await redisClient.set(organizationsRedisKey, JSON.stringify(transformedOrganizations), 'EX', 86400);
   } catch (error) {
-    console.error('Error storing organizations in Redis:', error);
+    logger.error(error, 'Error storing organizations in Redis');
   }
 }
 
@@ -70,7 +71,7 @@ export async function getOrganizationsFromRedis() {
     await storeOrganizationsInRedis();
     return await getOrganizationsFromRedis();
   } catch (error) {
-    console.error('Error retrieving organizations from Redis:', error);
+    logger.error(error, 'Error retrieving organizations from Redis');
     return null;
   }
 }

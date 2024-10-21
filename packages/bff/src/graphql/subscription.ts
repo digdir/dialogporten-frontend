@@ -43,7 +43,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
 
         response.data.pipe(reply.raw);
       } catch (e) {
-        console.error(e);
+        logger.error(e, 'Failed to subscribe to dialog events');
       }
     },
   });
