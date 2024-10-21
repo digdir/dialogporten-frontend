@@ -44,7 +44,7 @@ export const SaveSearchesActions = ({ savedSearch, onDeleteBtnClick, onEditBtnCl
       >
         <MenuElipsisHorizontalIcon className={styles.icon} />
       </Button>
-      <DropdownList variant="medium" isExpanded={isMenuOpen} disableMobileDrawer className={styles.contextMenu}>
+      <DropdownList isExpanded={isMenuOpen} disableMobileDrawer className={styles.contextMenu}>
         <MenuItem
           onClick={handleOpenEditModal}
           leftContent={

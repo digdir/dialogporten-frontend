@@ -36,7 +36,7 @@ export const PartyDropdown = forwardRef((props: PartyDropdownProps, ref: Ref<Par
           : (selectedParties?.[0]?.name ?? t('partyDropdown.selectParty'))}
         <ChevronUpDownIcon fontSize="1.25rem" />
       </ProfileButton>
-      <DropdownList variant="long" isExpanded={isMenuOpen}>
+      <DropdownList isExpanded={isMenuOpen}>
         <DropdownMobileHeader
           onClickButton={() => setIsMenuOpen(false)}
           buttonText={t('word.back')}

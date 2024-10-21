@@ -21,5 +21,6 @@
 .contextMenu {
   position: absolute;
   top: 100%;
+  text-wrap: nowrap;
   right: 0;
 }
