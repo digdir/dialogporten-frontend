@@ -15,6 +15,7 @@ export const UserInfo = ({ name, profile, onClick }: UserInfoProps) => {
   const { t } = useTranslation();
   return (
     <MenuItem
+      dataTestId={'user-info'}
       leftContent={
         <MenuItem.LeftContent className={cx(styles.menuColumn, styles.menuColumnLeft)} title={name} onClick={onClick}>
           <Avatar name={name} profile={profile} />
