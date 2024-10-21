@@ -8,7 +8,7 @@ export const Query = objectType({
   definition(t) {
     t.field('profile', {
       type: 'Profile',
-      resolve: async (source, args, ctx, info) => {
+      resolve: async (_source, _args, ctx) => {
         const sub = ctx.session.get('sub');
         const locale = ctx.session.get('locale');
         const profile = await getOrCreateProfile(sub, locale);
@@ -22,7 +22,7 @@ export const Query = objectType({
 
     t.field('organizations', {
       type: list('Organization'),
-      resolve: async (source, args, ctx, info) => {
+      resolve: async () => {
         try {
           return await getOrganizationsFromRedis();
         } catch (error) {
@@ -34,7 +34,7 @@ export const Query = objectType({
 
     t.field('savedSearches', {
       type: list('SavedSearches'),
-      resolve: async (source, args, ctx, info) => {
+      resolve: async (_source, _args, ctx) => {
         const sub = ctx.session.get('sub');
         if (SavedSearchRepository) {
           return await SavedSearchRepository.find({
