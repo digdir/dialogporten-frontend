@@ -23,15 +23,22 @@ interface MenuItem {
   largeText?: boolean;
   className?: string;
   disabled?: boolean;
+  dataTestId?: string;
 }
 
 const MenuItem = (props: MenuItem) => {
-  const { path, onClick, isExternalLink, leftContent, rightContent, className } = props;
+  const { path, onClick, isExternalLink, leftContent, rightContent, className, dataTestId } = props;
   const content = <MenuItemContent {...props} />;
 
   if (path) {
     return (
-      <Link className={styles.isLink} to={path} onClick={onClick} target={isExternalLink ? '_blank' : '_self'}>
+      <Link
+        className={styles.isLink}
+        to={path}
+        onClick={onClick}
+        target={isExternalLink ? '_blank' : '_self'}
+        data-testid={dataTestId}
+      >
         <li className={cx(styles.liItem, className)}>{content}</li>
       </Link>
     );
@@ -39,14 +46,23 @@ const MenuItem = (props: MenuItem) => {
 
   if (onClick) {
     return (
-      <li className={cx(styles.isLink, styles.liItem, className)} onClick={onClick} onKeyUp={onClick}>
+      <li
+        className={cx(styles.isLink, styles.liItem, className)}
+        onClick={onClick}
+        onKeyUp={onClick}
+        data-testid={dataTestId}
+      >
         {content}
       </li>
     );
   }
 
   if (leftContent || rightContent) {
-    return <li className={styles.liItem}>{content}</li>;
+    return (
+      <li className={styles.liItem} data-testid={dataTestId}>
+        {content}
+      </li>
+    );
   }
 
   return null;

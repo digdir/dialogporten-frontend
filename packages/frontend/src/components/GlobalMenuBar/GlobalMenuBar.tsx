@@ -48,6 +48,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
       <div className={styles.globalMenuBar}>
         <section>
           <button
+            data-testid="global-menu-bar-toggle-button"
             onClick={toggleShowBackdrop}
             onKeyDown={(e) => e.key === 'Enter' && toggleShowBackdrop()}
             type="button"

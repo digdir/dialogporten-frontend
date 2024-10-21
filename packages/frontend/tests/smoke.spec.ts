@@ -1,7 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { appURL } from './index.ts';
+
 test.beforeEach(async ({ page }) => {
-  await page.goto(process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:5173/');
+  await page.goto(appURL);
 });
+
 test.describe('Smoke test', () => {
   test('should show header, aside, main and footer', async ({ page }) => {
     const main = page.locator('main');
