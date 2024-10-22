@@ -30,6 +30,7 @@ export const ConfirmDeleteDialog = forwardRef(
     const onClose = () => {
       deleteDialogRef.current?.close();
     };
+
     const handleDeleteSearch = async () => {
       if (typeof savedSearchId !== 'number') return;
 

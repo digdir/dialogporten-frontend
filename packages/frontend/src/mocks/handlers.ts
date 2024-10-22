@@ -1,43 +1,46 @@
-import {graphql, http, HttpResponse } from 'msw';
+import { graphql, http, HttpResponse } from 'msw';
 import { dialogs as mockedDialogs } from './dialogs/dialogs.ts';
-import {parties} from "./parties.ts";
-import {naiveSearchFilter} from "./filters.ts";
-import {DialogByIdFieldsFragment, SavedSearchesFieldsFragment} from "bff-types-generated";
-import {convertToDialogByIdTemplate} from "./dialogs/helper.ts";
-import {savedSearches} from "./searches/searches.ts";
+import { parties } from './parties.ts';
+import { naiveSearchFilter } from './filters.ts';
+import { DialogByIdFieldsFragment, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { convertToDialogByIdTemplate } from './dialogs/helper.ts';
+import { savedSearchesMock } from './searches/searches.ts';
 
 let inMemoryStore = {
-  savedSearches: savedSearches,
-}
+  savedSearches: savedSearchesMock,
+};
 
 const isAuthenticatedMock = http.get('/api/isAuthenticated', () => {
   return HttpResponse.json({ authenticated: true });
 });
 
 const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (options) => {
-  const { variables: { partyURIs, search } } = options;
+  const {
+    variables: { partyURIs, search },
+  } = options;
   const itemsForParty = mockedDialogs.filter((dialog) => partyURIs.includes(dialog.party));
   return HttpResponse.json({
     data: {
       searchDialogs: {
         items: itemsForParty.filter((item) => naiveSearchFilter(item, search)),
-      }
-    }
+      },
+    },
   });
-})
+});
 
 const getDialogByIdMock = graphql.query('getDialogById', (options) => {
-  const { variables: { id } } = options;
+  const {
+    variables: { id },
+  } = options;
   const dialog = mockedDialogs.find((dialog) => dialog.id === id) ?? null;
   const dialogDetails: DialogByIdFieldsFragment | null = dialog ? convertToDialogByIdTemplate(dialog) : null;
 
   return HttpResponse.json({
     data: {
-      dialogById: { dialog: dialogDetails }
-    }
+      dialogById: { dialog: dialogDetails },
+    },
   });
-})
-
+});
 
 const getMainContentMarkdownMock = http.get('https://dialogporten-serviceprovider.net/fce-markdown', () => {
   return HttpResponse.text(`# Info i markdown
@@ -54,7 +57,6 @@ Dette er HTML som er generert fra markdown.
 `);
 });
 
-
 const getMainContentHtmlMock = http.get('https://dialogporten-serviceprovider.net/fce-html', () => {
   return HttpResponse.text(`<html><body><h1>Tittel i arvet HTML</h1><p>Brødtekst!</p></body></html>`);
 });
@@ -63,17 +65,17 @@ const getAllPartiesMock = graphql.query('parties', () => {
   return HttpResponse.json({
     data: {
       parties,
-    }
-  })
-})
+    },
+  });
+});
 
-const getSavedSearchesMock = graphql.query('savedSearches', () => {
+export const getSavedSearchesMock = graphql.query('savedSearches', () => {
   return HttpResponse.json({
     data: {
       savedSearches: inMemoryStore.savedSearches,
-    }
-  })
-})
+    },
+  });
+});
 
 const getProfileMock = graphql.query('profile', () => {
   return HttpResponse.json({
@@ -82,9 +84,9 @@ const getProfileMock = graphql.query('profile', () => {
         updatedAt: '1727691732707',
         language: 'nb',
       },
-    }
-  })
-})
+    },
+  });
+});
 
 const mutateSavedSearchMock = graphql.mutation('CreateSavedSearch', (req) => {
   const { name, data } = req.variables;
@@ -94,14 +96,14 @@ const mutateSavedSearchMock = graphql.mutation('CreateSavedSearch', (req) => {
     data,
     updatedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
-  }
+  };
   inMemoryStore.savedSearches.push(savedSearch);
   return HttpResponse.json({
     data: {
       CreateSavedSearch: savedSearch,
-    }
-  })
-})
+    },
+  });
+});
 
 export const handlers = [
   isAuthenticatedMock,
@@ -113,6 +115,4 @@ export const handlers = [
   getSavedSearchesMock,
   getProfileMock,
   mutateSavedSearchMock,
-]
-
-
+];

@@ -5,41 +5,39 @@ import {
   DialogByIdFieldsFragment,
   GuiActionPriority,
   HttpVerb,
-  SearchDialogFieldsFragment
-} from "bff-types-generated";
-
+  SearchDialogFieldsFragment,
+} from 'bff-types-generated';
 
 export const getMockedMainContent = (dialogId: string) => {
-  const idWithLegacyHTML = "019241f7-6f45-72fd-a574-f19d358aaf4e";
+  const idWithLegacyHTML = '019241f7-6f45-72fd-a574-f19d358aaf4e';
 
   if (idWithLegacyHTML === dialogId) {
     return {
-      "mediaType": "application/vnd.dialogporten.frontchannelembed+json;type=html",
-      "value": [
+      mediaType: 'application/vnd.dialogporten.frontchannelembed+json;type=html',
+      value: [
         {
-          "value": "https://dialogporten-serviceprovider.net/fce-html",
-          "languageCode": "nb"
-        }
-      ]
-    }
+          value: 'https://dialogporten-serviceprovider.net/fce-html',
+          languageCode: 'nb',
+        },
+      ],
+    };
   }
 
   return {
-    "mediaType": "application/vnd.dialogporten.frontchannelembed+json;type=markdown",
-    "value": [
+    mediaType: 'application/vnd.dialogporten.frontchannelembed+json;type=markdown',
+    value: [
       {
-        "value": "https://dialogporten-serviceprovider.net/fce-markdown",
-        "languageCode": "nb"
-      }
-    ]
-  }
-}
-
+        value: 'https://dialogporten-serviceprovider.net/fce-markdown',
+        languageCode: 'nb',
+      },
+    ],
+  };
+};
 
 export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): DialogByIdFieldsFragment => {
   return {
     id: input.id,
-    dialogToken: "MOCKED_DIALOG_TOKEN",
+    dialogToken: 'MOCKED_DIALOG_TOKEN',
     party: input.party,
     org: input.org,
     progress: input.progress,
@@ -49,18 +47,18 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
         id: input.id,
         displayName: [
           {
-            value: "kvittering.pdf",
-            languageCode: "nb"
-          }
+            value: 'kvittering.pdf',
+            languageCode: 'nb',
+          },
         ],
         urls: [
           {
-            "id": "hello-attachment-id",
-            "url": "https://info.altinn.no/om-altinn/",
-            "consumerType": AttachmentUrlConsumer.Gui,
-          }
-        ]
-      }
+            id: 'hello-attachment-id',
+            url: 'https://info.altinn.no/om-altinn/',
+            consumerType: AttachmentUrlConsumer.Gui,
+          },
+        ],
+      },
     ],
     activities: [
       {
@@ -73,36 +71,39 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
         description: input.latestActivity!.description,
         type: ActivityType.Information,
         createdAt: input.createdAt,
-      }
+      },
     ],
     guiActions: [
       {
         id: input.id,
-        url: "urn:dialogporten:unauthorized",
+        url: 'urn:dialogporten:unauthorized',
         isAuthorized: false,
         isDeleteDialogAction: false,
-        action: "submit",
+        action: 'submit',
         authorizationAttribute: null,
         priority: GuiActionPriority.Primary,
         httpMethod: HttpVerb.Get,
         title: [
           {
-            languageCode: "nb",
-            value: "Til skjema"
-          }
+            languageCode: 'nb',
+            value: 'Til skjema',
+          },
         ],
-        prompt: []
-      }
+        prompt: [],
+      },
     ],
+    // @ts-ignore-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: NA
     seenSinceLastUpdate: input.seenSinceLastUpdate.map((seen: any) => ({
       id: seen.id,
       seenAt: seen.seenAt,
       seenBy: {
         actorType: seen.seenBy.actorType,
         actorId: seen.seenBy.actorId,
-        actorName: seen.seenBy.actorName
+        actorName: seen.seenBy.actorName,
       },
-      isCurrentEndUser: seen.isCurrentEndUser
+      isCurrentEndUser: seen.isCurrentEndUser,
     })),
     status: input.status,
     createdAt: input.createdAt,
@@ -113,16 +114,16 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
       summary: input.content.summary,
       senderName: input.content.senderName,
       additionalInfo: {
-        mediaType: "text/plain",
+        mediaType: 'text/plain',
         value: [
           {
-            value: "Denne setningen inneholder tilleggsinformasjon for dialogen.",
-            languageCode: "nb"
-          }
-        ]
+            value: 'Denne setningen inneholder tilleggsinformasjon for dialogen.',
+            languageCode: 'nb',
+          },
+        ],
       },
       extendedStatus: input.content.extendedStatus,
       mainContentReference: getMockedMainContent(input.id),
-    }
+    },
   };
-}
+};

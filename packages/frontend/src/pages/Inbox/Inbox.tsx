@@ -274,6 +274,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               className={styles.hideForSmallScreens}
               disabled={savedSearchDisabled}
               isLoading={isSavingSearch}
+              activeFilters={activeFilters}
             />
           </div>
           <div className={styles.sortOrderContainer}>
