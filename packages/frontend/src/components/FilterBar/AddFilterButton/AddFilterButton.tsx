@@ -44,7 +44,7 @@ export const AddFilterButton = ({
       >
         <PlusIcon fontSize="1.25rem" /> {t('filter_bar.add_filter')}
       </ProfileButton>
-      <DropdownList variant="medium" isExpanded={isMenuOpen}>
+      <DropdownList isExpanded={isMenuOpen}>
         <DropdownMobileHeader
           buttonIcon={<ChevronDownIcon fontSize="1.5rem" />}
           onClickButton={onClose}

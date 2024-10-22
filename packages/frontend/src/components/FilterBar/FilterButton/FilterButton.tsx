@@ -174,7 +174,7 @@ export const FilterButton = ({
           <XMarkIcon fontSize="1.5rem" />
         </ProfileButton>
       </div>
-      <DropdownList variant="long" isExpanded={isOpen}>
+      <DropdownList isExpanded={isOpen}>
         <DropdownMobileHeader
           buttonIcon={<ChevronLeftIcon fontSize="1.5rem" />}
           onClickButton={onBackBtnClick}

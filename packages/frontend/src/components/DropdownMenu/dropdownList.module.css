@@ -7,21 +7,7 @@
   z-index: 1001;
   background: #fff;
   margin-block-start: 10px;
-}
-
-.long {
-  min-width: 350px;
-  max-width: 350px;
-}
-
-.medium {
-  min-width: 290px;
-  max-width: 290px;
-}
-
-.short {
-  min-width: 195px;
-  max-width: 195px;
+  max-width: 512px;
 }
 
 @media screen and (max-width: 1024px) {
