@@ -2,13 +2,15 @@ import { graphql, http, HttpResponse } from 'msw';
 import { dialogs as mockedDialogs } from './dialogs/dialogs.ts';
 import { parties } from './parties.ts';
 import { naiveSearchFilter } from './filters.ts';
-import { DialogByIdFieldsFragment, SavedSearchesFieldsFragment } from 'bff-types-generated';
+import { DialogByIdFieldsFragment, SavedSearchesFieldsFragment, SystemLabel, UpdateSystemLabelMutationVariables } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './dialogs/helper.ts';
 import { savedSearchesMock } from './searches/searches.ts';
 
 let inMemoryStore = {
   savedSearches: savedSearchesMock,
 };
+
+let dialogSystemLabels: Record<string, SystemLabel> = {}
 
 const isAuthenticatedMock = http.get('/api/isAuthenticated', () => {
   return HttpResponse.json({ authenticated: true });
@@ -18,7 +20,10 @@ const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (op
   const {
     variables: { partyURIs, search },
   } = options;
-  const itemsForParty = mockedDialogs.filter((dialog) => partyURIs.includes(dialog.party));
+  const itemsForParty = mockedDialogs
+    .filter(dialog => partyURIs.includes(dialog.party))
+    .map(item => ({ ...item, systemLabel: dialogSystemLabels[item.id] || SystemLabel.Default }));
+
   return HttpResponse.json({
     data: {
       searchDialogs: {
@@ -37,7 +42,12 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
 
   return HttpResponse.json({
     data: {
-      dialogById: { dialog: dialogDetails },
+      dialogById: {
+        dialog: {
+          ...dialogDetails,
+          systemLabel: dialogSystemLabels[dialog!.id] || SystemLabel.Default
+        }
+      },
     },
   });
 });
@@ -105,6 +115,27 @@ const mutateSavedSearchMock = graphql.mutation('CreateSavedSearch', (req) => {
   });
 });
 
+
+const mutateUpdateSystemLabelMock = graphql.mutation('updateSystemLabel', (req) => {
+  const { dialogId, label } = req.variables;
+
+  const updatedSystemLabel: UpdateSystemLabelMutationVariables = {
+    dialogId,
+    label
+  };
+
+  dialogSystemLabels = {
+    ...dialogSystemLabels,
+    [dialogId]: label
+  }
+
+  return HttpResponse.json({
+    data: {
+      setSystemLabel: { ...updatedSystemLabel, success: { success: true } }
+    },
+  });
+});
+
 export const handlers = [
   isAuthenticatedMock,
   getAllDialogsForPartiesMock,
@@ -115,4 +146,5 @@ export const handlers = [
   getSavedSearchesMock,
   getProfileMock,
   mutateSavedSearchMock,
+  mutateUpdateSystemLabelMock
 ];

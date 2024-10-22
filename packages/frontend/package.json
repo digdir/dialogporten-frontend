@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
+    "codegen:playwright": "playwright codegen",
     "test:playwright": "playwright test",
     "install:browsers": "playwright install",
     "test:watch": "vitest watch",
