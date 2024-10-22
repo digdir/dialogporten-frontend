@@ -1,13 +1,13 @@
 import { BookmarkFillIcon, BookmarkIcon } from '@navikt/aksel-icons';
+import { useQueryClient } from '@tanstack/react-query';
 import type { SavedSearchData, SavedSearchesFieldsFragment, SearchDataValueFilter } from 'bff-types-generated';
-import { type ButtonHTMLAttributes, type RefAttributes, useRef } from 'react';
+import type { ButtonHTMLAttributes, RefAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type Filter, useSearchString } from '..';
+import type { Filter } from '..';
+import { useSearchString, useSnackbar } from '..';
+import { deleteSavedSearch } from '../../api/queries';
 import { useParties } from '../../api/useParties';
-import {
-  ConfirmDeleteDialog,
-  type DeleteSearchDialogRef,
-} from '../../pages/SavedSearches/ConfirmDeleteDialog/ConfirmDeleteDialog';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
 import { ProfileButton } from '../ProfileButton';
 
@@ -76,16 +76,38 @@ export const SaveSearchButton = ({
   const { selectedPartyIds } = useParties();
   const { searchString } = useSearchString();
   const { currentPartySavedSearches: savedSearches } = useSavedSearches(selectedPartyIds);
+  const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+
   const searchToCheckIfExistsAlready: SavedSearchData = {
     filters: activeFilters as SearchDataValueFilter[],
     urn: selectedPartyIds as string[],
     searchString,
   };
+
   const alreadyExistingSavedSearch = isSearchSavedAlready(
     savedSearches ?? ([] as SavedSearchesFieldsFragment[]),
     searchToCheckIfExistsAlready,
   );
-  const deleteDialogRef = useRef<DeleteSearchDialogRef>(null);
+
+  const handleDeleteSearch = async (savedSearchId: number) => {
+    if (typeof savedSearchId !== 'number') return;
+
+    try {
+      await deleteSavedSearch(savedSearchId);
+      openSnackbar({
+        message: t('savedSearches.deleted_success'),
+        variant: 'success',
+      });
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
+    } catch (error) {
+      console.error('Failed to delete saved search:', error);
+      openSnackbar({
+        message: t('savedSearches.delete_failed'),
+        variant: 'error',
+      });
+    }
+  };
 
   if (disabled) {
     return null;
@@ -94,10 +116,13 @@ export const SaveSearchButton = ({
   return (
     <>
       <ProfileButton className={className} size="xs" onClick={onBtnClick} variant="tertiary" isLoading={isLoading}>
-        {alreadyExistingSavedSearch ? <BookmarkFillIcon fontSize="1.25rem" /> : <BookmarkIcon fontSize="1.25rem" />}{' '}
+        {alreadyExistingSavedSearch ? (
+          <BookmarkFillIcon fontSize="1.25rem" onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)} />
+        ) : (
+          <BookmarkIcon fontSize="1.25rem" />
+        )}
         {t('filter_bar.save_search')}
       </ProfileButton>
-      <ConfirmDeleteDialog ref={deleteDialogRef} savedSearchId={alreadyExistingSavedSearch?.id} />
     </>
   );
 };
