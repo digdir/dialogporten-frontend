@@ -10,32 +10,7 @@ import { useParties } from '../../api/useParties';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
 import { ProfileButton } from '../ProfileButton';
-
-type IndexedObject = { [key: string]: unknown };
-
-function deepEqual(obj1: unknown, obj2: unknown): boolean {
-  if (obj1 === obj2) return true;
-
-  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) {
-    return false;
-  }
-
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) return false;
-
-  const obj1Typed = obj1 as IndexedObject;
-  const obj2Typed = obj2 as IndexedObject;
-
-  for (const key of keys1) {
-    if (!keys2.includes(key) || !deepEqual(obj1Typed[key], obj2Typed[key])) {
-      return false;
-    }
-  }
-
-  return true;
-}
+import { deepEqual } from './deepEqual';
 
 const isSearchSavedAlready = (
   savedSearches: SavedSearchesFieldsFragment[],
@@ -91,8 +66,6 @@ export const SaveSearchButton = ({
   );
 
   const handleDeleteSearch = async (savedSearchId: number) => {
-    if (typeof savedSearchId !== 'number') return;
-
     try {
       await deleteSavedSearch(savedSearchId);
       openSnackbar({
@@ -115,14 +88,23 @@ export const SaveSearchButton = ({
 
   return (
     <>
-      <ProfileButton className={className} size="xs" onClick={onBtnClick} variant="tertiary" isLoading={isLoading}>
-        {alreadyExistingSavedSearch ? (
-          <BookmarkFillIcon fontSize="1.25rem" onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)} />
-        ) : (
+      {alreadyExistingSavedSearch ? (
+        <ProfileButton
+          className={className}
+          size="xs"
+          onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
+          variant="tertiary"
+          isLoading={isLoading}
+        >
+          <BookmarkFillIcon fontSize="1.25rem" />
+          {t('filter_bar.saved_search')}
+        </ProfileButton>
+      ) : (
+        <ProfileButton className={className} size="xs" onClick={onBtnClick} variant="tertiary" isLoading={isLoading}>
           <BookmarkIcon fontSize="1.25rem" />
-        )}
-        {t('filter_bar.save_search')}
-      </ProfileButton>
+          {t('filter_bar.save_search')}
+        </ProfileButton>
+      )}
     </>
   );
 };

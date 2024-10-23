@@ -40,6 +40,7 @@
   "filter_bar.range.today": "I dag",
   "filter_bar.range.yesterday": "I går",
   "filter_bar.save_search": "Lagre søk",
+  "filter_bar.saved_search": "Lagret søk",
   "filter_bar.showResultsButton": "{count, plural, one {Vis # treff} other {Vis # treff}}",
   "filter_bar.to_date_label": "Til dato:",
   "filter_bar_fields.from": "Fra",
