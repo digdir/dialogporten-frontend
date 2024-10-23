@@ -52,7 +52,7 @@ const config = {
   typeormSynchronizeEnabled: env.TYPEORM_SYNCHRONIZE_ENABLED,
   migrationRun: env.MIGRATION_RUN,
   dialogportenURL: env.DIALOGPORTEN_URL,
-  enable_graphiql: env.ENABLE_GRAPHIQL,
+  enableGraphiql: env.ENABLE_GRAPHIQL,
 };
 
 export default config;
