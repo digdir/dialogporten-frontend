@@ -32,7 +32,7 @@ interface PageLayoutContentProps {
   notificationCount?: number;
 }
 
-const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profile, notificationCount }) => {
+const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profile }) => {
   const { inSelectionMode } = useSelectedDialogs();
   const { isTabletOrSmaller } = useWindowSize();
   const showSidebar = !isTabletOrSmaller && !inSelectionMode;
@@ -40,7 +40,7 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profil
   const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
   const { dialogsByView } = useDialogs(selectedParties);
   const itemsPerViewCount = {
-    inbox: dialogsByView.inbox.length,
+    inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
     drafts: dialogsByView.drafts.length,
     sent: dialogsByView.sent.length,
     'saved-searches': currentPartySavedSearches?.length ?? 0,
@@ -50,7 +50,7 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profil
 
   return (
     <>
-      <Header name={name} profile={profile} notificationCount={notificationCount} />
+      <Header name={name} profile={profile} notificationCount={itemsPerViewCount.inbox} />
       <div className={styles.pageLayout}>
         {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} />}
         <Outlet />
@@ -87,9 +87,6 @@ export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const { selectedParties, allOrganizationsSelected } = useParties();
-  const { dialogsByView } = useDialogs(selectedParties);
-  const { inbox: dialogs } = dialogsByView;
-  const notificationCount = dialogs.length;
   const [searchParams] = useSearchParams();
 
   useProfile();
@@ -108,7 +105,7 @@ export const PageLayout: React.FC = () => {
       <Background isCompany={isCompany}>
         <BottomDrawerContainer>
           <BetaBanner />
-          <PageLayoutContent name={name} profile={profile} notificationCount={notificationCount} />
+          <PageLayoutContent name={name} profile={profile} />
           <Snackbar />
         </BottomDrawerContainer>
       </Background>
