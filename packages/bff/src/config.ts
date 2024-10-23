@@ -24,9 +24,6 @@ const envVariables = z.object({
   ENABLE_GRAPHIQL: z.coerce.boolean().default(false),
 });
 
-// ENABLE_GRAPHIQL: z.string().transform((val) => val === 'true').default('false')
-// ENABLE_GRAPHIQL: z.boolean().default(false)
-
 const env = envVariables.parse(process.env);
 
 const config = {

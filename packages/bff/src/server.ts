@@ -16,8 +16,7 @@ import graphqlApi from './graphql/api.ts';
 import graphqlStream from './graphql/subscription.ts';
 import redisClient from './redisClient.ts';
 
-const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString, enable_graphiql } =
-  config;
+const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
 
 const startServer = async (): Promise<void> => {
   const server = Fastify({
@@ -40,7 +39,7 @@ const startServer = async (): Promise<void> => {
   server.register(cookie);
 
   // Session setup
-  const { secret, enableHttps, cookieMaxAge } = config;
+  const { secret, enableHttps, cookieMaxAge, enable_graphiql } = config;
   const cookieSessionConfig: FastifySessionOptions = {
     secret,
     cookie: {
@@ -74,7 +73,6 @@ const startServer = async (): Promise<void> => {
   server.register(userApi);
   server.register(graphqlApi);
   server.register(graphqlStream);
-
   if (enable_graphiql) {
     server.register(fastifyGraphiql, {
       url: '/api/graphiql',
