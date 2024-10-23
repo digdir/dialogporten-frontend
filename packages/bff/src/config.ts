@@ -21,7 +21,11 @@ const envVariables = z.object({
   MIGRATION_RUN: z.coerce.boolean().default(false),
   DIALOGPORTEN_URL: z.string().default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
   CONTAINER_APP_REPLICA_NAME: z.string().default(''),
+  ENABLE_GRAPHIQL: z.coerce.boolean().default(false),
 });
+
+// ENABLE_GRAPHIQL: z.string().transform((val) => val === 'true').default('false')
+// ENABLE_GRAPHIQL: z.boolean().default(false)
 
 const env = envVariables.parse(process.env);
 
@@ -51,6 +55,7 @@ const config = {
   typeormSynchronizeEnabled: env.TYPEORM_SYNCHRONIZE_ENABLED,
   migrationRun: env.MIGRATION_RUN,
   dialogportenURL: env.DIALOGPORTEN_URL,
+  enable_graphiql: env.ENABLE_GRAPHIQL,
 };
 
 export default config;

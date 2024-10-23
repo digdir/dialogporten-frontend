@@ -16,7 +16,8 @@ import graphqlApi from './graphql/api.ts';
 import graphqlStream from './graphql/subscription.ts';
 import redisClient from './redisClient.ts';
 
-const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
+const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString, enable_graphiql } =
+  config;
 
 const startServer = async (): Promise<void> => {
   const server = Fastify({
@@ -74,10 +75,12 @@ const startServer = async (): Promise<void> => {
   server.register(graphqlApi);
   server.register(graphqlStream);
 
-  server.register(fastifyGraphiql, {
-    url: '/api/graphiql',
-    graphqlURL: '/api/graphql',
-  });
+  if (enable_graphiql) {
+    server.register(fastifyGraphiql, {
+      url: '/api/graphiql',
+      graphqlURL: '/api/graphql',
+    });
+  }
 
   server.listen({ port, host }, (error, address) => {
     if (error) {
