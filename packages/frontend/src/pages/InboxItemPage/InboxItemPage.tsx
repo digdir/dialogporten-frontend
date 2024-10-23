@@ -7,7 +7,7 @@ import { updateSystemLabel } from '../../api/queries.ts';
 import { useDialogById } from '../../api/useDialogById.tsx';
 import { useDialogByIdSubscription } from '../../api/useDialogByIdSubscription.ts';
 import { useParties } from '../../api/useParties.ts';
-import { BackButton, SnackbarDuration, useSnackbar } from '../../components';
+import { BackButton, SnackbarDuration, type SnackbarMessageVariant, useSnackbar } from '../../components';
 import { InboxItemDetail } from '../../components';
 import { DialogToolbar } from '../../components/DialogToolbar/DialogToolbar.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
@@ -38,22 +38,33 @@ export const InboxItemPage = () => {
     failureMessageKey: string;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) => {
-    try {
-      setLoading(true);
-      await updateSystemLabel(id, toLabel);
+    const showSnackbar = (messageKey: string, variant: SnackbarMessageVariant) => {
+      openSnackbar({
+        message: i18n.t(messageKey),
+        duration: SnackbarDuration.normal,
+        variant,
+      });
+    };
+
+    const invalidateQueries = async () => {
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS] });
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOG_BY_ID] });
-      openSnackbar({
-        message: i18n.t(successMessageKey),
-        duration: SnackbarDuration.normal,
-        variant: 'success',
-      });
+    };
+
+    try {
+      setLoading(true);
+      const {
+        setSystemLabel: { success: isSuccess },
+      } = await updateSystemLabel(id, toLabel);
+
+      if (isSuccess) {
+        await invalidateQueries();
+        showSnackbar(successMessageKey, 'success');
+      } else {
+        showSnackbar(failureMessageKey, 'error');
+      }
     } catch (error) {
-      openSnackbar({
-        message: i18n.t(failureMessageKey),
-        duration: SnackbarDuration.normal,
-        variant: 'error',
-      });
+      showSnackbar(failureMessageKey, 'error');
     } finally {
       setLoading(false);
     }

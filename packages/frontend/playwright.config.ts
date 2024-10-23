@@ -21,7 +21,12 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL,
     screenshot: 'only-on-failure',
     headless: true,
+    bypassCSP: true,
+    launchOptions: {
+      args: ['--disable-web-security'],
+    },
   },
+  testMatch: '**/*.{spec,test}.{js,ts}',
   projects: [
     {
       name: 'chromium',
