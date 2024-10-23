@@ -2,6 +2,7 @@ import { BookmarkFillIcon, BookmarkIcon } from '@navikt/aksel-icons';
 import { useQueryClient } from '@tanstack/react-query';
 import type { SavedSearchData, SavedSearchesFieldsFragment, SearchDataValueFilter } from 'bff-types-generated';
 import type { ButtonHTMLAttributes, RefAttributes } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Filter } from '..';
 import { useSearchString, useSnackbar } from '..';
@@ -50,6 +51,7 @@ export const SaveSearchButton = ({
   const { t } = useTranslation();
   const { selectedPartyIds } = useParties();
   const { searchString } = useSearchString();
+  const [isDeleting, setIsDeleting] = useState(false);
   const { currentPartySavedSearches: savedSearches } = useSavedSearches(selectedPartyIds);
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
@@ -66,6 +68,7 @@ export const SaveSearchButton = ({
   );
 
   const handleDeleteSearch = async (savedSearchId: number) => {
+    setIsDeleting(true);
     try {
       await deleteSavedSearch(savedSearchId);
       openSnackbar({
@@ -79,6 +82,8 @@ export const SaveSearchButton = ({
         message: t('savedSearches.delete_failed'),
         variant: 'error',
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -94,13 +99,19 @@ export const SaveSearchButton = ({
           size="xs"
           onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
           variant="tertiary"
-          isLoading={isLoading}
+          isLoading={isLoading || isDeleting}
         >
           <BookmarkFillIcon fontSize="1.25rem" />
           {t('filter_bar.saved_search')}
         </ProfileButton>
       ) : (
-        <ProfileButton className={className} size="xs" onClick={onBtnClick} variant="tertiary" isLoading={isLoading}>
+        <ProfileButton
+          className={className}
+          size="xs"
+          onClick={onBtnClick}
+          variant="tertiary"
+          isLoading={isLoading || isDeleting}
+        >
           <BookmarkIcon fontSize="1.25rem" />
           {t('filter_bar.save_search')}
         </ProfileButton>
