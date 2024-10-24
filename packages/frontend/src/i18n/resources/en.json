@@ -40,6 +40,7 @@
   "filter_bar.range.today": "Today",
   "filter_bar.range.yesterday": "Yesterday",
   "filter_bar.save_search": "Save search",
+  "filter_bar.saved_search": "Saved search",
   "filter_bar.showResultsButton": "{count, plural, one {Show # result} other {Show # results}}",
   "filter_bar.to_date_label": "To date:",
   "filter_bar_fields.from": "From",

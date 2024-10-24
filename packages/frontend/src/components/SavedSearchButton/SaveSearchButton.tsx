@@ -2,6 +2,7 @@ import { BookmarkFillIcon, BookmarkIcon } from '@navikt/aksel-icons';
 import { useQueryClient } from '@tanstack/react-query';
 import type { SavedSearchData, SavedSearchesFieldsFragment, SearchDataValueFilter } from 'bff-types-generated';
 import type { ButtonHTMLAttributes, RefAttributes } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Filter } from '..';
 import { useSearchString, useSnackbar } from '..';
@@ -10,32 +11,7 @@ import { useParties } from '../../api/useParties';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
 import { ProfileButton } from '../ProfileButton';
-
-type IndexedObject = { [key: string]: unknown };
-
-function deepEqual(obj1: unknown, obj2: unknown): boolean {
-  if (obj1 === obj2) return true;
-
-  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) {
-    return false;
-  }
-
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) return false;
-
-  const obj1Typed = obj1 as IndexedObject;
-  const obj2Typed = obj2 as IndexedObject;
-
-  for (const key of keys1) {
-    if (!keys2.includes(key) || !deepEqual(obj1Typed[key], obj2Typed[key])) {
-      return false;
-    }
-  }
-
-  return true;
-}
+import { deepEqual } from './deepEqual';
 
 const isSearchSavedAlready = (
   savedSearches: SavedSearchesFieldsFragment[],
@@ -75,6 +51,7 @@ export const SaveSearchButton = ({
   const { t } = useTranslation();
   const { selectedPartyIds } = useParties();
   const { searchString } = useSearchString();
+  const [isDeleting, setIsDeleting] = useState(false);
   const { currentPartySavedSearches: savedSearches } = useSavedSearches(selectedPartyIds);
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
@@ -91,8 +68,7 @@ export const SaveSearchButton = ({
   );
 
   const handleDeleteSearch = async (savedSearchId: number) => {
-    if (typeof savedSearchId !== 'number') return;
-
+    setIsDeleting(true);
     try {
       await deleteSavedSearch(savedSearchId);
       openSnackbar({
@@ -106,6 +82,8 @@ export const SaveSearchButton = ({
         message: t('savedSearches.delete_failed'),
         variant: 'error',
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -113,16 +91,31 @@ export const SaveSearchButton = ({
     return null;
   }
 
-  return (
-    <>
-      <ProfileButton className={className} size="xs" onClick={onBtnClick} variant="tertiary" isLoading={isLoading}>
-        {alreadyExistingSavedSearch ? (
-          <BookmarkFillIcon fontSize="1.25rem" onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)} />
-        ) : (
-          <BookmarkIcon fontSize="1.25rem" />
-        )}
-        {t('filter_bar.save_search')}
+  if (alreadyExistingSavedSearch) {
+    return (
+      <ProfileButton
+        className={className}
+        size="xs"
+        onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
+        variant="tertiary"
+        isLoading={isLoading || isDeleting}
+      >
+        <BookmarkFillIcon fontSize="1.25rem" />
+        {t('filter_bar.saved_search')}
       </ProfileButton>
-    </>
+    );
+  }
+
+  return (
+    <ProfileButton
+      className={className}
+      size="xs"
+      onClick={onBtnClick}
+      variant="tertiary"
+      isLoading={isLoading || isDeleting}
+    >
+      <BookmarkIcon fontSize="1.25rem" />
+      {t('filter_bar.save_search')}
+    </ProfileButton>
   );
 };
