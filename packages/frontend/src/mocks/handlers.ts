@@ -88,6 +88,16 @@ export const getSavedSearchesMock = graphql.query('savedSearches', () => {
   });
 });
 
+export const deleteSavedSearchMock = graphql.mutation('DeleteSavedSearch', (req) => {
+  const { id } = req.variables;
+  inMemoryStore.savedSearches = inMemoryStore.savedSearches.filter(savedSearch => savedSearch.id !== id);
+  return HttpResponse.json({
+    data: {
+      savedSearches: inMemoryStore.savedSearches,
+    },
+  });
+});
+
 const getProfileMock = graphql.query('profile', async () => {
   return HttpResponse.json({
     data: {
@@ -146,5 +156,6 @@ export const handlers = [
   getSavedSearchesMock,
   getProfileMock,
   mutateSavedSearchMock,
-  mutateUpdateSystemLabelMock
+  mutateUpdateSystemLabelMock,
+  deleteSavedSearchMock
 ];
