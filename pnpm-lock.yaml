@@ -321,8 +321,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0
       tldraw:
-        specifier: 2.4.4
-        version: 2.4.4(react-dom@18.3.1)(react@18.2.0)
+        specifier: 3.3.2
+        version: 3.3.2(react-dom@18.3.1)(react@18.2.0)
 
   packages/embeddable-markdown-html:
     dependencies:
@@ -12644,79 +12644,82 @@ packages:
       '@testing-library/dom': 9.3.4
     dev: true
 
-  /@tldraw/editor@2.4.4(react-dom@18.3.1)(react@18.2.0):
-    resolution: {integrity: sha512-q9VavfOIcqVhTrVPhziWKOv6b5Mkj7x1zaGRmWEKJhCWEWZ/TMpVma4S7nLhRu/nlu5H4pKCDQ9FKqY7JIAnYA==}
+  /@tldraw/editor@3.3.2(react-dom@18.3.1)(react@18.2.0):
+    resolution: {integrity: sha512-kofRJIWsVIMWXbEho4MR1utYd4S/7TbTbz4UOaB6hb56OPckIjCIx/sLCN9Yq2HPh81U3DDk7g3LYrzZCuIhRA==}
     peerDependencies:
-      react: ^18
-      react-dom: ^18
+      react: ^18.2.0
+      react-dom: ^18.2.0
     dependencies:
-      '@tldraw/state': 2.4.4
-      '@tldraw/state-react': 2.4.4(react@18.2.0)
-      '@tldraw/store': 2.4.4(react@18.2.0)
-      '@tldraw/tlschema': 2.4.4(react@18.2.0)
-      '@tldraw/utils': 2.4.4
-      '@tldraw/validate': 2.4.4
+      '@tldraw/state': 3.3.2
+      '@tldraw/state-react': 3.3.2(react-dom@18.3.1)(react@18.2.0)
+      '@tldraw/store': 3.3.2(react@18.2.0)
+      '@tldraw/tlschema': 3.3.2(react@18.2.0)
+      '@tldraw/utils': 3.3.2
+      '@tldraw/validate': 3.3.2
       '@types/core-js': 2.5.8
       '@use-gesture/react': 10.3.0(react@18.2.0)
       classnames: 2.5.1
-      core-js: 3.35.1
+      core-js: 3.38.1
       eventemitter3: 4.0.7
       idb: 7.1.1
       is-plain-object: 5.0.0
-      nanoid: 4.0.2
       react: 18.2.0
       react-dom: 18.3.1(react@18.2.0)
     dev: false
 
-  /@tldraw/state-react@2.4.4(react@18.2.0):
-    resolution: {integrity: sha512-lUAtcmSymYsVJurCIWoQizHfaCQi/KjKe5Z+qSWXJkzAQvGY79EHYO0pCgZ9qnToeIue3/k1rrFAlKzZqor1uw==}
+  /@tldraw/state-react@3.3.2(react-dom@18.3.1)(react@18.2.0):
+    resolution: {integrity: sha512-NvLmmBrg03AeZHr+gOGGbdso87rJ9TsgzkRWsnvewMQu1rSE3y5LycAQWUV1j+n7xQjXF38yzP8/bertQObLFQ==}
     peerDependencies:
-      react: ^18
+      react: ^18.2.0
+      react-dom: ^18.2.0
     dependencies:
-      '@tldraw/state': 2.4.4
+      '@tldraw/state': 3.3.2
+      '@tldraw/utils': 3.3.2
       react: 18.2.0
+      react-dom: 18.3.1(react@18.2.0)
     dev: false
 
-  /@tldraw/state@2.4.4:
-    resolution: {integrity: sha512-bCgBu3QX2Kpv8hUqSyfwrzS+Y4ieAVYqNqxCNqcdbx2IwR8dYDD1Oc8VabTzIbodPVNc7KfytZdXFonSfAip8w==}
-    dev: false
-
-  /@tldraw/store@2.4.4(react@18.2.0):
-    resolution: {integrity: sha512-WA5iVu/pxfk/6WQ/p60anNywfIdseViiuKXgWmShXjzVopx8PFsDkPmfDnlFk5mBy4v9ESLftIpHaN0N0Kq9+A==}
-    peerDependencies:
-      react: ^18
+  /@tldraw/state@3.3.2:
+    resolution: {integrity: sha512-CkXCS5aSZbZkzmKMcwxvC8AOsHueq6YwDJ0U0t6bXgJG03TI03cfQzFUrPLefl8Zryhw+TciJHLzS7ofJ81p9A==}
     dependencies:
-      '@tldraw/state': 2.4.4
-      '@tldraw/utils': 2.4.4
+      '@tldraw/utils': 3.3.2
+    dev: false
+
+  /@tldraw/store@3.3.2(react@18.2.0):
+    resolution: {integrity: sha512-SZOoNXpD+dmVtWDDCPa/tSZt5JkM7GkIHbUjSnwf8utaPOO1TOTkDRSfxPfRESC46S0dtkPP0j6NXIGKHzvs4Q==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      '@tldraw/state': 3.3.2
+      '@tldraw/utils': 3.3.2
       lodash.isequal: 4.5.0
-      nanoid: 4.0.2
       react: 18.2.0
     dev: false
 
-  /@tldraw/tlschema@2.4.4(react@18.2.0):
-    resolution: {integrity: sha512-cJmYJzfeeggy7xe7En+KwOqNDBw3yRQ8K3b05aP308GDOnsoBC6LIA8FowW3gi4G8i4Aaix3kGDW5LcXmTpeOg==}
+  /@tldraw/tlschema@3.3.2(react@18.2.0):
+    resolution: {integrity: sha512-p7js5DnU7Sw4dhybgHuZWPN76w5b3CYruMu/8Lz2LkM8f1YEkxnQcHM2E9L2R32538Ww5TjwEOzgcvd63rDYkg==}
     peerDependencies:
-      react: ^18
+      react: ^18.2.0
     dependencies:
-      '@tldraw/state': 2.4.4
-      '@tldraw/store': 2.4.4(react@18.2.0)
-      '@tldraw/utils': 2.4.4
-      '@tldraw/validate': 2.4.4
-      nanoid: 4.0.2
+      '@tldraw/state': 3.3.2
+      '@tldraw/store': 3.3.2(react@18.2.0)
+      '@tldraw/utils': 3.3.2
+      '@tldraw/validate': 3.3.2
       react: 18.2.0
     dev: false
 
-  /@tldraw/utils@2.4.4:
-    resolution: {integrity: sha512-rFYDB0R6pnHsFmnpd/ElglUmrRgQOTyFqd4BFc89y9MbpR9iWgkEx7kBW4d4xYEylEAZnrwhdTQPKIWM3fVyCw==}
+  /@tldraw/utils@3.3.2:
+    resolution: {integrity: sha512-lWvVNJQzzKfHWwgIDt+LbXRGQz174v3QaJz45IhHefZ1lSuht6FXrhnWVABsSJsVLbkgavNSd7kLHgvUYIF/sg==}
     dependencies:
+      fractional-indexing-jittered: 0.9.1
       lodash.throttle: 4.1.1
       lodash.uniq: 4.5.0
     dev: false
 
-  /@tldraw/validate@2.4.4:
-    resolution: {integrity: sha512-6fwcAMbNFDMdCv1s7ftx01IEU0i6E4LGJVkP7gssPGT71HskYshUA42tE1Ga8FF+Bnzv2qoz6xQZyJCSQltr1g==}
+  /@tldraw/validate@3.3.2:
+    resolution: {integrity: sha512-uSikBlaFTFkFYaFPqod8QFq8BPbxmE3XTBBGHk3gHBn9j0K4k1tnLSGTQdtbZCdx48SC4EUF7R7shG4ktPH44A==}
     dependencies:
-      '@tldraw/utils': 2.4.4
+      '@tldraw/utils': 3.3.2
     dev: false
 
   /@tootallnate/once@2.0.0:
@@ -18080,6 +18083,10 @@ packages:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
     dev: false
 
+  /fractional-indexing-jittered@0.9.1:
+    resolution: {integrity: sha512-qyzDZ7JXWf/yZT2rQDpQwFBbIaZS2o+zb0s740vqreXQ6bFQPd8tAy4D1gGN0CUeIcnNHjuvb0EaLnqHhGV/PA==}
+    dev: false
+
   /fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -22176,12 +22183,6 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  /nanoid@4.0.2:
-    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
-    engines: {node: ^14 || ^16 || >=18}
-    hasBin: true
-    dev: false
 
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -26438,11 +26439,11 @@ packages:
     dependencies:
       tslib: 2.6.3
 
-  /tldraw@2.4.4(react-dom@18.3.1)(react@18.2.0):
-    resolution: {integrity: sha512-7Ggb5qljQwm+JxY0wOSa9gYtLFXBuy2xRdvTBoKQf/NF2TemxipmXumrjpOE7vDifDfVjG/hUiqacrruqjXnow==}
+  /tldraw@3.3.2(react-dom@18.3.1)(react@18.2.0):
+    resolution: {integrity: sha512-UZP9wIP6wHgfCYH8YgJQG+hJ87ipyEPt4AgdiiQyDRK5budIkpWaTceErR+Bcj5haCfn98iel7Y4cO0MIx9Jgw==}
     peerDependencies:
-      react: ^18
-      react-dom: ^18
+      react: ^18.2.0
+      react-dom: ^18.2.0
     dependencies:
       '@radix-ui/react-alert-dialog': 1.0.5(react-dom@18.3.1)(react@18.2.0)
       '@radix-ui/react-context-menu': 2.1.5(react-dom@18.3.1)(react@18.2.0)
@@ -26452,8 +26453,8 @@ packages:
       '@radix-ui/react-select': 1.2.2(react-dom@18.3.1)(react@18.2.0)
       '@radix-ui/react-slider': 1.1.2(react-dom@18.3.1)(react@18.2.0)
       '@radix-ui/react-toast': 1.1.5(react-dom@18.3.1)(react@18.2.0)
-      '@tldraw/editor': 2.4.4(react-dom@18.3.1)(react@18.2.0)
-      '@tldraw/store': 2.4.4(react@18.2.0)
+      '@tldraw/editor': 3.3.2(react-dom@18.3.1)(react@18.2.0)
+      '@tldraw/store': 3.3.2(react@18.2.0)
       canvas-size: 1.2.6
       classnames: 2.5.1
       hotkeys-js: 3.13.7
