@@ -91,31 +91,31 @@ export const SaveSearchButton = ({
     return null;
   }
 
+  if (alreadyExistingSavedSearch) {
+    return (
+      <ProfileButton
+        className={className}
+        size="xs"
+        onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
+        variant="tertiary"
+        isLoading={isLoading || isDeleting}
+      >
+        <BookmarkFillIcon fontSize="1.25rem" />
+        {t('filter_bar.saved_search')}
+      </ProfileButton>
+    );
+  }
+
   return (
-    <>
-      {alreadyExistingSavedSearch ? (
-        <ProfileButton
-          className={className}
-          size="xs"
-          onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
-          variant="tertiary"
-          isLoading={isLoading || isDeleting}
-        >
-          <BookmarkFillIcon fontSize="1.25rem" />
-          {t('filter_bar.saved_search')}
-        </ProfileButton>
-      ) : (
-        <ProfileButton
-          className={className}
-          size="xs"
-          onClick={onBtnClick}
-          variant="tertiary"
-          isLoading={isLoading || isDeleting}
-        >
-          <BookmarkIcon fontSize="1.25rem" />
-          {t('filter_bar.save_search')}
-        </ProfileButton>
-      )}
-    </>
+    <ProfileButton
+      className={className}
+      size="xs"
+      onClick={onBtnClick}
+      variant="tertiary"
+      isLoading={isLoading || isDeleting}
+    >
+      <BookmarkIcon fontSize="1.25rem" />
+      {t('filter_bar.save_search')}
+    </ProfileButton>
   );
 };
