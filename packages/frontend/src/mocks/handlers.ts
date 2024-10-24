@@ -1,16 +1,21 @@
-import { graphql, http, HttpResponse } from 'msw';
-import { dialogs as mockedDialogs } from './dialogs/dialogs.ts';
-import { parties } from './parties.ts';
-import { naiveSearchFilter } from './filters.ts';
-import { DialogByIdFieldsFragment, SavedSearchesFieldsFragment, SystemLabel, UpdateSystemLabelMutationVariables } from 'bff-types-generated';
-import { convertToDialogByIdTemplate } from './dialogs/helper.ts';
-import { savedSearchesMock } from './searches/searches.ts';
+import {graphql, http, HttpResponse} from 'msw';
+import {naiveSearchFilter} from './filters.ts';
+import type {
+  DialogByIdFieldsFragment,
+  SavedSearchesFieldsFragment,
+  UpdateSystemLabelMutationVariables
+} from 'bff-types-generated';
+import {convertToDialogByIdTemplate} from './data/base/helper.ts';
+import {getMockedData} from "./data.ts";
+
+const data = await getMockedData(window.location.href);
 
 let inMemoryStore = {
-  savedSearches: savedSearchesMock,
+  savedSearches: data.savedSearches,
+  profile: data.profile,
+  dialogs: data.dialogs,
+  parties: data.parties,
 };
-
-let dialogSystemLabels: Record<string, SystemLabel> = {}
 
 const isAuthenticatedMock = http.get('/api/isAuthenticated', () => {
   return HttpResponse.json({ authenticated: true });
@@ -20,9 +25,8 @@ const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (op
   const {
     variables: { partyURIs, search },
   } = options;
-  const itemsForParty = mockedDialogs
+  const itemsForParty = inMemoryStore.dialogs
     .filter(dialog => partyURIs.includes(dialog.party))
-    .map(item => ({ ...item, systemLabel: dialogSystemLabels[item.id] || SystemLabel.Default }));
 
   return HttpResponse.json({
     data: {
@@ -37,20 +41,17 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
   const {
     variables: { id },
   } = options;
-  const dialog = mockedDialogs.find((dialog) => dialog.id === id) ?? null;
+  const dialog = inMemoryStore.dialogs.find((dialog) => dialog.id === id) ?? null;
   const dialogDetails: DialogByIdFieldsFragment | null = dialog ? convertToDialogByIdTemplate(dialog) : null;
-
   return HttpResponse.json({
     data: {
       dialogById: {
-        dialog: {
-          ...dialogDetails,
-          systemLabel: dialogSystemLabels[dialog!.id] || SystemLabel.Default
-        }
+        dialog: dialogDetails
       },
     },
   });
 });
+
 
 const getMainContentMarkdownMock = http.get('https://dialogporten-serviceprovider.net/fce-markdown', () => {
   return HttpResponse.text(`# Info i markdown
@@ -74,7 +75,7 @@ const getMainContentHtmlMock = http.get('https://dialogporten-serviceprovider.ne
 const getAllPartiesMock = graphql.query('parties', () => {
   return HttpResponse.json({
     data: {
-      parties,
+      parties: inMemoryStore.parties,
     },
   });
 });
@@ -87,13 +88,10 @@ export const getSavedSearchesMock = graphql.query('savedSearches', () => {
   });
 });
 
-const getProfileMock = graphql.query('profile', () => {
+const getProfileMock = graphql.query('profile', async () => {
   return HttpResponse.json({
     data: {
-      profile: {
-        updatedAt: '1727691732707',
-        language: 'nb',
-      },
+      profile: inMemoryStore.profile,
     },
   });
 });
@@ -124,10 +122,12 @@ const mutateUpdateSystemLabelMock = graphql.mutation('updateSystemLabel', (req) 
     label
   };
 
-  dialogSystemLabels = {
-    ...dialogSystemLabels,
-    [dialogId]: label
-  }
+  inMemoryStore.dialogs = inMemoryStore.dialogs.map(dialog => {
+    if (dialog.id === dialogId) {
+      dialog.systemLabel = label;
+    }
+    return dialog;
+  });
 
   return HttpResponse.json({
     data: {
