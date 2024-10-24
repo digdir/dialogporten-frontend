@@ -1,6 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "packages/bff/node_modules/**"]
+    },
     "build:bff-types-generated": {
       "dependsOn": ["build:@digdir/dialogporten-node-logger", "install:bff"],
       "outputs": ["generated/**"],
