@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.0](https://github.com/digdir/dialogporten-frontend/compare/v1.6.1...v1.7.0) (2024-10-23)
+
+
+### Features
+
+* Save search button will now reflect wether search already exists. ([#1270](https://github.com/digdir/dialogporten-frontend/issues/1270)) ([82dabd5](https://github.com/digdir/dialogporten-frontend/commit/82dabd543893c55d5ee06903bc2b8fde493e00b3))
+* Saved search button will now reflect wether search already exists. ([82dabd5](https://github.com/digdir/dialogporten-frontend/commit/82dabd543893c55d5ee06903bc2b8fde493e00b3))
+
+
+### Bug Fixes
+
+* Added missing translations ([#1282](https://github.com/digdir/dialogporten-frontend/issues/1282)) ([313d5bb](https://github.com/digdir/dialogporten-frontend/commit/313d5bb92ac8f02b6ccff7a372a333ed47a90d30))
+* allow refreshing of access token when graphql request is executed through graphiql IDE ([5ba3c5d](https://github.com/digdir/dialogporten-frontend/commit/5ba3c5db86460b96dda7289dee803cb853d944fe))
+* Check on query response success variable to display correct snackbar messages, add tests ([#1277](https://github.com/digdir/dialogporten-frontend/issues/1277)) ([22edfcc](https://github.com/digdir/dialogporten-frontend/commit/22edfcc519efcf7c0820353e49211aea4cee3310))
+* Counter on 'inbox' now reflects number of unread items ([#1278](https://github.com/digdir/dialogporten-frontend/issues/1278)) ([3d47049](https://github.com/digdir/dialogporten-frontend/commit/3d470496f9f589679654949e6e7a42042b754027))
+
 ## [1.6.1](https://github.com/digdir/dialogporten-frontend/compare/v1.6.0...v1.6.1) (2024-10-17)
 
 
