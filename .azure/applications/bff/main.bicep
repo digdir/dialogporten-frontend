@@ -15,6 +15,7 @@ param dialogportenURL string
 param oicdUrl string
 param minReplicas int
 param maxReplicas int
+param graphiQLEnabled string = 'true'
 
 @minLength(3)
 @secure()
@@ -150,6 +151,10 @@ var containerAppEnvVars = [
   {
     name: 'NODE_ENV'
     value: 'production'
+  },
+  {
+    name: 'ENABLE_GRAPHIQL'
+    value: graphiQLEnabled
   }
 ]
 
