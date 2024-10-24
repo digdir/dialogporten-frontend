@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/digdir/dialogporten-frontend/compare/v1.7.0...v1.7.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* Save search button now behaves as expected. ([#1284](https://github.com/digdir/dialogporten-frontend/issues/1284)) ([27e1c06](https://github.com/digdir/dialogporten-frontend/commit/27e1c069cd08e4268cc9e51806c7b4f24288f5c3))
+
 ## [1.7.0](https://github.com/digdir/dialogporten-frontend/compare/v1.6.1...v1.7.0) (2024-10-23)
 
 
