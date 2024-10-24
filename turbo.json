@@ -2,12 +2,11 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build:bff-types-generated": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build:@digdir/dialogporten-node-logger", "^build"],
       "outputs": ["generated/**"],
       "cache": false
     },
     "build:@digdir/dialogporten-node-logger": {
-      "dependsOn": ["^build"],
       "outputs": ["packages/node-logger/dist/**"],
       "cache": false
     },
