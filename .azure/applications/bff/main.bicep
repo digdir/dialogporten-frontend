@@ -15,6 +15,12 @@ param dialogportenURL string
 param oicdUrl string
 param minReplicas int
 param maxReplicas int
+
+@description('Controls whether GraphiQL interface is enabled. Should be disabled in production.')
+@allowed([
+  'false'
+  'true'
+])
 param graphiQLEnabled string = 'true'
 
 @minLength(3)
@@ -151,7 +157,7 @@ var containerAppEnvVars = [
   {
     name: 'NODE_ENV'
     value: 'production'
-  },
+  }
   {
     name: 'ENABLE_GRAPHIQL'
     value: graphiQLEnabled
