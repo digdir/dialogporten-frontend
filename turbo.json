@@ -2,6 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build:bff-types-generated": {
+      "dependsOn": ["build:@digdir/dialogporten-node-logger", "install:bff"],
       "outputs": ["generated/**"],
       "cache": false
     },
