@@ -1,7 +1,8 @@
-import { Button } from '@digdir/designsystemet-react';
+import { Button, Spinner } from '@digdir/designsystemet-react';
 import type { GuiActionPriority } from 'bff-types-generated';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './guiActions.module.css';
-
 export interface GuiActionProps {
   actions: GuiActionButtonProps[];
   dialogToken: string;
@@ -29,14 +30,16 @@ interface GuiActionsProps {
  * @param {GuiActionButton} props - The properties passed to the button component.
  * @param dialogToken - The dialog token used for authorization.
  */
-const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: string) => {
+const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: string, responseFinished: () => void) => {
   const { url, httpMethod, prompt } = props;
 
   if (prompt && !window.confirm(prompt)) {
+    responseFinished();
     return;
   }
 
   if (httpMethod === 'GET') {
+    responseFinished();
     window.open(url, '_blank');
   } else {
     try {
@@ -52,6 +55,8 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
       }
     } catch (error) {
       console.error('Error performing action:', error);
+    } finally {
+      responseFinished();
     }
   }
 };
@@ -64,11 +69,32 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
  * @returns {JSX.Element | null} The rendered button or null if hidden.
  */
 const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): JSX.Element | null => {
+  const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { priority, id, title, disabled = false } = actions;
   const variant = priority.toLowerCase() as 'primary' | 'secondary' | 'tertiary';
 
+  const responseCallback = () => {
+    setIsLoading(false);
+  };
+
+  const handleClick = () => {
+    setIsLoading(true);
+    handleButtonClick(actions, dialogToken, responseCallback);
+  };
+
+  if (isLoading) {
+    return (
+      <Button id={id} variant={variant} disabled={true} aria-disabled>
+        <Spinner title="loading" size="sm" />
+        {t('word.loading')}
+      </Button>
+    );
+  }
+
   return (
-    <Button id={id} variant={variant} disabled={disabled} onClick={() => handleButtonClick(actions, dialogToken)}>
+    <Button id={id} variant={variant} disabled={disabled} onClick={handleClick}>
       {title}
     </Button>
   );
