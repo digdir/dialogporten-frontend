@@ -9,7 +9,6 @@ import { unified } from 'unified';
 import './styles.css';
 import { defaultClassMap } from './classMap.ts';
 
-// @ts-expect-error: the react types are missing.
 const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
 
 export const Html: React.FC<{

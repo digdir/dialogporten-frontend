@@ -1,12 +1,12 @@
-import {graphql, http, HttpResponse} from 'msw';
-import {naiveSearchFilter} from './filters.ts';
+import { graphql, http, HttpResponse } from 'msw';
+import { naiveSearchFilter } from './filters.ts';
 import type {
   DialogByIdFieldsFragment,
   SavedSearchesFieldsFragment,
-  UpdateSystemLabelMutationVariables
+  UpdateSystemLabelMutationVariables,
 } from 'bff-types-generated';
-import {convertToDialogByIdTemplate} from './data/base/helper.ts';
-import {getMockedData} from "./data.ts";
+import { convertToDialogByIdTemplate } from './data/base/helper.ts';
+import { getMockedData } from './data.ts';
 
 const data = await getMockedData(window.location.href);
 
@@ -15,6 +15,7 @@ let inMemoryStore = {
   profile: data.profile,
   dialogs: data.dialogs,
   parties: data.parties,
+  organizations: data.organizations,
 };
 
 const isAuthenticatedMock = http.get('/api/isAuthenticated', () => {
@@ -25,8 +26,7 @@ const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (op
   const {
     variables: { partyURIs, search },
   } = options;
-  const itemsForParty = inMemoryStore.dialogs
-    .filter(dialog => partyURIs.includes(dialog.party))
+  const itemsForParty = inMemoryStore.dialogs.filter((dialog) => partyURIs.includes(dialog.party));
 
   return HttpResponse.json({
     data: {
@@ -46,12 +46,11 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
   return HttpResponse.json({
     data: {
       dialogById: {
-        dialog: dialogDetails
+        dialog: dialogDetails,
       },
     },
   });
 });
-
 
 const getMainContentMarkdownMock = http.get('https://dialogporten-serviceprovider.net/fce-markdown', () => {
   return HttpResponse.text(`# Info i markdown
@@ -88,9 +87,17 @@ export const getSavedSearchesMock = graphql.query('savedSearches', () => {
   });
 });
 
+export const getOrganizationsMock = graphql.query('organizations', () => {
+  return HttpResponse.json({
+    data: {
+      organizations: inMemoryStore.organizations,
+    },
+  });
+});
+
 export const deleteSavedSearchMock = graphql.mutation('DeleteSavedSearch', (req) => {
   const { id } = req.variables;
-  inMemoryStore.savedSearches = inMemoryStore.savedSearches.filter(savedSearch => savedSearch.id !== id);
+  inMemoryStore.savedSearches = inMemoryStore.savedSearches.filter((savedSearch) => savedSearch.id !== id);
   return HttpResponse.json({
     data: {
       savedSearches: inMemoryStore.savedSearches,
@@ -123,16 +130,15 @@ const mutateSavedSearchMock = graphql.mutation('CreateSavedSearch', (req) => {
   });
 });
 
-
 const mutateUpdateSystemLabelMock = graphql.mutation('updateSystemLabel', (req) => {
   const { dialogId, label } = req.variables;
 
   const updatedSystemLabel: UpdateSystemLabelMutationVariables = {
     dialogId,
-    label
+    label,
   };
 
-  inMemoryStore.dialogs = inMemoryStore.dialogs.map(dialog => {
+  inMemoryStore.dialogs = inMemoryStore.dialogs.map((dialog) => {
     if (dialog.id === dialogId) {
       dialog.systemLabel = label;
     }
@@ -141,7 +147,7 @@ const mutateUpdateSystemLabelMock = graphql.mutation('updateSystemLabel', (req) 
 
   return HttpResponse.json({
     data: {
-      setSystemLabel: { ...updatedSystemLabel, success: { success: true } }
+      setSystemLabel: { ...updatedSystemLabel, success: { success: true } },
     },
   });
 });
@@ -157,5 +163,6 @@ export const handlers = [
   getProfileMock,
   mutateSavedSearchMock,
   mutateUpdateSystemLabelMock,
-  deleteSavedSearchMock
+  deleteSavedSearchMock,
+  getOrganizationsMock,
 ];
