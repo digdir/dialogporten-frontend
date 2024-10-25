@@ -11,7 +11,6 @@ import { defaultClassMap } from './classMap.ts';
 
 import './styles.css';
 
-// @ts-expect-error: the react types are missing.
 const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
 
 /**

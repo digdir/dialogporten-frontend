@@ -1,12 +1,13 @@
 import type {
+  OrganizationFieldsFragment,
   PartyFieldsFragment,
   Profile,
   SavedSearchesFieldsFragment,
-  SearchDialogFieldsFragment
-} from "bff-types-generated";
-import {profile as mockedProfile} from "./data/base/profile.ts";
-import {dialogs as mockedDialogs} from './data/base/dialogs.ts';
-import {parties as mockedParties} from './data/base/parties.ts';
+  SearchDialogFieldsFragment,
+} from 'bff-types-generated';
+import { profile as mockedProfile } from './data/base/profile.ts';
+import { dialogs as mockedDialogs } from './data/base/dialogs.ts';
+import { parties as mockedParties } from './data/base/parties.ts';
 
 const findDataById = async <T>(url: string, type: 'profile' | 'parties' | 'dialogs', defaultData: T): Promise<T> => {
   const urlParams = new URLSearchParams(url);
@@ -17,16 +18,25 @@ const findDataById = async <T>(url: string, type: 'profile' | 'parties' | 'dialo
   } catch (error) {
     return defaultData;
   }
-}
+};
 
 const findProfileById = (url: string) => findDataById<Profile>(url, 'profile', mockedProfile);
 const findPartiesById = (url: string) => findDataById<PartyFieldsFragment[]>(url, 'parties', mockedParties);
 const findDialogsById = (url: string) => findDataById<SearchDialogFieldsFragment[]>(url, 'dialogs', mockedDialogs);
 
-export const getMockedData = async (url: string): Promise<{ profile: Profile, dialogs: SearchDialogFieldsFragment[], parties: PartyFieldsFragment[], savedSearches: SavedSearchesFieldsFragment[]}> => {
+export const getMockedData = async (
+  url: string,
+): Promise<{
+  profile: Profile;
+  dialogs: SearchDialogFieldsFragment[];
+  parties: PartyFieldsFragment[];
+  savedSearches: SavedSearchesFieldsFragment[];
+  organizations: OrganizationFieldsFragment[];
+}> => {
   const profile = await findProfileById(url);
   const parties = await findPartiesById(url);
   const dialogs = await findDialogsById(url);
+  const { organizations } = await import('./data/base/organizations.ts');
 
-  return { profile, dialogs, parties, savedSearches: [] };
-}
+  return { profile, dialogs, parties, savedSearches: [], organizations };
+};
