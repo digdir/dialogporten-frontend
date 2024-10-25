@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/digdir/dialogporten-frontend/compare/v1.7.1...v1.8.0) (2024-10-25)
+
+
+### Features
+
+* GuiAction show spinner while awaiting response after click ([#1300](https://github.com/digdir/dialogporten-frontend/issues/1300)) ([92a0e41](https://github.com/digdir/dialogporten-frontend/commit/92a0e415acbb7f7066ec6167773119ee5759d0fc))
+
 ## [1.7.1](https://github.com/digdir/dialogporten-frontend/compare/v1.7.0...v1.7.1) (2024-10-24)
 
 
