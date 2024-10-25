@@ -8,6 +8,7 @@ param dialogportenURL = 'https://altinn-prod-api.azure-api.net/dialogporten/grap
 param oicdUrl = 'idporten.no'
 param minReplicas = 2
 param maxReplicas = 3
+param graphiQLEnabled = 'false'
 
 // secrets
 param environmentKeyVaultName = readEnvironmentVariable('ENVIRONMENT_KEY_VAULT_NAME')
