@@ -29,7 +29,7 @@
   "filter_bar.label.choose_recipient": "Velg mottaker",
   "filter_bar.label.choose_sender": "Velg avsender",
   "filter_bar.label.choose_status": "Velg status",
-  "filter_bar.label.created": "Oppdatert dato",
+  "filter_bar.label.updated": "Oppdatert dato",
   "filter_bar.label.recipient": "Mottaker",
   "filter_bar.label.sender": "Avsender",
   "filter_bar.label.status": "Status",

@@ -290,8 +290,8 @@ export const DateFilter: StoryObj<typeof FilterBar> = {
     const today = new Date().toISOString();
     const filterBarSettings: FilterSetting[] = [
       {
-        id: 'created',
-        label: 'Created',
+        id: 'updated',
+        label: 'Updated',
         unSelectedLabel: 'All Dates',
         mobileNavLabel: 'Choose dates',
         operation: 'equals',
@@ -329,7 +329,7 @@ export const DateFilter: StoryObj<typeof FilterBar> = {
     const docsFilter = useCallback((filters: Filter[]) => {
       return importantDocs.filter((doc) => {
         return filters.every((filter) => {
-          if (filter.id === 'created') {
+          if (filter.id === 'updated') {
             // Section ~ 3.2.6 of ISO 8601-1:2019 specifies that the date and time components are separated by a solidus (/).
             if ((filter.value as string).includes('/')) {
               const [startDate, endDate] = (filter.value as string).split('/');

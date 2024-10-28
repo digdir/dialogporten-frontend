@@ -44,8 +44,14 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
   const [start, end] = date.split('/'!);
   const minDate = format(new Date(start), 'yyyy-MM-dd');
   const maxDate = format(new Date(end), 'yyyy-MM-dd');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>(minDate);
+  const [endDate, setEndDate] = useState<string>(maxDate);
+
+  const handleSubmit = () => {
+    if (!startDate && !endDate) {
+      onListItemClick(id, undefined, true);
+    } else onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
+  };
 
   return (
     <section className={styles.filterDateContent}>
@@ -92,13 +98,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
         </button>
       </div>
 
-      <ProfileButton
-        onClick={() => {
-          onListItemClick(id, `${startDate || minDate}/${endDate || maxDate}`, true);
-        }}
-        variant="secondary"
-        size="xs"
-      >
+      <ProfileButton onClick={handleSubmit} variant="secondary" size="xs">
         {t('filter_bar.choose_date')}
       </ProfileButton>
     </section>
@@ -126,7 +126,6 @@ export const FilterButton = ({
   const valueLabels = filtersForButton.map(
     (filter) => options.find((option) => option.value === filter.value)?.displayLabel ?? (filter.value as string),
   );
-
   const displayLabel = (() => {
     if (valueLabels.length === 0) return unSelectedLabel;
     if (valueLabels.length === 1) return valueLabels[0];

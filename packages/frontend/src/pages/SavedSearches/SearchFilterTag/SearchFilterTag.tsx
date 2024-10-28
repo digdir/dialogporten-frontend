@@ -16,7 +16,7 @@ const SearchFilterTag = ({ searchId, searchValue, isLastItem }: SearchFilterTagP
   );
 
   const value = useMemo(
-    () => (predefinedRange && searchId === 'created' ? predefinedRange.label : searchValue),
+    () => (predefinedRange && searchId === 'updated' ? predefinedRange.label : searchValue),
     [predefinedRange, searchId, searchValue],
   );
 
