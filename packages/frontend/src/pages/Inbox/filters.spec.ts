@@ -15,25 +15,25 @@ describe('filterDialogs', () => {
       id: 1,
       sender: { name: 'Ole' },
       receiver: { name: 'Kari' },
-      createdAt: '2024-01-01T10:00:00Z',
+      updatedAt: '2024-01-01T10:00:00Z',
     },
     {
       id: 2,
       sender: { name: 'Nils' },
       receiver: { name: 'Liv' },
-      createdAt: '2024-02-01T10:00:00Z',
+      updatedAt: '2024-02-01T10:00:00Z',
     },
     {
       id: 3,
       sender: { name: 'Ole' },
       receiver: { name: 'Eva' },
-      createdAt: '2024-03-01T10:00:00Z',
+      updatedAt: '2024-03-01T10:00:00Z',
     },
     {
       id: 4,
       sender: { name: 'Per' },
       receiver: { name: 'Kari' },
-      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-01-15T10:00:00Z',
     },
   ] as unknown as InboxItemInput[];
 
@@ -63,13 +63,13 @@ describe('filterDialogs', () => {
     expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0]]);
   });
 
-  it('filters dialogs by created date range', () => {
-    const activeFilters = [{ id: 'created', value: '2024-01-01/2024-01-03' }];
+  it('filters dialogs by updated date range', () => {
+    const activeFilters = [{ id: 'updated', value: '2024-01-01/2024-01-03' }];
     expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[0]]);
   });
 
-  it('filters dialogs by specific creation date', () => {
-    const activeFilters = [{ id: 'created', value: '2024-02-01T10:00:00Z' }];
+  it('filters dialogs by specific updated date', () => {
+    const activeFilters = [{ id: 'updated', value: '2024-02-01T10:00:00Z' }];
     expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[1]]);
   });
 
@@ -77,7 +77,7 @@ describe('filterDialogs', () => {
     const activeFilters = [
       { id: 'sender', value: 'Ole' },
       { id: 'receiver', value: 'Eva' },
-      { id: 'created', value: '2024-03-01T10:00:00Z' },
+      { id: 'updated', value: '2024-03-01T10:00:00Z' },
     ];
     expect(filterDialogs(dialogs, activeFilters, format)).toEqual([dialogs[2]]);
   });

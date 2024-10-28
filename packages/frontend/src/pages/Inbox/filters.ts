@@ -44,14 +44,13 @@ export const filterDialogs = (
     // Apply AND logic across different filter ID groups
     return Object.keys(filtersById).every((filterId) => {
       const filters = filtersById[filterId];
-
       // Apply OR logic within each filter ID group
       return filters.some((filter) => {
         if (filter.id === 'sender' || filter.id === 'receiver') {
           const participant = item[filter.id as keyof InboxItemInput] as Participant;
           return filter.value === participant.name;
         }
-        if (filter.id === 'created') {
+        if (filter.id === 'updated') {
           const rangeProperties = getPredefinedRange().find((range) => range.value === filter.value);
           const { isDate, endDate, startDate } = isCombinedDateAndInterval(
             rangeProperties?.range ?? (filter.value as string),
@@ -60,14 +59,14 @@ export const filterDialogs = (
 
           if (isDate) {
             if (startDate && endDate) {
-              return new Date(item.createdAt) >= startDate && new Date(item.createdAt) <= endDate;
+              return new Date(item.updatedAt) >= startDate && new Date(item.updatedAt) <= endDate;
             }
             if (startDate) {
-              return new Date(item.createdAt) >= startDate;
+              return new Date(item.updatedAt) >= startDate;
             }
             return true;
           }
-          return new Date(filter.value as string).toDateString() === new Date(item.createdAt).toDateString();
+          return new Date(filter.value as string).toDateString() === new Date(item.updatedAt).toDateString();
         }
         return filter.value === item[filter.id as keyof InboxItemInput];
       });
@@ -127,8 +126,8 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       })(),
     },
     {
-      id: 'created',
-      label: t('filter_bar.label.created'),
+      id: 'updated',
+      label: t('filter_bar.label.updated'),
       mobileNavLabel: t('filter_bar.label.choose_date'),
       unSelectedLabel: t('filter_bar.label.all_dates'),
       operation: 'equals',
