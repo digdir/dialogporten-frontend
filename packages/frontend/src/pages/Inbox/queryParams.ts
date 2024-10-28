@@ -6,6 +6,12 @@ export const getFiltersFromQueryParams = (searchParams: URLSearchParams): Filter
   return compressedData ? JSON.parse(compressedData) : ([] as Filter[]);
 };
 
+export const clearFiltersInQueryParams = (): void => {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.delete('filters');
+  window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
+};
+
 export const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): SortingOrder => {
   return searchParams.get('sortBy') as SortingOrder;
 };
