@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/digdir/dialogporten-frontend/compare/v1.8.0...v1.8.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* clear filters every time party is selected making it safe to switch + fix incorrect check for query defined selected org causing unwanted switch ([fe2c3e6](https://github.com/digdir/dialogporten-frontend/commit/fe2c3e68bbce4fedfa4fb63230ecd9843067ab77))
+
 ## [1.8.0](https://github.com/digdir/dialogporten-frontend/compare/v1.7.1...v1.8.0) (2024-10-25)
 
 
