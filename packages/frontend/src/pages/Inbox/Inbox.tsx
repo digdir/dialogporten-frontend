@@ -32,7 +32,7 @@ import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { getFiltersFromQueryParams, getSortingOrderFromQueryParams } from './queryParams.ts';
+import { clearFiltersInQueryParams, getFiltersFromQueryParams, getSortingOrderFromQueryParams } from './queryParams.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -115,6 +115,13 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const itemsToDisplay = useMemo(() => {
     return sortDialogs(filterDialogs(dataSource, activeFilters, format), selectedSortOrder);
   }, [dataSource, activeFilters, selectedSortOrder]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  useEffect(() => {
+    setActiveFilters([]);
+    clearFiltersInQueryParams();
+    filterBarRef.current?.resetFilters();
+  }, [selectedParties]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {

@@ -97,9 +97,8 @@ export const useParties = (): UsePartiesOutput => {
   useEffect(() => {
     if (isSuccess && !selectedParties.length && data?.parties?.length > 0) {
       const selectedPartyIdFromParams = getSelectedPartyFromQueryParams(searchParams);
-      const selectedPartyFromQueryParams = data?.parties.find((party) =>
-        party.party.includes(selectedPartyIdFromParams),
-      );
+      const selectedPartyFromQueryParams =
+        selectedPartyIdFromParams && data?.parties.find((party) => party.party.includes(selectedPartyIdFromParams));
       const currentEndUser = data?.parties.find((party) => party.isCurrentEndUser);
       if (selectedPartyFromQueryParams) {
         setSelectedPartyIds([selectedPartyFromQueryParams.party]);

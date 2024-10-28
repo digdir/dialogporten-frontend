@@ -199,24 +199,26 @@ export const FilterBar = forwardRef(
     return (
       <section className={styles.filterBar}>
         <div className={styles.filterButtons}>
-          {Object.keys(filtersById).map((id) => {
-            const setting = getFilterSetting(id)!;
-            const isFilterMenuOpen = listOpenForTarget === id;
-            return (
-              <FilterButton
-                key={id}
-                isOpen={isFilterMenuOpen}
-                filterFieldData={setting}
-                onBtnClick={() => setListOpenForTarget(isFilterMenuOpen ? 'none' : id)}
-                onBackBtnClick={() => setListOpenForTarget('add_filter')}
-                onRemove={() => handleOnRemove(id)}
-                onListItemClick={onToggleFilter}
-                selectedFilters={selectedFilters}
-                currentSubMenuLevel={currentSubLevelMenu}
-                onSubMenuLevelClick={setCurrentSubLevelMenu}
-              />
-            );
-          })}
+          {Object.keys(filtersById)
+            .filter((id) => getFilterSetting(id) !== undefined)
+            .map((id) => {
+              const setting = getFilterSetting(id)!;
+              const isFilterMenuOpen = listOpenForTarget === id;
+              return (
+                <FilterButton
+                  key={id}
+                  isOpen={isFilterMenuOpen}
+                  filterFieldData={setting}
+                  onBtnClick={() => setListOpenForTarget(isFilterMenuOpen ? 'none' : id)}
+                  onBackBtnClick={() => setListOpenForTarget('add_filter')}
+                  onRemove={() => handleOnRemove(id)}
+                  onListItemClick={onToggleFilter}
+                  selectedFilters={selectedFilters}
+                  currentSubMenuLevel={currentSubLevelMenu}
+                  onSubMenuLevelClick={setCurrentSubLevelMenu}
+                />
+              );
+            })}
           <AddFilterButton
             isMenuOpen={isAddFilterMenuOpen}
             onAddBtnClick={() => setListOpenForTarget(isAddFilterMenuOpen ? 'none' : 'add_filter')}
