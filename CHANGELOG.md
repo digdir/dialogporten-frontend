@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/digdir/dialogporten-frontend/compare/v1.8.1...v1.8.2) (2024-10-28)
+
+
+### Bug Fixes
+
+* Set min and max date values as default. Providing empty values will show all dialogs ([#1309](https://github.com/digdir/dialogporten-frontend/issues/1309)) ([5c1ad25](https://github.com/digdir/dialogporten-frontend/commit/5c1ad25845d23c680ec22b00881a48edf95ac4a7))
+
 ## [1.8.1](https://github.com/digdir/dialogporten-frontend/compare/v1.8.0...v1.8.1) (2024-10-28)
 
 
