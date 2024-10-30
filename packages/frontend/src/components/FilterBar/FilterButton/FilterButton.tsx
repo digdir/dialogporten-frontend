@@ -66,6 +66,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
       <div className={styles.dateInputWrapper}>
         <input
           id="fromDate"
+          data-testid="filterButton-fromDate"
           key="fromDate"
           type="date"
           value={startDate ? startDate : ''}
@@ -84,6 +85,7 @@ export const FilterButtonSection = ({ date, onListItemClick, id, onBack }: Filte
       <div className={styles.dateInputWrapper}>
         <input
           key="toDate"
+          data-testid="filterButton-toDate"
           type="date"
           value={endDate ? endDate : ''}
           min={minDate}
