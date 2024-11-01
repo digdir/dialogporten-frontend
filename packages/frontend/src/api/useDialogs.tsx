@@ -114,7 +114,7 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations) : []);
-  }, [setSearchResults, data?.searchDialogs?.items, enabled]);
+  }, [setSearchResults, data?.searchDialogs?.items, enabled, parties, organizations]);
 
   return {
     isLoading,
