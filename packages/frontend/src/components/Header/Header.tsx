@@ -1,10 +1,10 @@
+import type { AvatarType } from '@altinn/altinn-components';
 import type React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
-import type { AvatarProfile } from '../Avatar';
 import { GlobalMenuBar } from '../GlobalMenuBar/GlobalMenuBar.tsx';
 import { AltinnLogo } from './AltinnLogo';
 import { SearchBar } from './SearchBar';
@@ -12,7 +12,7 @@ import styles from './header.module.css';
 
 type HeaderProps = {
   name: string;
-  profile: AvatarProfile;
+  profile: AvatarType;
   notificationCount?: number;
 };
 

@@ -1,10 +1,11 @@
+import type { AvatarType } from '@altinn/altinn-components';
 import { useQueryClient } from '@tanstack/react-query';
 import cx from 'classnames';
 import type React from 'react';
 import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
-import { type AvatarProfile, Footer, Header, type ItemPerViewCount, Sidebar } from '..';
+import { Footer, Header, type ItemPerViewCount, Sidebar } from '..';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
@@ -28,37 +29,39 @@ export const useUpdateOnLocationChange = (fn: () => void) => {
 
 interface PageLayoutContentProps {
   name: string;
-  profile: AvatarProfile;
+  profile: AvatarType;
   notificationCount?: number;
 }
 
-const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(({ name, profile }) => {
-  const { inSelectionMode } = useSelectedDialogs();
-  const { isTabletOrSmaller } = useWindowSize();
-  const showSidebar = !isTabletOrSmaller && !inSelectionMode;
-  const { selectedPartyIds, selectedParties } = useParties();
-  const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
-  const { dialogsByView } = useDialogs(selectedParties);
-  const itemsPerViewCount = {
-    inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
-    drafts: dialogsByView.drafts.length,
-    sent: dialogsByView.sent.length,
-    'saved-searches': currentPartySavedSearches?.length ?? 0,
-    archive: dialogsByView.archive.length,
-    bin: dialogsByView.bin.length,
-  } as ItemPerViewCount;
+const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
+  ({ name, profile }: { name: string; profile: AvatarType }) => {
+    const { inSelectionMode } = useSelectedDialogs();
+    const { isTabletOrSmaller } = useWindowSize();
+    const showSidebar = !isTabletOrSmaller && !inSelectionMode;
+    const { selectedPartyIds, selectedParties } = useParties();
+    const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
+    const { dialogsByView } = useDialogs(selectedParties);
+    const itemsPerViewCount = {
+      inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
+      drafts: dialogsByView.drafts.length,
+      sent: dialogsByView.sent.length,
+      'saved-searches': currentPartySavedSearches?.length ?? 0,
+      archive: dialogsByView.archive.length,
+      bin: dialogsByView.bin.length,
+    } as ItemPerViewCount;
 
-  return (
-    <>
-      <Header name={name} profile={profile} notificationCount={itemsPerViewCount.inbox} />
-      <div className={styles.pageLayout}>
-        {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} />}
-        <Outlet />
-      </div>
-      <Footer />
-    </>
-  );
-});
+    return (
+      <>
+        <Header name={name} profile={profile} notificationCount={itemsPerViewCount.inbox} />
+        <div className={styles.pageLayout}>
+          {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} />}
+          <Outlet />
+        </div>
+        <Footer />
+      </>
+    );
+  },
+);
 
 const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = ({ children, isCompany }) => {
   const { inSelectionMode } = useSelectedDialogs();
@@ -93,7 +96,7 @@ export const PageLayout: React.FC = () => {
 
   const name = allOrganizationsSelected ? t('parties.labels.all_organizations') : selectedParties?.[0]?.name || '';
   const isCompany = allOrganizationsSelected || selectedParties?.[0]?.partyType === 'Organization';
-  const profile = isCompany ? 'organization' : 'person';
+  const profile = isCompany ? 'company' : 'person';
 
   useUpdateOnLocationChange(() => {
     const searchString = getSearchStringFromQueryParams(searchParams);

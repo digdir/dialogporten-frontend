@@ -1,9 +1,0 @@
-.avatarGroup {
-  display: flex;
-  position: relative;
-  max-width: 52px;
-}
-
-.floatingAvatar {
-  position: relative;
-}
