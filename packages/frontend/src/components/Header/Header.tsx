@@ -18,7 +18,8 @@ type HeaderProps = {
 
 export const useSearchString = () => {
   const [searchParams, updateSearchParams] = useSearchParams();
-  const [searchString, setSearchString] = useState<string>('');
+  const searchFromQueryParam = getSearchStringFromQueryParams(searchParams);
+  const [searchString, setSearchString] = useState<string>(searchFromQueryParam);
   const handleSearchString = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (value) {
@@ -31,11 +32,10 @@ export const useSearchString = () => {
   };
 
   useEffect(() => {
-    const search = getSearchStringFromQueryParams(searchParams);
-    if (search !== searchString) {
-      setSearchString(search || '');
+    if (searchFromQueryParam !== searchString) {
+      setSearchString(searchFromQueryParam || '');
     }
-  }, [searchParams, searchString]);
+  }, [searchString, searchFromQueryParam]);
 
   return { searchString, setSearchString: handleSearchString };
 };

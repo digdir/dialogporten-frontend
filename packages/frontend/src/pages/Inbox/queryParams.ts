@@ -21,5 +21,9 @@ export const getSearchStringFromQueryParams = (searchParams: URLSearchParams): s
 };
 
 export const getSelectedPartyFromQueryParams = (searchParams: URLSearchParams): string => {
-  return searchParams.get('party') || '';
+  return decodeURIComponent(searchParams.get('party') || '');
+};
+
+export const getSelectedAllPartiesFromQueryParams = (searchParams: URLSearchParams): boolean => {
+  return searchParams.get('allParties') === 'true';
 };
