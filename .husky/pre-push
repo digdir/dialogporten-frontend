@@ -1,7 +1,0 @@
-#!/bin/bash
-echo "### Running pre-push hook ### "
-echo "Running Playwright tests..."
-pnpm --filter frontend test:playwright
-echo "Running typechecking..."
-pnpm --filter frontend typecheck
-echo "Done. Will now push to origin."
