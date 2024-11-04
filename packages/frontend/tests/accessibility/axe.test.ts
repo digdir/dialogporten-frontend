@@ -1,13 +1,13 @@
-import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright'; // 1
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
 import { appURL } from '..';
 
 test.describe('Axe test', () => {
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
-    await page.goto(appURL); // 3
+    await page.goto(appURL);
 
-    const accessibilityScanResults = await new AxeBuilder({ page }).analyze(); // 4
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
-    expect(accessibilityScanResults.violations).toEqual([]); // 5
+    expect(accessibilityScanResults.violations).toEqual([]);
   });
 });

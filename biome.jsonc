@@ -70,7 +70,8 @@
       "storybook-static",
       ".docusaurus",
       ".storybook",
-      "mocks"
+      "mocks",
+      "test-results"
     ]
   }
 }
