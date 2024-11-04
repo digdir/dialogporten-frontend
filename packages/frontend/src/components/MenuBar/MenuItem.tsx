@@ -2,7 +2,7 @@ import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';
 import type { HTMLProps } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Badge } from '../Badge';
 import styles from './menuItem.module.css';
 
@@ -30,11 +30,12 @@ const MenuItem = (props: MenuItem) => {
   const { path, onClick, isExternalLink, leftContent, rightContent, className, dataTestId } = props;
   const content = <MenuItemContent {...props} />;
 
+  const { search } = useLocation();
   if (path) {
     return (
       <Link
         className={styles.isLink}
-        to={path}
+        to={path + search}
         onClick={onClick}
         target={isExternalLink ? '_blank' : '_self'}
         data-testid={dataTestId}

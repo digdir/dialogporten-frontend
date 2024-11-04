@@ -68,6 +68,7 @@ const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = 
 
   return (
     <div
+      data-testid="pageLayout-background"
       className={cx(styles.background, {
         isCompany: isCompany,
         [styles.inSelectionMode]: inSelectionMode,
