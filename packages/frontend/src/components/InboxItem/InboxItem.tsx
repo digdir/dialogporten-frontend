@@ -1,3 +1,4 @@
+import { Avatar } from '@altinn/altinn-components';
 import classNames from 'classnames';
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,6 @@ import type { Participant } from '../../api/useDialogById.tsx';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { FeatureFlagKeys } from '../../featureFlags';
 import { useFeatureFlag } from '../../featureFlags';
-import { Avatar } from '../Avatar';
 import type { InboxItemMetaField } from '../MetaDataFields';
 import { MetaDataFields } from '../MetaDataFields';
 import { ProfileCheckbox } from '../ProfileCheckbox';
@@ -202,9 +202,9 @@ export const InboxItem = ({
             <div className={styles.sender}>
               <Avatar
                 name={sender?.name ?? ''}
-                profile={sender?.isCompany ? 'organization' : 'person'}
+                type={sender?.isCompany ? 'company' : 'person'}
                 imageUrl={sender.imageURL}
-                size="small"
+                size="sm"
               />
               <span>{sender?.name}</span>
             </div>

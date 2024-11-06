@@ -1,8 +1,7 @@
+import { Avatar, AvatarGroup } from '@altinn/altinn-components';
 import { Search } from '@digdir/designsystemet-react';
 import { Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar } from '../Avatar';
-import { AvatarGroup } from '../AvatarGroup';
 import { HorizontalLine } from '../HorizontalLine';
 import { MenuGroupHeader, MenuItem } from '../MenuBar';
 import type { PartyOption, PartyOptionGroup } from './mapToPartyOption.ts';
@@ -104,17 +103,17 @@ export const PartyList = ({ optionsGroups, selectedPartyIds, onSelect, showSearc
                         <MenuItem.LeftContent>
                           {option.value === 'ALL_ORGANIZATIONS' ? (
                             <AvatarGroup
-                              profile="organization"
-                              size="small"
-                              avatars={allParties
+                              defaultType="company"
+                              size="xs"
+                              items={allParties
                                 .filter((party) => party.isCompany && party.value !== 'ALL_ORGANIZATIONS')
                                 .map((party) => ({ name: party.label }))}
                             />
                           ) : (
                             <Avatar
                               name={option.label}
-                              profile={option.isCompany ? 'organization' : 'person'}
-                              size="small"
+                              type={option.isCompany ? 'company' : 'person'}
+                              size="sm"
                               className={styles.avatar}
                             />
                           )}

@@ -397,6 +397,9 @@ importers:
 
   packages/frontend:
     dependencies:
+      '@altinn/altinn-components':
+        specifier: ^0.1.0
+        version: 0.1.0(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -838,6 +841,16 @@ packages:
       '@algolia/cache-common': 4.24.0
       '@algolia/logger-common': 4.24.0
       '@algolia/requester-common': 4.24.0
+    dev: false
+
+  /@altinn/altinn-components@0.1.0(react@18.3.1):
+    resolution: {integrity: sha512-Wuarl5vPJLpw4DzM4ursKst9Y8VFT4XVrzaDD17shanfTNtIGNXaXmyMvKMZXFQLR6hXiRl7WYMG3gj/FlNydw==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      '@navikt/aksel-icons': 7.4.2
+      classnames: 2.5.1
+      react: 18.3.1
     dev: false
 
   /@ampproject/remapping@2.3.0:
@@ -5912,6 +5925,10 @@ packages:
 
   /@navikt/aksel-icons@6.17.0:
     resolution: {integrity: sha512-n+1AsE9kRFh3C7BcD0fAJhIA6/65PsLGrpNKnLQUjW8hwESzo1LYHfZgZXi2Shaw2hCzQ1wx/hBBdwtQfUiBNg==}
+    dev: false
+
+  /@navikt/aksel-icons@7.4.2:
+    resolution: {integrity: sha512-Oltbsmh7QUmqAtRaQp+EOP0J//DCZ1WZT+5N7Fgnu6xzbOcI+bSzc7xDm4kuBVcxQjBTCbSSR1Z9gWQJ+4Mmdg==}
     dev: false
 
   /@nevware21/ts-async@0.5.2:

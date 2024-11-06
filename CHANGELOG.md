@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/digdir/dialogporten-frontend/compare/v1.8.2...v1.8.3) (2024-11-04)
+
+
+### Bug Fixes
+
+* improve query parameter consistency and state persistence across navigation ([#1328](https://github.com/digdir/dialogporten-frontend/issues/1328)) ([1ad78cb](https://github.com/digdir/dialogporten-frontend/commit/1ad78cbabb9a2e8f0fef302044b95d22739eb300))
+
 ## [1.8.2](https://github.com/digdir/dialogporten-frontend/compare/v1.8.1...v1.8.2) (2024-10-28)
 
 

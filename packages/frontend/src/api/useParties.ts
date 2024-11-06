@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { normalizeFlattenParties } from '../components/PartyDropdown/normalizeFlattenParties.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
-import { getSelectedPartyFromQueryParams } from '../pages/Inbox/queryParams.ts';
+import { getSelectedAllPartiesFromQueryParams, getSelectedPartyFromQueryParams } from '../pages/Inbox/queryParams.ts';
 import { graphQLSDK } from './queries.ts';
 
 interface UsePartiesOutput {
@@ -15,10 +15,9 @@ interface UsePartiesOutput {
   selectedParties: PartyFieldsFragment[];
   selectedPartyIds: string[];
   setSelectedParties: (parties: PartyFieldsFragment[]) => void;
-  setSelectedPartyIds: (parties: string[]) => void;
+  setSelectedPartyIds: (parties: string[], allOrganizationsSelected: boolean) => void;
   currentEndUser: PartyFieldsFragment | undefined;
   allOrganizationsSelected: boolean;
-  setAllOrganizationsSelected: (allOrganizations: boolean) => void;
 }
 
 interface PartiesResult {
@@ -29,10 +28,17 @@ interface PartiesResult {
 const stripQueryParamsForParty = (searchParamString: string) => {
   const params = new URLSearchParams(searchParamString);
   params.delete('party');
+  params.delete('allParties');
   return params.toString();
 };
 
 const fetchParties = (): Promise<PartiesQuery> => graphQLSDK.parties();
+
+const setAllPartiesParam = (searchParamString: string) => {
+  const params = new URLSearchParams(searchParamString);
+  params.set('allParties', 'true');
+  return params.toString();
+};
 
 export const useParties = (): UsePartiesOutput => {
   const queryClient = useQueryClient();
@@ -78,37 +84,59 @@ export const useParties = (): UsePartiesOutput => {
     queryClient.setQueryData([QUERY_KEYS.ALL_ORGANIZATIONS_SELECTED], allOrganizations);
   };
 
-  const setSelectedPartyIds = (partyIds: string[]) => {
+  const setSelectedPartyIds = (partyIds: string[], allOrganizationsSelected: boolean) => {
+    setAllOrganizationsSelected(allOrganizationsSelected);
     const isPerson = partyIds[0].includes('person');
-    const isMoreThanOneParty = partyIds.length > 1;
-
-    if (isPerson || isMoreThanOneParty) {
-      setSearchParams(`?${stripQueryParamsForParty(searchParams.toString())}`, { replace: true });
+    if (allOrganizationsSelected) {
+      setSearchParams(setAllPartiesParam(searchParams.toString()), { replace: true });
+    } else if (isPerson) {
+      setSearchParams(stripQueryParamsForParty(searchParams.toString()), { replace: true });
     } else {
-      setSearchParams(
-        `?party=${encodeURIComponent(partyIds[0])}&${stripQueryParamsForParty(searchParams.toString())}`,
-        { replace: true },
-      );
+      const newSearchParams = new URLSearchParams(stripQueryParamsForParty(searchParams.toString()));
+      newSearchParams.append('party', encodeURIComponent(partyIds[0]));
+      setSearchParams(newSearchParams, { replace: true });
     }
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    if (isSuccess && !selectedParties.length && data?.parties?.length > 0) {
-      const selectedPartyIdFromParams = getSelectedPartyFromQueryParams(searchParams);
-      const selectedPartyFromQueryParams =
-        selectedPartyIdFromParams && data?.parties.find((party) => party.party.includes(selectedPartyIdFromParams));
-      const currentEndUser = data?.parties.find((party) => party.isCurrentEndUser);
-      if (selectedPartyFromQueryParams) {
-        setSelectedPartyIds([selectedPartyFromQueryParams.party]);
-      } else if (currentEndUser) {
-        setSelectedParties([currentEndUser]);
+    const selectAllOrganizations = () => {
+      const allOrgParties =
+        data?.parties?.filter((party) => party.party.includes('organization')).map((party) => party.party) ?? [];
+      setSelectedPartyIds(allOrgParties, true);
+    };
+
+    const selectSpecificParty = () => {
+      const partyFromQuery = getSelectedPartyFromQueryParams(searchParams);
+      return partyFromQuery && data?.parties?.find((party) => party.party.includes(partyFromQuery));
+    };
+
+    const selectCurrentEndUser = () => {
+      return data?.parties?.find((party) => party.isCurrentEndUser);
+    };
+
+    const handlePartySelection = () => {
+      if (getSelectedAllPartiesFromQueryParams(searchParams)) {
+        selectAllOrganizations();
       } else {
-        console.warn('No current end user found, unable to select default parties.');
+        const selectedParty = selectSpecificParty();
+        const currentEndUser = selectCurrentEndUser();
+
+        if (selectedParty) {
+          setSelectedPartyIds([selectedParty.party], false);
+        } else if (currentEndUser) {
+          setSelectedParties([currentEndUser]);
+        } else {
+          console.warn('No current end user found, unable to select default parties.');
+        }
       }
+    };
+
+    if (isSuccess && !selectedParties.length && data?.parties?.length > 0) {
+      handlePartySelection();
     }
-  }, [isSuccess, selectedParties.length, data?.parties]);
+  }, [isSuccess, selectedParties.length, data?.parties, allOrganizationsSelected]);
 
   return {
     isLoading,
@@ -121,6 +149,5 @@ export const useParties = (): UsePartiesOutput => {
     currentEndUser: data?.parties.find((party) => party.isCurrentEndUser),
     deletedParties: data?.deletedParties ?? [],
     allOrganizationsSelected,
-    setAllOrganizationsSelected,
   };
 };

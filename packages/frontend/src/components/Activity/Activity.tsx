@@ -1,7 +1,7 @@
+import { Avatar } from '@altinn/altinn-components';
 import { ActorType } from 'bff-types-generated';
 import type { DialogActivity, Participant } from '../../api/useDialogById.tsx';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
-import { Avatar } from '../Avatar';
 
 import { t } from 'i18next';
 import styles from './activity.module.css';
@@ -45,12 +45,7 @@ export const Activity = ({ activity, serviceOwner }: ActivityProps) => {
     <div key={activity.id}>
       <div className={styles.activityParticipants}>
         <div className={styles.sender}>
-          <Avatar
-            name={performedByName}
-            profile={isCompany ? 'organization' : 'person'}
-            imageUrl={imageUrl}
-            size="small"
-          />
+          <Avatar name={performedByName} type={isCompany ? 'company' : 'person'} imageUrl={imageUrl} size="sm" />
           <span className={styles.participantLabel}>{performedByName}</span>
         </div>
         <span className={styles.dateLabel}>{format(activity.createdAt, formatString)}</span>

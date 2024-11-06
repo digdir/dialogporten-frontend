@@ -1,3 +1,4 @@
+import { Avatar } from '@altinn/altinn-components';
 import { Link } from '@digdir/designsystemet-react';
 import { EyeIcon, FileIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +7,6 @@ import { getPreferredPropertyByLocale } from '../../i18n/property.ts';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
 import { AdditionalInfoContent } from '../AdditonalInfoContent';
-import { Avatar } from '../Avatar';
 import { MainContentReference } from '../MainContentReference';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
@@ -86,7 +86,8 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
           <Avatar
             name={sender?.name ?? ''}
             imageUrl={sender?.imageURL}
-            profile={sender?.isCompany ? 'organization' : 'person'}
+            size="lg"
+            type={sender?.isCompany ? 'company' : 'person'}
           />
           <div className={styles.senderInfo}>
             <div className={styles.sender}>{sender?.name}</div>
