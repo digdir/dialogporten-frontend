@@ -7,7 +7,7 @@ config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/stories',
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -29,10 +29,14 @@ export default defineConfig({
   testMatch: '**/*.{spec,test}.{js,ts}',
   projects: [
     {
-      name: 'chromium',
+      name: 'playwright',
       use: { ...devices['Desktop Chrome'] },
     },
-    /* TODO: Test against mobile viewports and other browser. */
+    {
+      name: 'accessibility',
+      testDir: './tests/accessibility',
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: {
     command: 'pnpm dev',

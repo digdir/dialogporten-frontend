@@ -467,6 +467,9 @@ importers:
         specifier: ^10.0.1
         version: 10.0.4(react@18.3.1)
     devDependencies:
+      '@axe-core/playwright':
+        specifier: ^4.10.0
+        version: 4.10.0(playwright-core@1.48.1)
       '@playwright/test':
         specifier: ^1.41.2
         version: 1.48.1
@@ -932,6 +935,15 @@ packages:
     transitivePeerDependencies:
       - encoding
     dev: false
+
+  /@axe-core/playwright@4.10.0(playwright-core@1.48.1):
+    resolution: {integrity: sha512-kEr3JPEVUSnKIYp/egV2jvFj+chIjCjPp3K3zlpJMza/CB3TFw8UZNbI9agEC2uMz4YbgAOyzlbUy0QS+OofFA==}
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
+    dependencies:
+      axe-core: 4.10.2
+      playwright-core: 1.48.1
+    dev: true
 
   /@azure/abort-controller@2.1.2:
     resolution: {integrity: sha512-nBrLsEWm4J2u5LpAPjxADTlq3trDgVZZXHNKabeXZtpq3d3AbN/KGO82R87rdDz5/lYB024rtEf10/q0urNgsA==}
