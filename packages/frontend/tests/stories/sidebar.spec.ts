@@ -11,9 +11,9 @@ test.describe('Sidebar menu', () => {
     await page.getByRole('link', { name: 'Lagrede søk' }).click();
     await expect(page.getByText('Du har ingen lagrede søk')).toBeVisible();
     await page.getByRole('link', { name: 'Arkiv' }).click();
-    await expect(page.getByRole('heading', { name: 'Ingen meldinger' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ingen arkiverte meldinger' })).toBeVisible();
     await page.getByRole('link', { name: 'Papirkurv' }).click();
-    await expect(page.getByRole('heading', { name: 'Ingen meldinger' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ingen meldinger i papirkurv' })).toBeVisible();
     await page.getByRole('link', { name: 'Innboks' }).click();
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av sn' })).toBeVisible();
   });
