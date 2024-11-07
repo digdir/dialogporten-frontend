@@ -4,7 +4,7 @@ param location string
 @description('The tags to apply to the resources')
 param tags object
 
-resource appConfig 'Microsoft.AppConfiguration/configurationStores@2022-05-01' = {
+resource appConfig 'Microsoft.AppConfiguration/configurationStores@2024-05-01' = {
   name: '${namePrefix}-appConfiguration'
   location: location
   sku: {
