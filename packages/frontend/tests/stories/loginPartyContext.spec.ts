@@ -110,21 +110,22 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
   });
 
-  test('Go-back button updates state and shows correct data and color theme', async ({ page }: { page: Page }) => {
-    await expect(page.getByRole('button', { name: 'Test Testesen' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).not.toBeVisible();
+  test('Go-back button deletes search bar value', async ({ page }: { page: Page }) => {
+    await page.getByPlaceholder('Søk i innboks').click();
+    await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
+    await page.getByPlaceholder('Søk i innboks').fill('skatten din');
+    await page.getByPlaceholder('Søk i innboks').press('Enter');
 
-    await page.getByRole('button', { name: 'Test Testesen' }).click();
-    await page.getByText('Alle virksomheter').click();
-    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).not.toBeVisible();
-    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).toBeVisible();
-    await expect(page.getByTestId('pageLayout-background')).toHaveClass(/.*isCompany.*/);
+    let searchParams = new URL(page.url()).searchParams;
+    expect(searchParams.has('search')).toBe(true);
+    expect(searchParams.get('search')).toBe('skatten din');
+    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
 
     await page.goBack();
-    await expect(page.getByRole('button', { name: 'Test Testesen' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).not.toBeVisible();
-    await expect(page.getByTestId('pageLayout-background')).not.toHaveClass(/.*isCompany.*/);
+    searchParams = new URL(page.url()).searchParams;
+    expect(searchParams.has('search')).toBe(false);
+    await expect(page.getByPlaceholder('Søk i innboks')).toBeEmpty();
+    await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).toBeVisible();
   });
 });

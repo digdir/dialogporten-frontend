@@ -1,8 +1,8 @@
 import { MagnifyingGlassIcon, MultiplyIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { Backdrop } from '../Backdrop';
 import { useSearchString } from '../Header';
@@ -15,7 +15,6 @@ export const SearchBar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { searchString, setSearchString } = useSearchString();
   const [searchValue, setSearchValue] = useState<string>(searchString);
-  const navigate = useNavigate();
   const { isTabletOrSmaller } = useWindowSize();
 
   const handleClose = () => {
@@ -26,7 +25,7 @@ export const SearchBar: React.FC = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (newSearchParams.has('data')) {
       newSearchParams.delete('data');
-      setSearchParams(newSearchParams);
+      setSearchParams(newSearchParams, { replace: true });
     }
     setSearchValue('');
     setSearchString('');
@@ -42,12 +41,17 @@ export const SearchBar: React.FC = () => {
     setSearchString(value);
     setShowDropdownMenu(false);
     newSearchParams.set('search', value);
-    setSearchParams(newSearchParams);
-    navigate({
-      pathname: '/',
-      search: `?${newSearchParams.toString()}`,
-    });
+    setSearchParams(newSearchParams, { replace: true });
   };
+
+  useEffect(() => {
+    const searchBarParam = new URLSearchParams(searchParams);
+    if (searchBarParam.get('search')) {
+      return;
+    }
+    setSearchValue('');
+    searchBarParam.delete('search');
+  }, [location.search]);
 
   return (
     <div className={styles.searchbarContainer}>
