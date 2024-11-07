@@ -70,7 +70,7 @@
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
     "@types/reflect-metadata": "^0.1.0",
     "concurrently": "^8.2.2",
     "mprocs": "^0.6.4",
