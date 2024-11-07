@@ -24,8 +24,11 @@ interface SearchDropdownProps {
 export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu, onClose, searchValue, onSearch }) => {
   const { t } = useTranslation();
   const { savedSearches, isLoading: isLoadingSavedSearches } = useSavedSearches();
-  const { parties } = useParties();
-  const { searchResults, isFetching } = useSearchDialogs({ parties, searchString: searchValue });
+  const { selectedParties } = useParties();
+  const { searchResults, isFetching } = useSearchDialogs({
+    parties: selectedParties,
+    searchString: searchValue,
+  });
   const formatDistance = useFormatDistance();
 
   const handleClose = () => {
