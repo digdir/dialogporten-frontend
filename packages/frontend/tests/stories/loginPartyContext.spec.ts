@@ -75,7 +75,7 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('button', { name: 'Test Testesen' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'This is a message 1 for Firma AS' })).not.toBeVisible();
 
-    await expect(page.getByTestId('pageLayout-background')).not.toHaveClass('isCompany');
+    await expect(page.getByTestId('pageLayout-background')).not.toHaveClass(/.*isCompany.*/);
 
     await page.getByRole('button', { name: 'Test Testesen' }).click();
     await page.locator('li').filter({ hasText: 'Firma AS' }).click();
@@ -108,5 +108,23 @@ test.describe('LoginPartyContext', () => {
     await page.reload();
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
+  });
+
+  test('Go-back button updates state and shows correct data and color theme', async ({ page }: { page: Page }) => {
+    await expect(page.getByRole('button', { name: 'Test Testesen' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).not.toBeVisible();
+
+    await page.getByRole('button', { name: 'Test Testesen' }).click();
+    await page.getByText('Alle virksomheter').click();
+    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).toBeVisible();
+    await expect(page.getByTestId('pageLayout-background')).toHaveClass(/.*isCompany.*/);
+
+    await page.goBack();
+    await expect(page.getByRole('button', { name: 'Test Testesen' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).not.toBeVisible();
+    await expect(page.getByTestId('pageLayout-background')).not.toHaveClass(/.*isCompany.*/);
   });
 });

@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { normalizeFlattenParties } from '../components/PartyDropdown/normalizeFlattenParties.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { getSelectedAllPartiesFromQueryParams, getSelectedPartyFromQueryParams } from '../pages/Inbox/queryParams.ts';
@@ -42,7 +42,7 @@ const setAllPartiesParam = (searchParamString: string) => {
 
 export const useParties = (): UsePartiesOutput => {
   const queryClient = useQueryClient();
-
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedPartiesQuery = useQuery<PartyFieldsFragment[]>({
     queryKey: [QUERY_KEYS.SELECTED_PARTIES],
@@ -99,44 +99,44 @@ export const useParties = (): UsePartiesOutput => {
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
   };
 
+  const selectAllOrganizations = () => {
+    const allOrgParties =
+      data?.parties?.filter((party) => party.party.includes('organization')).map((party) => party.party) ?? [];
+    setSelectedPartyIds(allOrgParties, true);
+  };
+
+  const selectSpecificParty = () => {
+    const partyFromQuery = getSelectedPartyFromQueryParams(searchParams);
+    return partyFromQuery && data?.parties?.find((party) => party.party.includes(partyFromQuery));
+  };
+
+  const selectCurrentEndUser = () => {
+    return data?.parties?.find((party) => party.isCurrentEndUser);
+  };
+
+  const handlePartySelection = () => {
+    if (getSelectedAllPartiesFromQueryParams(searchParams)) {
+      selectAllOrganizations();
+    } else {
+      const selectedParty = selectSpecificParty();
+      const currentEndUser = selectCurrentEndUser();
+
+      if (selectedParty) {
+        setSelectedPartyIds([selectedParty.party], false);
+      } else if (currentEndUser) {
+        setSelectedPartyIds([currentEndUser.party], false);
+      } else {
+        console.warn('No current end user found, unable to select default parties.');
+      }
+    }
+  };
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    const selectAllOrganizations = () => {
-      const allOrgParties =
-        data?.parties?.filter((party) => party.party.includes('organization')).map((party) => party.party) ?? [];
-      setSelectedPartyIds(allOrgParties, true);
-    };
-
-    const selectSpecificParty = () => {
-      const partyFromQuery = getSelectedPartyFromQueryParams(searchParams);
-      return partyFromQuery && data?.parties?.find((party) => party.party.includes(partyFromQuery));
-    };
-
-    const selectCurrentEndUser = () => {
-      return data?.parties?.find((party) => party.isCurrentEndUser);
-    };
-
-    const handlePartySelection = () => {
-      if (getSelectedAllPartiesFromQueryParams(searchParams)) {
-        selectAllOrganizations();
-      } else {
-        const selectedParty = selectSpecificParty();
-        const currentEndUser = selectCurrentEndUser();
-
-        if (selectedParty) {
-          setSelectedPartyIds([selectedParty.party], false);
-        } else if (currentEndUser) {
-          setSelectedParties([currentEndUser]);
-        } else {
-          console.warn('No current end user found, unable to select default parties.');
-        }
-      }
-    };
-
-    if (isSuccess && !selectedParties.length && data?.parties?.length > 0) {
+    if (isSuccess && data?.parties?.length > 0) {
       handlePartySelection();
     }
-  }, [isSuccess, selectedParties.length, data?.parties, allOrganizationsSelected]);
+  }, [isSuccess, data?.parties, location.search]);
 
   return {
     isLoading,
