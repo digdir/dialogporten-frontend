@@ -132,10 +132,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    console.log('viewType', viewType);
-  }, [viewType]);
-
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams);

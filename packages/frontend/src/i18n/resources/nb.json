@@ -61,6 +61,7 @@
   "inbox.heading.attachments": "{count, plural, =0 {Ingen vedlegg} one {# vedlegg} other {# vedlegg}}",
   "inbox.heading.choose_all": "Velg alle",
   "inbox.heading.no_results": "Ingen meldinger",
+  "inbox.heading.no_results.inbox": "Ingen meldinger i innboks",
   "inbox.heading.no_results.drafts": "Ingen meldinger i utkast",
   "inbox.heading.no_results.sent": "Ingen sendte meldinger",
   "inbox.heading.no_results.bin": "Ingen meldinger i papirkurv",
