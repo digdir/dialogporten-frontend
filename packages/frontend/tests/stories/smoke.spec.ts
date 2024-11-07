@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { appURL } from './index.ts';
+import { appURL } from '..';
 
 test.describe('Smoke test', () => {
   test('should show header, aside, main and footer', async ({ page }) => {

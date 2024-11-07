@@ -1,8 +1,8 @@
+import { Avatar, type AvatarType } from '@altinn/altinn-components';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, type AvatarProfile } from '../Avatar';
 import { Backdrop } from '../Backdrop';
 import { Badge } from '../Badge';
 import { NavigationDropdownMenu } from './NavigationDropdownMenu.tsx';
@@ -11,7 +11,7 @@ import styles from './globalMenuBar.module.css';
 
 interface GlobalMenuBarProps {
   name: string;
-  profile: AvatarProfile;
+  profile: AvatarType;
   notificationCount?: number;
 }
 
@@ -63,7 +63,7 @@ export const GlobalMenuBar: React.FC<GlobalMenuBarProps> = ({ name, profile, not
                 {showBackDrop ? (
                   <CloseMenuButton className={styles.closeMenuButton} />
                 ) : (
-                  <Avatar name={name} profile={profile} />
+                  <Avatar name={name} type={profile} size="lg" />
                 )}
               </div>
             </div>

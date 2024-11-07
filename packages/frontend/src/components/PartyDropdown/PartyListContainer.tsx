@@ -25,14 +25,13 @@ interface PartyListContainerProps {
 
 const PartyListAdapter = ({ counterContext = 'inbox', children }: PartyListAdapterProps) => {
   const queryClient = useQueryClient();
-  const { parties, setSelectedPartyIds, selectedPartyIds, setAllOrganizationsSelected } = useParties();
+  const { parties, setSelectedPartyIds, selectedPartyIds } = useParties();
   const { dialogsByView } = useDialogs(parties);
   const { savedSearches } = useSavedSearches(selectedPartyIds);
   const showSearchFilter = parties.length > 10;
 
   const onSelect = (ids: string[], allOrganizationsSelected: boolean) => {
-    setAllOrganizationsSelected(allOrganizationsSelected);
-    setSelectedPartyIds(ids);
+    setSelectedPartyIds(ids, allOrganizationsSelected);
     void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS, QUERY_KEYS.SAVED_SEARCHES] });
   };
 

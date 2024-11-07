@@ -1,13 +1,13 @@
+import { Avatar, type AvatarType } from '@altinn/altinn-components';
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Avatar, type AvatarProfile } from '../Avatar';
 import { MenuItem } from '../MenuBar';
 import styles from './userInfo.module.css';
 
 interface UserInfoProps {
   name: string;
-  profile: AvatarProfile;
+  profile: AvatarType;
   onClick: () => void;
 }
 
@@ -18,7 +18,7 @@ export const UserInfo = ({ name, profile, onClick }: UserInfoProps) => {
       dataTestId={'user-info'}
       leftContent={
         <MenuItem.LeftContent className={cx(styles.menuColumn, styles.menuColumnLeft)} title={name} onClick={onClick}>
-          <Avatar name={name} profile={profile} />
+          <Avatar name={name} type={profile} />
           <div className={styles.primaryName}>{name}</div>
         </MenuItem.LeftContent>
       }

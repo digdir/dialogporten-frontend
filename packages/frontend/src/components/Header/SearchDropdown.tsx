@@ -1,3 +1,4 @@
+import { Avatar } from '@altinn/altinn-components';
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +8,7 @@ import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import SearchFilterTag from '../../pages/SavedSearches/SearchFilterTag/SearchFilterTag.tsx';
 import { autoFormatRelativeTime } from '../../pages/SavedSearches/searchUtils.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
-import { Avatar } from '../Avatar';
-import { PlusIcon } from '../Icons/PlusIcon/PlusIcon.tsx';
+import { PlusIcon } from '../Icons';
 import { InboxItem } from '../InboxItem';
 import { SearchDropdownItem } from './SearchDropdownItem';
 import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
@@ -76,9 +76,9 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 </span>
                 <Avatar
                   name={item.sender.name}
-                  profile={item.sender.isCompany ? 'organization' : 'person'}
+                  type={item.sender.isCompany ? 'company' : 'person'}
                   imageUrl={item.sender.imageURL}
-                  size="small"
+                  size="sm"
                 />
               </div>
             </SearchDropdownItem>

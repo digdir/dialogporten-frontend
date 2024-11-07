@@ -1,10 +1,10 @@
+import type { AvatarType } from '@altinn/altinn-components';
 import type React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams';
-import type { AvatarProfile } from '../Avatar';
 import { GlobalMenuBar } from '../GlobalMenuBar/GlobalMenuBar.tsx';
 import { AltinnLogo } from './AltinnLogo';
 import { SearchBar } from './SearchBar';
@@ -12,13 +12,14 @@ import styles from './header.module.css';
 
 type HeaderProps = {
   name: string;
-  profile: AvatarProfile;
+  profile: AvatarType;
   notificationCount?: number;
 };
 
 export const useSearchString = () => {
   const [searchParams, updateSearchParams] = useSearchParams();
-  const [searchString, setSearchString] = useState<string>('');
+  const searchFromQueryParam = getSearchStringFromQueryParams(searchParams);
+  const [searchString, setSearchString] = useState<string>(searchFromQueryParam);
   const handleSearchString = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (value) {
@@ -31,11 +32,10 @@ export const useSearchString = () => {
   };
 
   useEffect(() => {
-    const search = getSearchStringFromQueryParams(searchParams);
-    if (search !== searchString) {
-      setSearchString(search || '');
+    if (searchFromQueryParam !== searchString) {
+      setSearchString(searchFromQueryParam || '');
     }
-  }, [searchParams, searchString]);
+  }, [searchString, searchFromQueryParam]);
 
   return { searchString, setSearchString: handleSearchString };
 };

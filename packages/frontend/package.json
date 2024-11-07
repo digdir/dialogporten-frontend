@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "codegen:playwright": "playwright codegen",
-    "test:playwright": "playwright test",
+    "test:playwright": "npx playwright test --project=playwright",
+    "test:accessibility": "npx playwright test --project=accessibility",
     "install:browsers": "playwright install",
     "test:watch": "vitest watch",
     "build:docker": "docker build -f ./Dockerfile -t frontend ../..",
@@ -20,6 +21,7 @@
     "i18n:sort": "tsx ./src/i18n/check.ts --sort"
   },
   "dependencies": {
+    "@altinn/altinn-components": "^0.1.0",
     "@digdir/designsystemet-css": "0.11.0-next.10",
     "@digdir/designsystemet-react": "1.0.0-next.15",
     "@digdir/designsystemet-theme": "1.0.0-next.14",
@@ -44,6 +46,7 @@
     "use-debounce": "^10.0.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
     "@playwright/test": "^1.41.2",
     "@testing-library/react": "^16.0.0",
     "@types/node": "^20.0.0",

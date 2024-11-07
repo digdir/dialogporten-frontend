@@ -22,7 +22,7 @@ export const parties: PartyFieldsFragment[] = [
     isDeleted: false,
   },
   {
-    party: 'urn:altinn:organization:identifier-no:1',
+    party: 'urn:altinn:organization:identifier-no:2',
     partyType: 'Organization',
     subParties: [
       {
@@ -30,7 +30,7 @@ export const parties: PartyFieldsFragment[] = [
         partyType: 'Organization',
         isAccessManager: true,
         isMainAdministrator: true,
-        name: 'TESTBEDRIFT AS',
+        name: 'TESTBEDRIFT AS AVD SUB',
         isCurrentEndUser: false,
       },
       {
