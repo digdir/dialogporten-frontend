@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.8.4](https://github.com/digdir/dialogporten-frontend/compare/v1.8.3...v1.8.4) (2024-11-08)
+
+
+### Bug Fixes
+
+* Back button will update application state based on query params ([#1350](https://github.com/digdir/dialogporten-frontend/issues/1350)) ([4480ae4](https://github.com/digdir/dialogporten-frontend/commit/4480ae40031b3f407d637fc0cce8974d64e6e826))
+* Searchbar results will now reflect selected party. Added pre push hook. ([e15c158](https://github.com/digdir/dialogporten-frontend/commit/e15c158310c3734eb9d686e347ff5dbd465b9aec))
+* Searchbar results. Added pre push tests. ([#1329](https://github.com/digdir/dialogporten-frontend/issues/1329)) ([e15c158](https://github.com/digdir/dialogporten-frontend/commit/e15c158310c3734eb9d686e347ff5dbd465b9aec))
+
 ## [1.8.3](https://github.com/digdir/dialogporten-frontend/compare/v1.8.2...v1.8.3) (2024-11-04)
 
 
