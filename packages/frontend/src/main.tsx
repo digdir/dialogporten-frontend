@@ -45,5 +45,5 @@ if (element) {
     );
   });
 } else {
-  console.log(`element with id "root" is not in DOM`);
+  console.error(`element with id "root" is not in DOM`);
 }

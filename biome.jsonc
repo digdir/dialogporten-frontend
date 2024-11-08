@@ -47,8 +47,8 @@
     "rules": {
       "suspicious": {
         "noConsoleLog": {
-        "level": "error"
-      },
+          "level": "error"
+        },
         "noArrayIndexKey": "off"
       },
       "recommended": true,
@@ -59,7 +59,7 @@
       },
       "correctness": {
         "useExhaustiveDependencies": "warn"
-      },
+      }
     }
   },
   "files": {
