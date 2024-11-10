@@ -1,12 +1,13 @@
 import { Html, Markdown } from 'embeddable-markdown-html';
 import styles from '../InboxItem/inboxItemDetail.module.css';
+import { memo } from 'react';
 
 interface AdditionalInfoContentProps {
   mediaType: string | undefined;
   value: string | undefined;
 }
 
-export const AdditionalInfoContent = ({ mediaType, value }: AdditionalInfoContentProps) => {
+export const AdditionalInfoContent = memo(({ mediaType, value }: AdditionalInfoContentProps) => {
   if (!value) {
     return null;
   }
@@ -29,4 +30,4 @@ export const AdditionalInfoContent = ({ mediaType, value }: AdditionalInfoConten
       {getContent(mediaType ?? 'text/plain')}
     </section>
   );
-};
+});
