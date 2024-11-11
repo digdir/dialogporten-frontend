@@ -17,4 +17,21 @@ test.describe('Saved search', () => {
     await page.getByRole('button', { name: 'Ja, forsett' }).click();
     await expect(page.getByRole('main')).toContainText('Du har ingen lagrede søk');
   });
+
+  test('Saved search based on searchbar value', async ({ page }) => {
+    await page.goto(appURL);
+    await page.getByPlaceholder('Søk i innboks').click();
+    await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
+    await page.getByPlaceholder('Søk i innboks').fill('skatten');
+    await page.getByPlaceholder('Søk i innboks').press('Enter');
+    await page.getByRole('button', { name: 'Lagre søk' }).click();
+    await expect(page.getByRole('button', { name: 'Lagret søk' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Lagrede søk' }).locator('span')).toHaveText('1');
+
+    await page.getByPlaceholder('Søk i innboks').click();
+    await page.getByPlaceholder('Søk i innboks').fill('skatten din');
+    await page.getByPlaceholder('Søk i innboks').press('Enter');
+    await expect(page.getByRole('button', { name: 'Lagret søk' })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: 'Lagre søk' })).toBeVisible();
+  });
 });
