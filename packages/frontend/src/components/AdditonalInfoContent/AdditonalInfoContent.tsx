@@ -15,9 +15,9 @@ export const AdditionalInfoContent = memo(({ mediaType, value }: AdditionalInfoC
   const getContent = (mediaType: string) => {
     switch (mediaType) {
       case 'text/html':
-        return <Html>{value}</Html>;
+        return <Html onError={(e) => console.error('Html error: ', e)}>{value}</Html>;
       case 'text/markdown':
-        return <Markdown>{value}</Markdown>;
+        return <Markdown onError={(e) => console.error('Markdown error: ', e)}>{value}</Markdown>;
       case 'text/plain':
         return value;
       default:

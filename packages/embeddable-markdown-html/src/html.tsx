@@ -13,8 +13,8 @@ const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
 
 export const Html: React.FC<{
   children: string;
-  onError?: (err: Error) => void;
-}> = ({ children, onError = () => {} }) => {
+  onError: (err: Error) => void;
+}> = ({ children, onError }) => {
   const [reactContent, setReactContent] = useState<ReactElement | null>(null);
 
   useEffect(() => {
