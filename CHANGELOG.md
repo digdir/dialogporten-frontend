@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.5](https://github.com/digdir/dialogporten-frontend/compare/v1.8.4...v1.8.5) (2024-11-11)
+
+
+### Bug Fixes
+
+* Fix multiple browser history push when navigating and using search bar ([#1351](https://github.com/digdir/dialogporten-frontend/issues/1351)) ([90fa546](https://github.com/digdir/dialogporten-frontend/commit/90fa546ffdfaae761a3fe34bc371ff1142d4154f))
+
 ## [1.8.4](https://github.com/digdir/dialogporten-frontend/compare/v1.8.3...v1.8.4) (2024-11-08)
 
 
