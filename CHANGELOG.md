@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.6](https://github.com/digdir/dialogporten-frontend/compare/v1.8.5...v1.8.6) (2024-11-12)
+
+
+### Bug Fixes
+
+* dialog attachments should be opened in a new window or tab ([#1359](https://github.com/digdir/dialogporten-frontend/issues/1359)) ([6eebad7](https://github.com/digdir/dialogporten-frontend/commit/6eebad7868f22d15a6d22a980ad0ff8f7aa416bc))
+* Improve logic to saved searches including searchbar ([#1354](https://github.com/digdir/dialogporten-frontend/issues/1354)) ([a6be41c](https://github.com/digdir/dialogporten-frontend/commit/a6be41cd186c3d1a5a120049f28b75d5518ddefb))
+
 ## [1.8.5](https://github.com/digdir/dialogporten-frontend/compare/v1.8.4...v1.8.5) (2024-11-11)
 
 
