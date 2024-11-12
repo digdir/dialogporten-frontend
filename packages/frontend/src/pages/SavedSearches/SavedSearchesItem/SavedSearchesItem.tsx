@@ -14,10 +14,14 @@ interface SavedSearchesItemProps {
 export const SavedSearchesItem = ({ savedSearch, actionPanel, isLast }: SavedSearchesItemProps) => {
   if (!savedSearch?.data) return null;
   const { searchString, filters, fromView } = savedSearch.data;
+
+  const urlParams = new URLSearchParams(window.location.search);
   const queryParams = new URLSearchParams({
     ...(searchString && { search: searchString }),
     ...(filters?.length && { filters: JSON.stringify(filters) }),
+    ...Object.fromEntries(urlParams.entries()),
   });
+
   const searchData = savedSearch.data;
   const { t } = useTranslation();
 
