@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { Html, Markdown } from 'embeddable-markdown-html';
+import { memo } from 'react';
 import { type DialogByIdDetails, EmbeddableMediaType } from '../../api/useDialogById.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import styles from './mainContentReference.module.css';
-import { memo } from 'react';
 
 const getContent = (mediaType: EmbeddableMediaType, data: string) => {
   switch (mediaType) {

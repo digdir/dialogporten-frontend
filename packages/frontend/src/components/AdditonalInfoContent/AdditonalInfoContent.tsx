@@ -1,6 +1,6 @@
 import { Html, Markdown } from 'embeddable-markdown-html';
-import styles from '../InboxItem/inboxItemDetail.module.css';
 import { memo } from 'react';
+import styles from '../InboxItem/inboxItemDetail.module.css';
 
 interface AdditionalInfoContentProps {
   mediaType: string | undefined;
