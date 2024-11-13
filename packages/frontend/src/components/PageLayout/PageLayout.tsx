@@ -65,7 +65,6 @@ const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
 
 const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = ({ children, isCompany }) => {
   const { inSelectionMode } = useSelectedDialogs();
-
   return (
     <div
       data-testid="pageLayout-background"
@@ -90,14 +89,12 @@ export const ProtectedPageLayout = () => {
 export const PageLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const { selectedParties, allOrganizationsSelected } = useParties();
+  const { selectedParties, allOrganizationsSelected, selectedProfile } = useParties();
   const [searchParams] = useSearchParams();
 
   useProfile();
 
   const name = allOrganizationsSelected ? t('parties.labels.all_organizations') : selectedParties?.[0]?.name || '';
-  const isCompany = allOrganizationsSelected || selectedParties?.[0]?.partyType === 'Organization';
-  const profile = isCompany ? 'company' : 'person';
 
   useUpdateOnLocationChange(() => {
     const searchString = getSearchStringFromQueryParams(searchParams);
@@ -106,10 +103,10 @@ export const PageLayout: React.FC = () => {
 
   return (
     <SelectedDialogsContainer>
-      <Background isCompany={isCompany}>
+      <Background isCompany={selectedProfile === 'company'}>
         <BottomDrawerContainer>
           <BetaBanner />
-          <PageLayoutContent name={name} profile={profile} />
+          <PageLayoutContent name={name} profile={selectedProfile} />
           <Snackbar />
         </BottomDrawerContainer>
       </Background>

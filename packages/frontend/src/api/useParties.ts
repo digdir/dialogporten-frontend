@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { normalizeFlattenParties } from '../components/PartyDropdown/normalizeFlattenParties.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
@@ -18,6 +18,7 @@ interface UsePartiesOutput {
   setSelectedPartyIds: (parties: string[], allOrganizationsSelected: boolean) => void;
   currentEndUser: PartyFieldsFragment | undefined;
   allOrganizationsSelected: boolean;
+  selectedProfile: 'company' | 'person';
 }
 
 interface PartiesResult {
@@ -131,12 +132,23 @@ export const useParties = (): UsePartiesOutput => {
     }
   };
 
+  const isCompanyFromParams = useMemo(() => {
+    const party = searchParams.get('party');
+    const allParties = searchParams.get('allParties');
+    return Boolean(party || allParties);
+  }, [searchParams]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     if (isSuccess && data?.parties?.length > 0) {
       handlePartySelection();
     }
   }, [isSuccess, data?.parties, location.search]);
+
+  const isCompanyProfile =
+    isCompanyFromParams || allOrganizationsSelected || selectedParties?.[0]?.partyType === 'Organization';
+
+  const selectedProfile = (isCompanyProfile ? 'company' : 'person') as 'company' | 'person';
 
   return {
     isLoading,
@@ -149,5 +161,6 @@ export const useParties = (): UsePartiesOutput => {
     currentEndUser: data?.parties.find((party) => party.isCurrentEndUser),
     deletedParties: data?.deletedParties ?? [],
     allOrganizationsSelected,
+    selectedProfile,
   };
 };
