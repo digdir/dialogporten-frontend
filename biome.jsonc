@@ -46,6 +46,9 @@
     "enabled": true,
     "rules": {
       "suspicious": {
+        "noConsoleLog": {
+          "level": "error"
+        },
         "noArrayIndexKey": "off"
       },
       "recommended": true,

@@ -16,7 +16,7 @@ if (config.applicationInsightsInstrumentationKey && import.meta.env.PROD) {
       },
     });
     applicationInsights.loadAppInsights();
-    console.log('Application Insights initialized successfully');
+    console.info('Application Insights initialized successfully');
   } catch (error) {
     console.error('Failed to initialize Application Insights:', error);
     applicationInsights = null;

@@ -9,7 +9,7 @@
     "biome:fix-staged": "pnpm husky check --staged --fix"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.2",
+    "@biomejs/biome": "1.9.4",
     "lint-staged": "^15.2.7",
     "mprocs": "^0.6.4",
     "turbo": "2.0.5"

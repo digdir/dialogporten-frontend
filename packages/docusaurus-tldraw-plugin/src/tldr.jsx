@@ -10,7 +10,7 @@ export const Tldr = ({ children, height }) => {
   );
 
   if (err) {
-    console.log(result.err);
+    console.error(result.err);
     return <div>Error loading tldr file</div>;
   }
 

@@ -51,7 +51,7 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
       });
 
       if (!response.ok) {
-        console.log(`Error: ${response.statusText}`);
+        console.error(`Error: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error performing action:', error);

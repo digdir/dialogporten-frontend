@@ -60,7 +60,7 @@ Default.args = {
     },
   ],
   dialogToken: 'your-dialog-token',
-  onDeleteSuccess: () => console.log('Deleted'),
+  onDeleteSuccess: () => console.info('Deleted'),
 };
 
 export const withDisabledButton = Template.bind({});
@@ -86,7 +86,7 @@ withDisabledButton.args = {
     },
   ],
   dialogToken: 'your-dialog-token',
-  onDeleteSuccess: () => console.log('Deleted'),
+  onDeleteSuccess: () => console.info('Deleted'),
 };
 
 export const TertiaryPriority = Template.bind({});
@@ -103,5 +103,5 @@ TertiaryPriority.args = {
     },
   ],
   dialogToken: 'your-dialog-token',
-  onDeleteSuccess: () => console.log('Deleted'),
+  onDeleteSuccess: () => console.info('Deleted'),
 };
