@@ -113,6 +113,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
                 attachment.urls.map((url) => (
                   <li key={url.id} className={styles.attachmentItem}>
                     <Link
+                      target="_blank"
                       href={url.url}
                       aria-label={t('inbox.attachment.link', {
                         label: url.url,

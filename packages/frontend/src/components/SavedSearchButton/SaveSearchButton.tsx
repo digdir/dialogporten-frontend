@@ -18,19 +18,11 @@ const isSearchSavedAlready = (
   searchDataToCheck: SavedSearchData,
 ): SavedSearchesFieldsFragment | undefined => {
   if (!searchDataToCheck) return undefined;
-  let retValue: SavedSearchesFieldsFragment | undefined = undefined;
-  savedSearches.some((s) => {
-    const savedSearch = s.data;
-    return Object.keys(searchDataToCheck).every((key) => {
-      const isEqual = deepEqual(
-        savedSearch[key as keyof SavedSearchData],
-        searchDataToCheck[key as keyof SavedSearchData],
-      );
-      if (isEqual) retValue = s;
-      return isEqual;
-    });
-  });
-  return retValue || undefined;
+  return savedSearches.find((s) =>
+    Object.keys(searchDataToCheck).every((key) =>
+      deepEqual(s.data[key as keyof SavedSearchData], searchDataToCheck[key as keyof SavedSearchData]),
+    ),
+  );
 };
 
 type SaveSearchButtonProps = {

@@ -97,6 +97,18 @@ module appInsights '../modules/applicationInsights/create.bicep' = {
   }
 }
 
+module bffAvailabilityTest '../modules/applicationInsights/availabilityTest.bicep' = {
+  scope: resourceGroup
+  name: 'bffAvailabilityTest'
+  params: {
+    name: '${namePrefix}-bff-health-test'
+    location: location
+    tags: tags
+    appInsightsId: appInsights.outputs.appInsightsId
+    url: 'https://${applicationGatewayConfiguration.hostName}/api/health'
+  }
+}
+
 module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   scope: resourceGroup
   name: 'containerAppEnv'

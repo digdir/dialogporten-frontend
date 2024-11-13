@@ -136,7 +136,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set('sortBy', selectedSortOrder);
-    setSearchParams(newSearchParams);
+    setSearchParams(newSearchParams, { replace: true });
   }, [selectedSortOrder]);
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
