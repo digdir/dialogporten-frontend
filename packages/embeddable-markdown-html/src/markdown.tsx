@@ -24,10 +24,7 @@ const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
 export const Markdown: ({
   children,
   onError,
-}: { children: string; onError?: (error: unknown) => void }) => ReactElement | null = ({
-  children,
-  onError = () => {},
-}) => {
+}: { children: string; onError: (error: unknown) => void }) => ReactElement | null = ({ children, onError }) => {
   const [reactContent, setReactContent] = useState<ReactElement | null>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
