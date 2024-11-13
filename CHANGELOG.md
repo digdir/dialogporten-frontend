@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.0](https://github.com/digdir/dialogporten-frontend/compare/v1.8.6...v1.9.0) (2024-11-13)
+
+
+### Features
+
+* Added inbox context to 'No messages' header ([efba0f5](https://github.com/digdir/dialogporten-frontend/commit/efba0f5752e2ad542e74e84b3e57cb9b9b4cea2e))
+* Added inbox context to 'No messages' header ([#1337](https://github.com/digdir/dialogporten-frontend/issues/1337)) ([efba0f5](https://github.com/digdir/dialogporten-frontend/commit/efba0f5752e2ad542e74e84b3e57cb9b9b4cea2e))
+
+
+### Bug Fixes
+
+* Application freezing but when moving dialog to bin ([#1352](https://github.com/digdir/dialogporten-frontend/issues/1352)) ([532f2df](https://github.com/digdir/dialogporten-frontend/commit/532f2df1b15d38fd290150716095705e48e371d2))
+* saved search link is now including parties parameters ([#1360](https://github.com/digdir/dialogporten-frontend/issues/1360)) ([71aac4b](https://github.com/digdir/dialogporten-frontend/commit/71aac4bec1700c5bcdb0874de40fed3b6112b5f8))
+
 ## [1.8.6](https://github.com/digdir/dialogporten-frontend/compare/v1.8.5...v1.8.6) (2024-11-12)
 
 
