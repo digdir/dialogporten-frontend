@@ -58,7 +58,6 @@ export function mapDialogDtoToInboxItem(
         isCompany: actualReceiverParty?.partyType === 'Organization',
       },
       metaFields: getMetaFields(item, isSeenByEndUser),
-      linkTo: `/inbox/${item.id}`,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
       status: item.status ?? 'UnknownStatus',

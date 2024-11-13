@@ -56,7 +56,6 @@ export interface InboxItemInput {
   sender: Participant;
   receiver: Participant;
   metaFields: InboxItemMetaField[];
-  linkTo: string;
   createdAt: string;
   updatedAt: string;
   status: DialogStatus;
@@ -376,7 +375,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   isChecked={selectedItems[item.id]}
                   onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
                   metaFields={item.metaFields}
-                  linkTo={item.linkTo}
+                  linkTo={`/inbox/${item.id}/${location.search}`}
                   viewType={viewType}
                 />
               ))}

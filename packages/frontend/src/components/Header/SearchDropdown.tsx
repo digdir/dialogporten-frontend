@@ -2,6 +2,7 @@ import { Avatar } from '@altinn/altinn-components';
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
@@ -30,6 +31,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
     searchString: searchValue,
   });
   const formatDistance = useFormatDistance();
+  const location = useLocation();
 
   const handleClose = () => {
     onClose?.();
@@ -65,7 +67,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
                 sender={item.sender}
                 receiver={item.receiver}
                 metaFields={item.metaFields}
-                linkTo={item.linkTo}
+                linkTo={`/inbox/${item.id}/${location.search}`}
                 onClose={() => handleClose()}
                 isUnread={!item.isSeenByEndUser}
                 isMinimalistic
