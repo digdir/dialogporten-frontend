@@ -38,6 +38,6 @@ test.describe('InboxItemPage', () => {
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
 
     await arkivLink.click();
-    await expect(page.getByRole('heading', { name: 'Ingen meldinger' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ingen arkiverte meldinger' })).toBeVisible();
   });
 });

@@ -257,7 +257,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
             </div>
           </div>
         </section>
-        <InboxItemsHeader title={t('inbox.heading.no_results')} />
+        <InboxItemsHeader title={t(`inbox.heading.no_results.${viewType}`)} />
       </main>
     );
   }
