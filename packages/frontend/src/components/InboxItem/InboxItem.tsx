@@ -1,17 +1,16 @@
 import { Avatar } from '@altinn/altinn-components';
 import classNames from 'classnames';
-import type { JSX } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelectedDialogs } from '../PageLayout';
-
 import cx from 'classnames';
+import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import type { Participant } from '../../api/useDialogById.tsx';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { FeatureFlagKeys } from '../../featureFlags';
 import { useFeatureFlag } from '../../featureFlags';
 import type { InboxItemMetaField } from '../MetaDataFields';
 import { MetaDataFields } from '../MetaDataFields';
+import { useSelectedDialogs } from '../PageLayout';
 import { ProfileCheckbox } from '../ProfileCheckbox';
 import styles from './inboxItem.module.css';
 
@@ -102,7 +101,6 @@ export const InboxItem = ({
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
 
   const hideSummaryAndMeta = !summary || viewType === 'archive' || viewType === 'bin';
-
   const onClick = () => {
     if (inSelectionMode && onCheckedChange) {
       onCheckedChange(!checkboxValue);
@@ -111,7 +109,6 @@ export const InboxItem = ({
       onClose?.();
     }
   };
-
   if (isMinimalistic) {
     return (
       <div
