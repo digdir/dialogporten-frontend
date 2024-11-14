@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/digdir/dialogporten-frontend/compare/v1.9.0...v1.9.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* Add search parameters to inbox message link ([#1366](https://github.com/digdir/dialogporten-frontend/issues/1366)) ([4196f0f](https://github.com/digdir/dialogporten-frontend/commit/4196f0f30779daa1218848f125c4c0f9653c7413))
+* prevent context color flickering while navigating ([#1365](https://github.com/digdir/dialogporten-frontend/issues/1365)) ([fe107a6](https://github.com/digdir/dialogporten-frontend/commit/fe107a6611671492a7e848d337a14c7e9109be4a))
+
 ## [1.9.0](https://github.com/digdir/dialogporten-frontend/compare/v1.8.6...v1.9.0) (2024-11-13)
 
 
