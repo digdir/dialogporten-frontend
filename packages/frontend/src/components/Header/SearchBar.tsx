@@ -51,7 +51,7 @@ export const SearchBar: React.FC = () => {
     }
     setSearchValue('');
     searchBarParam.delete('search');
-  }, [location.search]);
+  }, [searchParams]);
 
   return (
     <div className={styles.searchbarContainer}>
