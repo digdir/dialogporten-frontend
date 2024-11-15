@@ -1,0 +1,43 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services
+
+- Frontend:
+    - React app:
+        href: http://app.localhost/
+        description: React app
+        icon: /icons/react_logo.png
+    - Storybook:
+        href: http://storybook.localhost/
+        description: Storybook
+        icon: /icons/storybook.svg
+    - Docs:
+        href: http://docs.localhost/
+        icon: /icons/docusaurus.png
+        description: Docs
+
+- BFF:
+    - Node App:
+        href: http://app.localhost/api/
+        description: Backend for frontend
+        icon: /icons/nodejs.png
+    - GraphIQL:
+        href: http://app.localhost/api/graphiql
+        description: GraphIQL
+        icon: /icons/GraphQL.svg
+
+- Database:
+    - PgAdmin:
+        href: http://pgadmin4.localhost/
+        icon: /icons/pgadmin.svg
+        description: PgAdmin
+    - RedisInsight:
+        href: http://redisinsight.localhost/
+        icon: /icons/redis.jpg
+        description: RedisInsight
+
+- Traefik:
+    - Traefik Dashboard:
+        href: http://dashboard.localhost/
+        icon: /icons/traefik.png
+        description: Traefik Dashboard
