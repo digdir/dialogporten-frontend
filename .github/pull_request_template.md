@@ -3,6 +3,10 @@
 ## Hva er endret?
 <!--- Gi en mer detaljert beskrivelse av hva endringene dine innebærer ved behov, med eventuelle marknader -->
 
+## Related Issue(s)
+
+- #{issue number}
+
 ### Dokumentasjon / Storybook / testdekning
 <!--- Oppgi om du har lagt til eller oppdatert dokumentasjonen som er relevant for endringene. Enten i Readme eller i Docosauros på `./packages/docs/docs` -->
 
