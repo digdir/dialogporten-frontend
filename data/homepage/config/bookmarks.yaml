@@ -1,0 +1,20 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/bookmarks
+
+- Developer:
+    - Dialogporten Prod:
+        - abbr: DP Prod
+          href: https://af.at.altinn.cloud/
+    - Github Arbeidsflate:
+        - abbr: GH AF
+          href: https://github.com/digdir/dialogporten-frontend
+    - Github Dialogporten:
+        - abbr: GH DP
+          href: https://github.com/digdir/dialogporten
+    - Github Designsystem:
+        - abbr: GH DS
+          href: https://github.com/digdir/designsystemet
+    - Dialogporten Altinn Docs:
+        - abbr: DP Docs
+          href: https://docs.altinn.studio/dialogporten/
