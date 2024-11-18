@@ -121,17 +121,6 @@ module containerAppEnv '../modules/containerAppEnv/main.bicep' = {
   }
 }
 
-module ephemeralContainerAppEnv '../modules/containerAppEnv/main.bicep' = if (environment == 'test') {
-  scope: resourceGroup
-  name: 'ephemeralContainerAppEnv'
-  params: {
-    name: '${namePrefix}-containerappenv-ephemeral'
-    location: location
-    appInsightWorkspaceName: appInsights.outputs.appInsightsWorkspaceName
-    tags: tags
-  }
-}
-
 module containerAppEnvPrivateDnsZone '../modules/privateDnsZone/main.bicep' = {
   scope: resourceGroup
   name: 'containerAppEnvPrivateDnsZone'
