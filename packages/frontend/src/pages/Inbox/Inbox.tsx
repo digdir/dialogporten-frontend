@@ -246,6 +246,29 @@ export const Inbox = ({ viewType }: InboxProps) => {
     );
   }
 
+  if (itemsToDisplay.length === 0 && activeFilters.length > 0 && dialogsIsSuccess) {
+    return (
+      <main>
+        <section className={styles.filtersArea}>
+          <div className={styles.gridContainer}>
+            <div className={styles.filterSaveContainer}>
+              <PartyDropdown counterContext={viewType} />
+              <FilterBar
+                ref={filterBarRef}
+                settings={filterBarSettings}
+                onFilterChange={setActiveFilters}
+                initialFilters={initialFilters}
+                addFilterBtnClassNames={styles.hideForSmallScreens}
+                resultsCount={itemsToDisplay.length}
+              />
+            </div>
+          </div>
+        </section>
+        <InboxItemsHeader title={t(`inbox.heading.no_results.filtered`)} />
+      </main>
+    );
+  }
+
   if (itemsToDisplay.length === 0 && dialogsIsSuccess) {
     return (
       <main>
