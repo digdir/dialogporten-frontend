@@ -24,7 +24,7 @@
     "@docusaurus/theme-mermaid": "^3.5.2",
     "@easyops-cn/docusaurus-search-local": "0.44.5",
     "@mdx-js/react": "^3.0.0",
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
     "clsx": "^2.1.1",
     "docusaurus-tldraw-plugin": "workspace: *",
     "prism-react-renderer": "^2.3.0",
