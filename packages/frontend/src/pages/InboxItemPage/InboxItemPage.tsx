@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { SystemLabel } from 'bff-types-generated';
 import i18n from 'i18next';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { updateSystemLabel } from '../../api/queries.ts';
 import { useDialogById } from '../../api/useDialogById.tsx';
 import { useDialogByIdSubscription } from '../../api/useDialogByIdSubscription.ts';
@@ -17,6 +17,7 @@ import styles from './inboxItemPage.module.css';
 export const InboxItemPage = () => {
   const { id } = useParams();
   const { parties } = useParties();
+  const location = useLocation();
   const { dialog, isLoading } = useDialogById(parties, id);
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -104,11 +105,13 @@ export const InboxItemPage = () => {
     return <InboxItemPageSkeleton />;
   }
 
+  const previousPath = (location?.state?.fromView ?? '/') + location.search;
+
   return (
     <main className={styles.itemInboxPage}>
       <section className={styles.itemInboxPageContent}>
         <nav className={styles.itemInboxNav}>
-          <BackButton pathTo="/inbox/" />
+          <BackButton path={previousPath} />
         </nav>
         <InboxItemDetail dialog={dialog} />
       </section>

@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { Participant } from '../../api/useDialogById.tsx';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
-import { FeatureFlagKeys } from '../../featureFlags';
-import { useFeatureFlag } from '../../featureFlags';
+import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import type { InboxItemMetaField } from '../MetaDataFields';
 import { MetaDataFields } from '../MetaDataFields';
 import { useSelectedDialogs } from '../PageLayout';
@@ -20,11 +19,11 @@ interface InboxItemProps {
   summary: string;
   sender: Participant;
   receiver: Participant;
+  linkTo: string;
   isChecked?: boolean;
   onCheckedChange?: (value: boolean) => void;
   metaFields?: InboxItemMetaField[];
   isUnread?: boolean;
-  linkTo?: string;
   isMinimalistic?: boolean;
   onClose?: () => void;
   isSeenByEndUser?: boolean;
@@ -40,7 +39,7 @@ export const OptionalLinkContent = ({
 }) => {
   if (linkTo) {
     return (
-      <Link to={linkTo} className={styles.link}>
+      <Link to={linkTo} state={{ fromView: location.pathname }} className={styles.link}>
         {children}
       </Link>
     );
@@ -89,11 +88,11 @@ export const InboxItem = ({
   metaFields = [],
   onCheckedChange,
   checkboxValue,
-  linkTo,
   onClose,
   isUnread = false,
   isMinimalistic = false,
   isChecked = false,
+  linkTo,
   viewType,
 }: InboxItemProps): JSX.Element => {
   const { inSelectionMode } = useSelectedDialogs();

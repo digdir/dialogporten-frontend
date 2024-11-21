@@ -1,5 +1,6 @@
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { HorizontalLine } from '../../../components';
 import { PlusIcon } from '../../../components/Icons/PlusIcon/PlusIcon.tsx';
 import SearchFilterTag from '../SearchFilterTag/SearchFilterTag.tsx';
@@ -30,9 +31,9 @@ export const SavedSearchesItem = ({ savedSearch, actionPanel, isLast }: SavedSea
       <>
         <div className={styles.savedSearchItem} key={savedSearch.id}>
           <div className={styles.searchDetails}>
-            <a href={`${fromView}?${queryParams.toString()}`} className={styles.goToSavedSearchLink}>
+            <Link to={`${fromView}?${queryParams.toString()}`} className={styles.goToSavedSearchLink}>
               {savedSearch.name}
-            </a>
+            </Link>
           </div>
           <div>{actionPanel}</div>
         </div>
