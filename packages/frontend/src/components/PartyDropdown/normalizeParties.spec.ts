@@ -25,6 +25,7 @@ describe('normalizeParties', () => {
           isMainAdministrator: true,
           name: 'STEINKJER OG FLATEBY',
           isCurrentEndUser: false,
+          isDeleted: false,
         },
       ],
       isAccessManager: true,
@@ -45,7 +46,7 @@ describe('normalizeParties', () => {
   });
 
   it('should not include sub-parties that have the same name as the parent party', () => {
-    const partiesWithMatchingSubParty = [
+    const partiesWithMatchingSubParty: PartyFieldsFragment[] = [
       {
         ...parties[0],
         name: 'Matching Party',
@@ -54,6 +55,7 @@ describe('normalizeParties', () => {
             ...parties[0],
             name: 'Matching Party',
             isDeleted: false,
+            __typename: 'AuthorizedSubParty',
           },
         ],
       },

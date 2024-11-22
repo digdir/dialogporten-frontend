@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import type { PartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
+import type { PartyFieldsFragment } from 'bff-types-generated';
 import { useEffect, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { normalizeFlattenParties } from '../components/PartyDropdown/normalizeFlattenParties.ts';
@@ -33,7 +33,14 @@ const stripQueryParamsForParty = (searchParamString: string) => {
   return params.toString();
 };
 
-const fetchParties = (): Promise<PartiesQuery> => graphQLSDK.parties();
+const fetchParties = async (): Promise<PartiesResult> => {
+  const response = await graphQLSDK.parties();
+  const normalizedParties = normalizeFlattenParties(response.parties);
+  return {
+    parties: normalizedParties.filter((party) => !party.isDeleted),
+    deletedParties: normalizedParties.filter((party) => party.isDeleted),
+  };
+};
 
 const setAllPartiesParam = (searchParamString: string) => {
   const params = new URLSearchParams(searchParamString);
@@ -63,14 +70,7 @@ export const useParties = (): UsePartiesOutput => {
 
   const { data, isLoading, isSuccess } = useQuery<PartiesResult>({
     queryKey: [QUERY_KEYS.PARTIES],
-    queryFn: async () => {
-      const response = await fetchParties();
-      const normalizedParties = normalizeFlattenParties(response.parties);
-      return {
-        parties: normalizedParties.filter((party) => !party.isDeleted),
-        deletedParties: normalizedParties.filter((party) => party.isDeleted),
-      };
-    },
+    queryFn: fetchParties,
     staleTime: Number.POSITIVE_INFINITY,
     gcTime: Number.POSITIVE_INFINITY,
   });
