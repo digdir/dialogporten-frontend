@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/digdir/dialogporten-frontend/compare/v1.9.1...v1.9.2) (2024-11-22)
+
+
+### Bug Fixes
+
+* update dialogporten-schema to 1.38.x ([#1393](https://github.com/digdir/dialogporten-frontend/issues/1393)) ([77b065a](https://github.com/digdir/dialogporten-frontend/commit/77b065a1ad4ac0279c79221c52647df6806ded39))
+
 ## [1.9.1](https://github.com/digdir/dialogporten-frontend/compare/v1.9.0...v1.9.1) (2024-11-14)
 
 
