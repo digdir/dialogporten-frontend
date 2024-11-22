@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../node-logger
       '@digdir/dialogporten-schema':
-        specifier: 1.23.2
-        version: 1.23.2
+        specifier: 1.38.0-9c75f11
+        version: 1.38.0-9c75f11
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.4.0
@@ -2743,8 +2743,8 @@ packages:
     resolution: {integrity: sha512-JWCLhXxDlMYwatg7mLkptfEkeiv/EKSaUOXX4nUoV8HjqyxMnLaaZZe6NKqx2SH1GPKOeSL5bEcs2NAEoFlGXg==}
     dev: false
 
-  /@digdir/dialogporten-schema@1.23.2:
-    resolution: {integrity: sha512-Pt8YC9fH+4Xvld2Qqt7CpcunT1fnVQGgbWhBgQhFFMdGr/UL9P3GPDEsHfS6ITevRWslNI+Ak+OZjKG4Z3UWgQ==}
+  /@digdir/dialogporten-schema@1.38.0-9c75f11:
+    resolution: {integrity: sha512-f1Gru9JgXNaBjVckk1pUSWatdACApXBs8h6vRLPpe6cMvc+DrrZjTFtZ8Tkkp89b8K9MeoC4kjNGJLQQSFonaA==}
     engines: {node: '20'}
     dev: false
 

@@ -32,6 +32,7 @@ export const parties: PartyFieldsFragment[] = [
         isMainAdministrator: true,
         name: 'TESTBEDRIFT AS AVD SUB',
         isCurrentEndUser: false,
+        isDeleted: false,
       },
       {
         party: 'urn:altinn:organization:identifier-sub:2',
@@ -40,6 +41,7 @@ export const parties: PartyFieldsFragment[] = [
         isMainAdministrator: true,
         name: 'TESTBEDRIFT AS AVD OSLO',
         isCurrentEndUser: false,
+        isDeleted: false,
       },
     ],
     isAccessManager: true,

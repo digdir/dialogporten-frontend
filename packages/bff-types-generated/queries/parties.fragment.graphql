@@ -11,11 +11,12 @@ fragment partyFields on AuthorizedParty {
   isDeleted
 }
 
-fragment subPartyFields on AuthorizedParty {
+fragment subPartyFields on AuthorizedSubParty {
   party
   partyType
   isAccessManager
   isMainAdministrator
   name
   isCurrentEndUser
+  isDeleted
 }
