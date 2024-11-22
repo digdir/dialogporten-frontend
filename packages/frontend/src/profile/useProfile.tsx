@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import type { ProfileQuery } from 'bff-types-generated';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { profile } from '../api/queries.ts';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 
 export const useProfile = () => {
-  const { data } = useQuery<Awaited<ReturnType<typeof profile>>>({
+  const { data } = useQuery<ProfileQuery>({
     queryKey: [QUERY_KEYS.PROFILE],
     queryFn: () => profile(),
   });

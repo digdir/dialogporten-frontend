@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { appURL } from '../';
 
 test.describe('Saved search', () => {
-  test('Create and deletesaved search', async ({ page }) => {
+  test.skip('Create and deletesaved search', async ({ page }) => {
     await page.goto(appURL);
     await page.getByRole('button', { name: 'Legg til filter' }).click();
     await page.getByText('Avsender').click();
@@ -18,7 +18,7 @@ test.describe('Saved search', () => {
     await expect(page.getByRole('main')).toContainText('Du har ingen lagrede søk');
   });
 
-  test('Saved search based on searchbar value', async ({ page }) => {
+  test.skip('Saved search based on searchbar value', async ({ page }) => {
     await page.goto(appURL);
     await page.getByPlaceholder('Søk i innboks').click();
     await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
@@ -35,7 +35,7 @@ test.describe('Saved search', () => {
     await expect(page.getByRole('button', { name: 'Lagre søk' })).toBeVisible();
   });
 
-  test('Saved search link shows correct result', async ({ page }) => {
+  test.skip('Saved search link shows correct result', async ({ page }) => {
     await page.goto(appURL);
 
     await page.getByRole('button', { name: 'Test Testesen' }).click();

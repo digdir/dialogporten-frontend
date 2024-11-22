@@ -94,6 +94,9 @@
   "parties.labels.organizations": "Organizations",
   "parties.labels.persons": "Other accounts",
   "parties.labels.you": "Yourself",
+  "parties.search": "Search for account",
+  "parties.search.no_results": "No hits",
+  "parties.results": "{hits, plural, one {# hit} other {# hits}}",
   "partyDropdown.filter_results": "{count, plural, one {# result} other {# results}}",
   "partyDropdown.selectParty": "Choose party",
   "route.archived": "Archive",
@@ -176,5 +179,8 @@
   "dialog.toolbar.toast.move_to_archive_failed": "Failed to move to archive",
   "dialog.toolbar.toast.move_to_archive_success": "Moved to archive",
   "dialog.toolbar.toast.move_to_inbox_success": "Moved to inbox",
-  "dialog.toolbar.toast.move_to_inbox_failed": "Failed to move to inbox"
+  "dialog.toolbar.toast.move_to_inbox_failed": "Failed to move to inbox",
+  "layout.menu.change_account": "Change account",
+  "parties.groups.yourself": "Yourself",
+  "parties.groups.other_accounts": "Other accounts"
 }

@@ -1,82 +1,27 @@
-import type { AvatarType } from '@altinn/altinn-components';
+import {
+  type FooterProps,
+  type HeaderProps,
+  Layout,
+  type LayoutProps,
+  type MenuItemProps,
+  RootProvider,
+} from '@altinn/altinn-components';
 import { useQueryClient } from '@tanstack/react-query';
-import cx from 'classnames';
-import type React from 'react';
-import { memo, useEffect } from 'react';
+import { type ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
-import { Footer, Header, type ItemPerViewCount, Sidebar } from '..';
-import { useWindowSize } from '../../../utils/useWindowSize.tsx';
+import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { useProfile } from '../../profile';
-import { BetaBanner } from '../BetaBanner/BetaBanner.tsx';
-import { BottomDrawerContainer } from '../BottomDrawer';
+import { BetaBanner } from '../BetaBanner/BetaBanner';
 import { useAuth } from '../Login/AuthContext.tsx';
-import { Snackbar } from '../Snackbar';
-import { SelectedDialogsContainer, useSelectedDialogs } from './SelectedDialogs.tsx';
-import styles from './pageLayout.module.css';
-
-export const useUpdateOnLocationChange = (fn: () => void) => {
-  const location = useLocation();
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    fn();
-  }, [location, fn]);
-};
-
-interface PageLayoutContentProps {
-  name: string;
-  profile: AvatarType;
-  notificationCount?: number;
-}
-
-const PageLayoutContent: React.FC<PageLayoutContentProps> = memo(
-  ({ name, profile }: { name: string; profile: AvatarType }) => {
-    const { inSelectionMode } = useSelectedDialogs();
-    const { isTabletOrSmaller } = useWindowSize();
-    const showSidebar = !isTabletOrSmaller && !inSelectionMode;
-    const { selectedPartyIds, selectedParties } = useParties();
-    const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
-    const { dialogsByView } = useDialogs(selectedParties);
-    const itemsPerViewCount = {
-      inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
-      drafts: dialogsByView.drafts.length,
-      sent: dialogsByView.sent.length,
-      'saved-searches': currentPartySavedSearches?.length ?? 0,
-      archive: dialogsByView.archive.length,
-      bin: dialogsByView.bin.length,
-    } as ItemPerViewCount;
-
-    return (
-      <>
-        <Header name={name} profile={profile} notificationCount={itemsPerViewCount.inbox} />
-        <div className={styles.pageLayout}>
-          {showSidebar && <Sidebar itemsPerViewCount={itemsPerViewCount} />}
-          <Outlet />
-        </div>
-        <Footer />
-      </>
-    );
-  },
-);
-
-const Background: React.FC<{ children: React.ReactNode; isCompany: boolean }> = ({ children, isCompany }) => {
-  const { inSelectionMode } = useSelectedDialogs();
-  return (
-    <div
-      data-testid="pageLayout-background"
-      className={cx(styles.background, {
-        isCompany: isCompany,
-        [styles.inSelectionMode]: inSelectionMode,
-      })}
-    >
-      {children}
-    </div>
-  );
-};
+import { useAccounts } from './Accounts/useAccounts.tsx';
+import { Background } from './Background';
+import { useFooter } from './Footer';
+import { useGlobalMenu } from './GlobalMenu';
+import { useSearchDialogs, useSearchString } from './Search';
 
 export const ProtectedPageLayout = () => {
   const { isAuthenticated } = useAuth();
@@ -87,29 +32,110 @@ export const ProtectedPageLayout = () => {
 };
 
 export const PageLayout: React.FC = () => {
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-  const { selectedParties, allOrganizationsSelected, selectedProfile } = useParties();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { searchValue, setSearchValue, onSearch, onClear } = useSearchString();
+  const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds } = useParties();
+  const { dialogs } = useDialogs(parties);
+  const { autocomplete } = useSearchDialogs({ parties: selectedParties, searchValue });
+  const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
+    parties,
+    selectedParties,
+    dialogs,
+  });
+  const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
+  const { dialogsByView } = useDialogs(selectedParties);
+  const itemsPerViewCount = {
+    inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
+    drafts: dialogsByView.drafts.length,
+    sent: dialogsByView.sent.length,
+    'saved-searches': currentPartySavedSearches?.length ?? 0,
+    archive: dialogsByView.archive.length,
+    bin: dialogsByView.bin.length,
+  };
+
+  const footer: FooterProps = useFooter();
+  const { global, sidebar } = useGlobalMenu({ itemsPerViewCount });
 
   useProfile();
 
-  const name = allOrganizationsSelected ? t('parties.labels.all_organizations') : selectedParties?.[0]?.name || '';
-
-  useUpdateOnLocationChange(() => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  useEffect(() => {
     const searchString = getSearchStringFromQueryParams(searchParams);
     queryClient.setQueryData(['search'], () => searchString || '');
-  });
+  }, [searchParams]);
+
+  const headerProps: HeaderProps = {
+    currentAccount: selectedAccount,
+    logo: {
+      as: (props: MenuItemProps) => <Link to="/" {...props} />,
+    },
+    badge:
+      itemsPerViewCount.inbox > 0
+        ? {
+            label: itemsPerViewCount.inbox.toString(),
+            color: 'alert',
+            size: 'sm',
+          }
+        : undefined,
+    search: {
+      expanded: false,
+      name: t('word.search'),
+      placeholder: t('word.search'),
+      value: searchValue,
+      onClear: () => onClear(),
+      onChange: (event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
+      onEnter: () => onSearch(searchValue),
+      autocomplete,
+    },
+    menu: {
+      menuLabel: t('word.menu'),
+      items: global,
+      accountGroups,
+      accounts,
+      onSelectAccount: (account: string) => {
+        if (account === 'ALL') {
+          setSelectedPartyIds([], true);
+        } else {
+          setSelectedPartyIds([account], false);
+        }
+      },
+      changeLabel: t('layout.menu.change_account'),
+      backLabel: t('word.back'),
+      ...(accountSearch && {
+        accountSearch,
+      }),
+      logoutButton: {
+        label: t('word.log_out'),
+        onClick: () => {
+          (window as Window).location = `/api/logout`;
+        },
+      },
+    },
+  };
+
+  const layoutProps: LayoutProps = {
+    theme: selectedProfile,
+    header: headerProps,
+    footer,
+    sidebar: {
+      theme: selectedProfile,
+      menu: {
+        items: sidebar,
+      },
+    },
+    children: undefined,
+  };
 
   return (
-    <SelectedDialogsContainer>
-      <Background isCompany={selectedProfile === 'company'}>
-        <BottomDrawerContainer>
-          <BetaBanner />
-          <PageLayoutContent name={name} profile={selectedProfile} />
-          <Snackbar />
-        </BottomDrawerContainer>
-      </Background>
-    </SelectedDialogsContainer>
+    <Background isCompany={selectedProfile === 'company'}>
+      <BetaBanner />
+      <RootProvider>
+        <Layout theme={selectedProfile} {...layoutProps}>
+          <Outlet />
+        </Layout>
+      </RootProvider>
+    </Background>
   );
 };

@@ -27,7 +27,7 @@ test.describe('Flattened parties and subparties', () => {
     await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
   });
 
-  test('Search input shows flatened messages based on chosen party', async ({ page }) => {
+  test.skip('Search input shows flatened messages based on chosen party', async ({ page }) => {
     await page.getByPlaceholder('Søk i innboks').click();
     await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
 

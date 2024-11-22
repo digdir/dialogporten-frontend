@@ -5,10 +5,10 @@ export const getFiltersFromQueryParams = (searchParams: URLSearchParams): Filter
   return compressedData ? JSON.parse(compressedData) : ([] as Filter[]);
 };
 
-export const clearFiltersInQueryParams = (): void => {
+export const getQueryParamsWithoutFilters = (): URLSearchParams => {
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete('filters');
-  window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
+  return searchParams;
 };
 
 export const getSearchStringFromQueryParams = (searchParams: URLSearchParams): string => {

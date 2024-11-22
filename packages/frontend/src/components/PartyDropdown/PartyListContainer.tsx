@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
-import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
-import type { SideBarView } from '../Sidebar';
+import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
+import type { SideBarView } from '../PageLayout/GlobalMenu/useGlobalMenu.tsx';
 import { PartyList } from './PartyList.tsx';
-import { type PartyOptionGroup, getOptionsGroups } from './mapToPartyOption.ts';
+import { type PartyOptionGroup, getOptionsGroups } from './mapToPartyOption';
 
 interface PartyListAdapterProps {
   counterContext?: SideBarView;

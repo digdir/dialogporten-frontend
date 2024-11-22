@@ -3,7 +3,6 @@ import { ChevronRightIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useSearchDialogs } from '../../api/useDialogs';
 import { useParties } from '../../api/useParties';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import SearchFilterTag from '../../pages/SavedSearches/SearchFilterTag/SearchFilterTag.tsx';
@@ -11,6 +10,7 @@ import { autoFormatRelativeTime } from '../../pages/SavedSearches/searchUtils.ts
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
 import { PlusIcon } from '../Icons';
 import { InboxItem } from '../InboxItem';
+import { useSearchDialogs } from '../PageLayout/Search';
 import { SearchDropdownItem } from './SearchDropdownItem';
 import { SearchDropdownSkeleton } from './SearchDropdownSkeleton';
 import styles from './search.module.css';
@@ -28,7 +28,7 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({ showDropdownMenu
   const { selectedParties } = useParties();
   const { searchResults, isFetching } = useSearchDialogs({
     parties: selectedParties,
-    searchString: searchValue,
+    searchValue,
   });
   const formatDistance = useFormatDistance();
   const location = useLocation();
