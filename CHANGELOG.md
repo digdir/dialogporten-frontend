@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.3](https://github.com/digdir/dialogporten-frontend/compare/v1.9.2...v1.9.3) (2024-11-25)
+
+
+### Bug Fixes
+
+* refactor back button logic ([#1391](https://github.com/digdir/dialogporten-frontend/issues/1391)) ([b42ad05](https://github.com/digdir/dialogporten-frontend/commit/b42ad0575a51c134dcb0aa9b95b8148fe308ae0b))
+
 ## [1.9.2](https://github.com/digdir/dialogporten-frontend/compare/v1.9.1...v1.9.2) (2024-11-22)
 
 
