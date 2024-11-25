@@ -4,7 +4,6 @@
   "scripts": {
     "prepare": "pnpm generate:types-gql",
     "dev": "pnpm build:watch",
-    "build": "pnpm generate:types-gql",
     "build:watch": "nodemon --watch 'src/**' --watch 'queries' --ext 'ts,graphql' --exec 'pnpm build'",
     "generate:types-gql": "NODE_OPTIONS=\"--loader ts-node/esm --no-warnings=ExperimentalWarning\" graphql-codegen-esm --config codegen.ts",
     "test": "vitest run"
