@@ -1,5 +1,4 @@
 import type { Filter } from '../../components';
-import type { SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 
 export const getFiltersFromQueryParams = (searchParams: URLSearchParams): Filter[] => {
   const compressedData = searchParams.get('filters');
@@ -10,10 +9,6 @@ export const clearFiltersInQueryParams = (): void => {
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete('filters');
   window.history.replaceState({}, '', `${window.location.pathname}?${searchParams}`);
-};
-
-export const getSortingOrderFromQueryParams = (searchParams: URLSearchParams): SortingOrder => {
-  return searchParams.get('sortBy') as SortingOrder;
 };
 
 export const getSearchStringFromQueryParams = (searchParams: URLSearchParams): string => {
