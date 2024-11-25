@@ -18,8 +18,8 @@ function App() {
           <Route path={AppRoutes.sent} element={<Inbox key="sent" viewType={'sent'} />} />
           <Route path={AppRoutes.archive} element={<Inbox key="archive" viewType={'archive'} />} />
           <Route path={AppRoutes.bin} element={<Inbox key="bin" viewType={'bin'} />} />
-          <Route path={AppRoutes.savedSearches} element={<SavedSearchesPage />} />
           <Route path={AppRoutes.inboxItem} element={<InboxItemPage />} />
+          <Route path={AppRoutes.savedSearches} element={<SavedSearchesPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
         <Route path="/loggedout" element={<Logout />} />

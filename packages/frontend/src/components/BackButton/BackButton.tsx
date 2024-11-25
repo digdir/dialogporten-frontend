@@ -5,14 +5,10 @@ import { Link } from 'react-router-dom';
 import { Button } from '@digdir/designsystemet-react';
 import styles from './backButton.module.css';
 
-interface BackButtonProps {
-  pathTo: string;
-}
-
-export function BackButton({ pathTo }: BackButtonProps) {
+export function BackButton({ path }: { path: string }) {
   const { t } = useTranslation();
   return (
-    <Link to={pathTo} rel="noreferrer" className={styles.backLink}>
+    <Link to={path} rel="noreferrer" className={styles.backLink}>
       <Button color="neutral" variant="tertiary" className={styles.backButton}>
         <ArrowLeftIcon className={styles.backIcon} />
         {t('word.back')}

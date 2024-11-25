@@ -42,16 +42,24 @@ const fetchParties = async (): Promise<PartiesResult> => {
   };
 };
 
-const setAllPartiesParam = (searchParamString: string) => {
+const createParamsForKey = (searchParamString: string, key: string, value: string): URLSearchParams => {
   const params = new URLSearchParams(searchParamString);
-  params.set('allParties', 'true');
-  return params.toString();
+  params.set(key, value);
+  return params;
 };
 
 export const useParties = (): UsePartiesOutput => {
   const queryClient = useQueryClient();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleChangSearchParams = (searchParams: URLSearchParams) => {
+    /* Avoid setting search params if they are the same as the current ones */
+    if (searchParams.toString() !== new URLSearchParams(location.search).toString()) {
+      setSearchParams(searchParams, { replace: true });
+    }
+  };
+
   const selectedPartiesQuery = useQuery<PartyFieldsFragment[]>({
     queryKey: [QUERY_KEYS.SELECTED_PARTIES],
     enabled: false,
@@ -87,15 +95,24 @@ export const useParties = (): UsePartiesOutput => {
 
   const setSelectedPartyIds = (partyIds: string[], allOrganizationsSelected: boolean) => {
     setAllOrganizationsSelected(allOrganizationsSelected);
-    const isPerson = partyIds[0].includes('person');
+    const isCurrentEndUser = partyIds[0].includes('person');
+    const searchParamsString = searchParams.toString();
     if (allOrganizationsSelected) {
-      setSearchParams(setAllPartiesParam(searchParams.toString()), { replace: true });
-    } else if (isPerson) {
-      setSearchParams(stripQueryParamsForParty(searchParams.toString()), { replace: true });
+      const allPartiesParams = createParamsForKey(searchParamsString, 'allParties', 'true');
+      handleChangSearchParams(allPartiesParams);
+    } else if (isCurrentEndUser) {
+      /* endUser (type=person) is the only party selected and is default, this is the only case
+       * where we want to remove the party query param from the URL
+       */
+      const currentEndUserParams = new URLSearchParams(stripQueryParamsForParty(searchParamsString));
+      handleChangSearchParams(currentEndUserParams);
     } else {
-      const newSearchParams = new URLSearchParams(stripQueryParamsForParty(searchParams.toString()));
-      newSearchParams.append('party', encodeURIComponent(partyIds[0]));
-      setSearchParams(newSearchParams, { replace: true });
+      const params = createParamsForKey(
+        stripQueryParamsForParty(searchParamsString),
+        'party',
+        encodeURIComponent(partyIds[0]),
+      );
+      handleChangSearchParams(params);
     }
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
   };
