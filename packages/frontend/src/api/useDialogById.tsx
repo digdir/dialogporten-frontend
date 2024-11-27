@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   AttachmentFieldsFragment,
   DialogActivityFragment,
@@ -183,6 +183,7 @@ export function mapDialogDtoToInboxItem(
   };
 }
 export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseDialogByIdOutput => {
+  const queryClient = useQueryClient();
   const { organizations, isLoading: isOrganizationsLoading } = useOrganizations();
   const partyURIs = parties.map((party) => party.party);
   const { data, isSuccess, isLoading } = useQuery<GetDialogByIdQuery>({
@@ -192,6 +193,8 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
     queryFn: () => getDialogsById(id!),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
+
+  isSuccess && queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS] });
 
   if (isOrganizationsLoading) {
     return { isLoading: true, isSuccess: false };
