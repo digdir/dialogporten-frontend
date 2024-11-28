@@ -16,7 +16,6 @@ import {
   InboxItem,
   InboxItems,
   PartyDropdown,
-  SortOrderDropdown,
   useSearchString,
   useSelectedDialogs,
   useSnackbar,
@@ -25,14 +24,13 @@ import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
 import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
-import type { SortOrderDropdownRef, SortingOrder } from '../../components/SortOrderDropdown/SortOrderDropdown.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { clearFiltersInQueryParams, getFiltersFromQueryParams, getSortingOrderFromQueryParams } from './queryParams.ts';
+import { clearFiltersInQueryParams, getFiltersFromQueryParams } from './queryParams.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -69,30 +67,19 @@ interface DialogCategory {
   items: InboxItemInput[];
 }
 
-const sortDialogs = (dialogs: InboxItemInput[], sortOrder: SortingOrder): InboxItemInput[] => {
-  return dialogs.sort((a, b) => {
-    if (sortOrder === 'updated_desc') {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    }
-    return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
-  });
-};
-
 export const Inbox = ({ viewType }: InboxProps) => {
   const format = useFormat();
   const filterBarRef = useRef<FilterBarRef>(null);
-  const sortOrderDropdownRef = useRef<SortOrderDropdownRef>(null);
   const queryClient = useQueryClient();
 
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
 
   const location = useLocation();
   const { t } = useTranslation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
-  const [selectedSortOrder, setSelectedSortOrder] = useState<SortingOrder>('updated_desc');
 
   const { selectedParties } = useParties();
   const { searchString } = useSearchString();
@@ -112,8 +99,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   const itemsToDisplay = useMemo(() => {
-    return sortDialogs(filterDialogs(dataSource, activeFilters, format), selectedSortOrder);
-  }, [dataSource, activeFilters, selectedSortOrder]);
+    return filterDialogs(dataSource, activeFilters, format);
+  }, [dataSource, activeFilters]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
@@ -125,18 +112,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     setInitialFilters(getFiltersFromQueryParams(searchParams));
-    const sortBy = getSortingOrderFromQueryParams(searchParams);
-    if (sortBy && sortBy !== selectedSortOrder) {
-      setSelectedSortOrder(getSortingOrderFromQueryParams(searchParams));
-    }
   }, [location.pathname]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('sortBy', selectedSortOrder);
-    setSearchParams(newSearchParams, { replace: true });
-  }, [selectedSortOrder]);
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
 
@@ -283,14 +259,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
               activeFilters={activeFilters}
             />
           </div>
-          <div className={styles.sortOrderContainer}>
-            <SortOrderDropdown
-              ref={sortOrderDropdownRef}
-              onSelect={setSelectedSortOrder}
-              selectedSortOrder={selectedSortOrder}
-              btnClassName={styles.hideForSmallScreens}
-            />
-          </div>
         </div>
         <FosToolbar
           onFilterBtnClick={
@@ -300,9 +268,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
                 }
               : undefined
           }
-          onSortBtnClick={() => {
-            sortOrderDropdownRef?.current?.openSortOrder();
-          }}
           onSaveBtnClick={handleSaveSearch}
           hideSaveButton={savedSearchDisabled}
         />
@@ -375,8 +340,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
                   isChecked={selectedItems[item.id]}
                   onCheckedChange={(checked) => handleCheckedChange(item.id, checked)}
                   metaFields={item.metaFields}
-                  linkTo={`/inbox/${item.id}/${location.search}`}
                   viewType={viewType}
+                  linkTo={`/inbox/${item.id}/${location.search}`}
                 />
               ))}
             </InboxItems>

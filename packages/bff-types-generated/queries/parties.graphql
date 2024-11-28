@@ -2,7 +2,7 @@ query parties {
   parties {
     ...partyFields
     subParties {
-      ...partyFields
+      ...subPartyFields
     }
   }
 }
