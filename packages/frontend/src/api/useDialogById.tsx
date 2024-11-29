@@ -16,6 +16,7 @@ import { type ValueType, getPreferredPropertyByLocale } from '../i18n/property.t
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
+import { useEffect } from 'react';
 
 export interface Participant {
   name: string;
@@ -194,7 +195,18 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
 
-  isSuccess && queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS] });
+  useEffect(() => {
+    if (isSuccess && data?.dialogById.dialog) {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.DIALOGS],
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.DIALOG_BY_ID, id],
+        exact: true,
+      });
+    }
+  }, [isSuccess, data, id, queryClient]);
 
   if (isOrganizationsLoading) {
     return { isLoading: true, isSuccess: false };
