@@ -191,22 +191,15 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
     queryKey: [QUERY_KEYS.DIALOG_BY_ID, id, organizations],
     staleTime: 1000 * 60 * 10,
     retry: 3,
-    queryFn: () => getDialogsById(id!),
+    queryFn: () =>
+      getDialogsById(id!).then((data) => {
+        if (data?.dialogById.dialog) {
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOGS] });
+        }
+        return data;
+      }),
     enabled: typeof id !== 'undefined' && partyURIs.length > 0,
   });
-
-  useEffect(() => {
-    if (isSuccess && data?.dialogById.dialog) {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.DIALOGS],
-        exact: true,
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.DIALOG_BY_ID, id],
-        exact: true,
-      });
-    }
-  }, [isSuccess, data, id, queryClient]);
 
   if (isOrganizationsLoading) {
     return { isLoading: true, isSuccess: false };
