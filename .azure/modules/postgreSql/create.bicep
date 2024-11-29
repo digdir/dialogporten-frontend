@@ -26,7 +26,7 @@ module saveAdmPassword '../keyvault/upsertSecret.bicep' = {
   }
 }
 
-resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
+resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
   name: '${namePrefix}-postgres'
   location: location
   properties: {
