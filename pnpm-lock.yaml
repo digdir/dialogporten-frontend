@@ -398,8 +398,8 @@ importers:
   packages/frontend:
     dependencies:
       '@altinn/altinn-components':
-        specifier: ^0.1.0
-        version: 0.1.0(react@18.3.1)
+        specifier: ^0.7.0
+        version: 0.7.3(react-dom@18.3.1)(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -843,14 +843,16 @@ packages:
       '@algolia/requester-common': 4.24.0
     dev: false
 
-  /@altinn/altinn-components@0.1.0(react@18.3.1):
-    resolution: {integrity: sha512-Wuarl5vPJLpw4DzM4ursKst9Y8VFT4XVrzaDD17shanfTNtIGNXaXmyMvKMZXFQLR6hXiRl7WYMG3gj/FlNydw==}
+  /@altinn/altinn-components@0.7.3(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-TdA6CN50HOmkXhkCkFlUnuj6zPJbn6KsUERNiSCcLt+rxw3Lcnsx4/9KKZT64SDwxUitS/ms+daFeamvtOjy/w==}
     peerDependencies:
-      react: '>=18'
+      react: '>=18.3.1'
+      react-dom: '>=18.3.1'
     dependencies:
       '@navikt/aksel-icons': 7.4.2
       classnames: 2.5.1
       react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@ampproject/remapping@2.3.0:
