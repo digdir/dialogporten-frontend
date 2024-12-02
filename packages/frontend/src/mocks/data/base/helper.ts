@@ -95,16 +95,18 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
     // @ts-ignore-next-line
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // biome-ignore lint/suspicious/noExplicitAny: NA
-    seenSinceLastUpdate: input.seenSinceLastUpdate.map((seen: any) => ({
-      id: seen.id,
-      seenAt: seen.seenAt,
-      seenBy: {
-        actorType: seen.seenBy.actorType,
-        actorId: seen.seenBy.actorId,
-        actorName: seen.seenBy.actorName,
+    seenSinceLastUpdate: [
+      {
+        id: 'c4f4d846-2fe7-4172-badc-abc48f9af8a5',
+        seenAt: '2024-09-30T11:36:01.572Z',
+        seenBy: {
+          actorType: null,
+          actorId: 'urn:altinn:person:identifier-ephemeral:2b34ab491b',
+          actorName: 'SØSTER FANTASIFULL',
+        },
+        isCurrentEndUser: true,
       },
-      isCurrentEndUser: seen.isCurrentEndUser,
-    })),
+    ],
     status: input.status,
     createdAt: input.createdAt,
     updatedAt: input.updatedAt,

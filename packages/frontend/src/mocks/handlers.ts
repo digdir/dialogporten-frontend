@@ -1,9 +1,9 @@
 import { graphql, http, HttpResponse } from 'msw';
 import { naiveSearchFilter } from './filters.ts';
 import type {
-  DialogByIdFieldsFragment,
   SavedSearchesFieldsFragment,
   UpdateSystemLabelMutationVariables,
+  SearchDialogFieldsFragment,
 } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './data/base/helper.ts';
 import { getMockedData } from './data.ts';
@@ -42,7 +42,14 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
     variables: { id },
   } = options;
   const dialog = inMemoryStore.dialogs.find((dialog) => dialog.id === id) ?? null;
-  const dialogDetails: DialogByIdFieldsFragment | null = dialog ? convertToDialogByIdTemplate(dialog) : null;
+  const dialogDetails: SearchDialogFieldsFragment | null = dialog 
+  
+    ? convertToDialogByIdTemplate(dialog) as SearchDialogFieldsFragment 
+    : null;
+  inMemoryStore.dialogs = dialogDetails 
+    ? inMemoryStore.dialogs.map((dialog) => (dialog.id === id ? dialogDetails : dialog))
+    : inMemoryStore.dialogs;
+
   return HttpResponse.json({
     data: {
       dialogById: {

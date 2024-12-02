@@ -16,7 +16,6 @@ import { type ValueType, getPreferredPropertyByLocale } from '../i18n/property.t
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
-import { useEffect } from 'react';
 
 export interface Participant {
   name: string;
