@@ -95,16 +95,7 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
     // @ts-ignore-next-line
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // biome-ignore lint/suspicious/noExplicitAny: NA
-    seenSinceLastUpdate: input.seenSinceLastUpdate.map((seen: any) => ({
-      id: seen.id,
-      seenAt: seen.seenAt,
-      seenBy: {
-        actorType: seen.seenBy.actorType,
-        actorId: seen.seenBy.actorId,
-        actorName: seen.seenBy.actorName,
-      },
-      isCurrentEndUser: seen.isCurrentEndUser,
-    })),
+    seenSinceLastUpdate: input.seenSinceLastUpdate,
     status: input.status,
     createdAt: input.createdAt,
     updatedAt: input.updatedAt,

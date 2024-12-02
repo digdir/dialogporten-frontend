@@ -1,9 +1,9 @@
 import { graphql, http, HttpResponse } from 'msw';
 import { naiveSearchFilter } from './filters.ts';
 import type {
-  DialogByIdFieldsFragment,
   SavedSearchesFieldsFragment,
   UpdateSystemLabelMutationVariables,
+  DialogByIdFieldsFragment,
 } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './data/base/helper.ts';
 import { getMockedData } from './data.ts';
@@ -17,7 +17,7 @@ let inMemoryStore = {
   parties: data.parties,
   organizations: data.organizations,
 };
-
+ 
 const isAuthenticatedMock = http.get('/api/isAuthenticated', () => {
   return HttpResponse.json({ authenticated: true });
 });
@@ -42,7 +42,30 @@ const getDialogByIdMock = graphql.query('getDialogById', (options) => {
     variables: { id },
   } = options;
   const dialog = inMemoryStore.dialogs.find((dialog) => dialog.id === id) ?? null;
-  const dialogDetails: DialogByIdFieldsFragment | null = dialog ? convertToDialogByIdTemplate(dialog) : null;
+
+  if (dialog && !dialog.seenSinceLastUpdate.find(d => d.isCurrentEndUser)) {
+    const party = inMemoryStore.parties.find((party) => party.isCurrentEndUser) ?? null;
+    dialog.seenSinceLastUpdate = [
+      {
+        id: 'c4f4d846-2fe7-4172-badc-abc48f9af8a5',
+        seenAt: new Date().toISOString(),
+        seenBy: {
+          actorType: null,
+          actorId: party?.party,
+          actorName: party?.name,
+        },
+        isCurrentEndUser: true,
+      },
+    ];
+    inMemoryStore.dialogs = dialog 
+      ? inMemoryStore.dialogs.map((d) => (d.id === id ? dialog : d))
+      : inMemoryStore.dialogs;
+  }
+
+  const dialogDetails: DialogByIdFieldsFragment | null = dialog 
+    ? convertToDialogByIdTemplate(dialog) as DialogByIdFieldsFragment 
+    : null;
+
   return HttpResponse.json({
     data: {
       dialogById: {
