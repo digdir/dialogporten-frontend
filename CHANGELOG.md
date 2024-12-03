@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.4](https://github.com/digdir/dialogporten-frontend/compare/v1.9.3...v1.9.4) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @opentelemetry/instrumentation to v0.55.0 ([#1370](https://github.com/digdir/dialogporten-frontend/issues/1370)) ([2cbf387](https://github.com/digdir/dialogporten-frontend/commit/2cbf387f40bf735ff1037836a451a3f2a08735b0))
+* **deps:** update dependency @opentelemetry/instrumentation-graphql to v0.45.0 ([#1442](https://github.com/digdir/dialogporten-frontend/issues/1442)) ([fd2998f](https://github.com/digdir/dialogporten-frontend/commit/fd2998f862d9cf7aee4a8e403392cfa6d2db3c0c))
+* **deps:** update dependency @opentelemetry/instrumentation-http to v0.55.0 ([#1371](https://github.com/digdir/dialogporten-frontend/issues/1371)) ([4fa8d31](https://github.com/digdir/dialogporten-frontend/commit/4fa8d3122b59ab0197598066d928272253a73f7d))
+* **deps:** update dependency @opentelemetry/instrumentation-ioredis to v0.45.0 ([#1443](https://github.com/digdir/dialogporten-frontend/issues/1443)) ([cbf3091](https://github.com/digdir/dialogporten-frontend/commit/cbf3091cd6c8d6f921382617b849654aa8c740a9))
+* Notification counter now gets updated when reading a dialog ([#1398](https://github.com/digdir/dialogporten-frontend/issues/1398)) ([7ca8424](https://github.com/digdir/dialogporten-frontend/commit/7ca8424614d32464282ef6a166fa51fe333053b9))
+* Notification counter now gets updated when reading a dialog ([#1398](https://github.com/digdir/dialogporten-frontend/issues/1398)) ([#1404](https://github.com/digdir/dialogporten-frontend/issues/1404)) ([7ca8424](https://github.com/digdir/dialogporten-frontend/commit/7ca8424614d32464282ef6a166fa51fe333053b9))
+* Showing org name if not found in organiszations JSON ([#1448](https://github.com/digdir/dialogporten-frontend/issues/1448)) ([047480e](https://github.com/digdir/dialogporten-frontend/commit/047480e268ed155a93f7c1faf8a12edd32825b72))
+
 ## [1.9.3](https://github.com/digdir/dialogporten-frontend/compare/v1.9.2...v1.9.3) (2024-11-25)
 
 
