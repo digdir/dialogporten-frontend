@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/digdir/dialogporten-frontend/compare/v1.9.5...v1.10.0) (2024-12-04)
+
+
+### Features
+
+* Added interim implementation of Dialog Transmissions ([0c60883](https://github.com/digdir/dialogporten-frontend/commit/0c6088340ad0b106e2a8b92a5c13e500281cbfe2))
+* Added interim implementation of Dialog Transmissions ([#1465](https://github.com/digdir/dialogporten-frontend/issues/1465)) ([0c60883](https://github.com/digdir/dialogporten-frontend/commit/0c6088340ad0b106e2a8b92a5c13e500281cbfe2))
+
 ## [1.9.5](https://github.com/digdir/dialogporten-frontend/compare/v1.9.4...v1.9.5) (2024-12-04)
 
 
