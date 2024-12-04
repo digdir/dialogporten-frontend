@@ -17,7 +17,7 @@ reviews:
   path_instructions: []
   abort_on_close: true
   auto_review:
-    enabled: true
+    enabled: false
     auto_incremental_review: true
     ignore_title_keywords: ["chore(main): release"]
     labels: []
