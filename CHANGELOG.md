@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.5](https://github.com/digdir/dialogporten-frontend/compare/v1.9.4...v1.9.5) (2024-12-04)
+
+
+### Bug Fixes
+
+* filters now show correct numbers of remaining messages after selecting another filter ([#1403](https://github.com/digdir/dialogporten-frontend/issues/1403)) ([61b1aef](https://github.com/digdir/dialogporten-frontend/commit/61b1aef50dae798385b1339964c3a6594af650ab))
+
 ## [1.9.4](https://github.com/digdir/dialogporten-frontend/compare/v1.9.3...v1.9.4) (2024-12-02)
 
 
