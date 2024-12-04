@@ -8,9 +8,9 @@ import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
 import { AdditionalInfoContent } from '../AdditonalInfoContent';
 import { MainContentReference } from '../MainContentReference';
+import { Transmission } from '../Transmission';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
-import { Transmission } from '../Transmission';
 
 interface InboxItemDetailProps {
   dialog: DialogByIdDetails | undefined | null;

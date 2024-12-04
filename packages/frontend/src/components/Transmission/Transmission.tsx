@@ -3,11 +3,11 @@ import { ActorType } from 'bff-types-generated';
 import type { DialogTransmission, Participant } from '../../api/useDialogById.tsx';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 
-import { t } from 'i18next';
-import styles from './transmission.module.css';
 import { Link } from '@digdir/designsystemet-react';
 import { FileIcon } from '@navikt/aksel-icons';
+import { t } from 'i18next';
 import { getPreferredPropertyByLocale } from '../../i18n/property.ts';
+import styles from './transmission.module.css';
 
 interface TransmissionProps {
   transmission: DialogTransmission;
