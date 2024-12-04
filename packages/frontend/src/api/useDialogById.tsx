@@ -7,6 +7,7 @@ import type {
   OrganizationFieldsFragment,
   PartyFieldsFragment,
   SystemLabel,
+  TransmissionFieldsFragment,
 } from 'bff-types-generated';
 import { AttachmentUrlConsumer } from 'bff-types-generated';
 import type { GuiActionButtonProps, InboxItemMetaField } from '../components';
@@ -40,6 +41,17 @@ export interface DialogActivity {
   description: string;
   performedBy: DialogActivityFragment['performedBy'];
 }
+
+export interface DialogTransmission {
+  id: string;
+  type: TransmissionFieldsFragment['type'];
+  createdAt: string;
+  performedBy: TransmissionFieldsFragment['sender'];
+  attachments: TransmissionFieldsFragment['attachments'];
+  title: string;
+  summary: string;
+}
+
 export interface DialogByIdDetails {
   summary: string;
   sender: Participant;
@@ -55,6 +67,7 @@ export interface DialogByIdDetails {
   updatedAt: string;
   createdAt: string;
   label: SystemLabel;
+  transmissions: DialogTransmission[];
 }
 
 interface UseDialogByIdOutput {
@@ -176,6 +189,21 @@ export function mapDialogDtoToInboxItem(
         performedBy: activity.performedBy,
         description: getPreferredPropertyByLocale(activity.description)?.value ?? '',
       }))
+      .reverse(),
+    transmissions: item.transmissions
+      .map((transmission) => {
+        const titleObj = transmission.content.title.value;
+        const summaryObj = transmission.content.summary.value;
+        return {
+          id: transmission.id,
+          type: transmission.type,
+          createdAt: transmission.createdAt,
+          performedBy: transmission.sender,
+          attachments: transmission.attachments,
+          title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
+          summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
+        };
+      })
       .reverse(),
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
