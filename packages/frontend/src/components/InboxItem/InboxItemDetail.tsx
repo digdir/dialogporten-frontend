@@ -2,12 +2,13 @@ import { Avatar } from '@altinn/altinn-components';
 import { Link } from '@digdir/designsystemet-react';
 import { EyeIcon, FileIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
-import type { DialogActivity, DialogByIdDetails } from '../../api/useDialogById.tsx';
+import type { DialogActivity, DialogByIdDetails, DialogTransmission } from '../../api/useDialogById.tsx';
 import { getPreferredPropertyByLocale } from '../../i18n/property.ts';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { Activity } from '../Activity';
 import { AdditionalInfoContent } from '../AdditonalInfoContent';
 import { MainContentReference } from '../MainContentReference';
+import { Transmission } from '../Transmission';
 import { GuiActions } from './GuiActions.tsx';
 import styles from './inboxItemDetail.module.css';
 
@@ -69,6 +70,7 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
     attachments,
     mainContentReference,
     activities,
+    transmissions,
     updatedAt,
   } = dialog;
 
@@ -146,6 +148,14 @@ export const InboxItemDetail = ({ dialog }: InboxItemDetailProps): JSX.Element =
           <h3 className={styles.activitiesTitle}>{t('word.activities')}</h3>
           {activities.map((activity: DialogActivity) => (
             <Activity key={activity.id} activity={activity} serviceOwner={sender} />
+          ))}
+        </section>
+      )}
+      {transmissions.length > 0 && (
+        <section data-id="dialog-transmissions" className={styles.transmissions}>
+          <h3 className={styles.transmissionsTitle}>{t('word.transmissions')}</h3>
+          {transmissions.map((transmission: DialogTransmission) => (
+            <Transmission key={transmission.id} transmission={transmission} serviceOwner={sender} />
           ))}
         </section>
       )}

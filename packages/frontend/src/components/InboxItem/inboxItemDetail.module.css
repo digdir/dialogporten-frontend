@@ -62,7 +62,8 @@
   line-height: 1.5;
 }
 
-.activities {
+.activities,
+.transmissions {
   display: flex;
   flex-direction: column;
   row-gap: 1.5rem;
@@ -70,7 +71,8 @@
   padding: 1.5rem 0;
 }
 
-.activitiesTitle {
+.activitiesTitle,
+.transmissionsTitle {
   font-size: 1.25rem;
   font-weight: 500;
   margin: 0;

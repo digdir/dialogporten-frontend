@@ -73,6 +73,7 @@ export const convertToDialogByIdTemplate = (input: SearchDialogFieldsFragment): 
         createdAt: input.createdAt,
       },
     ],
+    transmissions: [],
     guiActions: [
       {
         id: input.id,

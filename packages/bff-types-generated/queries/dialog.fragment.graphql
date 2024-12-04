@@ -57,6 +57,9 @@ fragment DialogByIdFields on Dialog {
   seenSinceLastUpdate {
     ...SeenLogFields
   }
+  transmissions {
+    ...TransmissionFields
+  }
   status
   createdAt
   updatedAt
@@ -80,6 +83,53 @@ fragment DialogByIdFields on Dialog {
     }
     mainContentReference {
       ...DialogContentFields
+    }
+  }
+}
+
+fragment TransmissionFields on Transmission {
+  id
+  createdAt
+  type
+  sender {
+    actorType
+    actorId
+    actorName
+  }
+  content {
+    title {
+      value {
+        value
+        languageCode
+      }
+      mediaType
+    }
+    summary {
+      value {
+        value
+        languageCode
+      }
+      mediaType
+    }
+    contentReference {
+      value {
+        value
+        languageCode
+      }
+      mediaType
+    }
+  }
+  attachments {
+    id
+    displayName {
+      value
+      languageCode
+    }
+    urls {
+      id
+      url
+      consumerType
+      mediaType
     }
   }
 }
