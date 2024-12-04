@@ -74,7 +74,11 @@ export const filterDialogs = (
   });
 };
 
-export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFunction): FilterSetting[] => {
+export const getFilterBarSettings = (
+  dialogs: InboxItemInput[],
+  activeFilters: Filter[],
+  format: FormatFunction,
+): FilterSetting[] => {
   return [
     {
       id: 'sender',
@@ -83,12 +87,17 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       mobileNavLabel: t('filter_bar.label.choose_sender'),
       operation: 'includes',
       options: (() => {
-        const senders = dialogs.map((p) => p.sender.name);
+        const otherFilters = activeFilters.filter((activeFilter) => activeFilter.id !== 'sender');
+        const filteredDialogs = filterDialogs(dialogs, otherFilters, format);
+
+        const senders = filteredDialogs.map((p) => p.sender.name);
+
         const senderCounts = countOccurrences(senders);
+
         return Array.from(new Set(senders)).map((sender) => ({
           displayLabel: `${t('filter_bar_fields.from')} ${sender}`,
           value: sender,
-          count: senderCounts[sender],
+          count: senderCounts[sender] ?? 0,
         }));
       })(),
     },
@@ -99,12 +108,15 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       mobileNavLabel: t('filter_bar.label.choose_recipient'),
       operation: 'includes',
       options: (() => {
-        const receivers = dialogs.map((p) => p.receiver.name);
+        const otherFilters = activeFilters.filter((activeFilter) => activeFilter.id !== 'receiver');
+        const filteredDialogs = filterDialogs(dialogs, otherFilters, format);
+
+        const receivers = filteredDialogs.map((p) => p.receiver.name);
         const receiversCount = countOccurrences(receivers);
         return Array.from(new Set(receivers)).map((receiver) => ({
           displayLabel: `${t('filter_bar_fields.to')} ${receiver}`,
           value: receiver,
-          count: receiversCount[receiver],
+          count: receiversCount[receiver] ?? 0,
         }));
       })(),
     },
@@ -116,12 +128,16 @@ export const getFilterBarSettings = (dialogs: InboxItemInput[], format: FormatFu
       operation: 'includes',
       horizontalRule: true,
       options: (() => {
-        const status = dialogs.map((p) => p.status);
+        const otherFilters = activeFilters.filter((activeFilter) => activeFilter.id !== 'status');
+        const filteredDialogs = filterDialogs(dialogs, otherFilters, format);
+
+        const status = filteredDialogs.map((p) => p.status);
         const statusCount = countOccurrences(status);
+
         return Array.from(new Set(status)).map((statusLabel) => ({
           displayLabel: t(`status.${statusLabel.toLowerCase()}`),
           value: statusLabel,
-          count: statusCount[statusLabel],
+          count: statusCount[statusLabel] ?? 0,
         }));
       })(),
     },

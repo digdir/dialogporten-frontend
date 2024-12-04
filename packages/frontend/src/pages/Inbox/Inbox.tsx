@@ -98,11 +98,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  const itemsToDisplay = useMemo(() => {
-    return filterDialogs(dataSource, activeFilters, format);
-  }, [dataSource, activeFilters]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     setActiveFilters([]);
     clearFiltersInQueryParams();
@@ -122,6 +117,18 @@ export const Inbox = ({ viewType }: InboxProps) => {
       filterBarRef.current?.resetFilters();
     }
   }, [showingSearchResults]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  const itemsToDisplay = useMemo(() => {
+    return filterDialogs(dataSource, activeFilters, format);
+  }, [dataSource, activeFilters]);
+
+  const filterBarSettings = getFilterBarSettings(dataSource, activeFilters, format).filter(
+    (setting) =>
+      setting.options.length > 1 ||
+      typeof activeFilters.find((filter) => filter.id === setting.id) !== 'undefined' ||
+      setting.id === 'updated',
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
@@ -197,11 +204,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
       [checkboxValue]: checked,
     }));
   };
-
-  const filterBarSettings = useMemo(
-    () => getFilterBarSettings(dataSource, format).filter((setting) => setting.options.length > 1),
-    [dataSource, format],
-  );
 
   const savedSearchDisabled = !activeFilters?.length && !searchString;
   const showFilterButton = filterBarSettings.length > 0;
