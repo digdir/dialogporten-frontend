@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/digdir/dialogporten-frontend/compare/v1.10.0...v1.10.1) (2024-12-05)
+
+
+### Bug Fixes
+
+* Party and subparty with the same name is shown as one option and will display all coresponding messages ([#1468](https://github.com/digdir/dialogporten-frontend/issues/1468)) ([2514b22](https://github.com/digdir/dialogporten-frontend/commit/2514b22a961a6590fd6d876b5d6e67f887d89e60))
+
 ## [1.10.0](https://github.com/digdir/dialogporten-frontend/compare/v1.9.5...v1.10.0) (2024-12-04)
 
 
