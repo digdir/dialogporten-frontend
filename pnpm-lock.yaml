@@ -275,8 +275,8 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2(@docusaurus/plugin-content-docs@3.5.2)(@mdx-js/react@3.1.0)(acorn@8.13.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)
       '@easyops-cn/docusaurus-search-local':
-        specifier: 0.44.5
-        version: 0.44.5(@docusaurus/theme-common@3.5.2)(@docusaurus/types@3.5.2)(@mdx-js/react@3.1.0)(acorn@8.13.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)
+        specifier: 0.46.1
+        version: 0.46.1(@docusaurus/theme-common@3.5.2)(@docusaurus/types@3.5.2)(@mdx-js/react@3.1.0)(acorn@8.13.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)
       '@mdx-js/react':
         specifier: ^3.0.0
         version: 3.1.0(@types/react@18.3.12)(react@18.3.1)
@@ -3871,8 +3871,8 @@ packages:
       immediate: 3.3.0
     dev: false
 
-  /@easyops-cn/docusaurus-search-local@0.44.5(@docusaurus/theme-common@3.5.2)(@docusaurus/types@3.5.2)(@mdx-js/react@3.1.0)(acorn@8.13.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4):
-    resolution: {integrity: sha512-jT3wuYVzRoeB1gea+2iDtOMme0fD2h3M8HDVgs3garITO6vRxvEraFRVlYkfjLN9BkmzjMlz9nn7MI4qIx8utw==}
+  /@easyops-cn/docusaurus-search-local@0.46.1(@docusaurus/theme-common@3.5.2)(@docusaurus/types@3.5.2)(@mdx-js/react@3.1.0)(acorn@8.13.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4):
+    resolution: {integrity: sha512-kgenn5+pctVlJg8s1FOAm9KuZLRZvkBTMMGJvTTcvNTmnFIHVVYzYfA2Eg+yVefzsC8/cSZGKKJ0kLf8I+mQyw==}
     engines: {node: '>=12'}
     peerDependencies:
       '@docusaurus/theme-common': ^2 || ^3
@@ -3889,6 +3889,7 @@ packages:
       '@node-rs/jieba': 1.10.4
       cheerio: 1.0.0
       clsx: 1.2.1
+      comlink: 4.4.2
       debug: 4.3.7(supports-color@5.5.0)
       fs-extra: 10.1.0
       klaw-sync: 6.0.0
@@ -11166,7 +11167,7 @@ packages:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
       upper-case-first: 2.0.2
 
   /ccount@2.0.1:
@@ -11252,7 +11253,7 @@ packages:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
@@ -11533,6 +11534,10 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
 
+  /comlink@4.4.2:
+    resolution: {integrity: sha512-OxGdvBmJuNKSCMO4NTl1L47VRp6xn2wG4F/2hYzB6tiCb709otOxtEYCSvK80PtjODfXXZu8ds+Nw5kVCjqd2g==}
+    dev: false
+
   /comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
@@ -11664,7 +11669,7 @@ packages:
     resolution: {integrity: sha512-I2hSBi7Vvs7BEuJDr5dDHfzb/Ruj3FyvFyh7KLilAjNQw3Be+xgqUBA2W6scVEcL0hL1dwPRtIqEPVUCKkSsyQ==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
       upper-case: 2.0.2
 
   /content-disposition@0.5.2:
@@ -14546,7 +14551,7 @@ packages:
     resolution: {integrity: sha512-H/vuk5TEEVZwrR0lp2zed9OCo1uAILMlx0JEMgC26rzyJJ3N1v6XkwHHXJQdR2doSjcGPM6OKPYoJgf0plJ11Q==}
     dependencies:
       capital-case: 1.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
@@ -15178,7 +15183,7 @@ packages:
   /is-lower-case@2.0.2:
     resolution: {integrity: sha512-bVcMJy4X5Og6VZfdOZstSexlEy20Sr0k/p/b2IlQJlfdKAQuMpiv5w2Ccxb8sKdRUNAG1PnHVHjFSdRDVS6NlQ==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /is-named-css-color@1.0.0:
     resolution: {integrity: sha512-8U8MlUMBJ3RiDpbYY5QGmIxGKGmK8c96bnESYyY0rA4BwqN7EPOF9gG/TFktKd4J+p5isdEQ+1x5cwOkSUWCsw==}
@@ -15287,7 +15292,7 @@ packages:
   /is-upper-case@2.0.2:
     resolution: {integrity: sha512-44pxmxAvnnAOwBg4tHPnkfvgjPwbc5QIsSstNU+YcJ1ovxVzCWpSGosPJOZh/a1tdl81fbgnLc9LLv+x2ywbPQ==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /is-whitespace@0.3.0:
     resolution: {integrity: sha512-RydPhl4S6JwAyj0JJjshWJEFG6hNye3pZFBRZaTUfZFwGHxzppNaNOVgQuS/E/SlhrApuMXrpnK1EEIXfdo3Dg==}
@@ -16428,12 +16433,12 @@ packages:
   /lower-case-first@2.0.2:
     resolution: {integrity: sha512-EVm/rR94FJTZi3zefZ82fLWab+GX14LJN4HrWBcuo6Evmsl9hEfnqxgcHCKb9q+mNf6EVdsjx/qucYFIIB84pg==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /lowercase-keys@3.0.0:
     resolution: {integrity: sha512-ozCC6gdQ+glXOQsveKD0YsDy8DSQFjDTz4zyzEHNV5+JP5D62LmfDZ6o1cycFx9ouG940M5dE8C8CTewdj2YWQ==}
@@ -17580,7 +17585,7 @@ packages:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
@@ -18067,7 +18072,7 @@ packages:
     resolution: {integrity: sha512-qO4qCFjXqVTrcbPt/hQfhTQ+VhFsqNKOPtytgNKkKxSoEp3XPUQ8ObFuePylOIok5gjn69ry8XiULxCwot3Wfg==}
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /path-exists@3.0.0:
     resolution: {integrity: sha512-bpC7GYwiDYQ4wYLe+FA8lhRjhQCMcQGuSgGGqDkg/QerRWw9CmGRT0iSOVRSZJ29NMLZgIzqaljJ63oaL4NIJQ==}
@@ -20417,7 +20422,7 @@ packages:
     resolution: {integrity: sha512-8LS0JInaQMCRoQ7YUytAo/xUu5W2XnQxV2HI/6uM6U7CITS1RqPElr30V6uIqyMKM9lJGRVFy5/4CuzcixNYSg==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
       upper-case-first: 2.0.2
 
   /serialize-javascript@6.0.2:
@@ -20656,7 +20661,7 @@ packages:
     resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /sockjs@0.3.24:
     resolution: {integrity: sha512-GJgLTZ7vYb/JtPSSZ10hsOYIvEYsjbNU+zPdIHcUaWVNUEPivzxku31865sSSud0Da0W4lEeOPlmw93zLQchuQ==}
@@ -20771,7 +20776,7 @@ packages:
   /sponge-case@1.0.1:
     resolution: {integrity: sha512-dblb9Et4DAtiZ5YSUZHLl4XhH4uK80GhAZrVXdN4O2P4gQ40Wa5UIOPUHlA/nFd2PLblBZWUioLMMAVrgpoYcA==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
@@ -21122,7 +21127,7 @@ packages:
   /swap-case@2.0.2:
     resolution: {integrity: sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
@@ -21257,7 +21262,7 @@ packages:
   /title-case@3.0.3:
     resolution: {integrity: sha512-e1zGYRvbffpcHIrnuqT0Dh+gEJtDaxDSoG4JAIpq4oDFyooziLBIiYQv0GBT4FUAnUop5uZ1hiIAj7oAF6sOCA==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /tldraw@2.4.4(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-7Ggb5qljQwm+JxY0wOSa9gYtLFXBuy2xRdvTBoKQf/NF2TemxipmXumrjpOE7vDifDfVjG/hUiqacrruqjXnow==}
@@ -21814,12 +21819,12 @@ packages:
   /upper-case-first@2.0.2:
     resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /upper-case@2.0.2:
     resolution: {integrity: sha512-KgdgDGJt2TpuwBUIjgG6lzw2GWFRCW9Qkfkiv0DxqHHLYJHmtmdUIKcZd8rHgFSjopVTlw6ggzCm1b8MFQwikg==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
