@@ -18,6 +18,7 @@ import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
+import { useParties } from './useParties.ts';
 
 export type InboxViewType = 'inbox' | 'drafts' | 'sent' | 'archive' | 'bin';
 interface UseDialogsOutput {
@@ -97,14 +98,24 @@ interface UseSearchDialogsOutput {
   isFetching: boolean;
 }
 
+const flattenParties = (partiesToUse: PartyFieldsFragment[]) => {
+  const partyURIs = partiesToUse.map((party) => party.party);
+  const subPartyURIs = partiesToUse.flatMap((party) => party.subParties?.map((subParty) => subParty.party));
+  return [...partyURIs, ...subPartyURIs] as string[];
+};
+
 export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsProps): UseSearchDialogsOutput => {
   const { organizations } = useOrganizations();
-  const partyURIs = parties.map((party) => party.party);
+  const { selectedParties } = useParties();
+
+  const partiesToUse = parties ? parties : selectedParties;
+  const mergedPartiesWithSubParties = flattenParties(partiesToUse);
+
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, partyURIs, debouncedSearchString, org],
-    queryFn: () => searchDialogs(partyURIs, debouncedSearchString, org),
+    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, mergedPartiesWithSubParties, debouncedSearchString, org],
+    queryFn: () => searchDialogs(mergedPartiesWithSubParties, debouncedSearchString, org),
     staleTime: 1000 * 60 * 10,
     enabled,
   });
@@ -158,15 +169,19 @@ export const getViewType = (dialog: InboxItemInput): InboxViewType => {
 
 export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => {
   const { organizations } = useOrganizations();
-  const partyURIs = parties.map((party) => party.party);
+  const { selectedParties } = useParties();
+
+  const partiesToUse = parties ? parties : selectedParties;
+  const mergedPartiesWithSubParties = flattenParties(partiesToUse);
+
   const { data, isSuccess, isLoading } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: [QUERY_KEYS.DIALOGS, partyURIs, organizations],
+    queryKey: [QUERY_KEYS.DIALOGS, mergedPartiesWithSubParties, organizations],
     staleTime: 1000 * 60 * 10,
     retry: 3,
-    queryFn: () => getDialogs(partyURIs),
-    enabled: partyURIs.length > 0,
+    queryFn: () => getDialogs(mergedPartiesWithSubParties),
+    enabled: mergedPartiesWithSubParties.length > 0,
   });
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations);
+  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], selectedParties, organizations);
   return {
     isLoading,
     isSuccess,
