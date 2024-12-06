@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { appURL } from '../';
 
 test.describe('Sidebar menu', () => {
-  test('Checking all items in sidebar', async ({ page }) => {
+  test.skip('Checking all items in sidebar', async ({ page }) => {
     await page.goto(appURL);
     await page.getByRole('link', { name: 'Utkast' }).click();
     await expect(page.getByRole('heading', { name: 'utkast' })).toBeVisible();

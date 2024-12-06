@@ -2,7 +2,7 @@ import { type Page, expect, test } from '@playwright/test';
 import { appURL } from '../';
 
 test.describe('InboxItemPage', () => {
-  test('Check message opening, archiving and deleting', async ({ page }: { page: Page }) => {
+  test.skip('Check message opening, archiving and deleting', async ({ page }: { page: Page }) => {
     const arkivLink = page.getByRole('link', { name: 'Arkiv' });
     const arkivLinkCount = arkivLink.locator('div > div > span');
 

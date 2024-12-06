@@ -1,5 +1,5 @@
-import { QueryClient } from '@tanstack/react-query';
 import * as ReactQuery from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { type RenderOptions, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { createCustomWrapper, customRender } from '../../../utils/test-utils.tsx';

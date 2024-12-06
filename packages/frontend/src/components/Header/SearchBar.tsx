@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useWindowSize } from '../../../utils/useWindowSize.tsx';
 import { Backdrop } from '../Backdrop';
-import { useSearchString } from '../Header';
+import { useSearchString } from '../PageLayout/Search/useSearchString.tsx';
 import { SearchDropdown } from './SearchDropdown';
 import styles from './search.module.css';
 
@@ -13,8 +13,8 @@ export const SearchBar: React.FC = () => {
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { searchString, setSearchString } = useSearchString();
-  const [searchValue, setSearchValue] = useState<string>(searchString);
+  const { enteredSearchValue, onSearch } = useSearchString();
+  const [searchValue, setSearchValue] = useState<string>(enteredSearchValue);
   const { isTabletOrSmaller } = useWindowSize();
 
   const handleClose = () => {
@@ -28,20 +28,12 @@ export const SearchBar: React.FC = () => {
       setSearchParams(newSearchParams, { replace: true });
     }
     setSearchValue('');
-    setSearchString('');
+    onSearch('');
   };
 
   const onClearAndCloseDropdown = () => {
     onClearSearch();
     setShowDropdownMenu(false);
-  };
-
-  const onSearch = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    setSearchString(value);
-    setShowDropdownMenu(false);
-    newSearchParams.set('search', value);
-    setSearchParams(newSearchParams, { replace: true });
   };
 
   useEffect(() => {

@@ -398,8 +398,8 @@ importers:
   packages/frontend:
     dependencies:
       '@altinn/altinn-components':
-        specifier: ^0.1.0
-        version: 0.1.0(react@18.3.1)
+        specifier: ^0.7.5
+        version: 0.7.5(react-dom@18.3.1)(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -843,14 +843,16 @@ packages:
       '@algolia/requester-common': 4.24.0
     dev: false
 
-  /@altinn/altinn-components@0.1.0(react@18.3.1):
-    resolution: {integrity: sha512-Wuarl5vPJLpw4DzM4ursKst9Y8VFT4XVrzaDD17shanfTNtIGNXaXmyMvKMZXFQLR6hXiRl7WYMG3gj/FlNydw==}
+  /@altinn/altinn-components@0.7.5(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-BR+wtGJs3rleZPNxYlo2pOfOrAwK4an5nejXgSVxVM6qls7PbE68/zjFlwlCYBG8xi+WiWqef3tftv4lquC+jQ==}
     peerDependencies:
-      react: '>=18'
+      react: '>=18.3.1'
+      react-dom: '>=18.3.1'
     dependencies:
-      '@navikt/aksel-icons': 7.4.2
+      '@navikt/aksel-icons': 7.5.3
       classnames: 2.5.1
       react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@ampproject/remapping@2.3.0:
@@ -5928,8 +5930,8 @@ packages:
     resolution: {integrity: sha512-n+1AsE9kRFh3C7BcD0fAJhIA6/65PsLGrpNKnLQUjW8hwESzo1LYHfZgZXi2Shaw2hCzQ1wx/hBBdwtQfUiBNg==}
     dev: false
 
-  /@navikt/aksel-icons@7.4.2:
-    resolution: {integrity: sha512-Oltbsmh7QUmqAtRaQp+EOP0J//DCZ1WZT+5N7Fgnu6xzbOcI+bSzc7xDm4kuBVcxQjBTCbSSR1Z9gWQJ+4Mmdg==}
+  /@navikt/aksel-icons@7.5.3:
+    resolution: {integrity: sha512-N4uaddfmZMp4Xm6h/WprY+8O7io9KwDX167h+o2/97ySN0zbcPxDyskWKjwplOlZg/SjoVuY45M/xqlkUa6byg==}
     dev: false
 
   /@nevware21/ts-async@0.5.2:

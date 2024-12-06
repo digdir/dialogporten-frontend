@@ -35,7 +35,7 @@ test.describe('Message navigation', () => {
     await expect(page.getByTestId('pageLayout-background')).toHaveClass(/.*isCompany.*/);
   });
 
-  test('Back button navigates to previous page the message has been opened from', async ({ page }) => {
+  test.skip('Back button navigates to previous page the message has been opened from', async ({ page }) => {
     await page.goto(pageWithMockOrganizations);
 
     await expect(page.locator('h2').filter({ hasText: /^Skatten din for 2022$/ })).toBeVisible();

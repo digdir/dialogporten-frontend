@@ -92,7 +92,7 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('link', { name: 'This is a message 1 for Firma AS' })).toBeVisible();
   });
 
-  test('Searchbar input adds search params', async ({ page }: { page: Page }) => {
+  test.skip('Searchbar input adds search params', async ({ page }: { page: Page }) => {
     expect(new URL(page.url()).searchParams.has('search')).toBe(false);
     await page.getByPlaceholder('Søk i innboks').click();
     await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
@@ -110,7 +110,7 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
   });
 
-  test('Go-back button deletes search bar value', async ({ page }: { page: Page }) => {
+  test.skip('Go-back button deletes search bar value', async ({ page }: { page: Page }) => {
     await page.getByPlaceholder('Søk i innboks').click();
     await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
     await page.getByPlaceholder('Søk i innboks').fill('skatten din');

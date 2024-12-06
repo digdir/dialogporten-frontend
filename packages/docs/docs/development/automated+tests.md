@@ -19,7 +19,7 @@ Read this first:
   - For a custom button component, verify the button's visibility and simulate a click event, rather than checking if a specific function was called. 
 
 Smoke test (i.e. `check if they render OK`) for our custom React components with stories are auto-generated and can be run with `pnpm test:storybook` in the Storybook project (`/packages/storybook/`).
-More functional tests of the component can be added with [the following recipe](https://storybook.js.org/docs/writing-stories). Check out [Header.stories.tsx](..%2F..%2F..%2Fstorybook%2Fsrc%2Fstories%2FHeader%2FHeader.stories.tsx) for a minimalistic example of a `play function`.
+More functional tests of the component can be added with [the following recipe](https://storybook.js.org/docs/writing-stories). 
 
 For all other uses cases, e.g. components not fit for Storybook, we use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) and [Vitest](https://vitest.dev/) as runner.
 

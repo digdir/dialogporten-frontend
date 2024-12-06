@@ -1,12 +1,12 @@
 import { ChevronUpDownIcon } from '@navikt/aksel-icons';
 import { type Ref, forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParties } from '../../api/useParties.ts';
+import { useParties } from '../../api/useParties';
 import { Backdrop } from '../Backdrop';
 import { DropdownList, DropdownMobileHeader } from '../DropdownMenu';
+import type { SideBarView } from '../PageLayout/GlobalMenu/useGlobalMenu.tsx';
 import { ProfileButton } from '../ProfileButton';
-import type { SideBarView } from '../Sidebar';
-import { PartyListContainer } from './PartyListContainer.tsx';
+import { PartyListContainer } from './PartyListContainer';
 
 interface PartyDropdownRef {
   openPartyDropdown: () => void;

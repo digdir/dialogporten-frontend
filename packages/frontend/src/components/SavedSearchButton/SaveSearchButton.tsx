@@ -5,11 +5,12 @@ import type { ButtonHTMLAttributes, RefAttributes } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Filter } from '..';
-import { useSearchString, useSnackbar } from '..';
+import { useSnackbar } from '..';
 import { deleteSavedSearch } from '../../api/queries';
 import { useParties } from '../../api/useParties';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
+import { useSearchString } from '../PageLayout/Search/useSearchString.tsx';
 import { ProfileButton } from '../ProfileButton';
 import { deepEqual } from './deepEqual';
 
@@ -42,7 +43,7 @@ export const SaveSearchButton = ({
 }: SaveSearchButtonProps) => {
   const { t } = useTranslation();
   const { selectedPartyIds } = useParties();
-  const { searchString } = useSearchString();
+  const { enteredSearchValue } = useSearchString();
   const [isDeleting, setIsDeleting] = useState(false);
   const { currentPartySavedSearches: savedSearches } = useSavedSearches(selectedPartyIds);
   const { openSnackbar } = useSnackbar();
@@ -51,7 +52,7 @@ export const SaveSearchButton = ({
   const searchToCheckIfExistsAlready: SavedSearchData = {
     filters: activeFilters as SearchDataValueFilter[],
     urn: selectedPartyIds as string[],
-    searchString,
+    searchString: enteredSearchValue,
   };
 
   const alreadyExistingSavedSearch = isSearchSavedAlready(

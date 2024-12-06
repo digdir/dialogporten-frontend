@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { createSavedSearch } from '../../api/queries.ts';
 import type { Participant } from '../../api/useDialogById.tsx';
-import { type InboxViewType, getViewType, useDialogs, useSearchDialogs } from '../../api/useDialogs.tsx';
+import { type InboxViewType, getViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import type { InboxItemMetaField } from '../../components';
 import {
@@ -16,13 +16,13 @@ import {
   InboxItem,
   InboxItems,
   PartyDropdown,
-  useSearchString,
   useSelectedDialogs,
   useSnackbar,
 } from '../../components';
 import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
 import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
+import { useSearchDialogs, useSearchString } from '../../components/PageLayout/Search/';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
@@ -30,7 +30,7 @@ import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { clearFiltersInQueryParams, getFiltersFromQueryParams } from './queryParams.ts';
+import { getFiltersFromQueryParams, getQueryParamsWithoutFilters } from './queryParams.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -69,38 +69,35 @@ interface DialogCategory {
 
 export const Inbox = ({ viewType }: InboxProps) => {
   const format = useFormat();
+  const { t } = useTranslation();
   const filterBarRef = useRef<FilterBarRef>(null);
   const queryClient = useQueryClient();
-
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
-
   const location = useLocation();
-  const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
-
   const { selectedParties } = useParties();
-  const { searchString } = useSearchString();
+  const { enteredSearchValue } = useSearchString();
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
     parties: selectedParties,
-    searchString,
+    searchValue: enteredSearchValue,
   });
 
   const { dialogsByView, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(selectedParties);
   const dialogsForView = dialogsByView[viewType];
 
-  const showingSearchResults = searchString.length > 0;
+  const showingSearchResults = enteredSearchValue.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
     setActiveFilters([]);
-    clearFiltersInQueryParams();
+    setSearchParams(getQueryParamsWithoutFilters());
     filterBarRef.current?.resetFilters();
   }, [selectedParties]);
 
@@ -177,7 +174,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
       const data: SavedSearchData = {
         filters: activeFilters as SearchDataValueFilter[],
         urn: selectedParties.map((party) => party.party) as string[],
-        searchString,
+        searchString: enteredSearchValue,
         fromView: Routes[viewType],
       };
       setIsSavingSearch(true);
@@ -205,7 +202,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const savedSearchDisabled = !activeFilters?.length && !searchString;
+  const savedSearchDisabled = !activeFilters?.length && !enteredSearchValue;
   const showFilterButton = filterBarSettings.length > 0;
 
   if (isFetchingSearchResults) {

@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     exclude: ['node_modules', 'tests'], // tests for Playwright
     environment: 'jsdom',
+    pool: 'vmThreads',
     sequence: {
       setupFiles: 'list',
     },

@@ -95,23 +95,20 @@ export const useParties = (): UsePartiesOutput => {
 
   const setSelectedPartyIds = (partyIds: string[], allOrganizationsSelected: boolean) => {
     setAllOrganizationsSelected(allOrganizationsSelected);
-    const isCurrentEndUser = partyIds[0].includes('person');
+    const partyIsPerson = partyIds.some((partyId) => partyId.includes('person'));
     const searchParamsString = searchParams.toString();
     if (allOrganizationsSelected) {
       const allPartiesParams = createParamsForKey(searchParamsString, 'allParties', 'true');
       handleChangSearchParams(allPartiesParams);
-    } else if (isCurrentEndUser) {
-      /* endUser (type=person) is the only party selected and is default, this is the only case
-       * where we want to remove the party query param from the URL
+    } else if (partyIsPerson) {
+      /* We need to exclude person from URL because it contains information we don't want to expose in the URL.
+       * However, if current end user has multiple parties of type person, we need to resolve to current end (user logged in)
+       * user party from URL.
        */
-      const currentEndUserParams = new URLSearchParams(stripQueryParamsForParty(searchParamsString));
-      handleChangSearchParams(currentEndUserParams);
+      const personParams = new URLSearchParams(stripQueryParamsForParty(searchParamsString));
+      handleChangSearchParams(personParams);
     } else {
-      const params = createParamsForKey(
-        stripQueryParamsForParty(searchParamsString),
-        'party',
-        encodeURIComponent(partyIds[0]),
-      );
+      const params = createParamsForKey(searchParamsString, 'party', encodeURIComponent(partyIds[0]));
       handleChangSearchParams(params);
     }
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
@@ -123,12 +120,14 @@ export const useParties = (): UsePartiesOutput => {
     setSelectedPartyIds(allOrgParties, true);
   };
 
-  const selectSpecificParty = () => {
+  const getPartyFromURL = () => {
     const partyFromQuery = getSelectedPartyFromQueryParams(searchParams);
-    return partyFromQuery && data?.parties?.find((party) => party.party.includes(partyFromQuery));
+    if (partyFromQuery) {
+      return data?.parties?.find((party) => party.party === partyFromQuery);
+    }
   };
 
-  const selectCurrentEndUser = () => {
+  const getEndUserParty = () => {
     return data?.parties?.find((party) => party.isCurrentEndUser);
   };
 
@@ -136,11 +135,16 @@ export const useParties = (): UsePartiesOutput => {
     if (getSelectedAllPartiesFromQueryParams(searchParams)) {
       selectAllOrganizations();
     } else {
-      const selectedParty = selectSpecificParty();
-      const currentEndUser = selectCurrentEndUser();
-
-      if (selectedParty) {
-        setSelectedPartyIds([selectedParty.party], false);
+      const orgFromURL = getPartyFromURL();
+      const currentEndUser = getEndUserParty();
+      const selectedPartyIsPerson = selectedParties.some((party) => party.party.includes('person'));
+      if (orgFromURL) {
+        setSelectedPartyIds([orgFromURL.party], false);
+      } else if (selectedPartyIsPerson) {
+        setSelectedPartyIds(
+          selectedParties.map((party) => party.party),
+          false,
+        );
       } else if (currentEndUser) {
         setSelectedPartyIds([currentEndUser.party], false);
       } else {

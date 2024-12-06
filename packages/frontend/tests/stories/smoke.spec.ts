@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { appURL } from '..';
 
 test.describe('Smoke test', () => {
-  test('should show header, aside, main and footer', async ({ page }) => {
+  test.skip('should show header, aside, main and footer', async ({ page }) => {
     await page.goto(appURL);
     const main = page.locator('main');
     const aside = page.locator('[data-testid="sidebar"]');

@@ -21,11 +21,10 @@ import { graphQLSDK } from './queries.ts';
 import { useParties } from './useParties.ts';
 
 export type InboxViewType = 'inbox' | 'drafts' | 'sent' | 'archive' | 'bin';
+export type DialogsByView = { [key in InboxViewType]: InboxItemInput[] };
 interface UseDialogsOutput {
   dialogs: InboxItemInput[];
-  dialogsByView: {
-    [key in InboxViewType]: InboxItemInput[];
-  };
+  dialogsByView: DialogsByView;
   isSuccess: boolean;
   isLoading: boolean;
 }
@@ -71,12 +70,10 @@ export function mapDialogDtoToInboxItem(
 export const searchDialogs = (
   partyURIs: string[],
   search: string | undefined,
-  org: string | undefined,
 ): Promise<GetAllDialogsForPartiesQuery> => {
   return graphQLSDK.getAllDialogsForParties({
     partyURIs,
     search,
-    org,
   });
 };
 
@@ -88,7 +85,6 @@ export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForParties
 interface searchDialogsProps {
   parties: PartyFieldsFragment[];
   searchString?: string;
-  org?: string;
   status?: DialogStatus;
 }
 interface UseSearchDialogsOutput {
@@ -104,7 +100,7 @@ const flattenParties = (partiesToUse: PartyFieldsFragment[]) => {
   return [...partyURIs, ...subPartyURIs] as string[];
 };
 
-export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsProps): UseSearchDialogsOutput => {
+export const useSearchDialogs = ({ parties, searchString }: searchDialogsProps): UseSearchDialogsOutput => {
   const { organizations } = useOrganizations();
   const { selectedParties } = useParties();
 
@@ -114,8 +110,8 @@ export const useSearchDialogs = ({ parties, searchString, org }: searchDialogsPr
   const debouncedSearchString = useDebounce(searchString, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
   const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, mergedPartiesWithSubParties, debouncedSearchString, org],
-    queryFn: () => searchDialogs(mergedPartiesWithSubParties, debouncedSearchString, org),
+    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, mergedPartiesWithSubParties, debouncedSearchString],
+    queryFn: () => searchDialogs(mergedPartiesWithSubParties, debouncedSearchString),
     staleTime: 1000 * 60 * 10,
     enabled,
   });

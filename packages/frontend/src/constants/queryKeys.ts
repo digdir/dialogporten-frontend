@@ -9,4 +9,6 @@ export const QUERY_KEYS = {
   SAVED_SEARCHES: 'savedSearches',
   PROFILE: 'profile',
   ORGANIZATIONS: 'organizations',
+  SEARCH_VALUE: 'searchValue',
+  ENTERED_SEARCH_VALUE: 'enteredSearchValue',
 };

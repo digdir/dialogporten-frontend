@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ProtectedPageLayout } from './components/PageLayout/PageLayout.tsx';
 import { Inbox } from './pages/Inbox';
-import { Routes as AppRoutes } from './pages/Inbox/Inbox.tsx';
+import { Routes as AppRoutes } from './pages/Inbox/Inbox';
 import { InboxItemPage } from './pages/InboxItemPage';
 import { Logout } from './pages/LogoutPage';
 import { SavedSearchesPage } from './pages/SavedSearches';
