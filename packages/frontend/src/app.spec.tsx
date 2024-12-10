@@ -8,7 +8,7 @@ describe('App Smoke Test', async () => {
     server.listen();
   });
 
-  it.skip('renders without crashing', () => {
+  it('renders without crashing', () => {
     const { getByRole } = customRender(<App />);
     const appElement = getByRole('main');
     expect(appElement).toBeTruthy();
