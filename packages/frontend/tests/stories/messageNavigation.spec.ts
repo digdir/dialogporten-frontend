@@ -35,14 +35,14 @@ test.describe('Message navigation', () => {
     await expect(page.getByTestId('pageLayout-background')).toHaveClass(/.*isCompany.*/);
   });
 
-  test.skip('Back button navigates to previous page the message has been opened from', async ({ page }) => {
+  test('Back button navigates to previous page the message has been opened from', async ({ page }) => {
     await page.goto(pageWithMockOrganizations);
 
     await expect(page.locator('h2').filter({ hasText: /^Skatten din for 2022$/ })).toBeVisible();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
     await page.getByRole('button', { name: 'Flytt til papirkurv' }).click();
 
-    await page.getByRole('link', { name: 'Papirkurv' }).click();
+    await page.getByRole('menuitem', { name: 'Papirkurv' }).click();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
     await page.getByRole('button', { name: 'Tilbake' }).click();
     await expect(page.getByRole('heading', { name: 'i papirkurv' })).toBeVisible();

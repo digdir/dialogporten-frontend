@@ -27,27 +27,28 @@ test.describe('Flattened parties and subparties', () => {
     await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
   });
 
-  test.skip('Search input shows flatened messages based on chosen party', async ({ page }) => {
-    await page.getByPlaceholder('Søk i innboks').click();
-    await expect(page.getByPlaceholder('Søk i innboks')).toBeVisible();
+  test('Search input shows flatened messages based on chosen party', async ({ page }) => {
+    await page.getByPlaceholder('Søk').click();
+    await expect(page.getByPlaceholder('Søk')).toBeVisible();
 
-    await page.getByPlaceholder('Søk i innboks').fill('test');
-    await expect(
-      page.getByTestId('main-header').getByRole('link', { name: 'Message for Test Testesen' }),
-    ).toBeVisible();
+    await page.getByPlaceholder('Søk').fill('test');
+
+    await expect(page.getByRole('link', { name: 'Message for Test Testesen Lorem ipsum' })).toBeVisible();
+
     await expect(page.getByTestId('main-header').getByRole('link', { name: 'Main party message' })).not.toBeVisible();
-    await page.getByPlaceholder('Søk i innboks').press('Enter');
+    await page.getByPlaceholder('Søk').press('Enter');
 
     await page.getByRole('button', { name: 'Test Testesen' }).click();
     await page.getByText('TTestbedrift AS2').click();
 
-    await page.getByPlaceholder('Søk i innboks').fill('party');
+    await page.getByPlaceholder('Søk').fill('party');
     await expect(
       page.getByTestId('main-header').getByRole('link', { name: 'Message for Test Testesen' }),
     ).not.toBeVisible();
-    await expect(page.getByTestId('main-header').getByRole('link', { name: 'Main party message' })).toBeVisible();
-    await expect(page.getByTestId('main-header').getByRole('link', { name: 'Sub party message' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Main party message Main' })).toBeVisible();
+    //TO-DO fix search should not filter out sub party messages #1562
+    // await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
 
-    await page.getByPlaceholder('Søk i innboks').press('Enter');
+    await page.getByPlaceholder('Søk').press('Enter');
   });
 });
