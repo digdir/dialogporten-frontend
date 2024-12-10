@@ -237,7 +237,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }
 
   return (
-    <main>
+    <div>
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
@@ -347,6 +347,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
           );
         })}
       </section>
-    </main>
+    </div>
   );
 };
