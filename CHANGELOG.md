@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.11.0](https://github.com/digdir/dialogporten-frontend/compare/v1.10.1...v1.11.0) (2024-12-10)
+
+
+### Features
+
+* use global components from altinn-components ([#1399](https://github.com/digdir/dialogporten-frontend/issues/1399)) ([ff75093](https://github.com/digdir/dialogporten-frontend/commit/ff75093e78869642aff008e98ddaed1a9a5f8e83))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @digdir/dialogporten-schema to v1.40.0 ([#1484](https://github.com/digdir/dialogporten-frontend/issues/1484)) ([f948e8b](https://github.com/digdir/dialogporten-frontend/commit/f948e8b9a3a5743595f8e442463d1239815687bb))
+* **deps:** update dependency @easyops-cn/docusaurus-search-local to v0.46.1 ([#1485](https://github.com/digdir/dialogporten-frontend/issues/1485)) ([df54cad](https://github.com/digdir/dialogporten-frontend/commit/df54cad174de55f5154af9365b45e0fb29810890))
+* update to altinn-components v 0.8.3 for fixing on click on auto complete to dismiss search bar ([#1503](https://github.com/digdir/dialogporten-frontend/issues/1503)) ([d2cbf95](https://github.com/digdir/dialogporten-frontend/commit/d2cbf952f8c64f892e8d38ca4aaf93be0203480c))
+
 ## [1.10.1](https://github.com/digdir/dialogporten-frontend/compare/v1.10.0...v1.10.1) (2024-12-05)
 
 
