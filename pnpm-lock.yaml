@@ -398,8 +398,8 @@ importers:
   packages/frontend:
     dependencies:
       '@altinn/altinn-components':
-        specifier: ^0.7.5
-        version: 0.7.5(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^0.8.3
+        version: 0.8.3(react-dom@18.3.1)(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -843,8 +843,8 @@ packages:
       '@algolia/requester-common': 4.24.0
     dev: false
 
-  /@altinn/altinn-components@0.7.5(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-BR+wtGJs3rleZPNxYlo2pOfOrAwK4an5nejXgSVxVM6qls7PbE68/zjFlwlCYBG8xi+WiWqef3tftv4lquC+jQ==}
+  /@altinn/altinn-components@0.8.3(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-ImtNguhcHF8geGz0gNl8pc/fmOiAmlxw+zy9ucU8iuxtzcF16tPCFicsWwzSDJf/Rzk4gG+viKVL7qbi6/e6EQ==}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
