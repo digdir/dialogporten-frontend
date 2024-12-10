@@ -35,7 +35,7 @@ export const PageLayout: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const { searchValue, setSearchValue, onSearch, onClear } = useSearchString();
+  const { searchValue, setSearchValue, onClear } = useSearchString();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds } = useParties();
   const { dialogs } = useDialogs(parties);
   const { autocomplete } = useSearchDialogs({ parties: selectedParties, searchValue });
@@ -86,7 +86,6 @@ export const PageLayout: React.FC = () => {
       value: searchValue,
       onClear: () => onClear(),
       onChange: (event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
-      onEnter: () => onSearch(searchValue),
       autocomplete,
     },
     menu: {

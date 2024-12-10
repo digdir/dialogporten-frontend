@@ -1,11 +1,14 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
+import { Routes } from '../../../pages/Inbox/Inbox.tsx';
 import { getSearchStringFromQueryParams } from '../../../pages/Inbox/queryParams.ts';
 
 export const useSearchString = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const searchQueryParams = getSearchStringFromQueryParams(searchParams);
   const queryClient = useQueryClient();
   const { data: searchValue } = useQuery<string>({
@@ -44,7 +47,11 @@ export const useSearchString = () => {
     } else {
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set('search', value);
-      setSearchParams(newSearchParams, { replace: true });
+      if (location.pathname !== Routes.inbox) {
+        navigate(Routes.inbox + `?${newSearchParams.toString()}`);
+      } else {
+        setSearchParams(newSearchParams, { replace: true });
+      }
       setEnteredSearchValue(value);
     }
   };

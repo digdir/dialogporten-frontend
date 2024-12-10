@@ -9,6 +9,7 @@ import { mapDialogDtoToInboxItem, searchDialogs } from '../../../api/useDialogs.
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 import type { InboxItemInput } from '../../../pages/Inbox/Inbox.tsx';
 import { useOrganizations } from '../../../pages/Inbox/useOrganizations.ts';
+import { useSearchString } from './useSearchString.tsx';
 
 interface searchDialogsProps {
   parties: PartyFieldsFragment[];
@@ -47,19 +48,11 @@ const createAutocomplete = (
   searchResults: InboxItemInput[],
   isLoading: boolean,
   searchValue?: string,
+  onSearch?: (value: string) => void,
 ): AutocompleteProps => {
   const skeletonSize = 1;
   const resultsSize = 5;
   const isSearchable = (searchValue?.length ?? 0) > 2;
-
-  const getScopeItem = (label: React.ReactNode, badgeLabel?: string) => ({
-    id: 'inboxScope',
-    type: 'scope',
-    href: '#',
-    disabled: true,
-    badge: badgeLabel ? { label: badgeLabel } : undefined,
-    label: () => <span>{label}</span>,
-  });
 
   const mapSearchResults = () =>
     searchResults.slice(0, resultsSize).map((item) => ({
@@ -70,6 +63,15 @@ const createAutocomplete = (
       description: item.summary,
       type: 'dialog',
     }));
+
+  const getScopeItem = (label: React.ReactNode, badgeLabel?: string) => ({
+    id: 'inboxScope',
+    type: 'scope',
+    disabled: searchResults.length === 0,
+    onClick: () => onSearch?.(searchValue ?? ''),
+    badge: badgeLabel ? { label: badgeLabel } : undefined,
+    label: () => <span>{label}</span>,
+  });
 
   if (isLoading) {
     return {
@@ -116,6 +118,7 @@ const createAutocomplete = (
 
 export const useSearchDialogs = ({ parties, searchValue }: searchDialogsProps): UseSearchDialogsOutput => {
   const { organizations } = useOrganizations();
+  const { onSearch } = useSearchString();
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchValue, 300)[0];
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2 && parties.length > 0;
@@ -133,8 +136,8 @@ export const useSearchDialogs = ({ parties, searchValue }: searchDialogsProps): 
   }, [setSearchResults, data?.searchDialogs?.items, enabled, parties, organizations]);
 
   const autocomplete: AutocompleteProps = useMemo(
-    () => createAutocomplete(searchResults, isLoading, searchValue),
-    [searchResults, isLoading, searchValue],
+    () => createAutocomplete(searchResults, isLoading, searchValue, onSearch),
+    [searchResults, isLoading, searchValue, onSearch],
   );
 
   return {
