@@ -8,6 +8,5 @@ export * from './PageLayout';
 export * from './DropdownMenu';
 export * from './Snackbar';
 export * from './HorizontalLine';
-export * from './Badge';
 export * from './MetaDataFields';
 export * from './PartyDropdown';

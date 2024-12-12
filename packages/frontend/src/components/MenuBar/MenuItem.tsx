@@ -1,9 +1,9 @@
+import { Badge } from '@altinn/altinn-components/dist/components/Badge';
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';
 import type { HTMLProps } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Badge } from '../Badge';
 import styles from './menuItem.module.css';
 
 interface MenuItem {
@@ -124,7 +124,7 @@ const MenuItemContent = ({
             <ExternalLinkIcon className={styles.arrowIcon} />
           ) : count ? (
             <div className={styles.badgeWrapper}>
-              <Badge label={count} variant={isInbox ? 'strong' : 'neutral'} />
+              <Badge label={count} color={isInbox ? 'alert' : 'subtle'} />
             </div>
           ) : (
             count !== 0 && <ChevronRightIcon className={styles.arrowIcon} />
