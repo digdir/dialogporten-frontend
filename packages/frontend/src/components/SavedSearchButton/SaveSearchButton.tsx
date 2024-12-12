@@ -27,7 +27,7 @@ const isSearchSavedAlready = (
 };
 
 type SaveSearchButtonProps = {
-  onBtnClick: () => void;
+  onBtnClick: () => Promise<void>;
   isLoading?: boolean;
   disabled?: boolean;
   activeFilters: Filter[];

@@ -1,9 +1,19 @@
-import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
-import { useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import type {
+  PartyFieldsFragment,
+  SavedSearchData,
+  SavedSearchesFieldsFragment,
+  SearchDataValueFilter,
+} from 'bff-types-generated';
+import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createSavedSearch } from '../../api/queries.ts';
+import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import { PartyDropdown } from '../../components';
+import { type Filter, PartyDropdown, useSnackbar } from '../../components';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
+import { Routes } from '../Inbox/Inbox.tsx';
 import { ConfirmDeleteDialog, type DeleteSearchDialogRef } from './ConfirmDeleteDialog/ConfirmDeleteDialog.tsx';
 import {
   EditSavedSearchDialog,
@@ -15,6 +25,49 @@ import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 import styles from './savedSearchesPage.module.css';
 import { autoFormatRelativeTime, getMostRecentSearchDate } from './searchUtils.ts';
 import { useSavedSearches } from './useSavedSearches.ts';
+
+interface HandleSaveSearchProps {
+  activeFilters: Filter[];
+  selectedParties: PartyFieldsFragment[];
+  enteredSearchValue: string;
+  viewType: InboxViewType;
+  setIsSavingSearch: Dispatch<SetStateAction<boolean>>;
+}
+
+export const handleSaveSearch = async ({
+  activeFilters,
+  selectedParties,
+  enteredSearchValue,
+  viewType,
+  setIsSavingSearch,
+}: HandleSaveSearchProps): Promise<void> => {
+  const { t } = useTranslation();
+  const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+  try {
+    const data: SavedSearchData = {
+      filters: activeFilters as SearchDataValueFilter[],
+      urn: selectedParties.map((party) => party.party) as string[],
+      searchString: enteredSearchValue,
+      fromView: Routes[viewType],
+    };
+    setIsSavingSearch(true);
+    await createSavedSearch('', data);
+    openSnackbar({
+      message: t('savedSearches.saved_success'),
+      variant: 'success',
+    });
+  } catch (error) {
+    openSnackbar({
+      message: t('savedSearches.saved_error'),
+      variant: 'error',
+    });
+    console.error('Error creating saved search: ', error);
+  } finally {
+    setIsSavingSearch(false);
+    void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
+  }
+};
 
 export const SavedSearchesPage = () => {
   const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment | null>(null);

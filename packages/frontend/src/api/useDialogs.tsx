@@ -3,18 +3,19 @@ import { useQuery } from '@tanstack/react-query';
 import {
   DialogStatus,
   type GetAllDialogsForPartiesQuery,
+  type GetSearchAutocompleteDialogsQuery,
   type OrganizationFieldsFragment,
   type PartyFieldsFragment,
+  type SearchAutocompleteDialogFieldsFragment,
   type SearchDialogFieldsFragment,
   SystemLabel,
 } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import type { InboxItemMetaField, InboxItemMetaFieldType } from '../components';
+import type { InboxItemInput, InboxItemMetaField, InboxItemMetaFieldType } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
 import { getPreferredPropertyByLocale } from '../i18n/property.ts';
-import type { InboxItemInput } from '../pages/Inbox/Inbox.tsx';
 import { useOrganizations } from '../pages/Inbox/useOrganizations.ts';
 import { getOrganization } from './organizations.ts';
 import { graphQLSDK } from './queries.ts';
@@ -66,12 +67,45 @@ export function mapDialogDtoToInboxItem(
     };
   });
 }
+export interface SearchAutocompleteDialogInput {
+  id: string;
+  title: string;
+  summary: string;
+  isSeenByEndUser: boolean;
+}
+
+export function mapAutocompleteDialogsDtoToInboxItem(
+  input: SearchAutocompleteDialogFieldsFragment[],
+): SearchAutocompleteDialogInput[] {
+  return input.map((item) => {
+    const titleObj = item.content.title.value;
+    const summaryObj = item.content.summary.value;
+    const isSeenByEndUser =
+      item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
+    return {
+      id: item.id,
+      title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
+      summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
+      isSeenByEndUser,
+    };
+  });
+}
 
 export const searchDialogs = (
   partyURIs: string[],
   search: string | undefined,
 ): Promise<GetAllDialogsForPartiesQuery> => {
   return graphQLSDK.getAllDialogsForParties({
+    partyURIs,
+    search,
+  });
+};
+
+export const searchAutocompleteDialogs = (
+  partyURIs: string[],
+  search: string | undefined,
+): Promise<GetSearchAutocompleteDialogsQuery> => {
+  return graphQLSDK.getSearchAutocompleteDialogs({
     partyURIs,
     search,
   });

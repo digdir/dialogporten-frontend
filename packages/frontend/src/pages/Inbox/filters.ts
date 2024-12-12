@@ -7,8 +7,8 @@ import {
   getPredefinedRange,
   isCombinedDateAndInterval,
 } from '../../components/FilterBar/dateInfo.ts';
+import type { InboxItemInput } from '../../components/InboxItem/InboxItem.tsx';
 import type { FormatFunction } from '../../i18n/useDateFnsLocale.tsx';
-import type { InboxItemInput } from './Inbox.tsx';
 
 /**
  * Filters dialogs based on active filters.

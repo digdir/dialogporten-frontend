@@ -4,6 +4,7 @@ export const QUERY_KEYS = {
   SELECTED_PARTIES: 'selectedParties',
   ALL_ORGANIZATIONS_SELECTED: 'allOrganizationsSelected',
   SEARCH_DIALOGS: 'searchDialogs',
+  SEARCH_AUTOCOMPLETE_DIALOGS: 'searchAutocompleteDialogs',
   DIALOGS: 'dialogs',
   MAIN_CONTENT_REFERENCE: 'mainContentReference',
   SAVED_SEARCHES: 'savedSearches',

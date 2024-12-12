@@ -1,4 +1,5 @@
 import { Avatar } from '@altinn/altinn-components';
+import type { DialogStatus, SystemLabel } from 'bff-types-generated';
 import classNames from 'classnames';
 import cx from 'classnames';
 import type { JSX } from 'react';
@@ -28,6 +29,21 @@ interface InboxItemProps {
   onClose?: () => void;
   isSeenByEndUser?: boolean;
   viewType?: InboxViewType;
+}
+
+export interface InboxItemInput {
+  id: string;
+  party: string;
+  title: string;
+  summary: string;
+  sender: Participant;
+  receiver: Participant;
+  metaFields: InboxItemMetaField[];
+  createdAt: string;
+  updatedAt: string;
+  status: DialogStatus;
+  isSeenByEndUser: boolean;
+  label: SystemLabel;
 }
 
 export const OptionalLinkContent = ({

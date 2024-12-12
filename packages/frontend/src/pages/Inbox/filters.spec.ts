@@ -2,7 +2,7 @@ import { format as formatDateFns } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { describe, expect, it } from 'vitest';
 import type { Filter } from '../../components';
-import type { InboxItemInput } from './Inbox.tsx';
+import type { InboxItemInput } from '../../components/InboxItem/InboxItem.tsx';
 import { filterDialogs } from './filters';
 
 const format = (date: Date | string, formatStr: string) => {
