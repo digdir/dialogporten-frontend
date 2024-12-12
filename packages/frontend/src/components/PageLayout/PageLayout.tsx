@@ -88,10 +88,7 @@ export const PageLayout: React.FC = () => {
       onChange: (event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
       autocomplete: {
         ...autocomplete,
-        items: autocomplete.items.map((item) => ({
-          ...item,
-          onClick: () => onClear(),
-        })),
+        items: autocomplete.items,
       },
     },
     menu: {
