@@ -1,19 +1,15 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
-import { useQueryClient } from '@tanstack/react-query';
-import type { DialogStatus, SavedSearchData, SearchDataValueFilter, SystemLabel } from 'bff-types-generated';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { createSavedSearch } from '../../api/queries.ts';
-import type { Participant } from '../../api/useDialogById.tsx';
+import { useLocation } from 'react-router-dom';
 import { type InboxViewType, getViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import type { InboxItemMetaField } from '../../components';
 import {
   ActionPanel,
   type Filter,
   FilterBar,
   InboxItem,
+  type InboxItemInput,
   InboxItems,
   PartyDropdown,
   useSelectedDialogs,
@@ -24,13 +20,14 @@ import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
 import { useSearchDialogs, useSearchString } from '../../components/PageLayout/Search/';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
-import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
+import { handleSaveSearch } from '../SavedSearches/SavedSearchesPage.tsx';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { getFiltersFromQueryParams, getQueryParamsWithoutFilters } from './queryParams.ts';
+import { useFilterResetOnSelectedPartiesChange } from './useFilterResetOnSelectedPartiesChange.ts';
+import { useSetFiltersOnLocationChange } from './useSetFiltersOnLocationChange.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -46,21 +43,6 @@ export enum Routes {
   bin = '/bin',
 }
 
-export interface InboxItemInput {
-  id: string;
-  party: string;
-  title: string;
-  summary: string;
-  sender: Participant;
-  receiver: Participant;
-  metaFields: InboxItemMetaField[];
-  createdAt: string;
-  updatedAt: string;
-  status: DialogStatus;
-  isSeenByEndUser: boolean;
-  label: SystemLabel;
-}
-
 interface DialogCategory {
   label: string;
   id: string;
@@ -71,10 +53,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const format = useFormat();
   const { t } = useTranslation();
   const filterBarRef = useRef<FilterBarRef>(null);
-  const queryClient = useQueryClient();
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
   const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
@@ -93,18 +73,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const showingSearchResults = enteredSearchValue.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    setActiveFilters([]);
-    setSearchParams(getQueryParamsWithoutFilters());
-    filterBarRef.current?.resetFilters();
-  }, [selectedParties]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    setInitialFilters(getFiltersFromQueryParams(searchParams));
-  }, [location.pathname]);
+  useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
+  useSetFiltersOnLocationChange({ setInitialFilters });
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
 
@@ -157,7 +127,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
         ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
         : key;
 
-      const existingCategory = acc.find((c) => c.id === key);
+      const existingCategory = acc.find((c: { id: string }) => c.id === key);
 
       if (existingCategory) {
         existingCategory.items.push(item);
@@ -169,32 +139,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }, [] as DialogCategory[]);
   }, [itemsToDisplay, shouldShowSearchResults]);
 
-  const handleSaveSearch = async () => {
-    try {
-      const data: SavedSearchData = {
-        filters: activeFilters as SearchDataValueFilter[],
-        urn: selectedParties.map((party) => party.party) as string[],
-        searchString: enteredSearchValue,
-        fromView: Routes[viewType],
-      };
-      setIsSavingSearch(true);
-      await createSavedSearch('', data);
-      openSnackbar({
-        message: t('savedSearches.saved_success'),
-        variant: 'success',
-      });
-    } catch (error) {
-      openSnackbar({
-        message: t('savedSearches.saved_error'),
-        variant: 'error',
-      });
-      console.error('Error creating saved search: ', error);
-    } finally {
-      setIsSavingSearch(false);
-      void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
-    }
-  };
-
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
       ...prev,
@@ -204,6 +148,14 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const savedSearchDisabled = !activeFilters?.length && !enteredSearchValue;
   const showFilterButton = filterBarSettings.length > 0;
+  const saveSearchHandler = () =>
+    handleSaveSearch({
+      activeFilters,
+      selectedParties,
+      enteredSearchValue,
+      viewType,
+      setIsSavingSearch,
+    });
 
   if (isFetchingSearchResults) {
     return (
@@ -251,7 +203,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               resultsCount={itemsToDisplay.length}
             />
             <SaveSearchButton
-              onBtnClick={handleSaveSearch}
+              onBtnClick={saveSearchHandler}
               className={styles.hideForSmallScreens}
               disabled={savedSearchDisabled}
               isLoading={isSavingSearch}
@@ -267,7 +219,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
                 }
               : undefined
           }
-          onSaveBtnClick={handleSaveSearch}
+          onSaveBtnClick={saveSearchHandler}
           hideSaveButton={savedSearchDisabled}
         />
       </section>

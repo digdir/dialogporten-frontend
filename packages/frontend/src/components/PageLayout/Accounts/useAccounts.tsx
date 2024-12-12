@@ -3,7 +3,7 @@ import type { MenuItemGroups } from '@altinn/altinn-components/dist/components/M
 import type { PartyFieldsFragment } from 'bff-types-generated';
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { InboxItemInput } from '../../../pages/Inbox/Inbox.tsx';
+import type { InboxItemInput } from '../../InboxItem/InboxItem.tsx';
 
 interface UseAccountsProps {
   parties: PartyFieldsFragment[];

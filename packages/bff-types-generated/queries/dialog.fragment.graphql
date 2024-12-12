@@ -39,6 +39,21 @@ fragment SearchDialogFields on SearchDialog {
   systemLabel
 }
 
+fragment SearchAutocompleteDialogFields on SearchDialog {
+  id
+  seenSinceLastUpdate {
+    ...SeenLogFields
+  }
+  content {
+    title {
+      ...DialogContentFields
+    }
+    summary {
+      ...DialogContentFields
+    }
+  }
+}
+
 fragment DialogByIdFields on Dialog {
   id
   dialogToken

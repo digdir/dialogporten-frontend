@@ -1,7 +1,7 @@
 import type { PartyFieldsFragment, SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { t } from 'i18next';
-import type { InboxItemInput } from '../../pages/Inbox/Inbox.tsx';
 import { filterSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
+import type { InboxItemInput } from '../InboxItem/InboxItem.tsx';
 import type { SideBarView } from '../PageLayout/GlobalMenu/useGlobalMenu.tsx';
 
 type Dialog = {

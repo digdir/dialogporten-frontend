@@ -21,7 +21,7 @@ import { useAccounts } from './Accounts/useAccounts.tsx';
 import { Background } from './Background';
 import { useFooter } from './Footer';
 import { useGlobalMenu } from './GlobalMenu';
-import { useSearchDialogs, useSearchString } from './Search';
+import { useSearchAutocompleteDialogs, useSearchString } from './Search';
 
 export const ProtectedPageLayout = () => {
   const { isAuthenticated } = useAuth();
@@ -38,7 +38,7 @@ export const PageLayout: React.FC = () => {
   const { searchValue, setSearchValue, onClear } = useSearchString();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds } = useParties();
   const { dialogs } = useDialogs(parties);
-  const { autocomplete } = useSearchDialogs({ parties: selectedParties, searchValue });
+  const { autocomplete } = useSearchAutocompleteDialogs({ parties: selectedParties, searchValue });
   const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
     parties,
     selectedParties,
@@ -86,7 +86,13 @@ export const PageLayout: React.FC = () => {
       value: searchValue,
       onClear: () => onClear(),
       onChange: (event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
-      autocomplete,
+      autocomplete: {
+        ...autocomplete,
+        items: autocomplete.items.map((item) => ({
+          ...item,
+          onClick: () => onClear(),
+        })),
+      },
     },
     menu: {
       menuLabel: t('word.menu'),
