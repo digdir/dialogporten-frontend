@@ -7,14 +7,14 @@ pg*
 vite.config.ts.timestamp*
 
 .hooks/*
-!.hooks/pre-commit
-
+.hooks/pre-push
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,visualstudiocode,vim,webstorm+all,node,yarn
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,visualstudiocode,vim,webstorm+all,node,yarn
 
 ### Linux ###
 *~
+
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
