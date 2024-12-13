@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.11.0](https://github.com/digdir/dialogporten-frontend/compare/v1.10.1...v1.11.0) (2024-12-13)
+
+
+### Features
+
+* Optimization of search autocomplete. Refactoring of Inbox. ([#1560](https://github.com/digdir/dialogporten-frontend/issues/1560)) ([5b4a761](https://github.com/digdir/dialogporten-frontend/commit/5b4a76161895781ac68d90c68fc3e0a62f62b82b))
+* use global components from altinn-components ([#1399](https://github.com/digdir/dialogporten-frontend/issues/1399)) ([ff75093](https://github.com/digdir/dialogporten-frontend/commit/ff75093e78869642aff008e98ddaed1a9a5f8e83))
+
+
+### Bug Fixes
+
+* autocomplete not working when searching within scope of inbox ([#1577](https://github.com/digdir/dialogporten-frontend/issues/1577)) ([bf88992](https://github.com/digdir/dialogporten-frontend/commit/bf88992fe66cb5a6263a2adcc60d74b2ac55dbcf))
+* **deps:** update dependency @digdir/dialogporten-schema to v1.40.0 ([#1484](https://github.com/digdir/dialogporten-frontend/issues/1484)) ([f948e8b](https://github.com/digdir/dialogporten-frontend/commit/f948e8b9a3a5743595f8e442463d1239815687bb))
+* **deps:** update dependency @easyops-cn/docusaurus-search-local to v0.46.1 ([#1485](https://github.com/digdir/dialogporten-frontend/issues/1485)) ([df54cad](https://github.com/digdir/dialogporten-frontend/commit/df54cad174de55f5154af9365b45e0fb29810890))
+* update to altinn-components v 0.8.3 for fixing on click on auto complete to dismiss search bar ([#1503](https://github.com/digdir/dialogporten-frontend/issues/1503)) ([d2cbf95](https://github.com/digdir/dialogporten-frontend/commit/d2cbf952f8c64f892e8d38ca4aaf93be0203480c))
+
 ## [1.10.1](https://github.com/digdir/dialogporten-frontend/compare/v1.10.0...v1.10.1) (2024-12-05)
 
 
