@@ -22,7 +22,7 @@ import { useSearchDialogs, useSearchString } from '../../components/PageLayout/S
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
-import { handleSaveSearch } from '../SavedSearches/SavedSearchesPage.tsx';
+import { handleSaveSearch } from '../SavedSearches';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';

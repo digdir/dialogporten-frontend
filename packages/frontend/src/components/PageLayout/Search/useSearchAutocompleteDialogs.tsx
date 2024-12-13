@@ -1,8 +1,8 @@
-import type { AutocompleteProps } from '@altinn/altinn-components/dist/components/Searchbar/Autocomplete';
-import type { AutocompleteItemProps } from '@altinn/altinn-components/dist/components/Searchbar/AutocompleteItem';
+import type { AutocompleteProps } from '@altinn/altinn-components';
+import type { AutocompleteItemProps } from '@altinn/altinn-components/dist/components/Autocomplete/AutocompleteItem';
 import { useQuery } from '@tanstack/react-query';
 import type { DialogStatus, GetSearchAutocompleteDialogsQuery, PartyFieldsFragment } from 'bff-types-generated';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
 import {
@@ -11,6 +11,7 @@ import {
   searchAutocompleteDialogs,
 } from '../../../api/useDialogs.tsx';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
+import { useSearchString } from './useSearchString.tsx';
 
 interface searchDialogsProps {
   parties: PartyFieldsFragment[];
@@ -42,6 +43,7 @@ const createAutocomplete = (
   searchResults: SearchAutocompleteDialogInput[],
   isLoading: boolean,
   searchValue?: string,
+  onSearch?: (searchString: string) => void,
 ): AutocompleteProps => {
   const skeletonSize = 1;
   const resultsSize = 5;
@@ -50,10 +52,12 @@ const createAutocomplete = (
   const getScopeItem = (label: React.ReactNode, badgeLabel?: string) => ({
     id: 'inboxScope',
     type: 'scope',
-    href: '#',
-    disabled: true,
+    disabled: searchResults.length === 0,
+    onClick: () => {
+      onSearch?.(searchValue ?? '');
+    },
     badge: badgeLabel ? { label: badgeLabel } : undefined,
-    label: () => <span>{label}</span>,
+    label,
   });
 
   const mapSearchResults = () =>
@@ -123,24 +127,24 @@ export const useSearchAutocompleteDialogs = ({
 }: searchDialogsProps): UseAutocompleteDialogsOutput => {
   const partyURIs = parties.map((party) => party.party);
   const debouncedSearchString = useDebounce(searchValue, 300)[0];
+  const { onSearch } = useSearchString();
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2 && parties.length > 0;
-  const { data, isSuccess, isLoading, isFetching } = useQuery<GetSearchAutocompleteDialogsQuery>({
+  const {
+    data: hits,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useQuery<GetSearchAutocompleteDialogsQuery>({
     queryKey: [QUERY_KEYS.SEARCH_AUTOCOMPLETE_DIALOGS, partyURIs, debouncedSearchString],
     queryFn: () => searchAutocompleteDialogs(partyURIs, debouncedSearchString),
     staleTime: 1000 * 60 * 10,
     enabled,
   });
-  const [autocompleteResults, setAutocompleteResults] = useState([] as SearchAutocompleteDialogInput[]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    setAutocompleteResults(enabled ? mapAutocompleteDialogsDtoToInboxItem(data?.searchDialogs?.items ?? []) : []);
-  }, [setAutocompleteResults, data?.searchDialogs?.items, enabled]);
-
-  const autocomplete: AutocompleteProps = useMemo(
-    () => createAutocomplete(autocompleteResults, isLoading, searchValue),
-    [autocompleteResults, isLoading, searchValue],
-  );
+  const autocomplete: AutocompleteProps = useMemo(() => {
+    const results = hits?.searchDialogs?.items ?? [];
+    return createAutocomplete(mapAutocompleteDialogsDtoToInboxItem(results), isLoading, searchValue, onSearch);
+  }, [hits, isLoading, searchValue, onSearch]);
 
   return {
     isLoading,

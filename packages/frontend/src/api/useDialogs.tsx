@@ -10,8 +10,6 @@ import {
   type SearchDialogFieldsFragment,
   SystemLabel,
 } from 'bff-types-generated';
-import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
 import type { InboxItemInput, InboxItemMetaField, InboxItemMetaFieldType } from '../components';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
 import { i18n } from '../i18n/config.ts';
@@ -116,52 +114,10 @@ export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForParties
     partyURIs,
   });
 
-interface searchDialogsProps {
-  parties: PartyFieldsFragment[];
-  searchString?: string;
-  status?: DialogStatus;
-}
-interface UseSearchDialogsOutput {
-  isLoading: boolean;
-  isSuccess: boolean;
-  searchResults: InboxItemInput[];
-  isFetching: boolean;
-}
-
-const flattenParties = (partiesToUse: PartyFieldsFragment[]) => {
+export const flattenParties = (partiesToUse: PartyFieldsFragment[]) => {
   const partyURIs = partiesToUse.map((party) => party.party);
   const subPartyURIs = partiesToUse.flatMap((party) => party.subParties?.map((subParty) => subParty.party));
   return [...partyURIs, ...subPartyURIs] as string[];
-};
-
-export const useSearchDialogs = ({ parties, searchString }: searchDialogsProps): UseSearchDialogsOutput => {
-  const { organizations } = useOrganizations();
-  const { selectedParties } = useParties();
-
-  const partiesToUse = parties ? parties : selectedParties;
-  const mergedPartiesWithSubParties = flattenParties(partiesToUse);
-
-  const debouncedSearchString = useDebounce(searchString, 300)[0];
-  const enabled = !!debouncedSearchString && debouncedSearchString.length > 2;
-  const { data, isSuccess, isLoading, isFetching } = useQuery<GetAllDialogsForPartiesQuery>({
-    queryKey: [QUERY_KEYS.SEARCH_DIALOGS, mergedPartiesWithSubParties, debouncedSearchString],
-    queryFn: () => searchDialogs(mergedPartiesWithSubParties, debouncedSearchString),
-    staleTime: 1000 * 60 * 10,
-    enabled,
-  });
-  const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations) : []);
-  }, [setSearchResults, data?.searchDialogs?.items, enabled, parties, organizations]);
-
-  return {
-    isLoading,
-    isSuccess,
-    searchResults,
-    isFetching,
-  };
 };
 
 export const isBinDialog = (dialog: InboxItemInput): boolean => dialog.label === SystemLabel.Bin;

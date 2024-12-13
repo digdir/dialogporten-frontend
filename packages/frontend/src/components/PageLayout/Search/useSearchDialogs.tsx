@@ -5,7 +5,7 @@ import { useDebounce } from 'use-debounce';
 import { mapDialogDtoToInboxItem, searchDialogs } from '../../../api/useDialogs.tsx';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 import { useOrganizations } from '../../../pages/Inbox/useOrganizations.ts';
-import type { InboxItemInput } from '../../InboxItem/InboxItem.tsx';
+import type { InboxItemInput } from '../../InboxItem';
 
 interface searchDialogsProps {
   parties: PartyFieldsFragment[];
