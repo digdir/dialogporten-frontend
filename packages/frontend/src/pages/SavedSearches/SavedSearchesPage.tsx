@@ -34,7 +34,7 @@ export const SavedSearchesPage = () => {
 
   if (!savedSearches?.length) {
     return (
-      <main>
+      <div>
         <section className={styles.filtersArea}>
           <div className={styles.gridContainer}>
             <div className={styles.filterSaveContainer}>
@@ -46,12 +46,12 @@ export const SavedSearchesPage = () => {
           <div className={styles.title}>{t('savedSearches.title', { count: 0 })}</div>
           <span>{t('savedSearches.noSearchesFound')}</span>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className={styles.filtersArea}>
         <div className={styles.gridContainer}>
           <div className={styles.filterSaveContainer}>
@@ -101,6 +101,6 @@ export const SavedSearchesPage = () => {
         }}
       />
       <ConfirmDeleteDialog ref={deleteDialogRef} savedSearchId={selectedDeleteItem} />
-    </main>
+    </div>
   );
 };

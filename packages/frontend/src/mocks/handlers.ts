@@ -175,6 +175,21 @@ const mutateUpdateSystemLabelMock = graphql.mutation('updateSystemLabel', (req) 
   });
 });
 
+const searchAutocompleteDialogsMock = graphql.query('getSearchAutocompleteDialogs', (req) => {
+  const {
+    variables: { partyURIs, search },
+  } = req;
+  const itemsForParty = inMemoryStore.dialogs.filter((dialog) => partyURIs.includes(dialog.party));
+
+  return HttpResponse.json({
+    data: {
+      searchDialogs: {
+        items: itemsForParty.filter((item) => naiveSearchFilter(item, search)),
+      },
+    },
+  });
+})
+
 export const handlers = [
   isAuthenticatedMock,
   getAllDialogsForPartiesMock,
@@ -188,4 +203,5 @@ export const handlers = [
   mutateUpdateSystemLabelMock,
   deleteSavedSearchMock,
   getOrganizationsMock,
+  searchAutocompleteDialogsMock
 ];
