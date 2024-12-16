@@ -2,6 +2,7 @@ import type { AutocompleteProps } from '@altinn/altinn-components';
 import type { AutocompleteItemProps } from '@altinn/altinn-components/dist/components/Autocomplete/AutocompleteItem';
 import { useQuery } from '@tanstack/react-query';
 import type { DialogStatus, GetSearchAutocompleteDialogsQuery, PartyFieldsFragment } from 'bff-types-generated';
+import { t } from 'i18next';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
@@ -72,14 +73,17 @@ const createAutocomplete = (
 
   if (isLoading) {
     return {
-      items: [getScopeItem('Alt i innboks'), ...getSkeletonItems(skeletonSize)],
-      groups: { searching: { title: `Søker etter «${searchValue}»...` } },
+      items: [
+        getScopeItem(`${t('word.everything')} ${t('search.autocomplete.inInbox')}`),
+        ...getSkeletonItems(skeletonSize),
+      ],
+      groups: { searching: { title: `${t('search.searchFor')} «${searchValue}»...` } },
     } as AutocompleteProps;
   }
 
   if (!isSearchable) {
     return {
-      items: [getScopeItem('Alt i innboks')],
+      items: [getScopeItem(`${t('word.everything')} ${t('search.autocomplete.inInbox')}`)],
     } as AutocompleteProps;
   }
 
@@ -90,12 +94,12 @@ const createAutocomplete = (
       items: [
         getScopeItem(
           <span>
-            <mark>{searchValue}</mark> i innboks
+            <mark>{searchValue}</mark> {t('search.autocomplete.inInbox')}
           </span>,
-          'Ingen treff',
+          t('search.hits', { count: searchResults.length }),
         ),
       ],
-      groups: { noHits: { title: 'Ingen treff' } },
+      groups: { noHits: { title: t('search.hits', { count: searchResults.length }) } },
     } as AutocompleteProps;
   }
 
@@ -103,13 +107,13 @@ const createAutocomplete = (
     items: [
       getScopeItem(
         <span>
-          <mark>{searchValue}</mark> i innboks
+          <mark>{searchValue}</mark> {t('search.autocomplete.inInbox')}
         </span>,
-        `${searchResults.length} treff`,
+        t('search.hits', { count: searchResults.length }),
       ),
       ...searchHits,
     ],
-    groups: { searchResults: { title: 'Anbefalte treff' } },
+    groups: { searchResults: { title: t('search.autocomplete.recommendedHits') } },
   } as AutocompleteProps;
 };
 
