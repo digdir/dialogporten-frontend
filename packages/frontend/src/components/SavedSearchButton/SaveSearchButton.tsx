@@ -1,16 +1,12 @@
 import { BookmarkFillIcon, BookmarkIcon } from '@navikt/aksel-icons';
-import { useQueryClient } from '@tanstack/react-query';
 import type { SavedSearchData, SavedSearchesFieldsFragment, SearchDataValueFilter } from 'bff-types-generated';
 import type { ButtonHTMLAttributes, RefAttributes } from 'react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Filter } from '..';
-import { useSnackbar } from '..';
-import { deleteSavedSearch } from '../../api/queries';
+import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties';
-import { QUERY_KEYS } from '../../constants/queryKeys';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
-import { useSearchString } from '../PageLayout/Search/useSearchString.tsx';
+import { useSearchString } from '../PageLayout/Search';
 import { ProfileButton } from '../ProfileButton';
 import { deepEqual } from './deepEqual';
 
@@ -27,27 +23,22 @@ const isSearchSavedAlready = (
 };
 
 type SaveSearchButtonProps = {
-  onBtnClick: () => Promise<void>;
-  isLoading?: boolean;
   disabled?: boolean;
+  viewType: InboxViewType;
   activeFilters: Filter[];
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   RefAttributes<HTMLButtonElement>;
 
-export const SaveSearchButton = ({
-  disabled,
-  onBtnClick,
-  className,
-  isLoading,
-  activeFilters,
-}: SaveSearchButtonProps) => {
+export const SaveSearchButton = ({ disabled, className, activeFilters, viewType }: SaveSearchButtonProps) => {
   const { t } = useTranslation();
   const { selectedPartyIds } = useParties();
   const { enteredSearchValue } = useSearchString();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const { currentPartySavedSearches: savedSearches } = useSavedSearches(selectedPartyIds);
-  const { openSnackbar } = useSnackbar();
-  const queryClient = useQueryClient();
+  const {
+    currentPartySavedSearches: savedSearches,
+    isCTALoading,
+    saveSearch,
+    deleteSearch,
+  } = useSavedSearches(selectedPartyIds);
 
   const searchToCheckIfExistsAlready: SavedSearchData = {
     filters: activeFilters as SearchDataValueFilter[],
@@ -60,26 +51,6 @@ export const SaveSearchButton = ({
     searchToCheckIfExistsAlready,
   );
 
-  const handleDeleteSearch = async (savedSearchId: number) => {
-    setIsDeleting(true);
-    try {
-      await deleteSavedSearch(savedSearchId);
-      openSnackbar({
-        message: t('savedSearches.deleted_success'),
-        variant: 'success',
-      });
-      await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
-    } catch (error) {
-      console.error('Failed to delete saved search:', error);
-      openSnackbar({
-        message: t('savedSearches.delete_failed'),
-        variant: 'error',
-      });
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
   if (disabled) {
     return null;
   }
@@ -89,9 +60,9 @@ export const SaveSearchButton = ({
       <ProfileButton
         className={className}
         size="xs"
-        onClick={() => handleDeleteSearch(alreadyExistingSavedSearch.id)}
+        onClick={() => deleteSearch(alreadyExistingSavedSearch.id)}
         variant="tertiary"
-        isLoading={isLoading || isDeleting}
+        isLoading={isCTALoading}
       >
         <BookmarkFillIcon fontSize="1.25rem" />
         {t('filter_bar.saved_search')}
@@ -103,9 +74,11 @@ export const SaveSearchButton = ({
     <ProfileButton
       className={className}
       size="xs"
-      onClick={onBtnClick}
+      onClick={() =>
+        saveSearch({ filters: activeFilters, selectedParties: selectedPartyIds, enteredSearchValue, viewType })
+      }
       variant="tertiary"
-      isLoading={isLoading || isDeleting}
+      isLoading={isCTALoading}
     >
       <BookmarkIcon fontSize="1.25rem" />
       {t('filter_bar.save_search')}
