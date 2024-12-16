@@ -22,7 +22,7 @@ import { useSearchDialogs, useSearchString } from '../../components/PageLayout/S
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
 import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
-import { handleSaveSearch } from '../SavedSearches';
+import { useSavedSearches } from '../SavedSearches/useSavedSearches.ts';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
@@ -57,12 +57,11 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const location = useLocation();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
   const { openSnackbar } = useSnackbar();
-  const [isSavingSearch, setIsSavingSearch] = useState<boolean>(false);
-  const { selectedParties } = useParties();
+  const { selectedParties, selectedPartyIds } = useParties();
   const { enteredSearchValue } = useSearchString();
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
-
+  const { saveSearch } = useSavedSearches(selectedPartyIds);
   const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
     parties: selectedParties,
     searchValue: enteredSearchValue,
@@ -103,8 +102,8 @@ export const Inbox = ({ viewType }: InboxProps) => {
       (d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear(),
     );
 
-    const areNotInInbox = itemsToDisplay.every((d) => ['drafts', 'sent', 'bin', 'archive'].includes(getViewType(d)));
-    if (!shouldShowSearchResults && areNotInInbox) {
+    const youAreNotInInbox = itemsToDisplay.every((d) => ['drafts', 'sent', 'bin', 'archive'].includes(getViewType(d)));
+    if (!shouldShowSearchResults && youAreNotInInbox) {
       return [
         {
           label: t(`inbox.heading.title.${viewType}`, { count: itemsToDisplay.length }),
@@ -148,14 +147,6 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const savedSearchDisabled = !activeFilters?.length && !enteredSearchValue;
   const showFilterButton = filterBarSettings.length > 0;
-  const saveSearchHandler = () =>
-    handleSaveSearch({
-      activeFilters,
-      selectedParties,
-      enteredSearchValue,
-      viewType,
-      setIsSavingSearch,
-    });
 
   if (isFetchingSearchResults) {
     return (
@@ -203,10 +194,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
               resultsCount={itemsToDisplay.length}
             />
             <SaveSearchButton
-              onBtnClick={saveSearchHandler}
+              viewType={viewType}
               className={styles.hideForSmallScreens}
               disabled={savedSearchDisabled}
-              isLoading={isSavingSearch}
               activeFilters={activeFilters}
             />
           </div>
@@ -219,7 +209,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
                 }
               : undefined
           }
-          onSaveBtnClick={saveSearchHandler}
+          onSaveBtnClick={() =>
+            saveSearch({ filters: activeFilters, selectedParties: selectedPartyIds, enteredSearchValue, viewType })
+          }
           hideSaveButton={savedSearchDisabled}
         />
       </section>
