@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.1](https://github.com/digdir/dialogporten-frontend/compare/v1.11.0...v1.11.1) (2024-12-17)
+
+
+### Bug Fixes
+
+* Search autocomplete translations ([ed721e4](https://github.com/digdir/dialogporten-frontend/commit/ed721e49fc908ff997b0a45cb9d0064eebe16bc4))
+* unable to save search ([#1581](https://github.com/digdir/dialogporten-frontend/issues/1581)) ([ec9e232](https://github.com/digdir/dialogporten-frontend/commit/ec9e2325e15088c5c4fc9d1e02c5d99deaa47bbb))
+
 ## [1.11.0](https://github.com/digdir/dialogporten-frontend/compare/v1.10.1...v1.11.0) (2024-12-13)
 
 
