@@ -25,13 +25,11 @@ export const useSearchString = () => {
   });
 
   useEffect(() => {
-    if (searchQueryParams && !searchValue) {
-      setSearchValue(searchQueryParams);
+    if (searchQueryParams && !enteredSearchValue && searchValue === searchQueryParams) {
       setEnteredSearchValue(searchQueryParams);
     } else if (!searchQueryParams) {
       setSearchValue('');
-
-      // searchBarParam.delete('search');
+      setEnteredSearchValue('');
     }
   }, [searchQueryParams]);
 
