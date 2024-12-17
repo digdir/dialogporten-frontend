@@ -1,9 +1,9 @@
 import { graphql, http, HttpResponse } from 'msw';
 import { naiveSearchFilter } from './filters.ts';
-import type {
+import {
   SavedSearchesFieldsFragment,
   UpdateSystemLabelMutationVariables,
-  DialogByIdFieldsFragment,
+  DialogByIdFieldsFragment, SearchAutocompleteDialogFieldsFragment,
 } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './data/base/helper.ts';
 import { getMockedData } from './data.ts';
@@ -180,11 +180,29 @@ const searchAutocompleteDialogsMock = graphql.query('getSearchAutocompleteDialog
     variables: { partyURIs, search },
   } = req;
   const itemsForParty = inMemoryStore.dialogs.filter((dialog) => partyURIs.includes(dialog.party));
+  const filteredItems = itemsForParty.filter((item) => naiveSearchFilter(item, search));
+  const autoCompleteItems: SearchAutocompleteDialogFieldsFragment[] = filteredItems.map(item => ({
+    id: item.id,
+    seenSinceLastUpdate: item.seenSinceLastUpdate,
+    content: {
+      __typename: "SearchContent",
+      title: {
+        __typename: "ContentValue",
+        mediaType: item.content.title.mediaType,
+        value: item.content.title.value.map(val => ({
+          __typename: "Localization",
+          value: val.value,
+          languageCode: val.languageCode
+        }))
+      },
+      summary: item.content.summary
+    }
+  }));
 
   return HttpResponse.json({
     data: {
       searchDialogs: {
-        items: itemsForParty.filter((item) => naiveSearchFilter(item, search)),
+        items: autoCompleteItems,
       },
     },
   });

@@ -38,7 +38,7 @@ export const PageLayout: React.FC = () => {
   const { searchValue, setSearchValue, onClear } = useSearchString();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds } = useParties();
   const { dialogs } = useDialogs(parties);
-  const { autocomplete } = useSearchAutocompleteDialogs({ parties: selectedParties, searchValue });
+  const { autocomplete } = useSearchAutocompleteDialogs({ selectedParties: selectedParties, searchValue });
   const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
     parties,
     selectedParties,
