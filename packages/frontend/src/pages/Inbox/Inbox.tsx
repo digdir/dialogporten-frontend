@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { type InboxViewType, getViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import {
@@ -26,8 +26,7 @@ import { useSavedSearches } from '../SavedSearches/useSavedSearches.ts';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { useFilterResetOnSelectedPartiesChange } from './useFilterResetOnSelectedPartiesChange.ts';
-import { useSetFiltersOnLocationChange } from './useSetFiltersOnLocationChange.ts';
+import { getFiltersFromQueryParams, getQueryParamsWithoutFilters } from './queryParams.ts';
 
 interface InboxProps {
   viewType: InboxViewType;
@@ -72,8 +71,16 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const showingSearchResults = enteredSearchValue.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
-  useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
-  useSetFiltersOnLocationChange({ setInitialFilters });
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  useEffect(() => {
+    const queryParams = getFiltersFromQueryParams(searchParams);
+    setActiveFilters(queryParams);
+    setInitialFilters(queryParams);
+    setSearchParams(getQueryParamsWithoutFilters());
+    filterBarRef.current?.resetFilters();
+  }, [location.pathname]);
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
 
