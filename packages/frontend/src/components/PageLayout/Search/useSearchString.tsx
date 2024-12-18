@@ -26,12 +26,13 @@ export const useSearchString = () => {
 
   useEffect(() => {
     const searchBarParam = new URLSearchParams(searchParams);
-    if (searchBarParam.get('search')) {
-      return;
+    const searchParamValue = searchBarParam.get('search') ?? '';
+
+    if (searchParamValue !== enteredSearchValue) {
+      setSearchValue(searchParamValue);
+      setEnteredSearchValue(searchParamValue);
     }
-    setSearchValue('');
-    searchBarParam.delete('search');
-  }, [searchParams]);
+  }, [searchParams, enteredSearchValue]);
 
   const setSearchValue = (value: string) => {
     queryClient.setQueryData([QUERY_KEYS.SEARCH_VALUE], value);

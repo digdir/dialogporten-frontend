@@ -105,10 +105,9 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
 
-    //TO-DO Fix updating messages based on search params (reload and go-back btn) #1559
-    // await page.reload();
-    // await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
-    // await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
+    await page.reload();
+    await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
   });
 
   test('Go-back button deletes search bar value', async ({ page }: { page: Page }) => {
@@ -123,11 +122,10 @@ test.describe('LoginPartyContext', () => {
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();
 
-    //TO-DO Fix updating messages based on search params (reload and go-back btn) #1559
-    // await page.goBack();
-    // searchParams = new URL(page.url()).searchParams;
-    // expect(searchParams.has('search')).toBe(false);
-    // await expect(page.getByPlaceholder('Søk')).toBeEmpty();
-    // await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).toBeVisible();
+    await page.goBack();
+    const updatedSearchParams = new URL(page.url()).searchParams;
+    expect(updatedSearchParams.has('search')).toBe(false);
+    await expect(page.getByPlaceholder('Søk')).toBeEmpty();
+    await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).toBeVisible();
   });
 });
