@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.2](https://github.com/digdir/dialogporten-frontend/compare/v1.11.1...v1.11.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* autocomplete includes results for sub parties belonging to selected party ([#1595](https://github.com/digdir/dialogporten-frontend/issues/1595)) ([1def168](https://github.com/digdir/dialogporten-frontend/commit/1def168b4fbd4e29ae7cdaf1a5569d039abd8f35))
+* read search query param on reload ([#1597](https://github.com/digdir/dialogporten-frontend/issues/1597)) ([21be5c8](https://github.com/digdir/dialogporten-frontend/commit/21be5c85711c9e6266d705e2212630ef4eb4acc1))
+
 ## [1.11.1](https://github.com/digdir/dialogporten-frontend/compare/v1.11.0...v1.11.1) (2024-12-17)
 
 
