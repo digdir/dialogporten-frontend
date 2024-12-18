@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { type InboxViewType, getViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import {
@@ -26,7 +26,6 @@ import { useSavedSearches } from '../SavedSearches/useSavedSearches.ts';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
 import { filterDialogs, getFilterBarSettings } from './filters.ts';
 import styles from './inbox.module.css';
-import { useFilterResetOnSelectedPartiesChange } from './useFilterResetOnSelectedPartiesChange.ts';
 import { useSetFiltersOnLocationChange } from './useSetFiltersOnLocationChange.ts';
 
 interface InboxProps {
@@ -72,7 +71,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const showingSearchResults = enteredSearchValue.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
-  useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
+  //useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
   useSetFiltersOnLocationChange({ setInitialFilters });
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
@@ -95,6 +94,24 @@ export const Inbox = ({ viewType }: InboxProps) => {
       typeof activeFilters.find((filter) => filter.id === setting.id) !== 'undefined' ||
       setting.id === 'updated',
   );
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchParamsFilters = searchParams.get('filters');
+  const parsedParamsFilters = searchParamsFilters ? JSON.parse(searchParamsFilters) : [];
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  useEffect(() => {
+    if (parsedParamsFilters.length > 0) {
+      setActiveFilters(parsedParamsFilters);
+    }
+  }, [searchParamsFilters]);
+
+  const handleFilterChange = (filters: Filter[]) => {
+    const serialisedFilters = JSON.stringify(filters);
+    setSearchParams({ filters: serialisedFilters });
+    setActiveFilters(filters);
+  };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
@@ -188,7 +205,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
             <FilterBar
               ref={filterBarRef}
               settings={filterBarSettings}
-              onFilterChange={setActiveFilters}
+              onFilterChange={handleFilterChange}
               initialFilters={initialFilters}
               addFilterBtnClassNames={styles.hideForSmallScreens}
               resultsCount={itemsToDisplay.length}
