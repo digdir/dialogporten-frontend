@@ -1,15 +1,14 @@
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { format } from 'date-fns';
+import { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { type InboxViewType, getViewType, useDialogs } from '../../api/useDialogs.tsx';
+import { type InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import {
   ActionPanel,
-  type Filter,
   FilterBar,
   InboxItem,
-  type InboxItemInput,
   InboxItems,
   PartyDropdown,
   useSelectedDialogs,
@@ -21,122 +20,49 @@ import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.ts
 import { useSearchDialogs, useSearchString } from '../../components/PageLayout/Search/';
 import { SaveSearchButton } from '../../components/SavedSearchButton/SaveSearchButton.tsx';
 import { FeatureFlagKeys, useFeatureFlag } from '../../featureFlags';
-import { useFormat } from '../../i18n/useDateFnsLocale.tsx';
 import { useSavedSearches } from '../SavedSearches/useSavedSearches.ts';
 import { InboxSkeleton } from './InboxSkeleton.tsx';
-import { filterDialogs, getFilterBarSettings } from './filters.ts';
+import { filterDialogs } from './filters.ts';
 import styles from './inbox.module.css';
-import { useFilterResetOnSelectedPartiesChange } from './useFilterResetOnSelectedPartiesChange.ts';
-import { useSetFiltersOnLocationChange } from './useSetFiltersOnLocationChange.ts';
+import { useFilters } from './useFilters.tsx';
+import useGroupedDialogs from './useGroupedDialogs.tsx';
 
 interface InboxProps {
   viewType: InboxViewType;
 }
 
-export enum Routes {
-  inbox = '/',
-  inboxItem = '/inbox/:id',
-  sent = '/sent',
-  drafts = '/drafts',
-  savedSearches = '/saved-searches',
-  archive = '/archive',
-  bin = '/bin',
-}
-
-interface DialogCategory {
-  label: string;
-  id: string;
-  items: InboxItemInput[];
-}
-
 export const Inbox = ({ viewType }: InboxProps) => {
-  const format = useFormat();
+  const { openSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const filterBarRef = useRef<FilterBarRef>(null);
   const disableBulkActions = useFeatureFlag<boolean>(FeatureFlagKeys.DisableBulkActions);
   const location = useLocation();
   const { selectedItems, setSelectedItems, selectedItemCount, inSelectionMode } = useSelectedDialogs();
-  const { openSnackbar } = useSnackbar();
   const { selectedParties, selectedPartyIds } = useParties();
   const { enteredSearchValue } = useSearchString();
-  const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
-  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const { saveSearch } = useSavedSearches(selectedPartyIds);
-  const { searchResults, isFetching: isFetchingSearchResults } = useSearchDialogs({
+  const {
+    searchResults,
+    isFetching: isFetchingSearchResults,
+    isSuccess: searchSuccess,
+  } = useSearchDialogs({
     parties: selectedParties,
     searchValue: enteredSearchValue,
   });
 
   const { dialogsByView, isLoading: isLoadingDialogs, isSuccess: dialogsIsSuccess } = useDialogs(selectedParties);
   const dialogsForView = dialogsByView[viewType];
-
-  const showingSearchResults = enteredSearchValue.length > 0;
-  const dataSource = showingSearchResults ? searchResults : dialogsForView;
-  useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
-  useSetFiltersOnLocationChange({ setInitialFilters });
-
-  const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  useEffect(() => {
-    if (showingSearchResults && activeFilters.length) {
-      filterBarRef.current?.resetFilters();
-    }
-  }, [showingSearchResults]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  const itemsToDisplay = useMemo(() => {
-    return filterDialogs(dataSource, activeFilters, format);
-  }, [dataSource, activeFilters]);
-
-  const filterBarSettings = getFilterBarSettings(dataSource, activeFilters, format).filter(
-    (setting) =>
-      setting.options.length > 1 ||
-      typeof activeFilters.find((filter) => filter.id === setting.id) !== 'undefined' ||
-      setting.id === 'updated',
-  );
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
-  const dialogsGroupedByCategory: DialogCategory[] = useMemo(() => {
-    const allWithinSameYear = itemsToDisplay.every(
-      (d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear(),
-    );
-
-    const youAreNotInInbox = itemsToDisplay.every((d) => ['drafts', 'sent', 'bin', 'archive'].includes(getViewType(d)));
-    if (!shouldShowSearchResults && youAreNotInInbox) {
-      return [
-        {
-          label: t(`inbox.heading.title.${viewType}`, { count: itemsToDisplay.length }),
-          id: viewType,
-          items: itemsToDisplay,
-        },
-      ];
-    }
-
-    return itemsToDisplay.reduce((acc, item, _, list) => {
-      const createdAt = new Date(item.createdAt);
-      const viewType = getViewType(item);
-      const key = shouldShowSearchResults
-        ? viewType
-        : allWithinSameYear
-          ? format(createdAt, 'LLLL')
-          : format(createdAt, 'yyyy');
-
-      const label = shouldShowSearchResults
-        ? t(`inbox.heading.search_results.${key}`, { count: list.filter((i) => getViewType(i) === key).length })
-        : key;
-
-      const existingCategory = acc.find((c: { id: string }) => c.id === key);
-
-      if (existingCategory) {
-        existingCategory.items.push(item);
-      } else {
-        acc.push({ label, id: key, items: [item] });
-      }
-
-      return acc;
-    }, [] as DialogCategory[]);
-  }, [itemsToDisplay, shouldShowSearchResults]);
+  const displaySearchResults = enteredSearchValue.length > 0;
+  const dataSource = displaySearchResults ? searchResults : dialogsForView;
+  const dataSourceFetchSuccess = displaySearchResults ? searchSuccess : dialogsIsSuccess;
+  const { filters, onFiltersChange, filterSettings } = useFilters({ dialogs: dataSource });
+  const filteredItems = useMemo(() => filterDialogs(dataSource, filters, format), [dataSource, filters]);
+  const dialogsGroupedByCategory = useGroupedDialogs({
+    items: filteredItems,
+    displaySearchResults,
+    filters,
+    viewType,
+  });
 
   const handleCheckedChange = (checkboxValue: string, checked: boolean) => {
     setSelectedItems((prev: Record<string, boolean>) => ({
@@ -145,37 +71,33 @@ export const Inbox = ({ viewType }: InboxProps) => {
     }));
   };
 
-  const savedSearchDisabled = !activeFilters?.length && !enteredSearchValue;
-  const showFilterButton = filterBarSettings.length > 0;
+  const savedSearchDisabled = !filters?.length && !enteredSearchValue;
+  const showFilterButton = filterSettings.length > 0;
 
-  if (isFetchingSearchResults) {
-    return (
-      <main>
-        <InboxSkeleton numberOfItems={3} />
-      </main>
-    );
+  if (isFetchingSearchResults || isLoadingDialogs) {
+    return <InboxSkeleton numberOfItems={5} />;
   }
 
-  if (isLoadingDialogs) {
+  if (filteredItems.length === 0 && dataSourceFetchSuccess) {
     return (
-      <main>
-        <InboxSkeleton numberOfItems={5} withHeader />
-      </main>
-    );
-  }
-
-  if (itemsToDisplay.length === 0 && dialogsIsSuccess) {
-    return (
-      <main>
+      <div>
         <section className={styles.filtersArea}>
           <div className={styles.gridContainer}>
             <div className={styles.filterSaveContainer}>
               <PartyDropdown counterContext={viewType} />
+              <FilterBar
+                ref={filterBarRef}
+                settings={filterSettings}
+                onFilterChange={onFiltersChange}
+                initialFilters={filters}
+                addFilterBtnClassNames={styles.hideForSmallScreens}
+                resultsCount={filteredItems.length}
+              />
             </div>
           </div>
         </section>
         <InboxItemsHeader title={t(`inbox.heading.no_results.${viewType}`)} />
-      </main>
+      </div>
     );
   }
 
@@ -187,31 +109,28 @@ export const Inbox = ({ viewType }: InboxProps) => {
             <PartyDropdown counterContext={viewType} />
             <FilterBar
               ref={filterBarRef}
-              settings={filterBarSettings}
-              onFilterChange={setActiveFilters}
-              initialFilters={initialFilters}
+              settings={filterSettings}
+              onFilterChange={onFiltersChange}
+              initialFilters={filters}
               addFilterBtnClassNames={styles.hideForSmallScreens}
-              resultsCount={itemsToDisplay.length}
+              resultsCount={filteredItems.length}
             />
             <SaveSearchButton
               viewType={viewType}
               className={styles.hideForSmallScreens}
               disabled={savedSearchDisabled}
-              activeFilters={activeFilters}
+              activeFilters={filters}
             />
           </div>
         </div>
         <FosToolbar
-          onFilterBtnClick={
-            showFilterButton
-              ? () => {
-                  filterBarRef?.current?.openFilter();
-                }
-              : undefined
-          }
+          onFilterBtnClick={() => {
+            filterBarRef?.current?.openFilter();
+          }}
           onSaveBtnClick={() =>
-            saveSearch({ filters: activeFilters, selectedParties: selectedPartyIds, enteredSearchValue, viewType })
+            saveSearch({ filters, selectedParties: selectedPartyIds, enteredSearchValue, viewType })
           }
+          hideFilterButton={!showFilterButton}
           hideSaveButton={savedSearchDisabled}
         />
       </section>

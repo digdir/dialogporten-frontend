@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../../utils/useWindowSize.tsx';
 import type { InboxViewType } from '../../../api/useDialogs.tsx';
-import { Routes } from '../../../pages/Inbox/Inbox.tsx';
+import { getGlobalSearchQueryParams } from '../../../pages/Inbox/queryParams.ts';
+import { PageRoutes } from '../../../pages/routes.ts';
 export type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'bin';
 
 export type ItemPerViewCount = {
@@ -36,6 +37,7 @@ const createMenuItemComponent =
 export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobalMenuProps => {
   const { t } = useTranslation();
   const { pathname, search } = useLocation();
+  const globalSearchQueryParams = getGlobalSearchQueryParams(search);
   const { isMobile } = useWindowSize();
   const linksMenuItems: MenuItemProps[] = [
     {
@@ -70,10 +72,10 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
       title: t('sidebar.inbox'),
       color: 'strong',
       badge: getBadgeProps(itemsPerViewCount.inbox, 'alert'),
-      selected: pathname === Routes.inbox,
+      selected: pathname === PageRoutes.inbox,
       expanded: true,
       as: createMenuItemComponent({
-        to: Routes.inbox + search,
+        to: PageRoutes.inbox + globalSearchQueryParams,
       }),
       items: [
         {
@@ -82,9 +84,9 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
           icon: 'doc-pencil',
           title: t('sidebar.drafts'),
           badge: getBadgeProps(itemsPerViewCount.drafts),
-          selected: pathname === Routes.drafts,
+          selected: pathname === PageRoutes.drafts,
           as: createMenuItemComponent({
-            to: Routes.drafts + search,
+            to: PageRoutes.drafts + globalSearchQueryParams,
           }),
         },
         {
@@ -93,9 +95,9 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
           icon: 'file-checkmark',
           title: t('sidebar.sent'),
           badge: getBadgeProps(itemsPerViewCount.sent),
-          selected: pathname === Routes.sent,
+          selected: pathname === PageRoutes.sent,
           as: createMenuItemComponent({
-            to: Routes.sent + search,
+            to: PageRoutes.sent + globalSearchQueryParams,
           }),
         },
         {
@@ -104,9 +106,9 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
           icon: 'bookmark',
           title: t('sidebar.saved_searches'),
           badge: getBadgeProps(itemsPerViewCount['saved-searches']),
-          selected: pathname === Routes.savedSearches,
+          selected: pathname === PageRoutes.savedSearches,
           as: createMenuItemComponent({
-            to: Routes.savedSearches + search,
+            to: PageRoutes.savedSearches + globalSearchQueryParams,
           }),
         },
         {
@@ -115,9 +117,9 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
           icon: 'archive',
           title: t('sidebar.archived'),
           badge: getBadgeProps(itemsPerViewCount.archive),
-          selected: pathname === Routes.archive,
+          selected: pathname === PageRoutes.archive,
           as: createMenuItemComponent({
-            to: Routes.archive + search,
+            to: PageRoutes.archive + globalSearchQueryParams,
           }),
         },
         {
@@ -126,9 +128,9 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
           icon: 'trash',
           title: t('sidebar.deleted'),
           badge: getBadgeProps(itemsPerViewCount.bin),
-          selected: pathname === Routes.bin,
+          selected: pathname === PageRoutes.bin,
           as: createMenuItemComponent({
-            to: Routes.bin + search,
+            to: PageRoutes.bin + globalSearchQueryParams,
           }),
         },
       ],

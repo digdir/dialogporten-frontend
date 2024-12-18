@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SSE } from 'sse.js';
 import { QUERY_KEYS } from '../constants/queryKeys.ts';
-import { Routes } from '../pages/Inbox/Inbox.tsx';
+import { PageRoutes } from '../pages/routes.ts';
 
 export const useDialogByIdSubscription = (dialogId: string | undefined, dialogToken: string | undefined) => {
   const queryClient = useQueryClient();
@@ -28,7 +28,7 @@ export const useDialogByIdSubscription = (dialogId: string | undefined, dialogTo
         const updatedType: DialogEventType | undefined = jsonPayload.data?.dialogEvents?.type;
         if (updatedType && updatedType === DialogEventType.DialogDeleted) {
           // Redirect to inbox if the dialog was deleted
-          navigate(Routes.inbox);
+          navigate(PageRoutes.inbox);
         } else if (updatedType && updatedType === DialogEventType.DialogUpdated) {
           void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIALOG_BY_ID] });
         }

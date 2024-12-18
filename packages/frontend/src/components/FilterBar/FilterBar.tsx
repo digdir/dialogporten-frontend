@@ -52,7 +52,6 @@ type ListOpenTarget = 'none' | 'add_filter' | string;
 
 export type FilterBarRef = {
   openFilter: () => void;
-  resetFilters: () => void;
 };
 
 /**
@@ -116,9 +115,6 @@ export const FilterBar = forwardRef(
       openFilter() {
         setListOpenForTarget('add_filter');
       },
-      resetFilters() {
-        setSelectedFilters([]);
-      },
     }));
 
     // biome-ignore lint: lint/correctness/useExhaustiveDependencies
@@ -137,7 +133,7 @@ export const FilterBar = forwardRef(
       [selectedFilters, onFilterChange],
     );
 
-    const getFilterSetting = (id: string) => settings.find((setting) => setting.id === id);
+    const getFilterConfig = (id: string) => settings.find((setting) => setting.id === id);
 
     /**
      * Toggles the filter value for a given filter ID. If `overrideValue` is `true`,
@@ -151,7 +147,7 @@ export const FilterBar = forwardRef(
       (id: string, value: FilterValueType, overrideValue?: boolean) => {
         const existingFilters = selectedFilters.filter((filter) => filter.id === id);
         const filterExists = existingFilters.some((filter) => filter.value === value);
-        const setting = getFilterSetting(id);
+        const setting = getFilterConfig(id);
         const allowMultiselect = setting?.operation === 'includes';
 
         let updatedFilters: Filter[];
@@ -200,15 +196,15 @@ export const FilterBar = forwardRef(
       <section className={styles.filterBar}>
         <div className={styles.filterButtons}>
           {Object.keys(filtersById)
-            .filter((id) => getFilterSetting(id) !== undefined)
+            .filter((id) => getFilterConfig(id) !== undefined)
             .map((id) => {
-              const setting = getFilterSetting(id)!;
+              const filterConfig = getFilterConfig(id)!;
               const isFilterMenuOpen = listOpenForTarget === id;
               return (
                 <FilterButton
                   key={id}
                   isOpen={isFilterMenuOpen}
-                  filterFieldData={setting}
+                  filterFieldData={filterConfig}
                   onBtnClick={() => setListOpenForTarget(isFilterMenuOpen ? 'none' : id)}
                   onBackBtnClick={() => setListOpenForTarget('add_filter')}
                   onRemove={() => handleOnRemove(id)}
