@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
 import {
   type SearchAutocompleteDialogInput,
+  flattenParties,
   mapAutocompleteDialogsDtoToInboxItem,
   searchAutocompleteDialogs,
 } from '../../../api/useDialogs.tsx';
@@ -15,7 +16,7 @@ import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 import { useSearchString } from './useSearchString.tsx';
 
 interface searchDialogsProps {
-  parties: PartyFieldsFragment[];
+  selectedParties: PartyFieldsFragment[];
   searchValue?: string;
   status?: DialogStatus;
 }
@@ -126,13 +127,13 @@ interface UseAutocompleteDialogsOutput {
 }
 
 export const useSearchAutocompleteDialogs = ({
-  parties,
+  selectedParties,
   searchValue,
 }: searchDialogsProps): UseAutocompleteDialogsOutput => {
-  const partyURIs = parties.map((party) => party.party);
+  const partyURIs = flattenParties(selectedParties);
   const debouncedSearchString = useDebounce(searchValue, 300)[0];
   const { onSearch } = useSearchString();
-  const enabled = !!debouncedSearchString && debouncedSearchString.length > 2 && parties.length > 0;
+  const enabled = !!debouncedSearchString && debouncedSearchString.length > 2 && selectedParties.length > 0;
   const {
     data: hits,
     isSuccess,

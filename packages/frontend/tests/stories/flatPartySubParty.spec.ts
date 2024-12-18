@@ -46,8 +46,7 @@ test.describe('Flattened parties and subparties', () => {
       page.getByTestId('main-header').getByRole('link', { name: 'Message for Test Testesen' }),
     ).not.toBeVisible();
     await expect(page.getByRole('link', { name: 'Main party message Main' })).toBeVisible();
-    //TO-DO fix search should not filter out sub party messages #1562
-    // await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
 
     await page.getByPlaceholder('Søk').press('Enter');
   });
