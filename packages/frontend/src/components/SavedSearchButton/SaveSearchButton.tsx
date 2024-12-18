@@ -1,5 +1,5 @@
 import { BookmarkFillIcon, BookmarkIcon } from '@navikt/aksel-icons';
-import type { SavedSearchData, SavedSearchesFieldsFragment, SearchDataValueFilter } from 'bff-types-generated';
+import type { SavedSearchData, SearchDataValueFilter } from 'bff-types-generated';
 import type { ButtonHTMLAttributes, RefAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Filter } from '..';
@@ -8,19 +8,7 @@ import { useParties } from '../../api/useParties';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
 import { useSearchString } from '../PageLayout/Search';
 import { ProfileButton } from '../ProfileButton';
-import { deepEqual } from './deepEqual';
-
-const isSearchSavedAlready = (
-  savedSearches: SavedSearchesFieldsFragment[],
-  searchDataToCheck: SavedSearchData,
-): SavedSearchesFieldsFragment | undefined => {
-  if (!searchDataToCheck) return undefined;
-  return savedSearches.find((s) =>
-    Object.keys(searchDataToCheck).every((key) =>
-      deepEqual(s.data[key as keyof SavedSearchData], searchDataToCheck[key as keyof SavedSearchData]),
-    ),
-  );
-};
+import { getAlreadySavedSearch } from './alreadySaved.ts';
 
 type SaveSearchButtonProps = {
   disabled?: boolean;
@@ -46,21 +34,18 @@ export const SaveSearchButton = ({ disabled, className, activeFilters, viewType 
     searchString: enteredSearchValue,
   };
 
-  const alreadyExistingSavedSearch = isSearchSavedAlready(
-    savedSearches ?? ([] as SavedSearchesFieldsFragment[]),
-    searchToCheckIfExistsAlready,
-  );
+  const alreadySavedSearch = getAlreadySavedSearch(searchToCheckIfExistsAlready, savedSearches);
 
   if (disabled) {
     return null;
   }
 
-  if (alreadyExistingSavedSearch) {
+  if (alreadySavedSearch) {
     return (
       <ProfileButton
         className={className}
         size="xs"
-        onClick={() => deleteSearch(alreadyExistingSavedSearch.id)}
+        onClick={() => deleteSearch(alreadySavedSearch.id)}
         variant="tertiary"
         isLoading={isCTALoading}
       >

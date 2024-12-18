@@ -8,6 +8,7 @@ interface FosToolbarProps {
   onFilterBtnClick?: () => void;
   onSaveBtnClick: () => void;
   hideSaveButton?: boolean;
+  hideFilterButton?: boolean;
 }
 /*
  * FosToolbar is a floating toolbar that is only visible on mobile and contains action buttons for filtering, sorting and saving search.
@@ -16,12 +17,17 @@ interface FosToolbarProps {
  * @param hideSaveButton - Optional boolean that determines if the save button should be hidden. Default is false
  * @returns A floating toolbar with action buttons for filtering, sorting and saving search.
  */
-export const FosToolbar = ({ onFilterBtnClick, onSaveBtnClick, hideSaveButton = false }: FosToolbarProps) => {
+export const FosToolbar = ({
+  onFilterBtnClick,
+  onSaveBtnClick,
+  hideSaveButton = false,
+  hideFilterButton = false,
+}: FosToolbarProps) => {
   const { t } = useTranslation();
   return (
     <div className={styles.fosToolbar}>
       <div className={styles.buttons}>
-        {onFilterBtnClick && (
+        {hideFilterButton ? null : (
           <ProfileButton onClick={onFilterBtnClick} size="sm" variant="tertiary">
             <PlusIcon fontSize="1.5rem" /> {t('fos.buttons.filter')}
           </ProfileButton>
