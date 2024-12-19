@@ -157,7 +157,7 @@ var frontendGatewayBackend = {
   probe: frontendProbe
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2024-01-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2024-05-01' = {
   name: gatewayName
   location: location
   properties: {
