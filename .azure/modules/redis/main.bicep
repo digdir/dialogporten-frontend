@@ -39,7 +39,7 @@ resource redis 'Microsoft.Cache/Redis@2024-03-01' = {
   tags: tags
 }
 
-resource redisPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-01-01' = {
+resource redisPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01' = {
   name: '${namePrefix}-redis-pe'
   location: location
   properties: {
