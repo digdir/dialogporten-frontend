@@ -116,7 +116,7 @@ export const getDialogs = (partyURIs: string[]): Promise<GetAllDialogsForParties
 
 export const flattenParties = (partiesToUse: PartyFieldsFragment[]) => {
   const partyURIs = partiesToUse.map((party) => party.party);
-  const subPartyURIs = partiesToUse.flatMap((party) => party.subParties?.map((subParty) => subParty.party));
+  const subPartyURIs = partiesToUse.flatMap((party) => (party.subParties ?? []).map((subParty) => subParty.party));
   return [...partyURIs, ...subPartyURIs] as string[];
 };
 

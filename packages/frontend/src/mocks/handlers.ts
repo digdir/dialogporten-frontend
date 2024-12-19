@@ -3,7 +3,7 @@ import { naiveSearchFilter } from './filters.ts';
 import {
   SavedSearchesFieldsFragment,
   UpdateSystemLabelMutationVariables,
-  DialogByIdFieldsFragment, SearchAutocompleteDialogFieldsFragment,
+  DialogByIdFieldsFragment, SearchAutocompleteDialogFieldsFragment, PartyFieldsFragment,
 } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './data/base/helper.ts';
 import { getMockedData } from './data.ts';
@@ -27,6 +27,19 @@ const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (op
     variables: { partyURIs, search },
   } = options;
   const itemsForParty = inMemoryStore.dialogs.filter((dialog) => partyURIs.includes(dialog.party));
+  const allowedPartyIds = inMemoryStore.parties.flatMap((party: PartyFieldsFragment) => [party.party, ...(party.subParties ?? []).map((subParty) => subParty.party)]);
+  const allPartiesEligible = partyURIs.every((partyURI: string) => allowedPartyIds.includes(partyURI));
+  const shouldReturnNull = !allPartiesEligible || partyURIs.length === 0;
+
+  if (shouldReturnNull) {
+    return HttpResponse.json({
+      data: {
+        searchDialogs: {
+          items: null,
+        },
+      },
+    });
+  }
 
   return HttpResponse.json({
     data: {
