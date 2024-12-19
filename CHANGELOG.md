@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.3](https://github.com/digdir/dialogporten-frontend/compare/v1.11.2...v1.11.3) (2024-12-19)
+
+
+### Bug Fixes
+
+* flattened subparties were undefined when subparty list was empty ([#1613](https://github.com/digdir/dialogporten-frontend/issues/1613)) ([02d77f9](https://github.com/digdir/dialogporten-frontend/commit/02d77f9f60cbf5fa0cc448e6e5b3e704b9986dc5))
+
 ## [1.11.2](https://github.com/digdir/dialogporten-frontend/compare/v1.11.1...v1.11.2) (2024-12-18)
 
 
