@@ -194,6 +194,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
   }
 
   if (itemsToDisplay.length === 0 && dialogsIsSuccess) {
+    setActiveFilters([]);
     return (
       <main>
         <section className={styles.filtersArea}>
