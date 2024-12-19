@@ -7,10 +7,6 @@
         href: http://app.localhost/
         description: React app
         icon: /icons/react_logo.png
-    - Storybook:
-        href: http://storybook.localhost/
-        description: Storybook
-        icon: /icons/storybook.svg
     - Docs:
         href: http://docs.localhost/
         icon: /icons/docusaurus.png

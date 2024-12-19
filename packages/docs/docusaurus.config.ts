@@ -83,11 +83,6 @@ const config: Config = {
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://digdir.github.io/dialogporten-frontend/storybook-static',
-          label: 'Storybook',
-          position: 'left',
-        },
-        {
           href: 'https://github.com/digdir/dialogporten-frontend',
           label: 'GitHub',
           position: 'right',
