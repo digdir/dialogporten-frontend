@@ -1,8 +1,8 @@
-import { logger } from '@digdir/dialogporten-node-logger';
 import axios from 'axios';
 import type { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.js';
+import { defaultHeaderProps } from './api.ts';
 
 const plugin: FastifyPluginAsync = async (fastify) => {
   fastify.route({
@@ -24,6 +24,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
           responseType: 'stream',
           url: config.dialogportenURL,
           headers: {
+            ...defaultHeaderProps,
             'Content-Type': 'application/json; charset=utf-8',
             Authorization: `Bearer ${token!.access_token}`,
             accept: 'text/event-stream',

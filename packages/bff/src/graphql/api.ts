@@ -8,6 +8,22 @@ import { createHandler } from 'graphql-http/lib/use/fastify';
 import config from '../config.ts';
 import { bffSchema, dialogportenSchema } from './schema.ts';
 
+export const defaultHeaderProps = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'HTTP-Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'X-Content-Type-Options': 'nosniff',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self'; object-src 'none'; img-src 'self';",
+  'X-Permitted-Cross-Domain-Policies': 'none',
+  'Referrer-Policy': 'no-referrer',
+  'Cross-Origin-Embedder-Policy': 'require-corp',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Permissions-Policy': 'none',
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  'X-XSS-Protection': '1; mode=block',
+};
+
 const plugin: FastifyPluginAsync = async (fastify) => {
   const remoteExecutor: AsyncExecutor = async ({ document, variables, operationName, context }) => {
     const query = print(document);
