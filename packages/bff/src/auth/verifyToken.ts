@@ -3,6 +3,7 @@ import axios from 'axios';
 import type { FastifyInstance, FastifyPluginAsync, FastifyReply, FastifyRequest, IdPortenUpdatedToken } from 'fastify';
 import fp from 'fastify-plugin';
 import config from '../config.ts';
+import { defaultHeaderProps } from '../graphql/api.ts';
 import { type SessionStorageToken, handleLogout } from './oidc.ts';
 
 export const refreshToken = async (request: FastifyRequest) => {
@@ -23,6 +24,7 @@ export const refreshToken = async (request: FastifyRequest) => {
 
   const refreshResponse = await axios.post(tokenEndpoint, body, {
     headers: {
+      ...defaultHeaderProps,
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: authEncoded,
     },
