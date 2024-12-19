@@ -103,19 +103,27 @@ export const Inbox = ({ viewType }: InboxProps) => {
   const parsedParamsFilters = searchParamsFilters ? JSON.parse(searchParamsFilters) : [];
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
+  // problem with this useEffect is that it also runs on initial render causing reset of filters after refresh. This is not desired.
+  // useEffect(() => {
+  //   //filter out filters that are not in filterBarSettings
+  //   const validFilters = parsedParamsFilters.filter((filter: Filter) => {
+  //     const current = filterBarSettings.find((filterBarSetting) => filterBarSetting.id === filter.id);
+  //     return current && current.options.length > 1;
+  //   });
+  //   const newSearchParams = new URLSearchParams(searchParams.toString());
+
+  //   newSearchParams.set('filters', JSON.stringify(validFilters));
+
+  //   setActiveFilters(validFilters);
+  //   setSearchParams(newSearchParams);
+  // }, [selectedParties]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    //filter out filters that are not in filterBarSettings
-    const validFilters = parsedParamsFilters.filter((filter: Filter) => {
-      const current = filterBarSettings.find((filterBarSetting) => filterBarSetting.id === filter.id);
-      return current && current.options.length > 1;
-    });
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-
-    newSearchParams.set('filters', JSON.stringify(validFilters));
-
-    setActiveFilters(validFilters);
-    setSearchParams(newSearchParams);
-  }, [searchParamsFilters, selectedParties]);
+    if (parsedParamsFilters.length > 0) {
+      setActiveFilters(parsedParamsFilters);
+    }
+  }, [searchParamsFilters]);
 
   const handleFilterChange = (filters: Filter[]) => {
     const serialisedFilters = JSON.stringify(filters);
