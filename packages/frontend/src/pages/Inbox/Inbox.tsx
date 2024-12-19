@@ -71,7 +71,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const showingSearchResults = enteredSearchValue.length > 0;
   const dataSource = showingSearchResults ? searchResults : dialogsForView;
-  //useFilterResetOnSelectedPartiesChange({ setActiveFilters, selectedParties });
+
   useSetFiltersOnLocationChange({ setInitialFilters });
 
   const shouldShowSearchResults = !isFetchingSearchResults && showingSearchResults;
@@ -109,7 +109,9 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   const handleFilterChange = (filters: Filter[]) => {
     const serialisedFilters = JSON.stringify(filters);
-    setSearchParams({ filters: serialisedFilters });
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('filters', serialisedFilters);
+    setSearchParams(newSearchParams);
     setActiveFilters(filters);
   };
 
