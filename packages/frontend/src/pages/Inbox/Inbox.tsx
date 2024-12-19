@@ -88,12 +88,14 @@ export const Inbox = ({ viewType }: InboxProps) => {
     return filterDialogs(dataSource, activeFilters, format);
   }, [dataSource, activeFilters]);
 
-  const filterBarSettings = getFilterBarSettings(dataSource, activeFilters, format).filter(
-    (setting) =>
-      setting.options.length > 1 ||
-      typeof activeFilters.find((filter) => filter.id === setting.id) !== 'undefined' ||
-      setting.id === 'updated',
-  );
+  const filterBarSettings = useMemo(() => {
+    return getFilterBarSettings(dataSource, activeFilters, format).filter(
+      (setting) =>
+        setting.options.length > 1 ||
+        typeof activeFilters.find((filter) => filter.id === setting.id) !== 'undefined' ||
+        setting.id === 'updated',
+    );
+  }, [dataSource, activeFilters, format]);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -102,10 +104,18 @@ export const Inbox = ({ viewType }: InboxProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Full control of what triggers this code is needed
   useEffect(() => {
-    if (parsedParamsFilters.length > 0) {
-      setActiveFilters(parsedParamsFilters);
-    }
-  }, [searchParamsFilters]);
+    //filter out filters that are not in filterBarSettings
+    const validFilters = parsedParamsFilters.filter((filter: Filter) => {
+      const current = filterBarSettings.find((filterBarSetting) => filterBarSetting.id === filter.id);
+      return current && current.options.length > 1;
+    });
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    newSearchParams.set('filters', JSON.stringify(validFilters));
+
+    setActiveFilters(validFilters);
+    setSearchParams(newSearchParams);
+  }, [searchParamsFilters, selectedParties]);
 
   const handleFilterChange = (filters: Filter[]) => {
     const serialisedFilters = JSON.stringify(filters);
