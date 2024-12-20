@@ -216,44 +216,6 @@ services:
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
 
-  storybook:
-    container_name: storybook
-    build:
-      context: .
-      dockerfile: ./packages/storybook/Dockerfile
-      target: build
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.storybook.rule=Host(`storybook.localhost`)"
-      - "dave.relativeSubdomain=storybook"
-      - "dave.icon=devicon-plain:storybook"
-    develop:
-      watch:
-        - action: sync
-          path: ./packages/storybook/
-          target: /app/packages/storybook/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
-        - action: sync
-          path: ./packages/frontend/
-          target: /app/packages/frontend/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
-        - action: sync
-          path: ./packages/embeddable-markdown-html/
-          target: /app/packages/embeddable-markdown-html/
-          ignore:
-            - node_modules/
-            - .azure/
-            - .git/
-        - action: rebuild
-          path: pnpm-lock.yaml
-          target: /app/pnpm-lock.yaml
-
   docs:
     container_name: docs
     build:

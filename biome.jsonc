@@ -70,9 +70,7 @@
       "generated",
       "dist",
       "build",
-      "storybook-static",
       ".docusaurus",
-      ".storybook",
       "mocks",
       "test-results"
     ]

@@ -54,48 +54,6 @@
       }
     },
     {
-      "id": "b905d0c9-67f3-4b0c-a399-312dbcbba1ef",
-      "name": "Storybook",
-      "url": "http://storybook.localhost",
-      "appearance": {
-        "iconUrl": "https://unpkg.com/@tabler/icons-png@2.0.0-beta/icons/brand-storybook.png",
-        "appNameStatus": "normal",
-        "positionAppName": "column",
-        "lineClampAppName": 1,
-        "appNameFontSize": 16
-      },
-      "network": {
-        "enabledStatusChecker": true,
-        "statusCodes": ["200", "301", "302", "304", "307", "308"]
-      },
-      "behaviour": {
-        "isOpeningNewTab": true,
-        "externalUrl": "http://storybook.localhost"
-      },
-      "area": {
-        "type": "wrapper",
-        "properties": {
-          "id": "default"
-        }
-      },
-      "shape": {
-        "lg": {
-          "location": {
-            "x": 4,
-            "y": 0
-          },
-          "size": {
-            "width": 1,
-            "height": 1
-          }
-        }
-      },
-      "integration": {
-        "type": null,
-        "properties": []
-      }
-    },
-    {
       "id": "5e5fbebb-e66d-463d-bbf7-95b569babfb6",
       "name": "GraphIQL",
       "url": "http://app.localhost/api/graphiql",

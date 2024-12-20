@@ -7,11 +7,10 @@
 
 - #{issue number}
 
-### Dokumentasjon / Storybook / testdekning
+### Dokumentasjon / testdekning
 <!--- Oppgi om du har lagt til eller oppdatert dokumentasjonen som er relevant for endringene. Enten i Readme eller i Docosauros på `./packages/docs/docs` -->
 
 - [ ] Dokumentasjon er oppdatert eller ikke relevant / nødvendig.
-- [ ] Ny komponent har en eller flere `stories` i `Storybook`, eller så er ikke dette relevant.
 - [ ] Det er blitt lagt til nye tester / eksiterende tester er blitt utvidet, eller tester er ikke relevant.
 
 ### Skjermbilder eller GIFs (valgfritt)

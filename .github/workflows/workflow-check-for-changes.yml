@@ -46,7 +46,6 @@ jobs:
               - '.azure/modules/**/*'
               - 'packages/bff/**/*'
               - 'packages/frontend/**/*'
-              - 'packages/storybook/**/*'
             migrations:
               - 'packages/bff/src/migrations/**/*'
               - '.azure/applications/bff-migration-job/**/*'

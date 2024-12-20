@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/install
 
       - name: 'Build'
-        run: pnpm turbo build --filter=docs --filter=storybook
+        run: pnpm turbo build --filter=docs 
         env:
           BASEURL: '/dialogporten-frontend/'
           URL: 'https://digdir.github.io'
@@ -36,7 +36,6 @@ jobs:
         run: |
           mkdir gh-pages
           cp -r ./packages/docs/build/* gh-pages
-          cp -r ./packages/storybook/storybook-static gh-pages
 
       - name: 'upload'
         uses: actions/upload-pages-artifact@v3
