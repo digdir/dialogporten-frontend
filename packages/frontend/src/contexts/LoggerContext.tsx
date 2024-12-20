@@ -8,7 +8,7 @@ type LoggerContextProviderProps = {
   children: ReactNode;
 };
 
-export const LoggerContextProvider = ({ children }: LoggerContextProviderProps): JSX.Element => {
+export const LoggerContextProvider = ({ children }: LoggerContextProviderProps): ReactNode => {
   useEffect(() => {
     const handleWindowError = (event: ErrorEvent) => {
       Analytics.trackException({

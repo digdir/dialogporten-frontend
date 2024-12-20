@@ -1,6 +1,6 @@
 import { Button, Spinner } from '@digdir/designsystemet-react';
 import type { GuiActionPriority } from 'bff-types-generated';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './guiActions.module.css';
 export interface GuiActionProps {
@@ -68,7 +68,7 @@ const handleButtonClick = async (props: GuiActionButtonProps, dialogToken: strin
  * @param {GuiActionButton} props - The properties passed to the button component.
  * @returns {JSX.Element | null} The rendered button or null if hidden.
  */
-const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): JSX.Element | null => {
+const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): ReactNode => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -81,7 +81,7 @@ const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): JSX.Element
 
   const handleClick = () => {
     setIsLoading(true);
-    handleButtonClick(actions, dialogToken, responseCallback);
+    void handleButtonClick(actions, dialogToken, responseCallback);
   };
 
   if (isLoading) {
@@ -117,7 +117,7 @@ const GuiActionButton = ({ actions, dialogToken }: GuiActionsProps): JSX.Element
  *   dialogToken="your-dialog-token"
  * />
  */
-export const GuiActions = ({ actions, dialogToken }: GuiActionProps): JSX.Element => {
+export const GuiActions = ({ actions, dialogToken }: GuiActionProps): ReactNode => {
   return (
     <section className={styles.guiActions} data-id="dialog-gui-actions">
       {actions.map((actionProps) => (

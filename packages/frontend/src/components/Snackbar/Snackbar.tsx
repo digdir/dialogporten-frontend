@@ -1,5 +1,6 @@
 import { BellIcon, XMarkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
+import type { ReactNode } from 'react';
 import { BottomDrawer } from '../BottomDrawer';
 import styles from './snackbar.module.css';
 import { type SnackbarStoreRecord, useSnackbar } from './useSnackbar';
@@ -10,7 +11,7 @@ import { type SnackbarStoreRecord, useSnackbar } from './useSnackbar';
  * @param {SnackbarStoreRecord} props.item - The snackbar message item.
  * @param {Function} props.closeSnackbarItem - Function to close the snackbar message item.
  * @param {number} props.index - Index of the snackbar message item.
- * @returns {JSX.Element} The JSX element representing the snackbar message item.
+ * @returns {ReactNode} The ReactNode representing the snackbar message item.
  */
 const SnackbarItem = ({
   item,
@@ -18,7 +19,7 @@ const SnackbarItem = ({
 }: {
   item: SnackbarStoreRecord;
   closeSnackbarItem: (id: string) => void;
-}): JSX.Element => {
+}): ReactNode => {
   return (
     <div className={cx(styles.snackbarItem, styles.bottomLeft, styles[item.variant])} key={item.id} aria-live="polite">
       <div className={styles.snackbarItemContent}>
@@ -45,7 +46,7 @@ const SnackbarItem = ({
  * Snackbar component. cf.`useSnackbar` for more info.
  * @returns {JSX.Element|null} The JSX element representing the snackbar or null if no messages are present.
  */
-export const Snackbar = (): JSX.Element | null => {
+export const Snackbar = (): ReactNode => {
   const { storedMessages, closeSnackbarItem } = useSnackbar();
   return (
     <BottomDrawer>

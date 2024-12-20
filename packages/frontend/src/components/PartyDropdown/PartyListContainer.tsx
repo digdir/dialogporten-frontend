@@ -1,10 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
+import type React from 'react';
 import { useMemo } from 'react';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches';
-import type { SideBarView } from '../PageLayout/GlobalMenu/useGlobalMenu.tsx';
+import type { SideBarView } from '../PageLayout';
 import { PartyList } from './PartyList.tsx';
 import { type PartyOptionGroup, getOptionsGroups } from './mapToPartyOption';
 
@@ -15,7 +16,7 @@ interface PartyListAdapterProps {
     selectedPartyIds: string[];
     onSelect: (values: string[], allOrganizationsSelected: boolean) => void;
     showSearchFilter: boolean;
-  }) => JSX.Element;
+  }) => React.ReactNode;
 }
 
 interface PartyListContainerProps {

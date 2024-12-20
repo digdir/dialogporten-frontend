@@ -1,11 +1,12 @@
 import cx from 'classnames';
+import type { ReactNode } from 'react';
 import { CompletedIcon } from '../Icons';
 import { SentIcon } from '../Icons/SentIcon';
 import { LoadingCircle } from '../LoadingCircle/LoadingCircle.tsx';
 import type { InboxItemMetaFieldType } from './MetaDataFields.tsx';
 import styles from './statusField.module.css';
 
-const getIconByType = (type?: InboxItemMetaFieldType): JSX.Element | null => {
+const getIconByType = (type?: InboxItemMetaFieldType): ReactNode => {
   switch (type) {
     case 'status_IN_PROGRESS':
       return <LoadingCircle percentage={75} />;
@@ -18,10 +19,7 @@ const getIconByType = (type?: InboxItemMetaFieldType): JSX.Element | null => {
   }
 };
 
-export const StatusField = ({
-  label,
-  status,
-}: { label: string; status: InboxItemMetaFieldType; icon?: React.ReactNode }) => {
+export const StatusField = ({ label, status }: { label: string; status: InboxItemMetaFieldType; icon?: ReactNode }) => {
   const icon = getIconByType(status);
   return (
     <div
