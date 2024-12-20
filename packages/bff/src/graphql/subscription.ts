@@ -1,4 +1,3 @@
-import { logger } from '@digdir/dialogporten-node-logger';
 import axios from 'axios';
 import type { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
