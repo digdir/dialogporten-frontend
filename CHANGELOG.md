@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.4](https://github.com/digdir/dialogporten-frontend/compare/v1.11.3...v1.11.4) (2024-12-20)
+
+
+### Bug Fixes
+
+* ui improvements to autocomplete dialog items and menu ([#1624](https://github.com/digdir/dialogporten-frontend/issues/1624)) ([d109bc6](https://github.com/digdir/dialogporten-frontend/commit/d109bc6ec251d4ae10caec93c73a29f830eb70df))
+
 ## [1.11.3](https://github.com/digdir/dialogporten-frontend/compare/v1.11.2...v1.11.3) (2024-12-19)
 
 
