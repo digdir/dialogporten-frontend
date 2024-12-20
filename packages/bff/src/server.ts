@@ -13,6 +13,7 @@ import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
 import { connectToDB } from './db.ts';
 import graphqlApi from './graphql/api.ts';
+import { fastifyHeaders } from './graphql/fastifyHeaders.ts';
 import graphqlStream from './graphql/subscription.ts';
 import redisClient from './redisClient.ts';
 
@@ -70,6 +71,7 @@ const startServer = async (): Promise<void> => {
     client_id,
     client_secret,
   });
+  server.register(fastifyHeaders);
   server.register(userApi);
   server.register(graphqlApi);
   server.register(graphqlStream);
