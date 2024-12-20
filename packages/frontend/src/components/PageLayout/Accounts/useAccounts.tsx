@@ -1,9 +1,14 @@
-import type { Account, AccountMenuItem, AccountSearchProps, BadgeProps } from '@altinn/altinn-components';
-import type { MenuItemGroups } from '@altinn/altinn-components/dist/components/Menu/MenuItems';
+import type {
+  Account,
+  AccountMenuItem,
+  AccountSearchProps,
+  BadgeProps,
+  MenuItemGroups,
+} from '@altinn/altinn-components';
 import type { PartyFieldsFragment } from 'bff-types-generated';
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { InboxItemInput } from '../../InboxItem/InboxItem.tsx';
+import type { InboxItemInput } from '../../InboxItem';
 
 interface UseAccountsProps {
   parties: PartyFieldsFragment[];
