@@ -1,4 +1,4 @@
-import { Badge } from '@altinn/altinn-components/dist/components/Badge';
+import { Badge } from '@altinn/altinn-components';
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';

@@ -1,5 +1,4 @@
-import type { AutocompleteProps } from '@altinn/altinn-components';
-import type { AutocompleteItemProps } from '@altinn/altinn-components/dist/components/Autocomplete/AutocompleteItem';
+import type { AutocompleteItemProps, AutocompleteProps } from '@altinn/altinn-components';
 import { useQuery } from '@tanstack/react-query';
 import type { DialogStatus, GetSearchAutocompleteDialogsQuery, PartyFieldsFragment } from 'bff-types-generated';
 import { t } from 'i18next';
