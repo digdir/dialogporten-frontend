@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.5](https://github.com/digdir/dialogporten-frontend/compare/v1.11.4...v1.11.5) (2024-12-23)
+
+
+### Bug Fixes
+
+* Locale will now be updated in BFF database based on IDPorten selection ([f6ce240](https://github.com/digdir/dialogporten-frontend/commit/f6ce240b2490fcab2cdd7dafb8476d1893ebf612))
+
 ## [1.11.4](https://github.com/digdir/dialogporten-frontend/compare/v1.11.3...v1.11.4) (2024-12-20)
 
 
