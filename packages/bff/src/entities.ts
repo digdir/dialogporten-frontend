@@ -73,17 +73,20 @@ export const getOrCreateProfile = async (sub: string, locale: string): Promise<P
     where: { sub },
   });
 
-  if (profile) {
-    return profile;
-  }
+  if (!profile) {
+    const newProfile = new ProfileTable();
+    newProfile.sub = sub;
+    newProfile.language = locale || 'nb';
 
-  const newProfile = new ProfileTable();
-  newProfile.sub = sub;
-  newProfile.language = locale || 'nb';
-
-  const savedProfile = await ProfileRepository!.save(newProfile);
-  if (!savedProfile) {
-    throw new Error('Fatal: Not able to create new profile');
+    const savedProfile = await ProfileRepository!.save(newProfile);
+    if (!savedProfile) {
+      throw new Error('Fatal: Not able to create new profile');
+    }
+    return savedProfile;
   }
-  return savedProfile;
+  if (profile?.language !== locale) {
+    profile.language = locale;
+    await ProfileRepository!.save(profile);
+  }
+  return profile;
 };
