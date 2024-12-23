@@ -74,6 +74,21 @@ export const filterDialogs = (
   });
 };
 
+export enum FilterBarIds {
+  SENDER = 'sender',
+  RECEIVER = 'receiver',
+  STATUS = 'status',
+  UPDATED = 'updated',
+}
+
+/**
+ * Generates filter settings for the filter bar.
+ *
+ * @param {InboxItemInput[]} dialogs - The array of dialogs to filter.
+ * @param {Array} activeFilters - The array of active filter objects, where each filter has an 'id' and a 'value'.
+ * @param format
+ * @returns {Array} - The array of filter settings.
+ */
 export const getFilterBarSettings = (
   dialogs: InboxItemInput[],
   activeFilters: Filter[],
@@ -81,7 +96,7 @@ export const getFilterBarSettings = (
 ): FilterSetting[] => {
   return [
     {
-      id: 'sender',
+      id: FilterBarIds.SENDER,
       label: t('filter_bar.label.sender'),
       unSelectedLabel: t('filter_bar.label.all_senders'),
       mobileNavLabel: t('filter_bar.label.choose_sender'),
@@ -89,9 +104,7 @@ export const getFilterBarSettings = (
       options: (() => {
         const otherFilters = activeFilters.filter((activeFilter) => activeFilter.id !== 'sender');
         const filteredDialogs = filterDialogs(dialogs, otherFilters, format);
-
         const senders = filteredDialogs.map((p) => p.sender.name);
-
         const senderCounts = countOccurrences(senders);
 
         return Array.from(new Set(senders)).map((sender) => ({
@@ -102,7 +115,7 @@ export const getFilterBarSettings = (
       })(),
     },
     {
-      id: 'receiver',
+      id: FilterBarIds.RECEIVER,
       label: t('filter_bar.label.recipient'),
       unSelectedLabel: t('filter_bar.label.all_recipients'),
       mobileNavLabel: t('filter_bar.label.choose_recipient'),
@@ -121,7 +134,7 @@ export const getFilterBarSettings = (
       })(),
     },
     {
-      id: 'status',
+      id: FilterBarIds.STATUS,
       label: t('filter_bar.label.status'),
       unSelectedLabel: t('filter_bar.label.all_statuses'),
       mobileNavLabel: t('filter_bar.label.choose_status'),
@@ -142,7 +155,7 @@ export const getFilterBarSettings = (
       })(),
     },
     {
-      id: 'updated',
+      id: FilterBarIds.UPDATED,
       label: t('filter_bar.label.updated'),
       mobileNavLabel: t('filter_bar.label.choose_date'),
       unSelectedLabel: t('filter_bar.label.all_dates'),
@@ -153,4 +166,29 @@ export const getFilterBarSettings = (
       ),
     },
   ];
+};
+
+export const createFiltersURLQuery = (activeFilters: Filter[], allFilterKeys: string[], baseURL: string): URL => {
+  const url = new URL(baseURL);
+
+  for (const filter of allFilterKeys) {
+    url.searchParams.delete(filter);
+  }
+
+  for (const filter of activeFilters.filter((filter) => typeof filter.value !== 'undefined')) {
+    url.searchParams.append(filter.id, String(filter.value));
+  }
+  return url;
+};
+
+export const readFiltersFromURLQuery = (query: string): Filter[] => {
+  const searchParams = new URLSearchParams(query);
+  const allowedFilterKeys = Object.values(FilterBarIds) as string[];
+  const filters: Filter[] = [];
+  searchParams.forEach((value, key) => {
+    if (allowedFilterKeys.includes(key)) {
+      filters.push({ id: key, value });
+    }
+  });
+  return filters;
 };
