@@ -45,7 +45,7 @@ const startServer = async (): Promise<void> => {
     secret,
     cookie: {
       secure: enableHttps,
-      httpOnly: !enableHttps,
+      httpOnly: enableHttps,
       maxAge: cookieMaxAge,
     },
   };
