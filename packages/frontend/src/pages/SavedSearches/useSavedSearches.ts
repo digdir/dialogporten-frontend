@@ -11,7 +11,7 @@ import { createSavedSearch, deleteSavedSearch, fetchSavedSearches } from '../../
 import type { InboxViewType } from '../../api/useDialogs.tsx';
 import { type Filter, useSnackbar } from '../../components';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
-import { Routes } from '../Inbox/Inbox.tsx';
+import { PageRoutes } from '../routes.ts';
 
 interface UseSavedSearchesOutput {
   savedSearches: SavedSearchesFieldsFragment[];
@@ -64,7 +64,7 @@ export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesO
     staleTime: 1000 * 60 * 20,
   });
 
-  const savedSearchesUnfiltered = data?.savedSearches as SavedSearchesFieldsFragment[];
+  const savedSearchesUnfiltered = (data?.savedSearches ?? []) as SavedSearchesFieldsFragment[];
   const currentPartySavedSearches = filterSavedSearches(savedSearchesUnfiltered, selectedPartyIds || []);
 
   const saveSearch = async ({
@@ -79,7 +79,7 @@ export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesO
         filters: filters as SearchDataValueFilter[],
         urn: selectedParties,
         searchString: enteredSearchValue,
-        fromView: Routes[viewType],
+        fromView: PageRoutes[viewType],
       };
       await createSavedSearch('', data);
       openSnackbar({

@@ -1,8 +1,8 @@
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { HorizontalLine } from '../../../components';
-import { PlusIcon } from '../../../components/Icons/PlusIcon/PlusIcon.tsx';
+import { type Filter, HorizontalLine } from '../../../components';
+import { PlusIcon } from '../../../components/Icons';
 import SearchFilterTag from '../SearchFilterTag/SearchFilterTag.tsx';
 import styles from './savedSearchesItem.module.css';
 
@@ -19,9 +19,12 @@ export const SavedSearchesItem = ({ savedSearch, actionPanel, isLast }: SavedSea
   const urlParams = new URLSearchParams(window.location.search);
   const queryParams = new URLSearchParams({
     ...(searchString && { search: searchString }),
-    ...(filters?.length && { filters: JSON.stringify(filters) }),
     ...Object.fromEntries(urlParams.entries()),
   });
+
+  for (const filter of filters as Filter[]) {
+    queryParams.append(filter.id, String(filter.value));
+  }
 
   const searchData = savedSearch.data;
   const { t } = useTranslation();

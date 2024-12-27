@@ -2,8 +2,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
-import { Routes } from '../../../pages/Inbox/Inbox.tsx';
 import { getSearchStringFromQueryParams } from '../../../pages/Inbox/queryParams.ts';
+import { PageRoutes } from '../../../pages/routes.ts';
 
 export const useSearchString = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,10 +48,10 @@ export const useSearchString = () => {
     } else {
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set('search', value);
-      if (location.pathname !== Routes.inbox) {
-        navigate(Routes.inbox + `?${newSearchParams.toString()}`);
+      if (location.pathname !== PageRoutes.inbox) {
+        navigate(PageRoutes.inbox + `?${newSearchParams.toString()}`);
       } else {
-        setSearchParams(newSearchParams, { replace: true });
+        setSearchParams(newSearchParams);
       }
       setEnteredSearchValue(value);
     }
@@ -61,7 +61,7 @@ export const useSearchString = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     if (newSearchParams.has('search')) {
       newSearchParams.delete('search');
-      setSearchParams(newSearchParams, { replace: true });
+      setSearchParams(newSearchParams);
     }
     setSearchValue('');
     setEnteredSearchValue('');
