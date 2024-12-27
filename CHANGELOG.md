@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/digdir/dialogporten-frontend/compare/v1.11.5...v1.12.0) (2024-12-27)
+
+
+### Features
+
+* write and read filters as query params in url ([#1601](https://github.com/digdir/dialogporten-frontend/issues/1601)) ([52252dd](https://github.com/digdir/dialogporten-frontend/commit/52252ddbccffcc6ec1794708292b4a4c23111c98))
+
 ## [1.11.5](https://github.com/digdir/dialogporten-frontend/compare/v1.11.4...v1.11.5) (2024-12-23)
 
 
