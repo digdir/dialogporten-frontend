@@ -16,7 +16,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@tsconfig/node20": "^20.1.2",
     "bff": "workspace:*",
-    "graphql": "^16.8.1",
+    "graphql": "^16.10.0",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
     "nodemon": "^3.0.3"

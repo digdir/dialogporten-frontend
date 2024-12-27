@@ -1,10 +1,8 @@
+import { PlusIcon } from '@navikt/aksel-icons';
 import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { type Filter, HorizontalLine } from '../../../components';
-import { PlusIcon } from '../../../components/Icons';
-import { HorizontalLine } from '../../../components';
-import { PlusIcon } from '../../../components/Icons';
 import SearchFilterTag from '../SearchFilterTag/SearchFilterTag.tsx';
 import styles from './savedSearchesItem.module.css';
 
