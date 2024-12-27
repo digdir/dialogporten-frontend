@@ -1,6 +1,6 @@
 import { list, objectType } from 'nexus';
 import { SavedSearchRepository } from '../../db.ts';
-import { getOrCreateProfile } from '../../entities.ts';
+import { getOrCreateProfile } from '../functions/profile.ts';
 import { getOrganizationsFromRedis } from './organization.ts';
 
 export const Query = objectType({
