@@ -10,8 +10,9 @@ const format = (date: Date | string, formatStr: string) => {
 };
 
 describe('isCombinedDateAndInterval', () => {
+  const currentYear = new Date().getFullYear();
   beforeAll(() => {
-    const fakeDate = new Date('2024-06-15T12:00:00Z');
+    const fakeDate = new Date(currentYear + '-06-15T12:00:00Z');
     vi.useFakeTimers();
     vi.setSystemTime(fakeDate);
   });
@@ -20,10 +21,8 @@ describe('isCombinedDateAndInterval', () => {
     vi.useRealTimers();
   });
 
-  const currentYear = new Date().getFullYear();
-
   test('should return valid date range for same day within current year', () => {
-    const label = '2024-06-11/2024-06-11';
+    const label = `${currentYear}-06-11/${currentYear}-06-11`;
     const result = isCombinedDateAndInterval(label, format);
 
     const expectedLabel = `11th June ${currentYear}`;
@@ -31,13 +30,13 @@ describe('isCombinedDateAndInterval', () => {
     expect(result).toEqual({
       isDate: true,
       label: expectedLabel,
-      startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-06-11')),
+      startDate: startOfDay(new Date(`${currentYear}-06-11`)),
+      endDate: endOfDay(new Date(`${currentYear}-06-11`)),
     });
   });
 
   test('should return valid date range for different days in the same month within current year', () => {
-    const label = '2024-06-11/2024-06-15';
+    const label = `${currentYear}-06-11/${currentYear}-06-15`;
     const result = isCombinedDateAndInterval(label, format);
 
     const expectedLabel = `11th-15th June`;
@@ -45,13 +44,13 @@ describe('isCombinedDateAndInterval', () => {
     expect(result).toEqual({
       isDate: true,
       label: expectedLabel,
-      startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-06-15')),
+      startDate: startOfDay(new Date(`${currentYear}-06-11`)),
+      endDate: endOfDay(new Date(`${currentYear}-06-15`)),
     });
   });
 
   test('should return valid date range for different days in different months within current year', () => {
-    const label = '2024-06-11/2024-07-01';
+    const label = `${currentYear}-06-11/${currentYear}-07-01`;
     const result = isCombinedDateAndInterval(label, format);
 
     const expectedLabel = `11th June - 1st July`;
@@ -59,8 +58,8 @@ describe('isCombinedDateAndInterval', () => {
     expect(result).toEqual({
       isDate: true,
       label: expectedLabel,
-      startDate: startOfDay(new Date('2024-06-11')),
-      endDate: endOfDay(new Date('2024-07-01')),
+      startDate: startOfDay(new Date(`${currentYear}-06-11`)),
+      endDate: endOfDay(new Date(`${currentYear}-07-01`)),
     });
   });
 

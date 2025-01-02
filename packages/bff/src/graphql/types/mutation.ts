@@ -1,6 +1,6 @@
-import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
-import { SavedSearchRepository } from '../../db.ts';
-import { SavedSearch, getOrCreateProfile } from '../../entities.ts';
+import { extendType, intArg, nonNull, stringArg } from 'nexus';
+import { getOrCreateProfile } from '../functions/profile.ts';
+import { createSavedSearch, deleteSavedSearch, updateSavedSearch } from '../functions/savedsearch.ts';
 import { Response, SavedSearchInput, SavedSearches } from './index.ts';
 
 export const Mutation = extendType({
@@ -14,7 +14,7 @@ export const Mutation = extendType({
       resolve: async (_, args) => {
         const { id } = args;
         try {
-          const result = await SavedSearchRepository!.delete({ id });
+          const result = await deleteSavedSearch(id);
           return { success: result?.affected && result?.affected > 0, message: 'Saved search deleted successfully' };
         } catch (error) {
           console.error('Failed to delete saved search:', error);
@@ -37,7 +37,7 @@ export const UpdateSavedSearch = extendType({
       resolve: async (_, args) => {
         const { id, name } = args;
         try {
-          await SavedSearchRepository!.update(id, { name });
+          await updateSavedSearch(id, name);
           return { success: true, message: 'Saved search updated successfully' };
         } catch (error) {
           console.error('Failed to updated saved search:', error);
@@ -60,11 +60,7 @@ export const CreateSavedSearch = extendType({
       resolve: async (_, { name, data }, ctx) => {
         try {
           const profile = await getOrCreateProfile(ctx.session.get('sub'), ctx.session.get('locale'));
-          const newSavedSearch = new SavedSearch();
-          newSavedSearch.name = name;
-          newSavedSearch.data = data;
-          newSavedSearch.profile = profile;
-          return await SavedSearchRepository!.save(newSavedSearch);
+          return await createSavedSearch({ name, data, profile });
         } catch (error) {
           console.error('Failed to create saved search:', error);
           return error;
