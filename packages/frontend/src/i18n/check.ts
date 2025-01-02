@@ -18,7 +18,9 @@ const loadJsonFile = (filePath: string): Record<string, string> => {
 };
 
 const saveJsonFile = (filePath: string, data: object) => {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  let jsonString = JSON.stringify(data, null, 2);
+  jsonString = jsonString.replace(/\n$/, ''); // Remove trailing newline
+  fs.writeFileSync(filePath, jsonString);
 };
 
 const getJsonFiles = (dir: string): string[] => {
