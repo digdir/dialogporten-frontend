@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/digdir/dialogporten-frontend/compare/v1.12.0...v1.12.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* Set httpOnly to true when using https ([b2a946a](https://github.com/digdir/dialogporten-frontend/commit/b2a946ad692186fcc66c9e2ace2690304458412f))
+
 ## [1.12.0](https://github.com/digdir/dialogporten-frontend/compare/v1.11.5...v1.12.0) (2024-12-27)
 
 
