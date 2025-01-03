@@ -13,6 +13,7 @@ import {
   startOfYear,
   startOfYesterday,
 } from 'date-fns';
+
 import { t } from 'i18next';
 import type { FormatFunction } from '../../i18n/useDateFnsLocale.tsx';
 import { CustomFilterValueType } from './FilterBar.tsx';
@@ -87,20 +88,17 @@ export const isCombinedDateAndInterval = (label: string, format: FormatFunction)
   }
 };
 
-const generateRange = (
-  startFn: (date: Date | number | string) => Date,
-  endFn: (date: Date | number | string) => Date,
-) => {
-  const now = new Date();
-  return `${formatISO(startFn(now))}/${formatISO(endFn(now))}`;
+const generateRange = (startDate: Date | number | string, endDate: Date | number | string) => {
+  return `${formatISO(startDate)}/${formatISO(endDate)}`;
 };
 
 export const getPredefinedRange = (): { range: string; label: string; value: string }[] => {
-  const todayRange = generateRange(startOfToday, endOfToday);
-  const yesterdayRange = generateRange(startOfYesterday, endOfYesterday);
-  const thisWeekRange = generateRange(startOfWeek, endOfWeek);
-  const thisMonthRange = generateRange(startOfMonth, endOfMonth);
-  const thisYearRange = generateRange(startOfYear, endOfYear);
+  const now = new Date();
+  const todayRange = generateRange(startOfToday(), endOfToday());
+  const yesterdayRange = generateRange(startOfYesterday(), endOfYesterday());
+  const thisWeekRange = generateRange(startOfWeek(now), endOfWeek(now));
+  const thisMonthRange = generateRange(startOfMonth(now), endOfMonth(now));
+  const thisYearRange = generateRange(startOfYear(now), endOfYear(now));
 
   return [
     { label: t('filter_bar.range.today'), value: '$today', range: todayRange },
