@@ -1,32 +1,30 @@
-import type { SavedSearchesFieldsFragment } from 'bff-types-generated';
-import { useRef, useState } from 'react';
+import { type BookmarksListItemProps, BookmarksSection } from '@altinn/altinn-components';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { deleteSavedSearch, updateSavedSearch } from '../../api/queries.ts';
 import { useParties } from '../../api/useParties.ts';
 import { PartyDropdown } from '../../components';
+import type { Filter } from '../../components';
+import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
-import { ConfirmDeleteDialog, type DeleteSearchDialogRef } from './ConfirmDeleteDialog/ConfirmDeleteDialog.tsx';
-import {
-  EditSavedSearchDialog,
-  type EditSavedSearchDialogRef,
-} from './EditSavedSearchDialog/EditSavedSearchDialog.tsx';
-import { SaveSearchesActions } from './SavedSearchesActions/SavedSearchesActions.tsx';
-import { SavedSearchesItem } from './SavedSearchesItem/SavedSearchesItem.tsx';
 import { SavedSearchesSkeleton } from './SavedSearchesSkeleton';
 import styles from './savedSearchesPage.module.css';
 import { autoFormatRelativeTime, getMostRecentSearchDate } from './searchUtils.ts';
 import { useSavedSearches } from './useSavedSearches.ts';
 
 export const SavedSearchesPage = () => {
-  const [selectedSavedSearch, setSelectedSavedSearch] = useState<SavedSearchesFieldsFragment | null>(null);
-  const [selectedDeleteItem, setSelectedDeleteItem] = useState<number | undefined>(undefined);
   const { t } = useTranslation();
   const { selectedPartyIds } = useParties();
   const { currentPartySavedSearches: savedSearches, isLoading: isLoadingSavedSearches } =
     useSavedSearches(selectedPartyIds);
-  const deleteDialogRef = useRef<DeleteSearchDialogRef>(null);
-  const editSavedSearchDialogRef = useRef<EditSavedSearchDialogRef>(null);
   const formatDistance = useFormatDistance();
   const lastUpdated = getMostRecentSearchDate(savedSearches ?? []) as Date;
+  const queryClient = useQueryClient();
+  const [expandedId, setExpandedId] = useState<string>('');
+
+  const [savedSearchInputValue, setSavedSearchInputValue] = useState<string>('');
 
   if (isLoadingSavedSearches) {
     return <SavedSearchesSkeleton numberOfItems={3} />;
@@ -50,6 +48,75 @@ export const SavedSearchesPage = () => {
     );
   }
 
+  const items = savedSearches.map((savedSearch) => {
+    const { searchString, filters, fromView } = savedSearch.data;
+
+    const queryParams = new URLSearchParams({
+      ...(searchString && { search: searchString }),
+    });
+
+    for (const filter of filters as Filter[]) {
+      queryParams.append(filter.id, String(filter.value));
+    }
+
+    const itemObject: BookmarksListItemProps = {
+      id: savedSearch.id.toString(),
+      params: [],
+      title: '',
+      as: (props) => <Link {...props} to={`${fromView}?${queryParams.toString()}`} />,
+      saveButton: {
+        label: t('savedSearches.save_search'),
+        onClick: () => {
+          if (savedSearch?.id) {
+            updateSavedSearch(savedSearch.id, savedSearchInputValue ?? '').then(() => {
+              void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
+              setExpandedId('');
+            });
+          }
+        },
+      },
+      removeButton: {
+        label: t('savedSearches.delete_search'),
+        onClick: () => {
+          deleteSavedSearch(savedSearch.id).then(() => {
+            void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
+            setExpandedId('');
+          });
+        },
+      },
+      onChange: (e) => {
+        setSavedSearchInputValue(e.target.value);
+      },
+      inputValue: savedSearchInputValue,
+    };
+
+    if (savedSearch.name) {
+      itemObject.title = savedSearch.name;
+    }
+
+    if (savedSearch.data?.searchString) {
+      itemObject.params?.push({ type: 'search', label: savedSearch.data?.searchString });
+    }
+
+    if (savedSearch.data?.filters && savedSearch.data.filters.length > 0) {
+      for (const filter of savedSearch.data.filters) {
+        itemObject.params?.push({ type: 'filter', label: filter?.value ?? '' });
+      }
+    }
+
+    return {
+      ...itemObject,
+    };
+  });
+
+  const handleOnToggle = (itemId: string) => {
+    if (expandedId === itemId) {
+      setExpandedId('');
+      return;
+    }
+    setExpandedId(itemId);
+  };
+
   return (
     <div>
       <section className={styles.filtersArea}>
@@ -59,48 +126,21 @@ export const SavedSearchesPage = () => {
           </div>
         </div>
       </section>
-      <section>
-        <div className={styles.savedSearchesWrapper}>
-          <div className={styles.title}>{t('savedSearches.title', { count: savedSearches.length })}</div>
-          <div className={styles.savedSearchesList}>
-            {savedSearches.map((savedSearch, index) => (
-              <SavedSearchesItem
-                key={savedSearch?.id}
-                savedSearch={savedSearch}
-                isLast={index === savedSearches.length - 1}
-                actionPanel={
-                  <SaveSearchesActions
-                    key={savedSearch.id}
-                    onEditBtnClick={(selectedValue: SavedSearchesFieldsFragment) => {
-                      setSelectedSavedSearch(selectedValue);
-                      editSavedSearchDialogRef.current?.openDialog();
-                    }}
-                    onDeleteBtnClick={(savedSearchToDelete: SavedSearchesFieldsFragment) => {
-                      setSelectedDeleteItem(savedSearchToDelete.id);
-                      deleteDialogRef.current?.openDialog();
-                    }}
-                    savedSearch={savedSearch}
-                  />
-                }
-              />
-            ))}
-          </div>
-          <div className={styles.lastUpdated}>
-            {t('savedSearches.lastUpdated')}
-            {autoFormatRelativeTime(lastUpdated, formatDistance)}
-          </div>
-        </div>
-      </section>
-      <EditSavedSearchDialog
-        ref={editSavedSearchDialogRef}
-        savedSearch={selectedSavedSearch}
-        onDelete={(savedSearchToDelete: SavedSearchesFieldsFragment) => {
-          editSavedSearchDialogRef?.current?.close();
-          setSelectedDeleteItem(savedSearchToDelete.id);
-          deleteDialogRef.current?.openDialog();
-        }}
-      />
-      <ConfirmDeleteDialog ref={deleteDialogRef} savedSearchId={selectedDeleteItem} />
+      <div className={styles.savedSearchesWrapper}>
+        <BookmarksSection
+          title={t('savedSearches.title', { count: savedSearches.length })}
+          items={items}
+          description={`${t('savedSearches.lastUpdated')}${autoFormatRelativeTime(lastUpdated, formatDistance)}`}
+          expandedId={expandedId}
+          onToggle={handleOnToggle}
+          titleField={{
+            label: t('savedSearches.bookmark.item_input_label'),
+            placeholder: t('savedSearches.bookmark.item_input_placeholder'),
+            helperText: t('savedSearches.bookmark.item_input_helper'),
+          }}
+          untitled={t('savedSearches.bookmark.untitled')}
+        />
+      </div>
     </div>
   );
 };

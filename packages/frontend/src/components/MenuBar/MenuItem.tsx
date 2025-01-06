@@ -1,4 +1,4 @@
-import { Badge } from '@altinn/altinn-components';
+import { Badge, type BadgeColor } from '@altinn/altinn-components';
 import { ChevronRightIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import cx from 'classnames';
 import classNames from 'classnames';
@@ -124,7 +124,7 @@ const MenuItemContent = ({
             <ExternalLinkIcon className={styles.arrowIcon} />
           ) : count ? (
             <div className={styles.badgeWrapper}>
-              <Badge label={count} color={isInbox ? 'alert' : 'subtle'} />
+              <Badge label={count} color={(isInbox ? 'alert' : 'subtle') as BadgeColor} />
             </div>
           ) : (
             count !== 0 && <ChevronRightIcon className={styles.arrowIcon} />
