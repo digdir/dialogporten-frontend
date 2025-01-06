@@ -65,6 +65,7 @@ const createAutocomplete = (
     searchResults.slice(0, resultsSize).map((item) => ({
       id: item.id,
       groupId: 'searchResults',
+      //@ts-ignore: next line
       as: (props: AutocompleteItemProps) => <Link to={`/inbox/${item.id}${location.search}`} {...props} />,
       title: item.title,
       description: item.summary,

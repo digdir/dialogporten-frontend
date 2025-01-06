@@ -386,8 +386,8 @@ importers:
   packages/frontend:
     dependencies:
       '@altinn/altinn-components':
-        specifier: ^0.10.4
-        version: 0.10.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.13.2
+        version: 0.13.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -606,8 +606,8 @@ packages:
     resolution: {integrity: sha512-p6t8ue0XZNjcRiqNkb5QAM0qQRAKsCiebZ6n9JjWA+p8fWf8BvnhO55y2fO28g3GW0Imj7PrAuyBuxq8aDVQwQ==}
     engines: {node: '>= 14.0.0'}
 
-  '@altinn/altinn-components@0.10.4':
-    resolution: {integrity: sha512-TnLAlKRCRX9ZFeG+2ECF0bMDe2r2/hXCNzCNm+BNe3hF0po6eAw4/jdKmsa+05GR6Lp3EehRvtDCNBb5kgnt5w==}
+  '@altinn/altinn-components@0.13.2':
+    resolution: {integrity: sha512-p+fF2BTzIik9uhO95CnbOm5E11XK43sh4LlBGTQUz1TxEqPVF3KSQhGgD9vWVEcv96ptmHLgdC6awVj9mzedhw==}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
@@ -10296,7 +10296,7 @@ snapshots:
     dependencies:
       '@algolia/client-common': 5.19.0
 
-  '@altinn/altinn-components@0.10.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@altinn/altinn-components@0.13.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@navikt/aksel-icons': 7.9.1
       classnames: 2.5.1
