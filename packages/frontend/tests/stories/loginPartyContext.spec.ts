@@ -60,13 +60,11 @@ test.describe('LoginPartyContext', () => {
     ).toBeVisible();
     await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).toBeVisible();
 
-    expect(new URL(page.url()).searchParams.has('party')).toBe(true);
-    expect(new URL(page.url()).searchParams.has('allParties')).toBe(true);
+    expect(new URL(page.url()).searchParams.has('party')).toBe(false);
     expect(new URL(page.url()).searchParams.get('allParties')).toBe('true');
 
     await page.reload();
-    expect(new URL(page.url()).searchParams.has('party')).toBe(true);
-    expect(new URL(page.url()).searchParams.has('allParties')).toBe(true);
+    expect(new URL(page.url()).searchParams.has('party')).toBe(false);
     expect(new URL(page.url()).searchParams.get('allParties')).toBe('true');
   });
 

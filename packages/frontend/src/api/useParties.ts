@@ -42,8 +42,10 @@ const fetchParties = async (): Promise<PartiesResult> => {
   };
 };
 
-const createParamsForKey = (searchParamString: string, key: string, value: string): URLSearchParams => {
+const createPartyParams = (searchParamString: string, key: string, value: string): URLSearchParams => {
   const params = new URLSearchParams(searchParamString);
+  params.delete('allParties');
+  params.delete('party');
   params.set(key, value);
   return params;
 };
@@ -98,7 +100,7 @@ export const useParties = (): UsePartiesOutput => {
     const partyIsPerson = partyIds.some((partyId) => partyId.includes('person'));
     const searchParamsString = searchParams.toString();
     if (allOrganizationsSelected) {
-      const allPartiesParams = createParamsForKey(searchParamsString, 'allParties', 'true');
+      const allPartiesParams = createPartyParams(searchParamsString, 'allParties', 'true');
       handleChangSearchParams(allPartiesParams);
     } else if (partyIsPerson) {
       /* We need to exclude person from URL because it contains information we don't want to expose in the URL.
@@ -108,7 +110,7 @@ export const useParties = (): UsePartiesOutput => {
       const personParams = new URLSearchParams(stripQueryParamsForParty(searchParamsString));
       handleChangSearchParams(personParams);
     } else {
-      const params = createParamsForKey(searchParamsString, 'party', encodeURIComponent(partyIds[0]));
+      const params = createPartyParams(searchParamsString, 'party', encodeURIComponent(partyIds[0]));
       handleChangSearchParams(params);
     }
     setSelectedParties(data?.parties.filter((party) => partyIds.includes(party.party)) ?? []);
