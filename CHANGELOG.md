@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.1](https://github.com/digdir/dialogporten-frontend/compare/v1.12.0...v1.12.1) (2025-01-07)
+
+
+### Bug Fixes
+
+* Set httpOnly to true when using https ([b2a946a](https://github.com/digdir/dialogporten-frontend/commit/b2a946ad692186fcc66c9e2ace2690304458412f))
+* when changing between all organizations and a company party, query params should be mutually excluding ([#1657](https://github.com/digdir/dialogporten-frontend/issues/1657)) ([d5b18f8](https://github.com/digdir/dialogporten-frontend/commit/d5b18f8426f4b6cbf1220632a9a54ecd9f08342d))
+
 ## [1.12.0](https://github.com/digdir/dialogporten-frontend/compare/v1.11.5...v1.12.0) (2024-12-27)
 
 
