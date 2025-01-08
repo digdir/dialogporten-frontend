@@ -168,6 +168,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     enabled: mergedPartiesWithSubParties.length > 0,
   });
   const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], selectedParties, organizations);
+  console.info('endUserDialogsCount', data?.searchDialogs);
   return {
     isLoading,
     isSuccess,

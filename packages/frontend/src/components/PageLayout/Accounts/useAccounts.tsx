@@ -92,6 +92,7 @@ export const useAccounts = ({ parties, selectedParties, dialogs }: UseAccountsPr
     const count = dialogs.filter((dialog) => dialog.party === party.party).length;
     return acc + count;
   }, 0);
+
   const allOrgsAccount: AccountMenuItem = {
     id: 'ALL',
     name: t('parties.labels.all_organizations'),
