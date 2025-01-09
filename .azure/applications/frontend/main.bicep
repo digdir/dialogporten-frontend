@@ -18,7 +18,7 @@ param containerAppEnvironmentName string
 param applicationInsightsInstrumentationKey string
 
 var namePrefix = 'dp-fe-${environment}'
-var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
+var baseImageUrl = 'ghcr.io/altinn/dialogporten-frontend-'
 var serviceName = 'frontend'
 var containerAppName = '${namePrefix}-${serviceName}'
 var tags = {
