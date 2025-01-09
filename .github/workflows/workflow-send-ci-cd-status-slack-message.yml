@@ -73,7 +73,7 @@ jobs:
           BUILD_AND_TEST_STATUS: "${{ steps.status-emojis.outputs.BUILD_AND_TEST_EMOJI }}"
           DOCKER_BUILD_AND_PUSH_STATUS: "${{ steps.status-emojis.outputs.DOCKER_BUILD_AND_PUSH_EMOJI }}"
           PUBLISH_NODE_LOGGER_TO_NPM_STATUS: "${{ steps.status-emojis.outputs.PUBLISH_NODE_LOGGER_TO_NPM_EMOJI }}"
-        uses: slackapi/slack-github-action@v1.27.1
+        uses: slackapi/slack-github-action@v2.0.0
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           payload-file-path: "./.github/slack-templates/pipeline-failed.json"
