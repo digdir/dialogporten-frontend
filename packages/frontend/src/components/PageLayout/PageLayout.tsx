@@ -36,16 +36,17 @@ export const PageLayout: React.FC = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { searchValue, setSearchValue, onClear } = useSearchString();
-  const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds } = useParties();
-  const { dialogs } = useDialogs(parties);
+  const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds, allOrganizationsSelected } =
+    useParties();
+  const { dialogsByView } = useDialogs(parties);
   const { autocomplete } = useSearchAutocompleteDialogs({ selectedParties: selectedParties, searchValue });
   const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
     parties,
     selectedParties,
-    dialogs,
+    allOrganizationsSelected,
+    dialogs: dialogsByView.inbox,
   });
   const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
-  const { dialogsByView } = useDialogs(selectedParties);
   const itemsPerViewCount = {
     inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
     drafts: dialogsByView.drafts.length,
