@@ -23,7 +23,7 @@ param appConfigurationName string
 param environmentKeyVaultName string
 
 var namePrefix = 'dp-fe-${environment}'
-var baseImageUrl = 'ghcr.io/digdir/dialogporten-frontend-'
+var baseImageUrl = 'ghcr.io/altinn/dialogporten-frontend-'
 var containerAppJobName = '${namePrefix}-bff-migration-job'
 var tags = {
   Environment: environment

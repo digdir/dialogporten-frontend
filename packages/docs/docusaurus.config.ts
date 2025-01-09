@@ -52,11 +52,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
+          editUrl: 'https://github.com/altinn/dialogporten-frontend/tree/main/packages/docs/',
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/digdir/dialogporten-frontend/tree/main/packages/docs/',
+          editUrl: 'https://github.com/altinn/dialogporten-frontend/tree/main/packages/docs/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -83,7 +83,7 @@ const config: Config = {
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://github.com/digdir/dialogporten-frontend',
+          href: 'https://github.com/altinn/dialogporten-frontend',
           label: 'GitHub',
           position: 'right',
         },
