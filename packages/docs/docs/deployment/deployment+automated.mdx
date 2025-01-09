@@ -1,5 +1,3 @@
-import { Tldr } from 'docusaurus-tldraw-plugin/src/tldr.jsx';
-import deployProcess from './deploy-process.tldr';
 
 # Deployment process (Automated)
 
@@ -36,7 +34,7 @@ Deployments are done using `Github Actions` with the following steps:
 
 ## Visual Workflow
 
-<Tldr children={deployProcess} />
+![Deploy process](./deploy-process.svg)
 
 [Release Please](https://github.com/google-github-actions/release-please-action) is used in order to create releases, generate changelog and bumping version numbers.
 
