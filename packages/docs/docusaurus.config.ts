@@ -30,8 +30,6 @@ const config: Config = {
     mermaid: true,
   },
 
-  plugins: ['docusaurus-tldraw-plugin'],
-
   themes: [
     /* mermaid */
     '@docusaurus/theme-mermaid',
@@ -64,6 +62,11 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  /* https://github.com/facebook/docusaurus/issues/10556 */
+  future: {
+    experimental_faster: true,
+  },
 
   themeConfig: {
     // TODO: Replace with your project's social card
