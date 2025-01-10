@@ -38,7 +38,7 @@
     "@opentelemetry/instrumentation-fastify": "0.39.0",
     "@opentelemetry/instrumentation-graphql": "0.45.0",
     "@opentelemetry/instrumentation-http": "0.55.0",
-    "@opentelemetry/instrumentation-ioredis": "0.45.0",
+    "@opentelemetry/instrumentation-ioredis": "0.47.0",
     "@opentelemetry/resources": "1.26.0",
     "@opentelemetry/sdk-trace-base": "1.26.0",
     "@opentelemetry/semantic-conventions": "1.27.0",
