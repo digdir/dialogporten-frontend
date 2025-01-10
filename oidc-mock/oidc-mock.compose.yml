@@ -78,5 +78,3 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.oidc-mock.rule=Host(`oidc-mock.localhost`)"
-      - "dave.relativeSubdomain=oidc-mock"
-      - "dave.icon=fa:openid"
