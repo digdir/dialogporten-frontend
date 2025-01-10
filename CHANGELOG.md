@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.1...v1.12.2) (2025-01-10)
+
+
+### Bug Fixes
+
+* Postgres healthchecks ([#1658](https://github.com/Altinn/dialogporten-frontend/issues/1658)) ([cce5cc3](https://github.com/Altinn/dialogporten-frontend/commit/cce5cc352ff23e3bccfca573cad2edeac3a3ee4d))
+
 ## [1.12.1](https://github.com/digdir/dialogporten-frontend/compare/v1.12.0...v1.12.1) (2025-01-07)
 
 
