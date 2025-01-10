@@ -11,7 +11,7 @@ if (config.applicationInsightsInstrumentationKey && import.meta.env.PROD) {
     applicationInsights = new ApplicationInsights({
       config: {
         instrumentationKey: config.applicationInsightsInstrumentationKey,
-        extensions: [reactPlugin as ITelemetryPlugin],
+        extensions: [reactPlugin as unknown as ITelemetryPlugin],
         enableAutoRouteTracking: true,
       },
     });

@@ -14,7 +14,7 @@
     "@graphql-codegen/typescript-operations": "^4.2.0",
     "@graphql-tools/stitch": "^9.2.7",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "@tsconfig/node20": "^20.1.2",
+    "@tsconfig/node22": "^22.0.0",
     "bff": "workspace:*",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
