@@ -48,7 +48,7 @@ services:
       redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
+      interval: 2s
       timeout: 5s
       retries: 5
 

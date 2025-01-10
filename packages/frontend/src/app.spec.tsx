@@ -1,4 +1,4 @@
-import 'web-streams-polyfill/es6'; // Update this line
+import 'web-streams-polyfill/es6';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { customRender } from '../utils/test-utils.tsx';
 import App from './App.tsx';
