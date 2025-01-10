@@ -50,10 +50,23 @@ export const SavedSearchesPage = () => {
 
   const items = savedSearches.map((savedSearch) => {
     const { searchString, filters, fromView } = savedSearch.data;
-
-    const queryParams = new URLSearchParams({
-      ...(searchString && { search: searchString }),
-    });
+    const urlParams = new URLSearchParams(window.location.search);
+    const allParties = urlParams.get('allParties');
+    const queryParams = new URLSearchParams(
+      Object.entries({
+        search: searchString,
+        party: allParties ? null : urlParams.get('party'), // Exclude 'party' if 'allParties' exists
+        allParties,
+      }).reduce(
+        (acc, [key, value]) => {
+          if (value) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
+    );
 
     for (const filter of filters as Filter[]) {
       queryParams.append(filter.id, String(filter.value));

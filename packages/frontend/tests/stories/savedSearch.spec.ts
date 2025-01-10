@@ -10,15 +10,16 @@ test.describe('Saved search', () => {
     await page.mouse.click(200, 0, { button: 'left' });
     await page.getByRole('button', { name: 'Lagre søk' }).click();
 
-    await expect(
-      page.getByRole('menuitem', { name: 'Lagrede søk' }).locator('span[data-color="subtle"]'),
-    ).toContainText('1');
+    await expect(page.getByRole('menuitem', { name: 'Lagrede søk' }).locator('span span:has-text("1")')).toContainText(
+      '1',
+    );
     await page.getByRole('menuitem', { name: 'Lagrede søk' }).click();
     await expect(page.getByRole('main')).toContainText('1 lagret søk');
 
-    await page.locator('section').filter({ hasText: '1 lagret søkI Innboks: Oslo' }).getByRole('button').click();
+    await expect(page.locator('header').filter({ hasText: 'Oslo kommune' })).toBeVisible();
+    await page.locator('header').filter({ hasText: 'Oslo kommune' }).getByRole('button').click();
+
     await page.getByText('Slett').click();
-    await page.getByRole('button', { name: 'Ja, forsett' }).click();
     await expect(page.getByRole('main')).toContainText('Du har ingen lagrede søk');
   });
 
@@ -28,12 +29,12 @@ test.describe('Saved search', () => {
     await expect(page.getByPlaceholder('Søk')).toBeVisible();
     await page.getByPlaceholder('Søk').fill('skatten');
     await page.getByPlaceholder('Søk').press('Enter');
-
     await page.getByRole('button', { name: 'Lagre søk' }).click();
     await expect(page.getByRole('button', { name: 'Lagret søk' })).toBeVisible();
-    await expect(
-      page.getByRole('menuitem', { name: 'Lagrede søk' }).locator('span[data-color="subtle"]'),
-    ).toContainText('1');
+
+    await expect(page.getByRole('menuitem', { name: 'Lagrede søk' }).locator('span span:has-text("1")')).toContainText(
+      '1',
+    );
 
     await page.getByPlaceholder('Søk').click();
     await page.getByPlaceholder('Søk').fill('skatten din');
@@ -58,8 +59,9 @@ test.describe('Saved search', () => {
     await page.getByRole('button', { name: 'Lagre søk' }).click();
     await page.getByRole('menuitem', { name: 'Lagrede søk' }).click();
 
-    await expect(page.getByRole('link', { name: 'I Innboks: «innkalling»' })).toBeVisible();
-    await page.getByRole('link', { name: 'I Innboks: «innkalling»' }).click();
+    await expect(page.getByRole('link', { name: '«innkalling»' })).toBeVisible();
+
+    await page.getByRole('link', { name: '«innkalling»' }).click();
     await expect(page.getByRole('link', { name: 'Innkalling til sesjon' })).toBeVisible();
     await expect(page.getByTestId('pageLayout-background')).toHaveClass(/.*isCompany.*/);
   });
