@@ -98,8 +98,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
-      - "dave.relativeSubdomain=pgadmin4"
-      - "dave.icon=simple-icons:postgresql"
 
   bff:
     container_name: bff
@@ -125,8 +123,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
-      - "dave.relativeSubdomain=app"
-      - "dave.icon=fa-brands:node"
     depends_on:
       db:
         condition: service_healthy
@@ -194,8 +190,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
-      - "dave.relativeSubdomain=app"
-      - "dave.icon=fluent-mdl2:react-logo"
     develop:
       watch:
         - action: sync
@@ -225,8 +219,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`docs.localhost`)"
-      - "dave.relativeSubdomain=docs"
-      - "dave.icon=simple-icons:docusaurus"
     develop:
       watch:
         - action: sync
