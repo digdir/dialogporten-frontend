@@ -14,6 +14,7 @@ interface UseAccountsProps {
   parties: PartyFieldsFragment[];
   selectedParties: PartyFieldsFragment[];
   dialogs: InboxItemInput[];
+  allOrganizationsSelected: boolean;
 }
 
 interface UseAccountsOutput {
@@ -25,7 +26,19 @@ interface UseAccountsOutput {
 
 type AccountType = 'company' | 'person';
 
-const getBadgeProps = (count: number): BadgeProps | undefined => {
+export const getCountBadge = (
+  dialogs: InboxItemInput[],
+  party?: PartyFieldsFragment | PartyFieldsFragment[],
+): BadgeProps | undefined => {
+  if (!party || !dialogs?.length || (Array.isArray(party) && !party.length)) {
+    return undefined;
+  }
+
+  const subPartyIds = Array.isArray(party) ? party.flatMap((p) => getSubPartyIds(p)) : getSubPartyIds(party);
+  const partyIds = Array.isArray(party) ? party.map((p) => p.party) : [party.party];
+  const allPartyIds = [...partyIds, ...subPartyIds];
+  const count = dialogs.filter((dialog) => allPartyIds.includes(dialog.party)).length;
+
   if (count > 0) {
     return {
       label: count.toString(),
@@ -34,15 +47,37 @@ const getBadgeProps = (count: number): BadgeProps | undefined => {
   }
 };
 
-export const useAccounts = ({ parties, selectedParties, dialogs }: UseAccountsProps): UseAccountsOutput => {
+const getSubPartyIds = (party?: PartyFieldsFragment): string[] => {
+  return party?.subParties?.filter((subParty) => subParty.name === party.name).map((party) => party.party) ?? [];
+};
+
+export const useAccounts = ({
+  parties,
+  selectedParties,
+  dialogs,
+  allOrganizationsSelected,
+}: UseAccountsProps): UseAccountsOutput => {
   const { t } = useTranslation();
   const [searchString, setSearchString] = useState<string>('');
   const accountSearchThreshold = 2;
   const showSearch = parties.length > accountSearchThreshold;
 
   const endUser = parties.find((party) => party.partyType === 'Person' && party.isCurrentEndUser);
-  const otherUsers = parties.filter((party) => party.partyType === 'Person' && !party.isCurrentEndUser);
+  const nonEndUsers = parties.filter((party) => party.partyType === 'Person' && !party.isCurrentEndUser);
   const organizations = parties.filter((party) => party.partyType === 'Organization');
+
+  if (!selectedParties?.length) {
+    return {
+      accounts: [],
+      accountGroups: {},
+      selectedAccount: {
+        id: 'no-account',
+        name: '?',
+        type: 'person',
+      },
+      accountSearch: undefined,
+    };
+  }
 
   const accountGroups: MenuItemGroups = {
     ...(endUser && {
@@ -57,64 +92,56 @@ export const useAccounts = ({ parties, selectedParties, dialogs }: UseAccountsPr
     }),
   };
 
-  const endUserDialogsCount = dialogs.filter((dialog) => dialog.party === endUser?.party).length;
   const endUserAccount = {
     id: endUser?.party ?? '',
     name: endUser?.name ?? '',
     type: 'person' as AccountType,
     groupId: 'primary',
-    badge: getBadgeProps(endUserDialogsCount),
+    badge: getCountBadge(dialogs, endUser),
   };
 
-  const otherUsersAccounts = otherUsers.map((party) => {
-    const count = dialogs.filter((dialog) => dialog.party === party.party).length;
+  const otherUsersAccounts = nonEndUsers.map((noEnderUserParty) => {
     return {
-      id: party.party,
-      name: party.name,
+      id: noEnderUserParty.party,
+      name: noEnderUserParty.name,
       type: 'person' as AccountType,
       groupId: 'other_users',
-      badge: getBadgeProps(count),
+      badge: getCountBadge(dialogs, noEnderUserParty),
     };
   });
 
   const organizationAccounts: AccountMenuItem[] = organizations.map((party) => {
-    const count = dialogs.filter((dialog) => dialog.party === party.party).length;
     return {
       id: party.party,
       name: party.name,
       type: 'company' as AccountType,
       groupId: 'secondary',
-      badge: getBadgeProps(count),
+      badge: getCountBadge(dialogs, party),
     };
   });
 
-  const allOrgsDialogsCount = organizations.reduce((acc, party) => {
-    const count = dialogs.filter((dialog) => dialog.party === party.party).length;
-    return acc + count;
-  }, 0);
-  const allOrgsAccount: AccountMenuItem = {
+  const allOrganizationsAccount: AccountMenuItem = {
     id: 'ALL',
     name: t('parties.labels.all_organizations'),
     type: 'company' as AccountType,
     groupId: 'secondary',
     accountNames: organizations.map((party) => party.name),
-    badge: getBadgeProps(allOrgsDialogsCount),
+    badge: getCountBadge(dialogs, organizations),
   };
 
   const accounts: AccountMenuItem[] = [
     ...(endUser ? [endUserAccount] : []),
     ...otherUsersAccounts,
-    ...(organizationAccounts.length > 1 ? [...organizationAccounts, allOrgsAccount] : organizationAccounts),
+    ...(organizationAccounts.length > 1 ? [...organizationAccounts, allOrganizationsAccount] : organizationAccounts),
   ];
 
-  const selectedAccount =
-    selectedParties?.length === 1
-      ? selectedParties.map((party) => ({
-          id: party.party,
-          name: party.name,
-          type: party.partyType.toLowerCase() as AccountType,
-        }))[0]
-      : allOrgsAccount;
+  const selectedAccount = allOrganizationsSelected
+    ? allOrganizationsAccount
+    : selectedParties.map((party) => ({
+        id: party.party,
+        name: party.name,
+        type: party.partyType.toLowerCase() as AccountType,
+      }))[0];
 
   const accountSearch = showSearch
     ? {
