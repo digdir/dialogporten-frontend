@@ -8,7 +8,7 @@ test: ## Runs `pndpm turbo test`
 	pnpm turbo test
 
 build: ## Runs `pnpm turbo build`
-	pnpm turbo build
+	pnpm turbo build 
 
 build-docker: ## Runs `pnpm turbo build:docker`
 	pnpm turbo build:docker
@@ -20,7 +20,7 @@ compose-down: ## Runs `docker compose down`
 	docker compose down
 
 pull: ## Pulls and stores images locally and builds project
-	docker compose pull && docker pull node:20-slim && docker compose build
+	docker compose pull && docker pull node:22-slim && docker compose build
 
 # ---------------------
 # - Helper functions  -

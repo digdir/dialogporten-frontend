@@ -48,7 +48,7 @@ services:
       redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
+      interval: 2s
       timeout: 5s
       retries: 5
 
@@ -79,7 +79,7 @@ services:
       POSTGRES_DB: dialogporten
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d dialogporten" ]
-      interval: 2s
+      interval: 10s
       timeout: 20s
       retries: 5
     ports:
@@ -98,9 +98,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
-      - "dave.relativeSubdomain=pgadmin4"
-      - "dave.icon=simple-icons:postgresql"
-
   bff:
     container_name: bff
     restart: always
@@ -125,15 +122,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
-      - "dave.relativeSubdomain=app"
-      - "dave.icon=fa-brands:node"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
-      # bff-migration:
-      #   condition: service_completed_successfully
     command: sh -c "pnpm --filter bff run docker"
     develop:
       watch:
@@ -194,8 +187,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
-      - "dave.relativeSubdomain=app"
-      - "dave.icon=fluent-mdl2:react-logo"
+      - "traefik.http.services.myservice.loadbalancer.server.port=80"
     develop:
       watch:
         - action: sync
@@ -215,7 +207,6 @@ services:
         - action: rebuild
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
-
   docs:
     container_name: docs
     build:
@@ -225,8 +216,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`docs.localhost`)"
-      - "dave.relativeSubdomain=docs"
-      - "dave.icon=simple-icons:docusaurus"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:80" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     develop:
       watch:
         - action: sync
