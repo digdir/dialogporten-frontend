@@ -9,11 +9,12 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { type ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Outlet, useSearchParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
 import { getSearchStringFromQueryParams } from '../../pages/Inbox/queryParams.ts';
 import { useSavedSearches } from '../../pages/SavedSearches/useSavedSearches.ts';
+import { PageRoutes } from '../../pages/routes.ts';
 import { useProfile } from '../../profile';
 import { BetaBanner } from '../BetaBanner/BetaBanner';
 import { useAuth } from '../Login/AuthContext.tsx';
@@ -36,6 +37,8 @@ export const PageLayout: React.FC = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { searchValue, setSearchValue, onClear } = useSearchString();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds, allOrganizationsSelected } =
     useParties();
   const { dialogsByView } = useDialogs(parties);
@@ -98,10 +101,17 @@ export const PageLayout: React.FC = () => {
       accountGroups,
       accounts,
       onSelectAccount: (account: string) => {
-        if (account === 'ALL') {
-          setSelectedPartyIds([], true);
+        const allAccountsSelected = account === 'ALL';
+        const search = new URLSearchParams();
+
+        if (location.pathname === PageRoutes.inbox) {
+          setSelectedPartyIds(allAccountsSelected ? [] : [account], allAccountsSelected);
         } else {
-          setSelectedPartyIds([account], false);
+          search.append(
+            allAccountsSelected ? 'allParties' : 'party',
+            allAccountsSelected ? 'true' : encodeURIComponent(account),
+          );
+          navigate(PageRoutes.inbox + `?${search.toString()}`);
         }
       },
       changeLabel: t('layout.menu.change_account'),

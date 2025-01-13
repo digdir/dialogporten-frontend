@@ -1,9 +1,9 @@
 import { type Page, expect, test } from '@playwright/test';
-import { appURL } from '..';
+import { defaultAppURL } from '..';
 
 test.describe('Flattened parties and subparties', () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
-    const flattenedPartiesPage = `${appURL}&playwrightId=subparty-merged-with-party`;
+    const flattenedPartiesPage = `${defaultAppURL}&playwrightId=subparty-merged-with-party`;
     await page.goto(flattenedPartiesPage);
   });
 

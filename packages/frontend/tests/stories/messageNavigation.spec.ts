@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('Message navigation', () => {
-  const pageWithMockOrganizations = `${appURL}&playwrightId=login-party-context`;
+  const pageWithMockOrganizations = `${defaultAppURL}&playwrightId=login-party-context`;
 
   test('Back button navigates correctly and saves party', async ({ page }) => {
     await page.goto(pageWithMockOrganizations);
