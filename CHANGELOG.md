@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.2](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.1...v1.12.2) (2025-01-13)
+
+
+### Bug Fixes
+
+* include sub parties in accounts results in global menu ([#1669](https://github.com/Altinn/dialogporten-frontend/issues/1669)) ([e0ea4ba](https://github.com/Altinn/dialogporten-frontend/commit/e0ea4ba027f3e1fcfebbbb4eb69d2944c4661683))
+* Postgres healthchecks ([#1658](https://github.com/Altinn/dialogporten-frontend/issues/1658)) ([cce5cc3](https://github.com/Altinn/dialogporten-frontend/commit/cce5cc352ff23e3bccfca573cad2edeac3a3ee4d))
+
 ## [1.12.1](https://github.com/digdir/dialogporten-frontend/compare/v1.12.0...v1.12.1) (2025-01-07)
 
 
