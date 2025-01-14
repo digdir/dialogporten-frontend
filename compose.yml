@@ -108,7 +108,7 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       ENABLE_GRAPHIQL: true
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      TYPEORM_SYNCHRONIZE_ENABLED: true
+      TYPEORM_SYNCHRONIZE_ENABLED:
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
       PORT: 80
       NODE_ENV: production
@@ -164,7 +164,7 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
-      TYPEORM_SYNCHRONIZE_ENABLED: true
+      TYPEORM_SYNCHRONIZE_ENABLED:
       TYPEORM_MIGRATIONS: src/migrations/*.ts
       TYPEORM_MIGRATIONS_DIR: src/migrations
       MIGRATION_RUN: true
