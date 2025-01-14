@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('Saved search', () => {
   test('Create and deletesaved search', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
     await page.getByRole('button', { name: 'Legg til filter' }).click();
     await page.getByText('Avsender').click();
     await page.getByLabel('Fra Oslo kommune').check();
@@ -24,7 +24,7 @@ test.describe('Saved search', () => {
   });
 
   test('Saved search based on searchbar value', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
     await page.getByPlaceholder('Søk').click();
     await expect(page.getByPlaceholder('Søk')).toBeVisible();
     await page.getByPlaceholder('Søk').fill('skatten');
@@ -44,7 +44,7 @@ test.describe('Saved search', () => {
   });
 
   test('Saved search link shows correct result', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
 
     await page.getByRole('button', { name: 'Test Testesen' }).click();
     await page.getByText('Testbedrift AS Avd Oslo').click();

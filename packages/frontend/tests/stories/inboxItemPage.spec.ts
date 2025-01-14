@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('InboxItemPage', () => {
   test('Check message opening, archiving and deleting', async ({ page }: { page: Page }) => {
@@ -9,7 +9,7 @@ test.describe('InboxItemPage', () => {
     const papirkurvLink = page.getByRole('menuitem', { name: 'Papirkurv' });
     const papirkurvLinkCount = papirkurvLink.locator('span:text("1")');
 
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
     await expect(page.locator('h2').filter({ hasText: /^Skatten din for 2022$/ })).toBeVisible();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
 

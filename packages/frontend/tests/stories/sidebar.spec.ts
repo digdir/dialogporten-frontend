@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('Sidebar menu', () => {
   test('Checking all items in sidebar', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
     await page.getByRole('menuitem', { name: 'Utkast' }).click();
     await expect(page.getByRole('heading', { name: 'utkast' })).toBeVisible();
     await page.getByRole('menuitem', { name: 'Sendt' }).click();

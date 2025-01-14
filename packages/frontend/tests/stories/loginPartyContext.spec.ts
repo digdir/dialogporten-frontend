@@ -1,9 +1,9 @@
 import { type Page, expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('LoginPartyContext', () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
-    const dateScenarioPage = `${appURL}&playwrightId=login-party-context`;
+    const dateScenarioPage = `${defaultAppURL}&playwrightId=login-party-context`;
     await page.goto(dateScenarioPage);
   });
 

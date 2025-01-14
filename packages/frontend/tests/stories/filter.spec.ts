@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { appURL } from '../';
+import { defaultAppURL } from '../';
 
 test.describe('Testing filter bar', () => {
   test('should filter when selecting sender filter and status filter', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
 
     /* Choose Skatteetaten as sender */
     await page.getByRole('button', { name: 'Legg til filter' }).click();
@@ -41,7 +41,7 @@ test.describe('Testing filter bar', () => {
   });
 
   test('should remove filters when changing view types', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
 
     /* Choose Skatteetaten as sender */
     await page.getByRole('button', { name: 'Legg til filter' }).click();
@@ -59,7 +59,7 @@ test.describe('Testing filter bar', () => {
   });
 
   test('should keep filters when returning to a filtered inbox from ', async ({ page }) => {
-    await page.goto(appURL);
+    await page.goto(defaultAppURL);
 
     /* Choose Skatteetaten as sender */
     await page.getByRole('button', { name: 'Legg til filter' }).click();
