@@ -41,6 +41,7 @@ test.describe('Message navigation', () => {
     await expect(page.locator('h2').filter({ hasText: /^Skatten din for 2022$/ })).toBeVisible();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
     await page.getByRole('button', { name: 'Flytt til papirkurv' }).click();
+    await expect(page.getByText('Flyttet til papirkurv')).toBeVisible();
 
     await page.getByRole('menuitem', { name: 'Papirkurv' }).click();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();

@@ -6,6 +6,7 @@ import './i18n/config.ts';
 import '@digdir/designsystemet-css';
 import '@digdir/designsystemet-theme';
 
+import { RootProvider } from '@altinn/altinn-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App.tsx';
 import { AuthProvider } from './components/Login/AuthContext.tsx';
@@ -35,7 +36,9 @@ if (element) {
             <BrowserRouter>
               <FeatureFlagProvider flags={featureFlags}>
                 <AuthProvider>
-                  <App />
+                  <RootProvider>
+                    <App />
+                  </RootProvider>
                 </AuthProvider>
               </FeatureFlagProvider>
             </BrowserRouter>

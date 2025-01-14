@@ -1,3 +1,4 @@
+import { useSnackbar } from '@altinn/altinn-components';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   SavedSearchData,
@@ -9,7 +10,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createSavedSearch, deleteSavedSearch, fetchSavedSearches } from '../../api/queries.ts';
 import type { InboxViewType } from '../../api/useDialogs.tsx';
-import { type Filter, useSnackbar } from '../../components';
+import type { Filter } from '../../components';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { PageRoutes } from '../routes.ts';
 
@@ -84,12 +85,12 @@ export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesO
       await createSavedSearch('', data);
       openSnackbar({
         message: t('savedSearches.saved_success'),
-        variant: 'success',
+        color: 'success',
       });
     } catch (error) {
       openSnackbar({
         message: t('savedSearches.saved_error'),
-        variant: 'error',
+        color: 'alert',
       });
       console.error('Error creating saved search: ', error);
     } finally {
@@ -104,14 +105,14 @@ export const useSavedSearches = (selectedPartyIds?: string[]): UseSavedSearchesO
       await deleteSavedSearch(savedSearchId);
       openSnackbar({
         message: t('savedSearches.deleted_success'),
-        variant: 'success',
+        color: 'success',
       });
       await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
     } catch (error) {
       console.error('Failed to delete saved search:', error);
       openSnackbar({
         message: t('savedSearches.delete_failed'),
-        variant: 'error',
+        color: 'alert',
       });
     } finally {
       setIsCTALoading(false);
