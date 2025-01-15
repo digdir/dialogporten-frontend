@@ -6,9 +6,14 @@
       "outputs": ["generated/**"],
       "cache": false
     },
+    "build:@digdir/dialogporten-node-logger": {
+      "dependsOn": ["^build"],
+      "outputs": ["packages/node-logger/dist/**"],
+      "cache": false
+    },
     "build": {
       "env": ["BASEURL", "URL"],
-      "dependsOn": ["build:bff-types-generated"],
+      "dependsOn": ["build:bff-types-generated", "build:@digdir/dialogporten-node-logger"],
       "cache": false
     },
     "dev": {

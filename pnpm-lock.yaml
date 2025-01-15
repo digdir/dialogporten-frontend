@@ -36,8 +36,8 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@digdir/dialogporten-node-logger':
-        specifier: 1.11.4
-        version: 1.11.4
+        specifier: workspace:*
+        version: link:../node-logger
       '@digdir/dialogporten-schema':
         specifier: 1.40.0
         version: 1.40.0
@@ -1689,9 +1689,6 @@ packages:
 
   '@digdir/designsystemet-theme@1.0.0-next.14':
     resolution: {integrity: sha512-JWCLhXxDlMYwatg7mLkptfEkeiv/EKSaUOXX4nUoV8HjqyxMnLaaZZe6NKqx2SH1GPKOeSL5bEcs2NAEoFlGXg==}
-
-  '@digdir/dialogporten-node-logger@1.11.4':
-    resolution: {integrity: sha512-jvjkbJO/zHTdNWPCVw4V+nOMQ/Oyg32xA2wAxaU+oTGFHgxf9Do4g11BCkTGCoSU6HakljeQctRR38qdMSzF1A==}
 
   '@digdir/dialogporten-schema@1.40.0':
     resolution: {integrity: sha512-NVi1ZkQU4yynmw80Mz+YkG5rLVoOLsB9s5PqXHBnA08WTl2doQWX4aBDCHC29m1C8P6sxPA1dvIGOOrN/h0haw==}
@@ -11722,11 +11719,6 @@ snapshots:
       - '@types/react'
 
   '@digdir/designsystemet-theme@1.0.0-next.14': {}
-
-  '@digdir/dialogporten-node-logger@1.11.4':
-    dependencies:
-      pino: 9.3.2
-      pino-pretty: 11.2.2
 
   '@digdir/dialogporten-schema@1.40.0': {}
 

@@ -8,8 +8,7 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm --filter bff run build
-# RUN pnpm turbo build
+RUN pnpm turbo build
 
 ENV PORT=80
 
