@@ -1,3 +1,4 @@
+import { type SnackbarColor, SnackbarDuration, useSnackbar } from '@altinn/altinn-components';
 import { useQueryClient } from '@tanstack/react-query';
 import { SystemLabel } from 'bff-types-generated';
 import i18n from 'i18next';
@@ -7,7 +8,7 @@ import { updateSystemLabel } from '../../api/queries.ts';
 import { useDialogById } from '../../api/useDialogById.tsx';
 import { useDialogByIdSubscription } from '../../api/useDialogByIdSubscription.ts';
 import { useParties } from '../../api/useParties.ts';
-import { BackButton, SnackbarDuration, type SnackbarMessageVariant, useSnackbar } from '../../components';
+import { BackButton } from '../../components';
 import { InboxItemDetail } from '../../components';
 import { DialogToolbar } from '../../components/DialogToolbar/DialogToolbar.tsx';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
@@ -39,11 +40,11 @@ export const InboxItemPage = () => {
     failureMessageKey: string;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) => {
-    const showSnackbar = (messageKey: string, variant: SnackbarMessageVariant) => {
+    const showSnackbar = (messageKey: string, color: SnackbarColor) => {
       openSnackbar({
         message: i18n.t(messageKey),
         duration: SnackbarDuration.normal,
-        variant,
+        color,
       });
     };
 
@@ -62,10 +63,10 @@ export const InboxItemPage = () => {
         await invalidateQueries();
         showSnackbar(successMessageKey, 'success');
       } else {
-        showSnackbar(failureMessageKey, 'error');
+        showSnackbar(failureMessageKey, 'alert');
       }
     } catch (error) {
-      showSnackbar(failureMessageKey, 'error');
+      showSnackbar(failureMessageKey, 'alert');
     } finally {
       setLoading(false);
     }

@@ -1,3 +1,4 @@
+import { useSnackbar } from '@altinn/altinn-components';
 import { ArrowForwardIcon, ClockDashedIcon, EnvelopeOpenIcon, TrashIcon } from '@navikt/aksel-icons';
 import { format } from 'date-fns';
 import { useMemo, useRef } from 'react';
@@ -5,15 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { type InboxViewType, useDialogs } from '../../api/useDialogs.tsx';
 import { useParties } from '../../api/useParties.ts';
-import {
-  ActionPanel,
-  FilterBar,
-  InboxItem,
-  InboxItems,
-  PartyDropdown,
-  useSelectedDialogs,
-  useSnackbar,
-} from '../../components';
+import { ActionPanel, FilterBar, InboxItem, InboxItems, PartyDropdown, useSelectedDialogs } from '../../components';
 import type { FilterBarRef } from '../../components/FilterBar/FilterBar.tsx';
 import { FosToolbar } from '../../components/FosToolbar';
 import { InboxItemsHeader } from '../../components/InboxItem/InboxItemsHeader.tsx';
@@ -141,7 +134,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               label: t('actionPanel.buttons.share'),
               icon: <ArrowForwardIcon />,
               onClick: () => {
-                openSnackbar({ message: 'del clicked', variant: 'success' });
+                openSnackbar({ message: 'del clicked', color: 'success' });
                 setSelectedItems({});
               },
             },
@@ -149,7 +142,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               label: t('actionPanel.buttons.mark_as_read'),
               icon: <EnvelopeOpenIcon />,
               onClick: () => {
-                openSnackbar({ message: 'read clicked', variant: 'success' });
+                openSnackbar({ message: 'read clicked', color: 'success' });
                 setSelectedItems({});
               },
             },
@@ -157,7 +150,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               label: t('actionPanel.buttons.archive'),
               icon: <ClockDashedIcon />,
               onClick: () => {
-                openSnackbar({ message: 'arkiv clicked', variant: 'success' });
+                openSnackbar({ message: 'arkiv clicked', color: 'success' });
                 setSelectedItems({});
               },
             },
@@ -165,7 +158,7 @@ export const Inbox = ({ viewType }: InboxProps) => {
               label: t('actionPanel.buttons.delete'),
               icon: <TrashIcon />,
               onClick: () => {
-                openSnackbar({ message: 'delete clicked', variant: 'success' });
+                openSnackbar({ message: 'delete clicked', color: 'success' });
                 setSelectedItems({});
               },
             },

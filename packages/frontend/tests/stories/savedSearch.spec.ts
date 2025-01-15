@@ -9,7 +9,7 @@ test.describe('Saved search', () => {
     await page.getByLabel('Fra Oslo kommune').check();
     await page.mouse.click(200, 0, { button: 'left' });
     await page.getByRole('button', { name: 'Lagre søk' }).click();
-
+    await expect(page.getByText('Søk lagret')).toBeVisible();
     await expect(page.getByRole('menuitem', { name: 'Lagrede søk' }).locator('span span:has-text("1")')).toContainText(
       '1',
     );
@@ -20,6 +20,7 @@ test.describe('Saved search', () => {
     await page.locator('header').filter({ hasText: 'Oslo kommune' }).getByRole('button').click();
 
     await page.getByText('Slett').click();
+    await expect(page.getByText('Søk slettet')).toBeVisible();
     await expect(page.getByRole('main')).toContainText('Du har ingen lagrede søk');
   });
 

@@ -4,8 +4,8 @@ import {
   Layout,
   type LayoutProps,
   type MenuItemProps,
-  RootProvider,
 } from '@altinn/altinn-components';
+import { Snackbar } from '@altinn/altinn-components';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -144,11 +144,10 @@ export const PageLayout: React.FC = () => {
   return (
     <Background isCompany={selectedProfile === 'company'}>
       <BetaBanner />
-      <RootProvider>
-        <Layout theme={selectedProfile} {...layoutProps}>
-          <Outlet />
-        </Layout>
-      </RootProvider>
+      <Layout theme={selectedProfile} {...layoutProps}>
+        <Outlet />
+        <Snackbar />
+      </Layout>
     </Background>
   );
 };

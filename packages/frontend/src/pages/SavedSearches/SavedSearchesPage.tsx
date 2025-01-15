@@ -1,4 +1,5 @@
 import { type BookmarksListItemProps, BookmarksSection } from '@altinn/altinn-components';
+import { useSnackbar } from '@altinn/altinn-components';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +8,6 @@ import { deleteSavedSearch, updateSavedSearch } from '../../api/queries.ts';
 import { useParties } from '../../api/useParties.ts';
 import { PartyDropdown } from '../../components';
 import type { Filter } from '../../components';
-import { useSnackbar } from '../../components';
 import { QUERY_KEYS } from '../../constants/queryKeys.ts';
 import { useFormatDistance } from '../../i18n/useDateFnsLocale.tsx';
 import styles from './savedSearchesPage.module.css';
@@ -95,7 +95,7 @@ export const SavedSearchesPage = () => {
               .then(() => {
                 openSnackbar({
                   message: t('savedSearches.update_success'),
-                  variant: 'success',
+                  color: 'success',
                 });
                 void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
                 setExpandedId('');
@@ -104,7 +104,7 @@ export const SavedSearchesPage = () => {
                 console.error('Failed to update saved search:', e);
                 openSnackbar({
                   message: t('savedSearches.update_failed'),
-                  variant: 'error',
+                  color: 'alert',
                 });
               });
           }
@@ -117,7 +117,7 @@ export const SavedSearchesPage = () => {
             .then(() => {
               openSnackbar({
                 message: t('savedSearches.deleted_success'),
-                variant: 'success',
+                color: 'success',
               });
               void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
               setExpandedId('');
@@ -126,7 +126,7 @@ export const SavedSearchesPage = () => {
               console.error('Failed to delete saved search:', e);
               openSnackbar({
                 message: t('savedSearches.delete_failed'),
-                variant: 'error',
+                color: 'alert',
               });
             });
         },

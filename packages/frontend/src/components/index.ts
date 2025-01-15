@@ -6,7 +6,6 @@ export * from './FilterBar';
 export * from './BottomDrawer';
 export * from './PageLayout';
 export * from './DropdownMenu';
-export * from './Snackbar';
 export * from './HorizontalLine';
 export * from './MetaDataFields';
 export * from './PartyDropdown';
