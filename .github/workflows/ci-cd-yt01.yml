@@ -1,0 +1,109 @@
+name: CI/CD YT01
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+
+jobs:
+  check-for-changes:
+    name: Check for changes
+    uses: ./.github/workflows/workflow-check-for-changes.yml
+
+  get-current-version:
+    name: Get current version
+    uses: ./.github/workflows/workflow-get-current-version.yml
+
+  docker-build-and-push:
+    name: Build and publish docker images
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
+    uses: ./.github/workflows/workflow-docker-build-and-push.yml
+    needs:
+      [
+        check-for-changes,
+        get-current-version
+      ]
+    secrets:
+      GCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      dockerImageBaseName: ghcr.io/altinn/dialogporten-frontend-
+      version: ${{ needs.get-current-version.outputs.version }}
+
+  deploy-infrastructure:
+    uses: ./.github/workflows/workflow-deploy-infrastructure.yml
+    needs: [check-for-changes, get-current-version]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_SOURCE_KEY_VAULT_NAME: ${{ secrets.AZURE_SOURCE_KEY_VAULT_NAME }}
+      AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SUBSCRIPTION_ID }}
+      AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP: ${{ secrets.AZURE_SOURCE_KEY_VAULT_RESOURCE_GROUP }}
+      AZURE_CERTIFICATE_KEY_VAULT_NAME: ${{ secrets.AZURE_CERTIFICATE_KEY_VAULT_NAME }}
+      AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY }}
+    with:
+      environment: yt01
+      region: norwayeast
+      version: ${{ needs.get-current-version.outputs.version }}
+
+  deploy-apps:
+    name: Deploy apps to YT01
+    needs:
+      [
+        get-current-version,
+        check-for-changes,
+        docker-build-and-push,
+        deploy-infrastructure,
+      ]
+    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true') }}
+    uses: ./.github/workflows/workflow-deploy-apps.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_RESOURCE_GROUP_NAME: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      AZURE_ENVIRONMENT_KEY_VAULT_NAME: ${{ secrets.AZURE_ENVIRONMENT_KEY_VAULT_NAME }}
+      AZURE_CONTAINER_APP_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
+      AZURE_APP_INSIGHTS_CONNECTION_STRING: ${{ secrets.AZURE_APP_INSIGHTS_CONNECTION_STRING }}
+      AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
+      AZURE_APP_CONFIGURATION_NAME: ${{ secrets.AZURE_APP_CONFIGURATION_NAME }}
+    with:
+      environment: yt01
+      region: norwayeast
+      version: ${{ needs.get-current-version.outputs.version }}
+      runMigration: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
+
+  publish-node-logger-to-npm:
+    needs: [get-current-version, check-for-changes, deploy-apps]
+    if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasNodeLoggerChanges == 'true') }}
+    uses: ./.github/workflows/dispatch-publish-npm-package.yml
+    with:
+      version: ${{ needs.get-current-version.outputs.version }}
+      pathToPackage: packages/node-logger
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  send-slack-message-on-failure:
+    name: Send Slack message on failure
+    needs: [
+      docker-build-and-push,
+      deploy-infrastructure,
+      deploy-apps,
+      publish-node-logger-to-npm,
+    ]
+    if: ${{ always() && failure() && !cancelled() }}
+    uses: ./.github/workflows/workflow-send-ci-cd-status-slack-message.yml
+    with:
+      environment: yt01
+      docker_build_and_push_status: ${{ needs.docker-build-and-push.result }}
+      infra_status: ${{ needs.deploy-infrastructure.result }}
+      apps_status: ${{ needs.deploy-apps.result }}
+      publish_node_logger_to_npm_status: ${{ needs.publish-node-logger-to-npm.result }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID_FOR_CI_CD_STATUS }} 
