@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.3](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.2...v1.12.3) (2025-01-16)
+
+
+### Bug Fixes
+
+* selecting account from global menu account should also send user to inbox ([#1678](https://github.com/Altinn/dialogporten-frontend/issues/1678)) ([1f348d3](https://github.com/Altinn/dialogporten-frontend/commit/1f348d3a74cca71ae679b150c956eb023ff84b06))
+
 ## [1.12.2](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.1...v1.12.2) (2025-01-13)
 
 
