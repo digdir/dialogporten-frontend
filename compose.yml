@@ -1,7 +1,3 @@
-include:
-  - path:
-      - ./oidc-mock/oidc-mock.compose.yml
-
 services:
   reverse-proxy:
     container_name: reverse-proxy
@@ -111,7 +107,6 @@ services:
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       ENABLE_GRAPHIQL: true
-      OIDC_URL: test.idporten.no
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       TYPEORM_SYNCHRONIZE_ENABLED: true
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
@@ -167,7 +162,6 @@ services:
       HOSTNAME: http://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
-      OIDC_URL: test.idporten.no
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
       TYPEORM_SYNCHRONIZE_ENABLED: true
