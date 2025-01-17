@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/altinn/dialogporten-frontend.git"
+    "url": "git+https://github.com/Altinn/dialogporten-frontend.git"
   },
   "type": "module"
 }
