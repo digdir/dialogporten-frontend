@@ -20,6 +20,7 @@ interface UseGroupedDialogsProps {
 const useGroupedDialogs = ({ items, displaySearchResults, viewType }: UseGroupedDialogsProps): DialogCategory[] => {
   const { t } = useTranslation();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   return useMemo(() => {
     const allWithinSameYear = items.every((d) => new Date(d.createdAt).getFullYear() === new Date().getFullYear());
 

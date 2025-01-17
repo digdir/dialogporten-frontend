@@ -41,17 +41,29 @@ export const PageLayout: React.FC = () => {
   const location = useLocation();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds, allOrganizationsSelected } =
     useParties();
-  const { dialogsByView } = useDialogs(parties);
+  const { dialogsByView } = useDialogs(selectedParties);
+  const { dialogsByView: allDialogsByView, dialogCountInconclusive: allDialogCountInconclusive } = useDialogs(parties);
   const { autocomplete } = useSearchAutocompleteDialogs({ selectedParties: selectedParties, searchValue });
   const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
     parties,
     selectedParties,
     allOrganizationsSelected,
-    dialogs: dialogsByView.inbox,
+    dialogs: allDialogsByView.inbox,
+    dialogCountInconclusive: allDialogCountInconclusive,
   });
   const { currentPartySavedSearches } = useSavedSearches(selectedPartyIds);
-  const itemsPerViewCount = {
+
+  const needsAttentionPerView = {
     inbox: dialogsByView.inbox.filter((item) => !item.isSeenByEndUser).length,
+    drafts: dialogsByView.drafts.filter((item) => !item.isSeenByEndUser).length,
+    sent: dialogsByView.sent.filter((item) => !item.isSeenByEndUser).length,
+    'saved-searches': 0,
+    archive: dialogsByView.archive.filter((item) => !item.isSeenByEndUser).length,
+    bin: dialogsByView.bin.filter((item) => !item.isSeenByEndUser).length,
+  };
+
+  const itemsPerViewCount = {
+    inbox: dialogsByView.inbox.length,
     drafts: dialogsByView.drafts.length,
     sent: dialogsByView.sent.length,
     'saved-searches': currentPartySavedSearches?.length ?? 0,
@@ -60,7 +72,7 @@ export const PageLayout: React.FC = () => {
   };
 
   const footer: FooterProps = useFooter();
-  const { global, sidebar } = useGlobalMenu({ itemsPerViewCount });
+  const { global, sidebar } = useGlobalMenu({ itemsPerViewCount, needsAttentionPerView });
 
   useProfile();
 
@@ -75,14 +87,6 @@ export const PageLayout: React.FC = () => {
     logo: {
       as: (props: MenuItemProps) => <Link to="/" {...props} />,
     },
-    badge:
-      itemsPerViewCount.inbox > 0
-        ? {
-            label: itemsPerViewCount.inbox.toString(),
-            color: 'alert',
-            size: 'sm',
-          }
-        : undefined,
     search: {
       expanded: false,
       name: t('word.search'),
@@ -129,11 +133,11 @@ export const PageLayout: React.FC = () => {
   };
 
   const layoutProps: LayoutProps = {
-    theme: selectedProfile,
+    theme: 'subtle',
+    color: selectedProfile,
     header: headerProps,
     footer,
     sidebar: {
-      theme: selectedProfile,
       menu: {
         items: sidebar,
       },
@@ -144,7 +148,7 @@ export const PageLayout: React.FC = () => {
   return (
     <Background isCompany={selectedProfile === 'company'}>
       <BetaBanner />
-      <Layout theme={selectedProfile} {...layoutProps}>
+      <Layout color={selectedProfile} {...layoutProps}>
         <Outlet />
         <Snackbar />
       </Layout>

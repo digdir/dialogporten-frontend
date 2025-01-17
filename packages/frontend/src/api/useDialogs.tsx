@@ -23,6 +23,7 @@ export type InboxViewType = 'inbox' | 'drafts' | 'sent' | 'archive' | 'bin';
 export type DialogsByView = { [key in InboxViewType]: InboxItemInput[] };
 interface UseDialogsOutput {
   dialogs: InboxItemInput[];
+  dialogCountInconclusive: boolean;
   dialogsByView: DialogsByView;
   isSuccess: boolean;
   isLoading: boolean;
@@ -179,6 +180,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
       archive: dialogs.filter(isArchivedDialog),
       bin: dialogs.filter(isBinDialog),
     },
+    dialogCountInconclusive: data?.searchDialogs?.hasNextPage === true || data?.searchDialogs?.items === null,
   };
 };
 
