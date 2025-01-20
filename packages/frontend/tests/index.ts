@@ -1,7 +1,7 @@
 import { PageRoutes } from '../src/pages/routes';
 
-const baseURL = process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:5173';
-const baseQueryParams = '?mock=true';
+export const baseURL = process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:5173';
+export const baseQueryParams = '?mock=true';
 
 export const appURLInbox = baseURL + PageRoutes.inbox + baseQueryParams;
 export const appURLDrafts = baseURL + PageRoutes.drafts + baseQueryParams;
