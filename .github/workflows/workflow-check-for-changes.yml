@@ -21,10 +21,10 @@ jobs:
     name: Filter
     runs-on: ubuntu-latest
     outputs:
-      hasInfrastructureChanges: ${{ steps.filter.outputs.infrastructure_any_changed == 'true' }}
-      hasApplicationChanges: ${{ steps.filter.outputs.applications_any_changed == 'true' }}
-      hasMigrationChanges: ${{ steps.filter.outputs.migrations_any_changed == 'true' }}
-      hasNodeLoggerChanges: ${{ steps.filter.outputs.nodeLogger_any_changed == 'true' }}
+      hasInfrastructureChanges: ${{ steps.filter.outputs.infrastructure_any_modified == 'true' }}
+      hasApplicationChanges: ${{ steps.filter.outputs.applications_any_modified == 'true' }}
+      hasMigrationChanges: ${{ steps.filter.outputs.migrations_any_modified == 'true' }}
+      hasNodeLoggerChanges: ${{ steps.filter.outputs.nodeLogger_any_modified == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
