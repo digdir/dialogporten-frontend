@@ -50,4 +50,12 @@ test.describe('Flattened parties and subparties', () => {
 
     await page.getByPlaceholder('Søk').press('Enter');
   });
+
+  test('Filters shows merged parties if sub party has same name as main party', async ({ page }) => {
+    await page.getByRole('button', { name: 'Test Testesen' }).click();
+    await page.getByText('Alle virksomheter').click();
+    await page.getByRole('button', { name: 'Legg til filter' }).click();
+    await page.getByText('Mottaker').click();
+    await expect(page.getByText('Til Mycompany AS Main2')).toBeVisible();
+  });
 });

@@ -29,7 +29,7 @@ interface UseDialogsOutput {
   isLoading: boolean;
 }
 
-export function mapDialogDtoToInboxItem(
+export function mapDialogToToInboxItem(
   input: SearchDialogFieldsFragment[],
   parties: PartyFieldsFragment[],
   organizations: OrganizationFieldsFragment[],
@@ -38,8 +38,13 @@ export function mapDialogDtoToInboxItem(
     const titleObj = item.content.title.value;
     const summaryObj = item.content.summary.value;
     const endUserParty = parties?.find((party) => party.isCurrentEndUser);
+
     const dialogReceiverParty = parties?.find((party) => party.party === item.party);
-    const actualReceiverParty = dialogReceiverParty ?? endUserParty;
+    const dialogReceiverSubParty = parties?.find((party) =>
+      (party.subParties ?? []).some((subParty) => subParty.party === item.party),
+    );
+
+    const actualReceiverParty = dialogReceiverParty ?? dialogReceiverSubParty ?? endUserParty;
     const serviceOwner = getOrganization(organizations || [], item.org, 'nb');
     const isSeenByEndUser =
       item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
@@ -54,7 +59,7 @@ export function mapDialogDtoToInboxItem(
         imageURL: serviceOwner?.logo,
       },
       receiver: {
-        name: actualReceiverParty?.name ?? '',
+        name: actualReceiverParty?.name ?? dialogReceiverSubParty?.name ?? '',
         isCompany: actualReceiverParty?.partyType === 'Organization',
       },
       metaFields: getMetaFields(item, isSeenByEndUser),
@@ -168,7 +173,8 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
     queryFn: () => getDialogs(mergedPartiesWithSubParties),
     enabled: mergedPartiesWithSubParties.length > 0,
   });
-  const dialogs = mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], selectedParties, organizations);
+
+  const dialogs = mapDialogToToInboxItem(data?.searchDialogs?.items ?? [], selectedParties, organizations);
   return {
     isLoading,
     isSuccess,
