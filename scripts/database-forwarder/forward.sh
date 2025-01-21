@@ -108,7 +108,7 @@ get_postgres_info() {
     
     local name
     name=$(az postgres flexible-server list --subscription "$subscription_id" \
-        --query "[?tags.Environment=='$env' && tags.Product=='Dialogporten'] | [0].name" -o tsv)
+        --query "[?tags.Environment=='$env' && tags.Product=='Arbeidsflate'] | [0].name" -o tsv)
     
     if [ -z "$name" ]; then
         log_error "Postgres server not found"
@@ -136,7 +136,7 @@ get_redis_info() {
     
     local name
     name=$(az redis list --subscription "$subscription_id" \
-        --query "[?tags.Environment=='$env' && tags.Product=='Dialogporten'] | [0].name" -o tsv)
+        --query "[?tags.Environment=='$env' && tags.Product=='Arbeidsflate'] | [0].name" -o tsv)
     
     if [ -z "$name" ]; then
         log_error "Redis server not found"
