@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.13.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.3...v1.13.0) (2025-01-21)
+
+
+### Features
+
+* implement new counting for dialogs: unread by end user, total per party or count inconclusive ([#1697](https://github.com/Altinn/dialogporten-frontend/issues/1697)) ([87edf51](https://github.com/Altinn/dialogporten-frontend/commit/87edf51b467f4ba851ab86690d4f9700f61aa256))
+* **infra:** provision yt01 ([#1691](https://github.com/Altinn/dialogporten-frontend/issues/1691)) ([9b4899e](https://github.com/Altinn/dialogporten-frontend/commit/9b4899e2f2535a49d64fc6f634a406321ae4f3cb))
+
+
+### Bug Fixes
+
+* **infra:** add permissions to ssh into ssh-jumper ([#1703](https://github.com/Altinn/dialogporten-frontend/issues/1703)) ([896643a](https://github.com/Altinn/dialogporten-frontend/commit/896643ab11d72d824722e4ca6f70bfeb5f2c17fb))
+
 ## [1.12.3](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.2...v1.12.3) (2025-01-16)
 
 
