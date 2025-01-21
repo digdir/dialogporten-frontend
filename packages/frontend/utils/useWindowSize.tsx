@@ -24,7 +24,7 @@ export function useWindowSize(): WindowSize {
         width: window.innerWidth,
         height: window.innerHeight,
         isMobile: window.innerWidth <= mobileBreakpoint,
-        isTabletOrSmaller: window.innerWidth <= tabletBreakpoint,
+        isTabletOrSmaller: window.innerWidth < tabletBreakpoint,
       });
     }
 
