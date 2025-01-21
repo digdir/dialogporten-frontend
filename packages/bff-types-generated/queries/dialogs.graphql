@@ -3,6 +3,7 @@ query getAllDialogsForParties($partyURIs: [String!], $search: String, $org: [Str
     items {
       ...SearchDialogFields
     }
+    hasNextPage
   }
 }
 

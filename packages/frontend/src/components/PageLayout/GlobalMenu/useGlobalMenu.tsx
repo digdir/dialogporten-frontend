@@ -1,18 +1,20 @@
-import type { BadgeColor, BadgeProps, MenuItemProps } from '@altinn/altinn-components';
+import type { BadgeProps, MenuItemProps } from '@altinn/altinn-components';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../../utils/useWindowSize.tsx';
 import type { InboxViewType } from '../../../api/useDialogs.tsx';
+import { useParties } from '../../../api/useParties.ts';
 import { getGlobalSearchQueryParams } from '../../../pages/Inbox/queryParams.ts';
 import { PageRoutes } from '../../../pages/routes.ts';
 export type SideBarView = InboxViewType | 'saved-searches' | 'archive' | 'bin';
 
-export type ItemPerViewCount = {
+export type ViewCountRecord = {
   [key in SideBarView]: number;
 };
 
 interface UseSidebarProps {
-  itemsPerViewCount: ItemPerViewCount;
+  itemsPerViewCount: ViewCountRecord;
+  needsAttentionPerView: ViewCountRecord;
 }
 
 interface UseGlobalMenuProps {
@@ -20,12 +22,19 @@ interface UseGlobalMenuProps {
   global: MenuItemProps[];
 }
 
-const getBadgeProps = (count: number, color?: BadgeColor): BadgeProps | undefined => {
+export const getAlertBadgeProps = (count: number): BadgeProps | undefined => {
+  if (count > 0) {
+    return {
+      label: count.toString(),
+    };
+  }
+};
+
+const getBadgeProps = (count: number): BadgeProps | undefined => {
   if (count > 0) {
     return {
       label: count.toString(),
       size: 'sm',
-      color,
     };
   }
 };
@@ -34,9 +43,10 @@ const createMenuItemComponent =
   ({ to, isExternal = false }: { to: string; isExternal?: boolean }): React.FC<MenuItemProps> =>
   (props) => <Link {...props} to={to} {...(isExternal ? { target: '__blank', rel: 'noopener noreferrer' } : {})} />;
 
-export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobalMenuProps => {
+export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseSidebarProps): UseGlobalMenuProps => {
   const { t } = useTranslation();
   const { pathname, search } = useLocation();
+  const { selectedProfile } = useParties();
   const globalSearchQueryParams = getGlobalSearchQueryParams(search);
   const { isMobile } = useWindowSize();
   const linksMenuItems: MenuItemProps[] = [
@@ -69,9 +79,11 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
       groupId: 'global',
       size: 'lg',
       icon: 'inbox',
+      theme: 'base',
+      iconVariant: 'solid',
       title: t('sidebar.inbox'),
-      color: 'strong',
-      badge: getBadgeProps(itemsPerViewCount.inbox, 'alert'),
+      alertBadge: getAlertBadgeProps(needsAttentionPerView.inbox),
+      badge: getBadgeProps(itemsPerViewCount.inbox),
       selected: pathname === PageRoutes.inbox,
       expanded: true,
       as: createMenuItemComponent({
@@ -140,7 +152,7 @@ export const useGlobalMenu = ({ itemsPerViewCount }: UseSidebarProps): UseGlobal
   const global: MenuItemProps[] = [
     {
       ...sidebar[0],
-      color: 'neutral',
+      color: selectedProfile,
       items: isMobile ? sidebar[0].items : [],
       expanded: isMobile,
     },

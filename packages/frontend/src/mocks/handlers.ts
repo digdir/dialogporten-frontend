@@ -26,6 +26,18 @@ const getAllDialogsForPartiesMock = graphql.query('getAllDialogsForParties', (op
   const {
     variables: { partyURIs, search },
   } = options;
+
+
+  if (inMemoryStore.dialogs === null) {
+    return HttpResponse.json({
+      data: {
+        searchDialogs: {
+          items: null,
+        },
+      },
+    });
+  }
+
   const itemsForParty = inMemoryStore.dialogs.filter((dialog) => partyURIs.includes(dialog.party));
   const allowedPartyIds = inMemoryStore.parties.flatMap((party: PartyFieldsFragment) => [party.party, ...(party.subParties ?? []).map((subParty) => subParty.party)]);
   const allPartiesEligible = partyURIs.every((partyURI: string) => allowedPartyIds.includes(partyURI));
