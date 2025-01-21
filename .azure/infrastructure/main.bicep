@@ -22,6 +22,9 @@ param sourceKeyVaultName string
 @minLength(3)
 param sourceKeyVaultSshJumperSshPublicKey string
 
+@description('The object ID of the group to assign the Admin Login role for SSH Jumper')
+param sshJumperAdminLoginGroupObjectId string
+
 import { Sku as RedisSku } from '../modules/redis/main.bicep'
 param redisSku RedisSku
 @minLength(1)
@@ -218,6 +221,7 @@ module sshJumper '../modules/ssh-jumper/main.bicep' = {
     subnetId: vnet.outputs.defaultSubnetId
     tags: tags
     sshPublicKey: secrets.sourceKeyVaultSshJumperSshPublicKey
+    adminLoginGroupObjectId: sshJumperAdminLoginGroupObjectId
   }
 }
 
