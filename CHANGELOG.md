@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.0...v1.13.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* Render sidebar navigation items in the global menu on tablet viewports (768px-1024px) ([#1710](https://github.com/Altinn/dialogporten-frontend/issues/1710)) ([f38753c](https://github.com/Altinn/dialogporten-frontend/commit/f38753cd1af90f4eac720aeaa00df28361481667))
+
 ## [1.13.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.12.3...v1.13.0) (2025-01-21)
 
 
