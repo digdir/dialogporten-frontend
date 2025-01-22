@@ -142,7 +142,6 @@ export const PageLayout: React.FC = () => {
         items: sidebar,
       },
     },
-    children: undefined,
   };
 
   return (

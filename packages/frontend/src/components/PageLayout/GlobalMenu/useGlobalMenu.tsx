@@ -48,7 +48,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
   const { pathname, search } = useLocation();
   const { selectedProfile } = useParties();
   const globalSearchQueryParams = getGlobalSearchQueryParams(search);
-  const { isMobile } = useWindowSize();
+  const { isTabletOrSmaller } = useWindowSize();
   const linksMenuItems: MenuItemProps[] = [
     {
       id: 'all-services',
@@ -153,8 +153,9 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
     {
       ...sidebar[0],
       color: selectedProfile,
-      items: isMobile ? sidebar[0].items : [],
-      expanded: isMobile,
+      /* do not show sub items on viewports bigger than tablet since they are already shown in the sidebar */
+      items: isTabletOrSmaller ? sidebar[0].items : [],
+      expanded: isTabletOrSmaller,
     },
     ...linksMenuItems,
   ];
