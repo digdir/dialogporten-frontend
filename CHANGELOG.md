@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.13.2](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.1...v1.13.2) (2025-01-23)
+
+
+### Bug Fixes
+
+* CI/CD Pipeline issue ([d876431](https://github.com/Altinn/dialogporten-frontend/commit/d87643149f2d3d1dc690d22687376714fecd23b1))
+* Saved searches database issue ([8baa88a](https://github.com/Altinn/dialogporten-frontend/commit/8baa88a416d602fc3ea2078bd3060aa950b15fa3))
+* SubParties missing in filters ([#1701](https://github.com/Altinn/dialogporten-frontend/issues/1701)) ([fb675ba](https://github.com/Altinn/dialogporten-frontend/commit/fb675ba59ac4a618ea254baa77d0e84bf5bb2432))
+
 ## [1.13.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.0...v1.13.1) (2025-01-22)
 
 
