@@ -25,6 +25,26 @@ Migrations will be run automatically during CI/CD (or when starting the project 
     ```
 - After these migration files are generated, restart project if in local dev env - if not then migration will be ran in CI/CD.
 
+- IMPORTANT: If you are creating a "nullable: false" row, remember to add the "DEFAULT 'your default value'" to your generated migration script (see example below), which all pre-existing data will get as value of this new column.
+    ```js
+  import { MigrationInterface, QueryRunner } from 'typeorm';
+
+  export class AddNonNull1737471965228 implements MigrationInterface {
+      name = 'AddNonNull1737471965228';
+
+      public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(
+          `ALTER TABLE "saved_search" ADD "nonnulltest" character varying(255) NOT NULL DEFAULT 'default_value'`,
+        );
+      }
+
+      public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "saved_search" DROP COLUMN "nonnulltest"`);
+      }
+  }
+
+    ```
+
 - Troubleshooting:
   - Delete bff/dist folder to clear old files if you get error running the migration
 - **TEST LOCALLY** before pushing to branch.
