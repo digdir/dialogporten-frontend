@@ -129,7 +129,7 @@ const getMainContentReference = (
   };
 };
 
-export function mapDialogDtoToInboxItem(
+export function mapDialogToToInboxItem(
   item: DialogByIdFieldsFragment | null | undefined,
   parties: PartyFieldsFragment[],
   organizations: OrganizationFieldsFragment[],
@@ -235,6 +235,6 @@ export const useDialogById = (parties: PartyFieldsFragment[], id?: string): UseD
   return {
     isLoading,
     isSuccess,
-    dialog: mapDialogDtoToInboxItem(data?.dialogById.dialog, parties, organizations),
+    dialog: mapDialogToToInboxItem(data?.dialogById.dialog, parties, organizations),
   };
 };

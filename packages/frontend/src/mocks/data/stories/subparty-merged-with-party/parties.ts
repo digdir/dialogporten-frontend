@@ -50,4 +50,33 @@ export const parties: PartyFieldsFragment[] = [
       },
     ],
   },
+  {
+    party: 'urn:altinn:organization:identifier-mycompanyas-no:3',
+    partyType: 'Organization',
+    isAccessManager: true,
+    isMainAdministrator: true,
+    name: 'MyCompany AS main',
+    isCurrentEndUser: false,
+    isDeleted: false,
+    subParties: [
+      {
+        party: 'urn:altinn:organization:id-mycompanyas-sub:1',
+        partyType: 'Organization',
+        isAccessManager: true,
+        isMainAdministrator: true,
+        name: 'MyCompany AS main',
+        isCurrentEndUser: false,
+        isDeleted: false,
+      },
+      {
+        party: 'urn:altinn:organization:id-mycompanyas-sub:2',
+        partyType: 'Organization',
+        isAccessManager: true,
+        isMainAdministrator: true,
+        name: 'MyCompany AS sub 2',
+        isCurrentEndUser: false,
+        isDeleted: false,
+      },
+    ],
+  },
 ];

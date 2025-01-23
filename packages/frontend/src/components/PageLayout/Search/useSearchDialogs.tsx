@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { DialogStatus, GetAllDialogsForPartiesQuery, PartyFieldsFragment } from 'bff-types-generated';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { mapDialogDtoToInboxItem, searchDialogs } from '../../../api/useDialogs.tsx';
+import { mapDialogToToInboxItem, searchDialogs } from '../../../api/useDialogs.tsx';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
 import { useOrganizations } from '../../../pages/Inbox/useOrganizations.ts';
 import type { InboxItemInput } from '../../InboxItem';
@@ -33,7 +33,7 @@ export const useSearchDialogs = ({ parties, searchValue }: searchDialogsProps): 
   const [searchResults, setSearchResults] = useState([] as InboxItemInput[]);
 
   useEffect(() => {
-    setSearchResults(enabled ? mapDialogDtoToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations) : []);
+    setSearchResults(enabled ? mapDialogToToInboxItem(data?.searchDialogs?.items ?? [], parties, organizations) : []);
   }, [data?.searchDialogs?.items, enabled, parties, organizations]);
 
   return {
