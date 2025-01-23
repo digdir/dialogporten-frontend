@@ -18,9 +18,6 @@ export class ProfileTable {
   @Column({ length: 255, nullable: true })
   language: string;
 
-  @Column({ length: 255, nullable: true })
-  migrationtest: string;
-
   @OneToMany('saved_search', 'profile')
   savedSearches: SavedSearch[];
 
