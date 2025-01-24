@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.3](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.2...v1.13.3) (2025-01-24)
+
+
+### Bug Fixes
+
+* update dialogporten schema to latest + order by updated date DESC for search dialogs ([#1724](https://github.com/Altinn/dialogporten-frontend/issues/1724)) ([ace8a22](https://github.com/Altinn/dialogporten-frontend/commit/ace8a22788e27861f2e0c0b5a548115393da6be6))
+
 ## [1.13.2](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.1...v1.13.2) (2025-01-23)
 
 
