@@ -22,7 +22,7 @@ describe('MainContentReference Component', () => {
   it('should render markdown content', async () => {
     const mockContent = {
       url: 'https://altinn.mock/content',
-      mediaType: EmbeddableMediaType.markdown,
+      mediaType: EmbeddableMediaType.markdown_deprecated,
     };
 
     const mockResponse = '# header ## subheader ### subsubheader';
@@ -42,7 +42,7 @@ describe('MainContentReference Component', () => {
   it('should render html content', async () => {
     const mockContent = {
       url: 'https://altinn.mock/content',
-      mediaType: EmbeddableMediaType.html,
+      mediaType: EmbeddableMediaType.html_deprecated,
     };
 
     const mockResponse = '<html><body><h1>header 1</h1></body></html>';

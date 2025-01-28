@@ -25,8 +25,10 @@ export interface Participant {
 }
 
 export enum EmbeddableMediaType {
-  markdown = 'application/vnd.dialogporten.frontchannelembed+json;type=markdown',
-  html = 'application/vnd.dialogporten.frontchannelembed+json;type=html',
+  markdown = 'application/vnd.dialogporten.frontchannelembed-url;type=text/markdown',
+  html = 'application/vnd.dialogporten.frontchannelembed-url;type=text/html',
+  markdown_deprecated = 'application/vnd.dialogporten.frontchannelembed+json;type=markdown',
+  html_deprecated = 'application/vnd.dialogporten.frontchannelembed+json;type=html',
 }
 
 export interface EmbeddedContent {
