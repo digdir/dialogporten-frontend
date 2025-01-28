@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.4](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.3...v1.13.4) (2025-01-28)
+
+
+### Bug Fixes
+
+* adds new media types for front channel embeds: application/vnd.dialogporten.frontchannelembed-url;type=text/markdown and application/vnd.dialogporten.frontchannelembed-url;type=text/html ([#1731](https://github.com/Altinn/dialogporten-frontend/issues/1731)) ([95663b2](https://github.com/Altinn/dialogporten-frontend/commit/95663b239462258845b640b05de3e95efc231393))
+
 ## [1.13.3](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.2...v1.13.3) (2025-01-24)
 
 
