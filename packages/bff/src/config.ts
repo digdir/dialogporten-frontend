@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config as dotenvConfig } from 'dotenv';
 import z from 'zod';
 
 const envVariables = z.object({
@@ -12,7 +12,7 @@ const envVariables = z.object({
   OIDC_URL: z.string().default('test.idporten.no'),
   HOSTNAME: z.string().default('http://localhost'),
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
-  ENABLE_HTTPS: z.boolean().default(false),
+  ENABLE_HTTPS: z.coerce.boolean().default(true),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
   REDIS_CONNECTION_STRING: z.string().default('redis://:mysecretpassword@127.0.0.1:6379/0'),
   CLIENT_ID: z.string(),
@@ -45,7 +45,7 @@ const config = {
     connectionString: env.DB_CONNECTION_STRING,
   },
   secret: env.SESSION_SECRET,
-  enableHttps: env.ENABLE_HTTPS,
+  enableHttps: process.env.ENABLE_HTTPS === 'false' ? false : env.ENABLE_HTTPS,
   cookieMaxAge: env.COOKIE_MAX_AGE,
   redisConnectionString: env.REDIS_CONNECTION_STRING,
   migrationRun: env.MIGRATION_RUN,
