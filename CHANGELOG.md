@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.4...v1.14.0) (2025-01-28)
+
+
+### Features
+
+* add inconclusive badge for sidebar when dialog count is unknown ([#1735](https://github.com/Altinn/dialogporten-frontend/issues/1735)) ([92ee700](https://github.com/Altinn/dialogporten-frontend/commit/92ee700634eee7398c6a35f527cae9bf1fe61de9))
+
 ## [1.13.4](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.3...v1.13.4) (2025-01-28)
 
 
