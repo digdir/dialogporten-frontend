@@ -41,7 +41,7 @@ export const PageLayout: React.FC = () => {
   const location = useLocation();
   const { selectedProfile, selectedParties, parties, selectedPartyIds, setSelectedPartyIds, allOrganizationsSelected } =
     useParties();
-  const { dialogsByView } = useDialogs(selectedParties);
+  const { dialogsByView, dialogCountInconclusive: partyDialogsCountInconclusive } = useDialogs(selectedParties);
   const { dialogsByView: allDialogsByView, dialogCountInconclusive: allDialogCountInconclusive } = useDialogs(parties);
   const { autocomplete } = useSearchAutocompleteDialogs({ selectedParties: selectedParties, searchValue });
   const { accounts, selectedAccount, accountSearch, accountGroups } = useAccounts({
@@ -72,7 +72,11 @@ export const PageLayout: React.FC = () => {
   };
 
   const footer: FooterProps = useFooter();
-  const { global, sidebar } = useGlobalMenu({ itemsPerViewCount, needsAttentionPerView });
+  const { global, sidebar } = useGlobalMenu({
+    itemsPerViewCount,
+    needsAttentionPerView,
+    dialogCountsInconclusive: partyDialogsCountInconclusive,
+  });
 
   useProfile();
 

@@ -15,6 +15,7 @@ export type ViewCountRecord = {
 interface UseSidebarProps {
   itemsPerViewCount: ViewCountRecord;
   needsAttentionPerView: ViewCountRecord;
+  dialogCountsInconclusive: boolean;
 }
 
 interface UseGlobalMenuProps {
@@ -30,7 +31,13 @@ export const getAlertBadgeProps = (count: number): BadgeProps | undefined => {
   }
 };
 
-const getBadgeProps = (count: number): BadgeProps | undefined => {
+const getBadgeProps = (count: number, countInconclusive?: boolean): BadgeProps | undefined => {
+  if (countInconclusive) {
+    return {
+      label: '',
+      size: 'xs',
+    };
+  }
   if (count > 0) {
     return {
       label: count.toString(),
@@ -43,7 +50,11 @@ const createMenuItemComponent =
   ({ to, isExternal = false }: { to: string; isExternal?: boolean }): React.FC<MenuItemProps> =>
   (props) => <Link {...props} to={to} {...(isExternal ? { target: '__blank', rel: 'noopener noreferrer' } : {})} />;
 
-export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseSidebarProps): UseGlobalMenuProps => {
+export const useGlobalMenu = ({
+  itemsPerViewCount,
+  needsAttentionPerView,
+  dialogCountsInconclusive,
+}: UseSidebarProps): UseGlobalMenuProps => {
   const { t } = useTranslation();
   const { pathname, search } = useLocation();
   const { selectedProfile } = useParties();
@@ -83,7 +94,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
       iconVariant: 'solid',
       title: t('sidebar.inbox'),
       alertBadge: getAlertBadgeProps(needsAttentionPerView.inbox),
-      badge: getBadgeProps(itemsPerViewCount.inbox),
+      badge: getBadgeProps(itemsPerViewCount.inbox, dialogCountsInconclusive),
       selected: pathname === PageRoutes.inbox,
       expanded: true,
       as: createMenuItemComponent({
@@ -95,7 +106,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
           groupId: '2',
           icon: 'doc-pencil',
           title: t('sidebar.drafts'),
-          badge: getBadgeProps(itemsPerViewCount.drafts),
+          badge: getBadgeProps(itemsPerViewCount.drafts, dialogCountsInconclusive),
           selected: pathname === PageRoutes.drafts,
           as: createMenuItemComponent({
             to: PageRoutes.drafts + globalSearchQueryParams,
@@ -106,7 +117,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
           groupId: '2',
           icon: 'file-checkmark',
           title: t('sidebar.sent'),
-          badge: getBadgeProps(itemsPerViewCount.sent),
+          badge: getBadgeProps(itemsPerViewCount.sent, dialogCountsInconclusive),
           selected: pathname === PageRoutes.sent,
           as: createMenuItemComponent({
             to: PageRoutes.sent + globalSearchQueryParams,
@@ -128,7 +139,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
           groupId: '4',
           icon: 'archive',
           title: t('sidebar.archived'),
-          badge: getBadgeProps(itemsPerViewCount.archive),
+          badge: getBadgeProps(itemsPerViewCount.archive, dialogCountsInconclusive),
           selected: pathname === PageRoutes.archive,
           as: createMenuItemComponent({
             to: PageRoutes.archive + globalSearchQueryParams,
@@ -139,7 +150,7 @@ export const useGlobalMenu = ({ itemsPerViewCount, needsAttentionPerView }: UseS
           groupId: '4',
           icon: 'trash',
           title: t('sidebar.deleted'),
-          badge: getBadgeProps(itemsPerViewCount.bin),
+          badge: getBadgeProps(itemsPerViewCount.bin, dialogCountsInconclusive),
           selected: pathname === PageRoutes.bin,
           as: createMenuItemComponent({
             to: PageRoutes.bin + globalSearchQueryParams,
