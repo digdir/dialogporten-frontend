@@ -14,7 +14,7 @@ import './styles.css';
 const production = { Fragment: prod.Fragment, jsx: prod.jsx, jsxs: prod.jsxs };
 
 /**
- * Renders markdown as React elements.
+ * Renders markdown as React elements in common mark: https://spec.commonmark.org/0.31.2/spec.json.
  *
  * @param children - The markdown string to render.
  * @param onError - A callback for handling errors.

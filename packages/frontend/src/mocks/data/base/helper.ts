@@ -13,7 +13,7 @@ export const getMockedMainContent = (dialogId: string) => {
 
   if (idWithLegacyHTML === dialogId) {
     return {
-      mediaType: 'application/vnd.dialogporten.frontchannelembed+json;type=html',
+      mediaType: 'application/vnd.dialogporten.frontchannelembed-url;type=text/html',
       value: [
         {
           value: 'https://dialogporten-serviceprovider.net/fce-html',
@@ -24,7 +24,7 @@ export const getMockedMainContent = (dialogId: string) => {
   }
 
   return {
-    mediaType: 'application/vnd.dialogporten.frontchannelembed+json;type=markdown',
+    mediaType: 'application/vnd.dialogporten.frontchannelembed-url;type=text/markdown',
     value: [
       {
         value: 'https://dialogporten-serviceprovider.net/fce-markdown',
