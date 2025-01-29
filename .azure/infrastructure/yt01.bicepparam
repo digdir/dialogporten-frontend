@@ -32,13 +32,7 @@ param applicationGatewayConfiguration = {
   hostName: 'af.yt01.altinn.no'
   sslCertificate: {
     keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
-<<<<<<< Updated upstream
-    secretKey: 'star-yt01-altinn-no'
-||||||| Stash base
-    secretKey: 'star-yt-altinn-cloud'
-=======
     secretKey: 'af-yt-altinn-cloud'
->>>>>>> Stashed changes
   }
 } 
 
