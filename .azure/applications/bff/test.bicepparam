@@ -17,7 +17,11 @@ param appConfigurationName = readEnvironmentVariable('APP_CONFIGURATION_NAME')
 
 param additionalEnvironmentVariables = [
   {
-    name: 'ENABLE_HTTPS'
+    name: 'COOKIE_SECURE'
+    value: 'true'
+  }
+  {
+    name: 'COOKIE_HTTP_ONLY'
     value: 'true'
   }
 ]
