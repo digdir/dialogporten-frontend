@@ -36,6 +36,9 @@ param appConfigurationName string
 @secure()
 param environmentKeyVaultName string
 
+@description('Additional environment variables to be added to the container app')
+param additionalEnvironmentVariables array = []
+
 var namePrefix = 'dp-fe-${environment}'
 var baseImageUrl = 'ghcr.io/altinn/dialogporten-frontend-'
 var containerAppName = '${namePrefix}-bff'
@@ -97,7 +100,7 @@ var secrets = [
   idPortenSessionSecretSecret
 ]
 
-var containerAppEnvVars = [
+var containerAppEnvVars = concat([
   {
     name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
     value: appInsightConnectionString
@@ -162,7 +165,7 @@ var containerAppEnvVars = [
     name: 'ENABLE_GRAPHIQL'
     value: graphiQLEnabled
   }
-]
+], additionalEnvironmentVariables)
 
 module containerApp '../../modules/containerApp/main.bicep' = {
   name: containerAppName
