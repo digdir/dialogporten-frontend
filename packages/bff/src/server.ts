@@ -25,7 +25,7 @@ const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
-    trustProxy: enableHttps,
+    trustProxy: cookieConfig.secure,
   });
 
   const { dataSource } = await connectToDB();
