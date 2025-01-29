@@ -25,6 +25,9 @@ const startServer = async (): Promise<void> => {
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
+    // The application gateway will terminate https and forward request as http
+    // This ensures that the proxy aka application gateway is trusted
+    // Setting cookie to secure will make it expect https requests without this
     trustProxy: cookieConfig.secure,
   });
 
