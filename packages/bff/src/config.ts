@@ -1,28 +1,36 @@
 import 'dotenv/config';
 import z from 'zod';
 
+const stringToBoolean = (val: unknown): boolean | unknown => {
+  if (typeof val === 'string') {
+    if (val.toLowerCase() === 'true') return true;
+    if (val.toLowerCase() === 'false') return false;
+  }
+  return false;
+};
+
 const envVariables = z.object({
   // todo: rather use version here instead of git_sha
   GIT_SHA: z.string().default('v6.1.5'),
   HOST: z.string().default('0.0.0.0'),
   DB_CONNECTION_STRING: z.string().default('postgres://postgres:mysecretpassword@localhost:5432/dialogporten'),
   APPLICATIONINSIGHTS_CONNECTION_STRING: z.string().optional(),
-  APPLICATIONINSIGHTS_ENABLED: z.coerce.boolean().default(false),
+  APPLICATIONINSIGHTS_ENABLED: z.preprocess(stringToBoolean, z.boolean().default(false)),
   PORT: z.coerce.number().default(3000),
   OIDC_URL: z.string().default('test.idporten.no'),
   HOSTNAME: z.string().default('http://localhost'),
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
-  ENABLE_HTTPS: z.boolean().default(false),
+  ENABLE_HTTPS: z.preprocess(stringToBoolean, z.boolean().default(false)),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
-  COOKIE_SECURE: z.coerce.boolean().default(false),
-  COOKIE_HTTP_ONLY: z.coerce.boolean().default(false),
+  COOKIE_SECURE: z.preprocess(stringToBoolean, z.boolean().default(false)),
+  COOKIE_HTTP_ONLY: z.preprocess(stringToBoolean, z.boolean().default(false)),
   REDIS_CONNECTION_STRING: z.string().default('redis://:mysecretpassword@127.0.0.1:6379/0'),
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
-  MIGRATION_RUN: z.coerce.boolean().default(false),
+  MIGRATION_RUN: z.preprocess(stringToBoolean, z.boolean().default(false)),
   DIALOGPORTEN_URL: z.string().default('https://altinn-dev-api.azure-api.net/dialogporten/graphql'),
   CONTAINER_APP_REPLICA_NAME: z.string().default(''),
-  ENABLE_GRAPHIQL: z.coerce.boolean().default(true),
+  ENABLE_GRAPHIQL: z.preprocess(stringToBoolean, z.boolean().default(false)),
 });
 
 const env = envVariables.parse(process.env);
