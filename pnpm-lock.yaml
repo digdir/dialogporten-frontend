@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../node-logger
       '@digdir/dialogporten-schema':
-        specifier: 1.47.4-4b9bad0
-        version: 1.47.4-4b9bad0
+        specifier: 1.47.5-431c529
+        version: 1.47.5-431c529
       '@fastify/cookie':
         specifier: ^9.3.1
         version: 9.4.0
@@ -386,8 +386,8 @@ importers:
   packages/frontend:
     dependencies:
       '@altinn/altinn-components':
-        specifier: ^0.14.2
-        version: 0.14.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.15.3
+        version: 0.15.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@digdir/designsystemet-css':
         specifier: 0.11.0-next.10
         version: 0.11.0-next.10
@@ -606,8 +606,8 @@ packages:
     resolution: {integrity: sha512-p6t8ue0XZNjcRiqNkb5QAM0qQRAKsCiebZ6n9JjWA+p8fWf8BvnhO55y2fO28g3GW0Imj7PrAuyBuxq8aDVQwQ==}
     engines: {node: '>= 14.0.0'}
 
-  '@altinn/altinn-components@0.14.2':
-    resolution: {integrity: sha512-yRVe/Qs1H/XNrvPkkdn5KzuHL019U+k9GYlmiSEquSS4JZgk4ckrT1I8gsT20GPUn/rflJ+1+qSGYWCM5lc2LQ==}
+  '@altinn/altinn-components@0.15.3':
+    resolution: {integrity: sha512-eay9JsIi/QRgDhPh4+EDw/MxMY7Crm4Q6l5WcSKvLypbkZ6vg4PCnYC47q1g7CfjJIbRdW5+P+nk4v1rSY/6XQ==}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
@@ -1690,8 +1690,8 @@ packages:
   '@digdir/designsystemet-theme@1.0.0-next.14':
     resolution: {integrity: sha512-JWCLhXxDlMYwatg7mLkptfEkeiv/EKSaUOXX4nUoV8HjqyxMnLaaZZe6NKqx2SH1GPKOeSL5bEcs2NAEoFlGXg==}
 
-  '@digdir/dialogporten-schema@1.47.4-4b9bad0':
-    resolution: {integrity: sha512-qDHNSeItqxxZCM9fXQolYJgbDKjTQkP5LVbbiuNR+snJ+n6wN+zsheP9+UgCDBdNTzRqtEl/6eL6p0Db/xwhLg==}
+  '@digdir/dialogporten-schema@1.47.5-431c529':
+    resolution: {integrity: sha512-KT0PiM6Q1/CaBRNqTyVt0hgBHRkrBjjbpgArLf/Aa4y7AprxzA9HYq6Ys6YleC0h16YQC3f3yMS8XvXGVLiXnA==}
     engines: {node: '22'}
 
   '@discoveryjs/json-ext@0.5.7':
@@ -2798,8 +2798,8 @@ packages:
   '@navikt/aksel-icons@6.17.0':
     resolution: {integrity: sha512-n+1AsE9kRFh3C7BcD0fAJhIA6/65PsLGrpNKnLQUjW8hwESzo1LYHfZgZXi2Shaw2hCzQ1wx/hBBdwtQfUiBNg==}
 
-  '@navikt/aksel-icons@7.9.1':
-    resolution: {integrity: sha512-IbKrPTyu4D39BUQ/sq3DnejUnQx2tNkFxISgOpw/SvAcpNJKP6FgRyuu9c68gGwQx16qSdzQfv+uMGTC1VJVfw==}
+  '@navikt/aksel-icons@7.10.0':
+    resolution: {integrity: sha512-k8mcnkx/kiNd6SacR6lQot+WuIz6/3k3oUc9A+mH91FFJ1DcA4GCstS72/A4otmszvvCxCw0ZkivgBtU1JFq1g==}
 
   '@nevware21/ts-async@0.5.4':
     resolution: {integrity: sha512-IBTyj29GwGlxfzXw2NPnzty+w0Adx61Eze1/lknH/XIVdxtF9UnOpk76tnrHXWa6j84a1RR9hsOcHQPFv9qJjA==}
@@ -10296,9 +10296,9 @@ snapshots:
     dependencies:
       '@algolia/client-common': 5.19.0
 
-  '@altinn/altinn-components@0.14.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@altinn/altinn-components@0.15.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@navikt/aksel-icons': 7.9.1
+      '@navikt/aksel-icons': 7.10.0
       classnames: 2.5.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -11720,7 +11720,7 @@ snapshots:
 
   '@digdir/designsystemet-theme@1.0.0-next.14': {}
 
-  '@digdir/dialogporten-schema@1.47.4-4b9bad0': {}
+  '@digdir/dialogporten-schema@1.47.5-431c529': {}
 
   '@discoveryjs/json-ext@0.5.7': {}
 
@@ -13783,7 +13783,7 @@ snapshots:
 
   '@navikt/aksel-icons@6.17.0': {}
 
-  '@navikt/aksel-icons@7.9.1': {}
+  '@navikt/aksel-icons@7.10.0': {}
 
   '@nevware21/ts-async@0.5.4':
     dependencies:

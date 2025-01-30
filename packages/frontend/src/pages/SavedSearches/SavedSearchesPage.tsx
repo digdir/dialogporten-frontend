@@ -1,7 +1,8 @@
-import { type BookmarksListItemProps, BookmarksSection } from '@altinn/altinn-components';
+import { BookmarksSection } from '@altinn/altinn-components';
 import { useSnackbar } from '@altinn/altinn-components';
+import type { EditableBookmarkProps } from '@altinn/altinn-components/dist/types/lib/components';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { deleteSavedSearch, updateSavedSearch } from '../../api/queries.ts';
@@ -34,13 +35,13 @@ export const SavedSearchesPage = () => {
 
   if (isLoadingSavedSearches) {
     const skeletonItems = 3;
-    const items: BookmarksListItemProps[] = Array.from({ length: savedSearches?.length || skeletonItems }, (_, i) => ({
+    const items = Array.from({ length: skeletonItems }, (_, i) => ({
       id: i.toString(),
       title: t('savedSearches.loading_saved_searches') + randomString(),
     }));
     return (
       <div className={styles.savedSearchesWrapper}>
-        <BookmarksSection title={t('savedSearches.loading_saved_searches')} items={items} loading={true} />
+        <BookmarksSection title={t('savedSearches.loading_saved_searches')} items={items} loading />
       </div>
     );
   }
@@ -82,7 +83,7 @@ export const SavedSearchesPage = () => {
       queryParams.append(filter.id, String(filter.value));
     }
 
-    const itemObject: BookmarksListItemProps = {
+    const itemObject: EditableBookmarkProps = {
       id: savedSearch.id.toString(),
       params: [],
       title: '',
@@ -100,8 +101,7 @@ export const SavedSearchesPage = () => {
                 void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
                 setExpandedId('');
               })
-              .catch((e) => {
-                console.error('Failed to update saved search:', e);
+              .catch(() => {
                 openSnackbar({
                   message: t('savedSearches.update_failed'),
                   color: 'alert',
@@ -122,8 +122,7 @@ export const SavedSearchesPage = () => {
               void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SAVED_SEARCHES] });
               setExpandedId('');
             })
-            .catch((e) => {
-              console.error('Failed to delete saved search:', e);
+            .catch(() => {
               openSnackbar({
                 message: t('savedSearches.delete_failed'),
                 color: 'alert',
@@ -131,7 +130,7 @@ export const SavedSearchesPage = () => {
             });
         },
       },
-      onChange: (e) => {
+      onChange: (e: ChangeEvent<HTMLInputElement>) => {
         setSavedSearchInputValue(e.target.value);
       },
       inputValue: savedSearchInputValue,
@@ -155,11 +154,11 @@ export const SavedSearchesPage = () => {
   });
 
   const handleOnToggle = (itemId: string) => {
-    if (expandedId === itemId) {
-      setExpandedId('');
-      return;
+    const nextExpandedId = itemId === expandedId ? '' : itemId;
+    if (nextExpandedId) {
+      setSavedSearchInputValue(items?.find((item) => item.id === nextExpandedId)?.title ?? '');
     }
-    setExpandedId(itemId);
+    setExpandedId(nextExpandedId);
   };
 
   return (
