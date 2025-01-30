@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.14.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.14.0...v1.14.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* **bff:** disable secure cookie in test ([#1754](https://github.com/Altinn/dialogporten-frontend/issues/1754)) ([6521923](https://github.com/Altinn/dialogporten-frontend/commit/652192397f87e0c54549f1438efc7fd779b20f2f))
+* **bff:** ensure no redirect loop in test ([#1755](https://github.com/Altinn/dialogporten-frontend/issues/1755)) ([4bc13e7](https://github.com/Altinn/dialogporten-frontend/commit/4bc13e72f927f0ec3343b6b2ef2a4a6f7e225a88))
+* ensure cookie env variables are properly parsed ([#1749](https://github.com/Altinn/dialogporten-frontend/issues/1749)) ([b6ddbd6](https://github.com/Altinn/dialogporten-frontend/commit/b6ddbd6ad6b4df5ed4dd03763d1db9c695180878))
+* ensure cookie is secure in test environment ([#1748](https://github.com/Altinn/dialogporten-frontend/issues/1748)) ([71ccdb5](https://github.com/Altinn/dialogporten-frontend/commit/71ccdb5a0fa7cd29175800d109e807e1dad0f901))
+* **infra:** use correct ssl certificate in app gateway for production ([#1747](https://github.com/Altinn/dialogporten-frontend/issues/1747)) ([b3ed370](https://github.com/Altinn/dialogporten-frontend/commit/b3ed3705e6a6e7eeffa601843578931ae600a573))
+* Secure cookies in staging/test/prod ([935e3a3](https://github.com/Altinn/dialogporten-frontend/commit/935e3a3e44da9f36633bd38494e663d9117da11e))
+* use only digdir:dialogporten.noconsent in order to remove consent screen ([#1753](https://github.com/Altinn/dialogporten-frontend/issues/1753)) ([cb5b198](https://github.com/Altinn/dialogporten-frontend/commit/cb5b198c45a0efe8aec9d12bc3964db72ab07d41))
+
 ## [1.14.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.13.4...v1.14.0) (2025-01-28)
 
 
