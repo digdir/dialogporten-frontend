@@ -32,7 +32,7 @@ param applicationGatewayConfiguration = {
   hostName: 'af.altinn.no'
   sslCertificate: {
     keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
-    secretKey: 'star-altinn-no'
+    secretKey: 'af-altinn-no'
   }
 }
 
