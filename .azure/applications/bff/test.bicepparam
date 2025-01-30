@@ -15,13 +15,4 @@ param containerAppEnvironmentName = readEnvironmentVariable('CONTAINER_APP_ENVIR
 param appInsightConnectionString = readEnvironmentVariable('APP_INSIGHTS_CONNECTION_STRING')
 param appConfigurationName = readEnvironmentVariable('APP_CONFIGURATION_NAME')
 
-param additionalEnvironmentVariables = [
-  {
-    name: 'COOKIE_SECURE'
-    value: 'true'
-  }
-  {
-    name: 'COOKIE_HTTP_ONLY'
-    value: 'true'
-  }
-]
+param additionalEnvironmentVariables = []
