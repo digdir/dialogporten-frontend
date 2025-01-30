@@ -20,7 +20,7 @@ import redisClient from './redisClient.ts';
 const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
 
 const startServer = async (): Promise<void> => {
-  const { secret, enableHttps, cookie: cookieConfig, enableGraphiql } = config;
+  const { secret, cookie: cookieConfig, enableGraphiql } = config;
 
   const server = Fastify({
     ignoreTrailingSlash: true,
