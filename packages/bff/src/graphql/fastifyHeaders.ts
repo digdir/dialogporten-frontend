@@ -22,6 +22,13 @@ const plugin: FastifyPluginAsync = async (fastify) => {
             'X-XSS-Protection': '1; mode=block',
           });
         });
+        // Middleware to set secure cookies based on X-Forwarded-Proto header
+        fastify.addHook('onRequest', (request, reply, done) => {
+          if (request.headers['x-forwarded-proto'] === 'https') {
+            request.session.cookie.secure = true;
+          }
+          done();
+        });
       } catch (e) {
         logger.error(e, 'Error setting headers');
         request.tokenIsValid = false;

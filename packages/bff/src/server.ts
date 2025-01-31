@@ -21,14 +21,10 @@ const { version, port, host, oidc_url, hostname, client_id, client_secret, redis
 
 const startServer = async (): Promise<void> => {
   const { secret, cookie: cookieConfig, enableGraphiql } = config;
-
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
-    // The application gateway will terminate https and forward request as http
-    // This ensures that the proxy aka application gateway is trusted
-    // Setting cookie to secure will make it expect https requests without this
-    trustProxy: cookieConfig.secure,
+    trustProxy: true,
   });
 
   const { dataSource } = await connectToDB();
@@ -46,16 +42,14 @@ const startServer = async (): Promise<void> => {
   server.register(cookie);
 
   // Session setup
-
   const cookieSessionConfig: FastifySessionOptions = {
     secret,
     cookie: {
       secure: cookieConfig.secure,
-      httpOnly: cookieConfig.httpOnly,
+      httpOnly: true,
       maxAge: cookieConfig.maxAge,
     },
   };
-
   if (redisConnectionString) {
     const store = new RedisStore({
       client: redisClient,
