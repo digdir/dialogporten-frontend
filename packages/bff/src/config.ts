@@ -22,7 +22,7 @@ const envVariables = z.object({
   SESSION_SECRET: z.string().min(32).default('SecretHereSecretHereSecretHereSecretHereSecretHereSecretHereSecretHere'),
   ENABLE_HTTPS: z.preprocess(stringToBoolean, z.boolean().default(false)),
   COOKIE_MAX_AGE: z.coerce.number().default(30 * 24 * 60 * 60 * 1000),
-  COOKIE_SECURE: z.preprocess(stringToBoolean, z.boolean().default(false)),
+  COOKIE_SECURE: z.preprocess(stringToBoolean, z.boolean().default(true)),
   COOKIE_HTTP_ONLY: z.preprocess(stringToBoolean, z.boolean().default(false)),
   REDIS_CONNECTION_STRING: z.string().default('redis://:mysecretpassword@127.0.0.1:6379/0'),
   CLIENT_ID: z.string(),
