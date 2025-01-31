@@ -27,6 +27,9 @@ export const getAlertBadgeProps = (count: number): BadgeProps | undefined => {
   if (count > 0) {
     return {
       label: count.toString(),
+      size: 'xs',
+      theme: 'base',
+      color: 'alert',
     };
   }
 };
@@ -89,11 +92,9 @@ export const useGlobalMenu = ({
       id: '1',
       groupId: 'global',
       size: 'lg',
-      icon: 'inbox',
-      theme: 'base',
-      iconVariant: 'solid',
+      icon: { name: 'inbox', theme: 'base', variant: 'solid' },
       title: t('sidebar.inbox'),
-      alertBadge: getAlertBadgeProps(needsAttentionPerView.inbox),
+      iconBadge: getAlertBadgeProps(needsAttentionPerView.inbox),
       badge: getBadgeProps(itemsPerViewCount.inbox, dialogCountsInconclusive),
       selected: pathname === PageRoutes.inbox,
       expanded: true,
