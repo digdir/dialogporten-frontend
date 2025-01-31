@@ -48,6 +48,7 @@ const startServer = async (): Promise<void> => {
       secure: cookieConfig.secure,
       httpOnly: true,
       maxAge: cookieConfig.maxAge,
+      sameSite: 'strict',
     },
   };
   if (redisConnectionString) {
