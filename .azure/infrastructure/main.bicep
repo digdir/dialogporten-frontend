@@ -33,6 +33,9 @@ param redisVersion string
 import { Configuration as ApplicationGatewayConfiguration } from '../modules/applicationGateway/main.bicep'
 param applicationGatewayConfiguration ApplicationGatewayConfiguration
 
+@description('Optional list of IP addresses/ranges to whitelist for incoming traffic')
+param applicationGatewayWhitelistedIps array = []
+
 var secrets = {
   dialogportenPgAdminPassword: dialogportenPgAdminPassword
   sourceKeyVaultSubscriptionId: sourceKeyVaultSubscriptionId
@@ -67,6 +70,7 @@ module vnet '../modules/vnet/main.bicep' = {
     namePrefix: namePrefix
     location: location
     tags: tags
+    applicationGatewayWhitelistedIps: applicationGatewayWhitelistedIps
   }
 }
 

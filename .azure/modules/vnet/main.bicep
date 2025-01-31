@@ -7,13 +7,68 @@ param location string
 @description('The tags to apply to the resources')
 param tags object
 
+@description('Optional list of IP addresses/ranges to whitelist for incoming traffic')
+param applicationGatewayWhitelistedIps array = []
+
+// Define common NSG rule properties
+var commonHttpProperties = {
+  protocol: '*'
+  sourcePortRange: '*'
+  destinationAddressPrefix: '*'
+  direction: 'Inbound'
+  sourcePortRanges: []
+  destinationPortRanges: ['80', '443']
+  sourceAddressPrefixes: []
+  destinationAddressPrefixes: []
+}
+
+// Rule for allowing all HTTP traffic when no whitelist is specified
+var allowAllHttpRule = {
+  name: 'AllowAnyIncomingHttpTraffic'
+  type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+  properties: union(commonHttpProperties, {
+    sourceAddressPrefix: '*'
+    access: 'Allow'
+    priority: 110
+  })
+}
+
+// Rules for whitelisted traffic scenario
+var whitelistedHttpRule = {
+  name: 'AllowWhitelistedIncomingHttpTraffic'
+  type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+  properties: union(commonHttpProperties, {
+    sourceAddressPrefixes: applicationGatewayWhitelistedIps
+    access: 'Allow'
+    priority: 110
+  })
+}
+
+var denyOtherHttpRule = {
+  name: 'DenyAllOtherIncomingHttpTraffic'
+  type: 'Microsoft.Network/networkSecurityGroups/securityRules'
+  properties: union(commonHttpProperties, {
+    sourceAddressPrefix: '*'
+    access: 'Deny'
+    priority: 120
+  })
+}
+
+// Determine which HTTP rules to apply based on whitelist
+var applicationGatewayNSGHttpRules = empty(applicationGatewayWhitelistedIps) ? [
+  allowAllHttpRule
+] : [
+  whitelistedHttpRule
+  denyOtherHttpRule
+]
+
 // https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure
 resource applicationGatewayNSG 'Microsoft.Network/networkSecurityGroups@2024-01-01' = {
   name: '${namePrefix}-application-gateway-nsg'
   location: location
   properties: {
-    securityRules: [
-      {
+    securityRules: concat(
+      [{
         name: 'AllowAnyCustom65200-65535Inbound'
         type: 'Microsoft.Network/networkSecurityGroups/securityRules'
         properties: {
@@ -30,25 +85,9 @@ resource applicationGatewayNSG 'Microsoft.Network/networkSecurityGroups@2024-01-
           sourceAddressPrefixes: []
           destinationAddressPrefixes: []
         }
-      }
-      {
-        name: 'AllowAnyIncomingHttpTraffic'
-        type: 'Microsoft.Network/networkSecurityGroups/securityRules'
-        properties: {
-          protocol: '*'
-          sourcePortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
-          access: 'Allow'
-          priority: 110
-          direction: 'Inbound'
-          sourcePortRanges: []
-          destinationPortRanges: ['80', '443']
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-    ]
+      }],
+      applicationGatewayNSGHttpRules
+    )
   }
   tags: tags
 }

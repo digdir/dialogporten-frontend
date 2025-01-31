@@ -38,3 +38,8 @@ param applicationGatewayConfiguration = {
 
 // Altinn Product Dialogporten: Developers Prod
 param sshJumperAdminLoginGroupObjectId = 'a94de4bf-0a83-4d30-baba-0c6a7365571c'
+
+param applicationGatewayWhitelistedIps = [
+  '123.123.123.123/32'  // Example IP
+  '124.124.124.0/24'    // Example range
+]
