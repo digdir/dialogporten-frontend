@@ -21,7 +21,6 @@ var commonHttpProperties = {
   destinationAddressPrefixes: []
 }
 
-// Rule for allowing all HTTP traffic when no whitelist is specified
 var allowAllHttpRule = {
   name: 'AllowAnyIncomingHttpTraffic'
   type: 'Microsoft.Network/networkSecurityGroups/securityRules'
@@ -32,7 +31,6 @@ var allowAllHttpRule = {
   })
 }
 
-// Rule for whitelisted traffic
 var whitelistedHttpRule = {
   name: 'AllowWhitelistedIncomingHttpTraffic'
   type: 'Microsoft.Network/networkSecurityGroups/securityRules'

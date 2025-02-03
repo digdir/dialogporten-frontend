@@ -18,7 +18,7 @@ on:
         required: true
       AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY:
         required: true
-      APPLICATION_GATEWAY_IP_WHITELIST:
+      APPLICATION_GATEWAY_WHITELISTED_IPS:
         required: true
     inputs:
       region:
