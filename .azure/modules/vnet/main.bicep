@@ -10,7 +10,6 @@ param tags object
 @description('Optional list of IP addresses/ranges to whitelist for incoming traffic')
 param applicationGatewayWhitelistedIps array = []
 
-// Define common NSG rule properties
 var commonHttpProperties = {
   protocol: '*'
   sourcePortRange: '*'
@@ -33,7 +32,7 @@ var allowAllHttpRule = {
   })
 }
 
-// Rules for whitelisted traffic scenario
+// Rule for whitelisted traffic
 var whitelistedHttpRule = {
   name: 'AllowWhitelistedIncomingHttpTraffic'
   type: 'Microsoft.Network/networkSecurityGroups/securityRules'
@@ -54,7 +53,6 @@ var denyOtherHttpRule = {
   })
 }
 
-// Determine which HTTP rules to apply based on whitelist
 var applicationGatewayNSGHttpRules = empty(applicationGatewayWhitelistedIps) ? [
   allowAllHttpRule
 ] : [
