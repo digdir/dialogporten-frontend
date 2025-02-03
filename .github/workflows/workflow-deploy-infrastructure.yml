@@ -18,6 +18,8 @@ on:
         required: true
       AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY:
         required: true
+      APPLICATION_GATEWAY_IP_WHITELIST:
+        required: true
     inputs:
       region:
         required: true
@@ -98,6 +100,7 @@ jobs:
           SOURCE_KEY_VAULT_NAME: ${{ secrets.AZURE_SOURCE_KEY_VAULT_NAME }}
           CERTIFICATE_KEY_VAULT_NAME: ${{ secrets.AZURE_CERTIFICATE_KEY_VAULT_NAME }}
           SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY }}
+          APPLICATION_GATEWAY_IP_WHITELIST: ${{ secrets.APPLICATION_GATEWAY_IP_WHITELIST }}
         with:
           scope: subscription
           template: ./.azure/infrastructure/main.bicep
@@ -123,6 +126,7 @@ jobs:
           SOURCE_KEY_VAULT_NAME: ${{ secrets.AZURE_SOURCE_KEY_VAULT_NAME }}
           CERTIFICATE_KEY_VAULT_NAME: ${{ secrets.AZURE_CERTIFICATE_KEY_VAULT_NAME }}
           SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY: ${{ secrets.AZURE_SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY }}
+          APPLICATION_GATEWAY_IP_WHITELIST: ${{ secrets.APPLICATION_GATEWAY_IP_WHITELIST }}
         with:
           scope: subscription
           template: ./.azure/infrastructure/main.bicep
