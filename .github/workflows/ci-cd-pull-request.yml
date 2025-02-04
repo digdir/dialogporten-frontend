@@ -20,6 +20,8 @@ jobs:
 
   build-and-test:
     uses: ./.github/workflows/workflow-build-and-test.yml
+    needs: [check-for-changes]
+    if: ${{ needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
     with:
       environment: test
 
