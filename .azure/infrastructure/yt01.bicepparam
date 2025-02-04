@@ -29,7 +29,7 @@ param applicationGatewayConfiguration = {
     minCapacity: 1
     maxCapacity: 2
   }
-  hostName: 'af.yt01.altinn.no'
+  hostName: 'af.yt.altinn.no'
   sslCertificate: {
     keyVaultName: readEnvironmentVariable('CERTIFICATE_KEY_VAULT_NAME')
     secretKey: 'af-yt-altinn-cloud'

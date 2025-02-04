@@ -3,7 +3,7 @@ using './main.bicep'
 param environment = 'yt01'
 param location = 'norwayeast'
 param imageTag = readEnvironmentVariable('IMAGE_TAG')
-param hostName = 'https://af.yt01.altinn.no'
+param hostName = 'https://af.yt.altinn.no'
 param dialogportenURL = 'https://platform.yt01.altinn.cloud/dialogporten/graphql'
 param oicdUrl = 'test.idporten.no'
 param minReplicas = 2
