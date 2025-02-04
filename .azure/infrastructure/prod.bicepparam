@@ -13,6 +13,8 @@ param sourceKeyVaultResourceGroup = readEnvironmentVariable('SOURCE_KEY_VAULT_RE
 param sourceKeyVaultName = readEnvironmentVariable('SOURCE_KEY_VAULT_NAME')
 param sourceKeyVaultSshJumperSshPublicKey = readEnvironmentVariable('SOURCE_KEY_VAULT_SSH_JUMPER_SSH_PUBLIC_KEY')
 
+param applicationGatewayWhitelistedIps = json(readEnvironmentVariable('APPLICATION_GATEWAY_WHITELISTED_IPS', '[]'))
+
 // SKUs
 param redisSku = {
   name: 'Basic'
