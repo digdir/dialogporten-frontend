@@ -88,6 +88,7 @@ interface OAuthPluginOptions {
     };
   };
   startRedirectPath: string;
+
   callbackUri: string;
   discovery: {
     issuer: string;

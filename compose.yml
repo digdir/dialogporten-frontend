@@ -2,12 +2,21 @@ services:
   reverse-proxy:
     container_name: reverse-proxy
     image: traefik:v2.10
+    security_opt:
+      - no-new-privileges:true
     command:
       - "--api.dashboard=true"
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.default.acme.tlschallenge=true"
+      - "--certificatesresolvers.default.acme.email=example@gmail.com"
+      - "--certificatesresolvers.default.acme.storage=/etc/traefik/acme.json"
+
     ports:
       - 80:80
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
@@ -31,6 +40,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`localhost`)"
+      - "traefik.http.routers.homepage.entrypoints=websecure"
+      - "traefik.http.routers.homepage.tls.certresolver=default"
     ports:
       - 3000:3000
 
@@ -94,6 +105,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
+      - "traefik.http.routers.pgadmin4.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin4.tls.certresolver=default"
   bff:
     container_name: bff
     restart: always
@@ -103,7 +116,7 @@ services:
       target: build
     environment:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      HOSTNAME: http://app.localhost
+      HOSTNAME: https://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       ENABLE_GRAPHIQL: true
@@ -117,6 +130,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.bff.entrypoints=websecure"
+      - "traefik.http.routers.bff.tls.certresolver=default"
     depends_on:
       db:
         condition: service_healthy
@@ -159,7 +174,7 @@ services:
       target: build
     environment:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      HOSTNAME: http://app.localhost
+      HOSTNAME: https://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
@@ -181,6 +196,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
       - "traefik.http.services.myservice.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=default"
     develop:
       watch:
         - action: sync
@@ -209,6 +226,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`docs.localhost`)"
+      - "traefik.http.routers.docs.entrypoints=websecure"
+      - "traefik.http.routers.docs.tls.certresolver=default"
     develop:
       watch:
         - action: sync

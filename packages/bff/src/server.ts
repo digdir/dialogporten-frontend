@@ -30,7 +30,7 @@ const startServer = async (): Promise<void> => {
   const { dataSource } = await connectToDB();
   /* CORS configuration for local env, needs to be applied before routes are defined */
   const corsOptions = {
-    origin: ['http://app.localhost', 'http://localhost:3000'],
+    origin: ['https://app.localhost', 'https://localhost:3000'],
     credentials: true,
     methods: 'GET, POST, PATCH, DELETE, PUT',
     allowedHeaders: 'Content-Type, Authorization',
@@ -44,10 +44,13 @@ const startServer = async (): Promise<void> => {
   // Session setup
   const cookieSessionConfig: FastifySessionOptions = {
     secret,
+    cookieName: 'arbeidsflate',
+    saveUninitialized: false,
+    rolling: true,
     cookie: {
-      secure: cookieConfig.secure,
+      secure: true,
       httpOnly: true,
-      maxAge: cookieConfig.maxAge,
+      sameSite: 'lax',
     },
   };
   if (redisConnectionString) {
