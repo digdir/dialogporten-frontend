@@ -1,13 +1,15 @@
 import { type Page, expect, test } from '@playwright/test';
 import { defaultAppURL } from '../';
+import { PageRoutes } from '../../src/pages/routes';
+import { getSidebarMenuItem } from './common';
 
 test.describe('InboxItemPage', () => {
   test('Check message opening, archiving and deleting', async ({ page }: { page: Page }) => {
-    const arkivLink = page.getByRole('menuitem', { name: 'Arkiv' });
-    const arkivLinkCount = arkivLink.locator('span:text("1")');
+    const archiveLink = getSidebarMenuItem(page, PageRoutes.archive);
+    const archiveLinkCount = archiveLink.locator('span:text("1")');
 
-    const papirkurvLink = page.getByRole('menuitem', { name: 'Papirkurv' });
-    const papirkurvLinkCount = papirkurvLink.locator('span:text("1")');
+    const binLink = getSidebarMenuItem(page, PageRoutes.bin);
+    const binLinkCount = binLink.locator('span:text("1")');
 
     await page.goto(defaultAppURL);
     await expect(page.locator('h2').filter({ hasText: /^Skatten din for 2022$/ })).toBeVisible();
@@ -21,23 +23,23 @@ test.describe('InboxItemPage', () => {
 
     await page.getByRole('button', { name: 'Flytt til arkiv' }).click();
     await page.locator('span').filter({ hasText: /^Flyttet til arkiv$/ });
-    await expect(arkivLinkCount).toBeVisible();
+    await expect(archiveLinkCount).toBeVisible();
 
-    await arkivLink.click();
+    await archiveLink.click();
     await expect(page.getByRole('heading', { name: 'arkivert' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
 
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
     await page.getByRole('button', { name: 'Flytt til papirkurv' }).click();
     await page.locator('span').filter({ hasText: /^Flyttet til papirkurv$/ });
-    await expect(arkivLinkCount).not.toBeVisible();
-    await expect(papirkurvLinkCount).toBeVisible();
+    await expect(archiveLinkCount).not.toBeVisible();
+    await expect(binLinkCount).toBeVisible();
 
-    await papirkurvLink.click();
+    await binLink.click();
     await expect(page.getByRole('heading', { name: '1 i papirkurv' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
 
-    await arkivLink.click();
+    await archiveLink.click();
     await expect(page.getByRole('heading', { name: 'Ingen arkiverte meldinger' })).toBeVisible();
   });
 });

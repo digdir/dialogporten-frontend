@@ -113,6 +113,7 @@
   "route.drafts": "Utkast",
   "route.inbox": "Innboks",
   "route.sent": "Sendt",
+  "savedSearches.alt_text.edit_icon": "Rediger lagret søk",
   "savedSearches.deleted_success": "Søk slettet",
   "savedSearches.lastUpdated": "Sist oppdatert: ",
   "savedSearches.noSearchesFound": "Legg til ved å utføre et søk og klikke på \"Lagre søk\".",

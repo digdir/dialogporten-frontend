@@ -3,7 +3,9 @@ import { naiveSearchFilter } from './filters.ts';
 import {
   SavedSearchesFieldsFragment,
   UpdateSystemLabelMutationVariables,
-  DialogByIdFieldsFragment, SearchAutocompleteDialogFieldsFragment, PartyFieldsFragment,
+  DialogByIdFieldsFragment,
+  SearchAutocompleteDialogFieldsFragment,
+  PartyFieldsFragment,
 } from 'bff-types-generated';
 import { convertToDialogByIdTemplate } from './data/base/helper.ts';
 import { getMockedData } from './data.ts';

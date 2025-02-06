@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { defaultAppURL } from '../';
+import { PageRoutes } from '../../src/pages/routes';
+import { getSidebarMenuItem } from './common';
 
 test.describe('Testing filter bar', () => {
   test('should filter when selecting sender filter and status filter', async ({ page }) => {
@@ -53,7 +55,7 @@ test.describe('Testing filter bar', () => {
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
 
     /* Change view type */
-    await page.getByRole('menuitem', { name: 'Utkast' }).click();
+    await getSidebarMenuItem(page, PageRoutes.drafts).click();
 
     expect(new URL(page.url()).searchParams.has('sender')).toEqual(false);
   });

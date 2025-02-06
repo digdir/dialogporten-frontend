@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { defaultAppURL } from '../';
+import { PageRoutes } from '../../src/pages/routes';
+import { getSidebarMenuItem } from './common';
 
 test.describe('Message navigation', () => {
   const pageWithMockOrganizations = `${defaultAppURL}&playwrightId=login-party-context`;
@@ -43,7 +45,7 @@ test.describe('Message navigation', () => {
     await page.getByRole('button', { name: 'Flytt til papirkurv' }).click();
     await expect(page.getByText('Flyttet til papirkurv')).toBeVisible();
 
-    await page.getByRole('menuitem', { name: 'Papirkurv' }).click();
+    await getSidebarMenuItem(page, PageRoutes.bin).click();
     await page.getByRole('link', { name: 'Skatten din for 2022' }).click();
     await page.getByRole('button', { name: 'Tilbake' }).click();
     await expect(page.getByRole('heading', { name: 'i papirkurv' })).toBeVisible();

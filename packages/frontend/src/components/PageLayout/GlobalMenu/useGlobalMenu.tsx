@@ -1,4 +1,5 @@
 import type { BadgeProps, MenuItemProps } from '@altinn/altinn-components';
+import { ArchiveIcon, BookmarkIcon, DocPencilIcon, FileCheckmarkIcon, InboxIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../../utils/useWindowSize.tsx';
@@ -92,7 +93,7 @@ export const useGlobalMenu = ({
       id: '1',
       groupId: 'global',
       size: 'lg',
-      icon: { name: 'inbox', theme: 'base', variant: 'solid' },
+      icon: { svgElement: InboxIcon, theme: 'base' },
       title: t('sidebar.inbox'),
       iconBadge: getAlertBadgeProps(needsAttentionPerView.inbox),
       badge: getBadgeProps(itemsPerViewCount.inbox, dialogCountsInconclusive),
@@ -105,7 +106,7 @@ export const useGlobalMenu = ({
         {
           id: '2',
           groupId: '2',
-          icon: 'doc-pencil',
+          icon: DocPencilIcon,
           title: t('sidebar.drafts'),
           badge: getBadgeProps(itemsPerViewCount.drafts, dialogCountsInconclusive),
           selected: pathname === PageRoutes.drafts,
@@ -116,7 +117,7 @@ export const useGlobalMenu = ({
         {
           id: '3',
           groupId: '2',
-          icon: 'file-checkmark',
+          icon: FileCheckmarkIcon,
           title: t('sidebar.sent'),
           badge: getBadgeProps(itemsPerViewCount.sent, dialogCountsInconclusive),
           selected: pathname === PageRoutes.sent,
@@ -127,7 +128,7 @@ export const useGlobalMenu = ({
         {
           id: '4',
           groupId: '3',
-          icon: 'bookmark',
+          icon: BookmarkIcon,
           title: t('sidebar.saved_searches'),
           badge: getBadgeProps(itemsPerViewCount['saved-searches']),
           selected: pathname === PageRoutes.savedSearches,
@@ -138,7 +139,7 @@ export const useGlobalMenu = ({
         {
           id: '5',
           groupId: '4',
-          icon: 'archive',
+          icon: ArchiveIcon,
           title: t('sidebar.archived'),
           badge: getBadgeProps(itemsPerViewCount.archive, dialogCountsInconclusive),
           selected: pathname === PageRoutes.archive,
@@ -149,7 +150,7 @@ export const useGlobalMenu = ({
         {
           id: '6',
           groupId: '4',
-          icon: 'trash',
+          icon: TrashIcon,
           title: t('sidebar.deleted'),
           badge: getBadgeProps(itemsPerViewCount.bin, dialogCountsInconclusive),
           selected: pathname === PageRoutes.bin,

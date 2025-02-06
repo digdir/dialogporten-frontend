@@ -113,6 +113,7 @@
   "route.drafts": "Drafts",
   "route.inbox": "Inbox",
   "route.sent": "Sent",
+  "savedSearches.alt_text.edit_icon": "Edit saved search",
   "savedSearches.deleted_success": "Search deleted",
   "savedSearches.lastUpdated": "Last updated: ",
   "savedSearches.noSearchesFound": "Add by performing a search and clicking and click \"Save Search\"",
