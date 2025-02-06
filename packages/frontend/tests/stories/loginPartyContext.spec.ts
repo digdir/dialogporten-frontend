@@ -1,5 +1,7 @@
 import { type Page, expect, test } from '@playwright/test';
+import { waitFor } from '@testing-library/react';
 import { defaultAppURL } from '../';
+import { performSearch } from './common';
 
 test.describe('LoginPartyContext', () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
@@ -92,12 +94,9 @@ test.describe('LoginPartyContext', () => {
 
   test('Searchbar input adds search params', async ({ page }: { page: Page }) => {
     expect(new URL(page.url()).searchParams.has('search')).toBe(false);
-    await page.getByPlaceholder('Søk').click();
-    await expect(page.getByPlaceholder('Søk')).toBeVisible();
-    await page.getByPlaceholder('Søk').fill('skatten din');
-    await page.getByPlaceholder('Søk').press('Enter');
+
+    await performSearch(page, 'skatten din', 'enter');
     const searchParams = new URL(page.url()).searchParams;
-    expect(searchParams.has('search')).toBe(true);
     expect(searchParams.get('search')).toBe('skatten din');
 
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
@@ -109,13 +108,8 @@ test.describe('LoginPartyContext', () => {
   });
 
   test('Go-back button deletes search bar value', async ({ page }: { page: Page }) => {
-    await page.getByPlaceholder('Søk').click();
-    await expect(page.getByPlaceholder('Søk')).toBeVisible();
-    await page.getByPlaceholder('Søk').fill('skatten din');
-    await page.getByPlaceholder('Søk').press('Enter');
-
+    await performSearch(page, 'skatten din', 'enter');
     const searchParams = new URL(page.url()).searchParams;
-    expect(searchParams.has('search')).toBe(true);
     expect(searchParams.get('search')).toBe('skatten din');
     await expect(page.getByRole('link', { name: 'Skatten din for 2022' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Melding om bortkjøring av snø' })).not.toBeVisible();

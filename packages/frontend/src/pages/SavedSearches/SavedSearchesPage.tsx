@@ -38,6 +38,7 @@ export const SavedSearchesPage = () => {
     const items = Array.from({ length: skeletonItems }, (_, i) => ({
       id: i.toString(),
       title: t('savedSearches.loading_saved_searches') + randomString(),
+      expandIconAltText: t('savedSearches.expand_icon_alt_text'),
     }));
     return (
       <div className={styles.savedSearchesWrapper}>
@@ -84,6 +85,7 @@ export const SavedSearchesPage = () => {
     }
 
     const itemObject: EditableBookmarkProps = {
+      expandIconAltText: t('savedSearches.expand_icon_alt_text'),
       id: savedSearch.id.toString(),
       params: [],
       title: '',

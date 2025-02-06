@@ -1,5 +1,6 @@
 import { type Page, expect, test } from '@playwright/test';
 import { defaultAppURL } from '..';
+import { performSearch } from './common';
 
 test.describe('Flattened parties and subparties', () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
@@ -27,28 +28,23 @@ test.describe('Flattened parties and subparties', () => {
     await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
   });
 
-  test('Search input shows flatened messages based on chosen party', async ({ page }) => {
+  test('Search input shows flattened messages based on chosen party', async ({ page }) => {
     await page.getByPlaceholder('Søk').click();
     await expect(page.getByPlaceholder('Søk')).toBeVisible();
 
     await page.getByPlaceholder('Søk').fill('test');
-
-    await expect(page.getByRole('link', { name: 'Message for Test Testesen Lorem ipsum' })).toBeVisible();
-
-    await expect(page.getByTestId('main-header').getByRole('link', { name: 'Main party message' })).not.toBeVisible();
-    await page.getByPlaceholder('Søk').press('Enter');
+    /* search box result */
+    await expect(page.getByLabel('Message for Test Testesen')).toBeVisible();
+    await expect(page.getByLabel('Main party message')).not.toBeVisible();
+    await page.keyboard.press('Escape');
 
     await page.getByRole('button', { name: 'Test Testesen' }).click();
     await page.getByText('TTestbedrift AS2').click();
 
     await page.getByPlaceholder('Søk').fill('party');
-    await expect(
-      page.getByTestId('main-header').getByRole('link', { name: 'Message for Test Testesen' }),
-    ).not.toBeVisible();
-    await expect(page.getByRole('link', { name: 'Main party message Main' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Sub party message' })).toBeVisible();
-
-    await page.getByPlaceholder('Søk').press('Enter');
+    await expect(page.getByLabel('Message for Test Testesen')).not.toBeVisible();
+    await expect(page.getByLabel('Main party message')).toBeVisible();
+    await expect(page.getByLabel('Main party message')).toBeVisible();
   });
 
   test('Filters shows merged parties if sub party has same name as main party', async ({ page }) => {

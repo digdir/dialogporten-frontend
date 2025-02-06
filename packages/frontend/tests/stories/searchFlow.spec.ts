@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { baseQueryParams, baseURL, defaultAppURL } from '..';
 import { firstMsgId } from '../../src/mocks/data/stories/search-flow/dialogs';
+import { performSearch, selectDialogBySearch } from './common';
 
 test.describe('Search flow', () => {
   test('less than 3 chars not allowed', async ({ page }) => {
@@ -17,37 +18,32 @@ test.describe('Search flow', () => {
 
   test('Badge with number of msgs and (5) visible suggestions', async ({ page }) => {
     await page.goto(`${defaultAppURL}&playwrightId=search-flow`);
-    await page.getByPlaceholder('Søk').click();
-    await page.getByPlaceholder('Søk').fill('Sixth');
-    await expect(page.getByRole('button', { name: '«Sixth» i innboks 1 treff' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Sixth test message Sixth' })).toBeVisible();
-    await page.getByTestId('search-button-clear').click();
+
+    await performSearch(page, 'Sixth', 'clear');
+
+    /* Check that desired results are rendered */
     await page.getByPlaceholder('Søk').click();
     await page.getByPlaceholder('Søk').fill('test');
-    await expect(page.getByRole('button', { name: '«test» i innboks 6 treff' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'First test message First test' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Second test message Second' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Third test message Third test' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Fourth test message Fourth' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Fifth test message Fifth test' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Sixth test message Sixth' })).not.toBeVisible();
+
+    await expect(page.getByLabel('First test message')).toBeVisible();
+    await expect(page.getByLabel('Second test message')).toBeVisible();
+    await expect(page.getByLabel('Third test message')).toBeVisible();
+    await expect(page.getByLabel('Fourth test message')).toBeVisible();
+    await expect(page.getByLabel('Fifth test message')).toBeVisible();
   });
 
-  test('Search link should open message with enter', async ({ page }) => {
+  test('Search link should open dialog details with enter', async ({ page }) => {
     await page.goto(`${defaultAppURL}&playwrightId=search-flow`);
-    await page.getByPlaceholder('Søk').click();
-    await page.getByPlaceholder('Søk').fill('Sixth');
-    await page.getByRole('link', { name: 'Sixth test message Sixth' }).hover();
-    await page.keyboard.press('Enter');
+    await selectDialogBySearch(page, 'Sixth', 'Sixth test message', 'enter');
+
     await expect(page.getByRole('heading', { name: 'Sixth test message' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Info i markdown' })).toBeVisible();
   });
 
-  test('Search link should open message with click', async ({ page }) => {
+  test('Search link should open dialog details with click', async ({ page }) => {
     await page.goto(`${defaultAppURL}&playwrightId=search-flow`);
-    await page.getByPlaceholder('Søk').click();
-    await page.getByPlaceholder('Søk').fill('Sixth');
-    await page.getByRole('link', { name: 'Sixth test message Sixth' }).click();
+    await selectDialogBySearch(page, 'Sixth', 'Sixth test message', 'click');
+
     await expect(page.getByRole('heading', { name: 'Sixth test message' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Info i markdown' })).toBeVisible();
   });

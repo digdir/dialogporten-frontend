@@ -157,6 +157,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
   fastify.get('/api/cb', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       await handleAuthRequest(request, reply, fastify);
+
       reply.redirect('/?loggedIn=true');
     } catch (e) {
       logger.error(e);

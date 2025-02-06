@@ -21,7 +21,7 @@
     "i18n:sort": "tsx ./src/i18n/check.ts --sort"
   },
   "dependencies": {
-    "@altinn/altinn-components": "^0.15.3",
+    "@altinn/altinn-components": "^0.16.0",
     "@digdir/designsystemet-css": "0.11.0-next.10",
     "@digdir/designsystemet-react": "1.0.0-next.15",
     "@digdir/designsystemet-theme": "1.0.0-next.14",
@@ -46,8 +46,8 @@
     "use-debounce": "^10.0.1"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.10.0",
-    "@playwright/test": "^1.41.2",
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.50.1",
     "@testing-library/react": "^16.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.1",
