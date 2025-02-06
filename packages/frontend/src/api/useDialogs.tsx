@@ -38,6 +38,7 @@ export function mapDialogToToInboxItem(
     const titleObj = item.content.title.value;
     const summaryObj = item.content.summary.value;
     const endUserParty = parties?.find((party) => party.isCurrentEndUser);
+    const senderName = item.content.senderName?.value;
 
     const dialogReceiverParty = parties?.find((party) => party.party === item.party);
     const dialogReceiverSubParty = parties?.find((party) =>
@@ -54,7 +55,7 @@ export function mapDialogToToInboxItem(
       title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
       summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
       sender: {
-        name: serviceOwner?.name ?? '',
+        name: getPreferredPropertyByLocale(senderName)?.value || serviceOwner?.name || '',
         isCompany: true,
         imageURL: serviceOwner?.logo,
       },
@@ -71,6 +72,7 @@ export function mapDialogToToInboxItem(
     };
   });
 }
+
 export interface SearchAutocompleteDialogInput {
   id: string;
   title: string;
@@ -175,6 +177,7 @@ export const useDialogs = (parties: PartyFieldsFragment[]): UseDialogsOutput => 
   });
 
   const dialogs = mapDialogToToInboxItem(data?.searchDialogs?.items ?? [], selectedParties, organizations);
+
   return {
     isLoading,
     isSuccess,

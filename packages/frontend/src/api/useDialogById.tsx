@@ -149,12 +149,13 @@ export function mapDialogToToInboxItem(
   const actualReceiverParty = dialogReceiverParty ?? endUserParty;
   const serviceOwner = getOrganization(organizations || [], item.org, 'nb');
   const isSeenByEndUser = item.seenSinceLastUpdate.find((seenLogEntry) => seenLogEntry.isCurrentEndUser) !== undefined;
+  const senderName = item.content.senderName?.value;
 
   return {
     title: getPreferredPropertyByLocale(titleObj)?.value ?? '',
     summary: getPreferredPropertyByLocale(summaryObj)?.value ?? '',
     sender: {
-      name: serviceOwner?.name ?? '',
+      name: getPreferredPropertyByLocale(senderName)?.value || serviceOwner?.name || '',
       isCompany: true,
       imageURL: serviceOwner?.logo,
     },
