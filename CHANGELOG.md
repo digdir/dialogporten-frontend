@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.15.0...v1.15.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* Log info correct app version ([#1785](https://github.com/Altinn/dialogporten-frontend/issues/1785)) ([0113b01](https://github.com/Altinn/dialogporten-frontend/commit/0113b0197bc6510f9e7374af47fa13cf0eca8fe9))
+
 ## [1.15.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.14.1...v1.15.0) (2025-02-07)
 
 
