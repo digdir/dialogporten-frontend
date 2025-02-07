@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.15.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.14.1...v1.15.0) (2025-02-07)
+
+
+### Features
+
+* Display sender name if provided, update altinn components ([#1778](https://github.com/Altinn/dialogporten-frontend/issues/1778)) ([07c24a3](https://github.com/Altinn/dialogporten-frontend/commit/07c24a33d4a2c26f1331af5c878b056f469741a3))
+* **infra:** only allow connection to production from selected IPs and azure-infrastructure ([#1766](https://github.com/Altinn/dialogporten-frontend/issues/1766)) ([0b23017](https://github.com/Altinn/dialogporten-frontend/commit/0b230170523d30ce08ec67c27381f81a2eb095aa))
+* Sort saved searches ([#1780](https://github.com/Altinn/dialogporten-frontend/issues/1780)) ([6eb0bee](https://github.com/Altinn/dialogporten-frontend/commit/6eb0bee405ca5a7e8ec8a1fd16303347e0e0aef3))
+
+
+### Bug Fixes
+
+* Add secure coookie env variable ([48d3ed9](https://github.com/Altinn/dialogporten-frontend/commit/48d3ed97a0ab33509eeaaaae7f08e0c5a9a56c0c))
+* Added sameSite true for cookies ([cacb700](https://github.com/Altinn/dialogporten-frontend/commit/cacb7005d00beca29944e76ee2989af551e024cb))
+* icons missing in global menu ([#1782](https://github.com/Altinn/dialogporten-frontend/issues/1782)) ([c7f2c01](https://github.com/Altinn/dialogporten-frontend/commit/c7f2c01d84528a17f56dbf2040dd41f42e0d0fcf))
+* process boolean variables correctly with zod ([#1756](https://github.com/Altinn/dialogporten-frontend/issues/1756)) ([ae55aa7](https://github.com/Altinn/dialogporten-frontend/commit/ae55aa7ce00144465449b96fdce671b8b0a1d077))
+* revert attempts to secure cookie ([#1770](https://github.com/Altinn/dialogporten-frontend/issues/1770)) ([c5bdacd](https://github.com/Altinn/dialogporten-frontend/commit/c5bdacdb07346d65b89c234455c1ce569e2ba915))
+* saved search input didnt get correct initial value ([#1764](https://github.com/Altinn/dialogporten-frontend/issues/1764)) ([b7a02ea](https://github.com/Altinn/dialogporten-frontend/commit/b7a02ea5a47e1afb42cf0b82262acd74d712a9d7))
+* Secure cookie ([dce5367](https://github.com/Altinn/dialogporten-frontend/commit/dce536762a08e891d5e034c13f3fa84f8ee0a4fa))
+* Secure cookies in staging/test/prod ([9248694](https://github.com/Altinn/dialogporten-frontend/commit/92486940993a34cb05a6d573612c0a93d5a9428a))
+* set default enable_graphiql to true ([#1759](https://github.com/Altinn/dialogporten-frontend/issues/1759)) ([36feefe](https://github.com/Altinn/dialogporten-frontend/commit/36feefe47100ee3cf6e92f3abd500d25f1ffda84))
+
 ## [1.14.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.14.0...v1.14.1) (2025-01-30)
 
 
