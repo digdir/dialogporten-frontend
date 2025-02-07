@@ -13,6 +13,9 @@ import { AuthProvider } from './components/Login/AuthContext.tsx';
 import { LoggerContextProvider } from './contexts/LoggerContext.tsx';
 import { FeatureFlagProvider, featureFlags } from './featureFlags';
 
+declare const __APP_VERSION__: string;
+console.info('App Version:', __APP_VERSION__);
+
 async function enableMocking() {
   if (import.meta.env.DEV) {
     const urlParams = new URLSearchParams(window.location.search);
