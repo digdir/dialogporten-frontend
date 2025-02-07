@@ -1,5 +1,14 @@
 import type { BadgeProps, MenuItemProps } from '@altinn/altinn-components';
-import { ArchiveIcon, BookmarkIcon, DocPencilIcon, FileCheckmarkIcon, InboxIcon, TrashIcon } from '@navikt/aksel-icons';
+import {
+  ArchiveIcon,
+  BookmarkIcon,
+  DocPencilIcon,
+  FileCheckmarkIcon,
+  InboxIcon,
+  MenuGridIcon,
+  PersonChatIcon,
+  TrashIcon,
+} from '@navikt/aksel-icons';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../../utils/useWindowSize.tsx';
@@ -68,7 +77,7 @@ export const useGlobalMenu = ({
     {
       id: 'all-services',
       groupId: 'global',
-      icon: 'menu-grid',
+      icon: MenuGridIcon,
       title: t('menuBar.all_services'),
       size: 'lg',
       as: createMenuItemComponent({
@@ -79,7 +88,7 @@ export const useGlobalMenu = ({
     {
       id: 'chat',
       groupId: 'global',
-      icon: 'person-chat',
+      icon: PersonChatIcon,
       title: t('menuBar.chat'),
       size: 'lg',
       as: createMenuItemComponent({
