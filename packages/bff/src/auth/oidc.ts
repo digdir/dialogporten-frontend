@@ -12,7 +12,14 @@ import type {
 import fp from 'fastify-plugin';
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
+import '@fastify/session';
 
+declare module '@fastify/session' {
+  interface FastifySessionObject {
+    codeVerifier?: string;
+    state?: string;
+  }
+}
 declare module 'fastify' {
   interface FastifyInstance {
     idporten: OAuth2Namespace;
@@ -71,7 +78,7 @@ export interface SessionStorageToken {
   tokenUpdatedAt: string;
 }
 
-interface CustomOICDPluginOptions {
+export interface CustomOICDPluginOptions {
   oidc_url: string;
   hostname: string;
   client_id: string;
@@ -110,6 +117,7 @@ export const handleLogout = async (request: FastifyRequest, reply: FastifyReply)
 
 export const handleAuthRequest = async (request: FastifyRequest, reply: FastifyReply, fastify: FastifyInstance) => {
   try {
+    logger.info('handleAuthRequest');
     const now = new Date();
     const { token } = await fastify.idporten.getAccessTokenFromAuthorizationCodeFlow(request);
     const customToken: IdportenToken = token as unknown as IdportenToken;
@@ -124,7 +132,7 @@ export const handleAuthRequest = async (request: FastifyRequest, reply: FastifyR
       scope: customToken.scope,
       tokenUpdatedAt: new Date().toISOString(),
     };
-
+    console.info('!!!!!!!!!!!! request.cookies ', JSON.stringify(request.cookies));
     request.session.set('token', sessionStorageToken);
     request.session.set('sub', sub);
     request.session.set('locale', locale);
@@ -134,7 +142,7 @@ export const handleAuthRequest = async (request: FastifyRequest, reply: FastifyR
   }
 };
 
-const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, options) => {
+export const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, options) => {
   const { client_id, client_secret, oidc_url, hostname } = options;
 
   fastify.register<OAuthPluginOptions>(oauthPlugin as unknown as FastifyPluginCallback<OAuthPluginOptions>, {
@@ -146,6 +154,13 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
         secret: client_secret,
       },
     },
+    // cookie: {
+    //   secure: true,
+    //   sameSite: 'lax',
+    // },
+    // generateStateFunction: () => '',
+    // checkStateFunction: () => true,
+    // pkce: 'S256',
     startRedirectPath: '/api/login/',
     callbackUri: `${hostname}/api/cb`,
     discovery: {
@@ -156,6 +171,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
   /* Post login: retrieves token, stores values to user session and redirects to client */
   fastify.get('/api/cb', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
+      logger.info('api/cb');
       await handleAuthRequest(request, reply, fastify);
       reply.redirect('/?loggedIn=true');
     } catch (e) {
@@ -166,6 +182,7 @@ const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, opti
 
   fastify.get('/api/logout', { preHandler: fastify.verifyToken(false) }, handleLogout);
 };
+
 export default fp(plugin, {
   fastify: '4.x',
   name: 'fastify-oicd',

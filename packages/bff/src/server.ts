@@ -1,13 +1,10 @@
 import { logger } from '@digdir/dialogporten-node-logger';
-import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import formBody from '@fastify/formbody';
-import session from '@fastify/session';
 import type { FastifySessionOptions } from '@fastify/session';
-import RedisStore from 'connect-redis';
-import Fastify from 'fastify';
+// import RedisStore from 'connect-redis';
 import fastifyGraphiql from 'fastify-graphiql';
-import { oidc, userApi, verifyToken } from './auth/index.ts';
+import { oidc, userApi } from './auth/index.ts';
 import healthChecks from './azure/HealthChecks.ts';
 import healthProbes from './azure/HealthProbes.ts';
 import config from './config.ts';
@@ -16,14 +13,78 @@ import graphqlApi from './graphql/api.ts';
 import { fastifyHeaders } from './graphql/fastifyHeaders.ts';
 import graphqlStream from './graphql/subscription.ts';
 import redisClient from './redisClient.ts';
+import fastifyCookie from '@fastify/cookie';
+import fastifySession from '@fastify/session';
+import RedisStore from 'connect-redis';
+import Redis from 'ioredis';
+import oauthPlugin, { type OAuth2Namespace } from '@fastify/oauth2';
+import type {
+  FastifyBaseLogger,
+  FastifyInstance,
+  FastifyPluginAsync,
+  FastifyPluginCallback,
+  FastifyReply,
+  FastifyRequest,
+  HookHandlerDoneFunction,
+  IdportenToken,
+} from 'fastify';
+import Fastify from 'fastify';
+import { CustomOICDPluginOptions, handleAuthRequest, handleLogout, type SessionStorageToken } from './auth/oidc.ts';
+import verifyToken, { refreshToken } from './auth/verifyToken.ts';
+type ValidationStatus = 'refresh_token_expired' | 'refreshed' | 'missing_token' | 'access_token_valid';
+
+//// NEW CODE ////
+declare module 'fastify' {
+  interface FastifyInstance {
+    googleOAuth2: OAuth2Namespace;
+  }
+}
+
+const getIsTokenValid = async (
+  request: FastifyRequest,
+  allowTokenRefresh: boolean,
+  fastify: FastifyInstance,
+): Promise<ValidationStatus> => {
+  const token: SessionStorageToken | undefined = request.session.get('token');
+
+  if (!token) {
+    return 'missing_token';
+  }
+
+  const now = new Date();
+  const accessTokenExpiresAt = new Date(token.access_token_expires_at);
+  const isRefreshTokenValid = new Date(token.refresh_token_expires_at) > now;
+  // Check if the access token expires in less than 60 seconds for now
+  const accessTokenExpiresSoon = accessTokenExpiresAt.getTime() - now.getTime() < 60 * 1000;
+  const isAccessTokenValid = accessTokenExpiresAt > now;
+
+  if (accessTokenExpiresSoon && allowTokenRefresh && isRefreshTokenValid) {
+    try {
+      await refreshToken(request);
+      // Ensure that the token has been updated and valid after the refresh
+      const updatedToken: SessionStorageToken | undefined = request.session.get('token');
+      const updatedAccessTokenExpiresAt = new Date(updatedToken?.access_token_expires_at || '');
+      if (updatedAccessTokenExpiresAt > now) {
+        return 'refreshed';
+      }
+      return 'refresh_token_expired';
+    } catch (error) {
+      logger.error(error, 'Unable to refresh token');
+      return 'refresh_token_expired';
+    }
+  }
+
+  return isAccessTokenValid ? 'access_token_valid' : 'refresh_token_expired';
+};
 
 const { version, port, host, oidc_url, hostname, client_id, client_secret, redisConnectionString } = config;
 
 const startServer = async (): Promise<void> => {
-  const { secret, cookie: cookieConfig, enableGraphiql } = config;
+  const { secret, enableHttps, enableGraphiql } = config;
   const server = Fastify({
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
+    logger: true,
     trustProxy: true,
   });
 
@@ -37,40 +98,127 @@ const startServer = async (): Promise<void> => {
     preflightContinue: true,
   };
 
-  server.register(cors, corsOptions);
-  server.register(formBody);
-  server.register(cookie);
+  // //// NEW CODE ////
+  // declare module 'fastify' {
+  //   interface FastifyInstance {
+  //     googleOAuth2: OAuth2Namespace;
+  //   }
+  // }
+
+  // Initialize Redis client
+  // const redisClient = new Redis();
+
+  // Create Fastify instance
+  const fastify: FastifyInstance = Fastify({ logger: true });
+
+  // Register cookie and session plugins
+  // fastify.register(fastifySession, {
+  //   secret, // Replace with an environment variable
+  //   cookie: {
+  //     secure: true, // Secure cookies in production
+  //     httpOnly: true,
+  //     sameSite: 'lax',
+  //   },
+  //   store: new RedisStore({ client: redisClient }),
+  // });
 
   // Session setup
-  const cookieSessionConfig: FastifySessionOptions = {
+
+  // logger.info('Setting up fastify-session with a Redis store');
+  // server.register(session, { ...cookieSessionConfig, store });
+  server.register(fastifyCookie);
+  const store = new RedisStore({
+    client: redisClient,
+  });
+  server.register(fastifySession, {
     secret,
     cookie: {
-      secure: cookieConfig.secure,
-      httpOnly: true,
-      maxAge: cookieConfig.maxAge,
+      secure: enableHttps,
+      httpOnly: enableHttps,
+      sameSite: 'lax',
     },
-  };
-  if (redisConnectionString) {
-    const store = new RedisStore({
-      client: redisClient,
+    saveUninitialized: false,
+    store,
+  });
+  // } else {
+  //   logger.info('NOT Setting up fastify-session');
+  //   // server.register(session, cookieSessionConfig);
+  // }
+  server.register(verifyToken);
+
+  const plugin: FastifyPluginAsync<CustomOICDPluginOptions> = async (fastify, options) => {
+    const { client_id, client_secret, oidc_url, hostname } = options;
+
+    // Register OAuth2 plugin for Google
+    fastify.register(oauthPlugin, {
+      name: 'googleOAuth2',
+      credentials: {
+        client: {
+          id: client_id,
+          secret: client_secret,
+        },
+      },
+      scope: ['openid', 'profile', 'digdir:dialogporten.noconsent', 'digdir:dialogporten'],
+
+      startRedirectPath: '/api/login/',
+      callbackUri: `${hostname}/api/cb`,
+      discovery: {
+        issuer: `https://${oidc_url}/.well-known/openid-configuration`,
+      },
     });
 
-    logger.info('Setting up fastify-session with a Redis store');
-    server.register(session, { ...cookieSessionConfig, store });
-  } else {
-    logger.info('Setting up fastify-session');
-    server.register(session, cookieSessionConfig);
-  }
+    fastify.get('/api/cb', async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        logger.info('api/cb');
+        // Exchange authorization code for tokens
+        const token = await fastify.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
+        const customToken: IdportenToken = token as unknown as IdportenToken;
+        logger.info('token', token);
+        logger.info('access_token', token?.token.access_token);
+        logger.info('customToken', customToken);
+        // Log the access token (for demonstration purposes)
+        logger.info('Access Token:', customToken.access_token);
+        // await handleAuthRequest(request, reply, fastify);
 
-  server.register(verifyToken);
-  server.register(healthProbes, { version });
-  server.register(healthChecks, { version });
-  server.register(oidc, {
+        // Send the access token back to the client or store it securely
+        reply.send({ access_token: customToken.access_token });
+        reply.redirect('/?loggedIn=true');
+      } catch (error) {
+        request.log.error(error);
+        +reply.status(500).send({ error: 'Failed to authenticate' });
+      }
+    });
+
+    // Protected route example
+    fastify.get('/protected', async (request, reply) => {
+      // Check if user is authenticated by verifying session or token
+      if (!request.session.sub) {
+        return reply.status(401).send({ error: 'Unauthorized' });
+      }
+      reply.send({ message: 'You are authenticated!', user: request.session.sub });
+    });
+    //// END NEW CODE ////
+    fastify.get('/api/logout', { preHandler: fastify.verifyToken(false) }, handleLogout);
+  };
+
+  server.register(cors, corsOptions);
+  server.register(plugin, {
     oidc_url,
     hostname,
     client_id,
     client_secret,
   });
+  server.register(formBody);
+  // server.register(cookie);
+
+  server.register(healthProbes, { version });
+  server.register(healthChecks, { version });
+  // server.register(oidc, {
+  //   oidc_url,
+  //   hostname,
+  //   client_id,
+  //   client_secret,
+  // });
   server.register(fastifyHeaders);
   server.register(userApi);
   server.register(graphqlApi);

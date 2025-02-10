@@ -1,0 +1,41 @@
+tls:
+  certificates:
+    - certFile: "/certs/cert.pem"
+      keyFile: "/certs/key.pem"
+
+http:
+  routers:
+    app-router:
+      rule: "Host(`altinn.lokalt.no`)"
+      entryPoints:
+        - websecure
+      # middlewares:
+      #   - myday-strip
+      service: app-service
+      tls: {}
+
+    # Router for the backend, listens on /api
+    backend-router:
+      rule: "Host(`altinn.lokalt.no`) && PathPrefix(`/api`)"
+      entryPoints:
+        - websecure
+      service: backend-service
+      tls: {}
+
+  services:
+    app-service:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:3030" # Backend service
+
+    # Service for the backend
+    backend-service:
+      loadBalancer:
+        servers:
+          - url: "http://bff:80"
+
+  # middlewares:
+  #   dashboard-auth:
+  #     basicAuth:
+  #       users:
+  #         - "admin:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/" # Replace this with the new hash

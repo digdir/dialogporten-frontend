@@ -8,6 +8,7 @@ export default () => {
     ...(process.env.PORT && {
       server: {
         port: Number.parseInt(process.env.PORT),
+        allowedHosts: ['altinn.lokalt.no'], // Add the allowed host here
       },
     }),
   });

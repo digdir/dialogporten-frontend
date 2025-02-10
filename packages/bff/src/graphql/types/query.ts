@@ -39,6 +39,7 @@ export const Query = objectType({
         if (SavedSearchRepository) {
           return await SavedSearchRepository.find({
             where: { profile: { sub } },
+            order: { updatedAt: 'DESC' },
           });
         }
         return [];

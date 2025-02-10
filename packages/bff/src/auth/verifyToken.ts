@@ -36,7 +36,7 @@ export const refreshToken = async (request: FastifyRequest) => {
 
     const updatedSessionStorageToken: SessionStorageToken = {
       id_token: token.id_token, // id_token is not returned in the refresh response
-      scope: token.scope, // scope will not change
+      scope: 'digdir:dialogporten.noconsent digdir:dialogporten openid profile', //token.scope, // scope will not change
       access_token: updatedToken.access_token,
       refresh_token: updatedToken.refresh_token,
       refresh_token_expires_at: refreshTokenExpiresAt,

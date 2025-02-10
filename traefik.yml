@@ -1,0 +1,29 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  traefik:
+    address: ":8080"
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: "/etc/traefik"
+    watch: true
+
+# certificatesResolvers:
+#   letsencrypt:
+#     acme:
+#       email: midteide@gmail.com
+#       storage: /letsencrypt/acme.json
+#       httpChallenge:
+#         entryPoint: web
+
+api:
+  dashboard: true
+  insecure: true
+
+log:
+  level: DEBUG

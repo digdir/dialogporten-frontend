@@ -1,21 +1,44 @@
 services:
-  reverse-proxy:
-    container_name: reverse-proxy
-    image: traefik:v2.10
-    command:
-      - "--api.dashboard=true"
-      - "--providers.docker"
-      - "--providers.docker.exposedbydefault=false"
+  traefik:
+    image: "traefik:v3.1"
+    container_name: "traefik"
     ports:
-      - 80:80
+      - "80:80"
+      - "443:443"
+      - "8086:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.localhost`)"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "homarr.relativeSubdomain=dashboard"
-      - "homarr.icon=simple-icons:traefikproxy"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.yml:/etc/traefik/traefik.yml" # Static configuration
+      - "./dynamic.yml:/etc/traefik/dynamic.yml" # Dynamic configuration
+      - "./letsencrypt:/letsencrypt" # Let's Encrypt certificates
+      - "./certs:/certs"
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/cert.pem"
+      - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/key.pem"
+      - "--providers.docker=true"
+      - "--providers.docker.network=traefik-network"
+      - "--providers.docker.exposedByDefault=false"
+    # command:
+    #   - "--api.insecure=true"
+    #   - "--providers.docker=true"
+    #   - "--providers.docker.network=traefik-network"
+    #   - "--providers.file.directory=/etc/traefik"
+    #   - "--providers.docker.exposedByDefault=false"
+    #   - "--entrypoints.web.address=:80"
+    #   - "--entrypoints.websecure.address=:443"
+    #   - "--certificatesresolvers.letsencrypt.acme.email=midteide@gmail.com"
+    #   - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    #   - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+    #   - "--entrypoints.traefik.address=:8086"
+    #   - "--entrypoints.websecure.http.tls=true"
+    #   - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/cert.pem"
+    #   - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/key.pem"
+    restart: always
+    networks:
+      - traefik-network
 
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -47,6 +70,8 @@ services:
       interval: 2s
       timeout: 5s
       retries: 5
+    networks:
+      - traefik-network
 
   # GUI for checking what's in Redis
   redisinsight:
@@ -65,6 +90,8 @@ services:
       - "homarr.icon=devicon-plain:redis-wordmark"
     volumes:
       - redisinsight_cache:/data
+    networks:
+      - traefik-network
 
   db:
     container_name: db
@@ -82,6 +109,8 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - traefik-network
 
   pgadmin4:
     container_name: pgadmin4
@@ -103,7 +132,7 @@ services:
       target: build
     environment:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      HOSTNAME: http://app.localhost
+      HOSTNAME: https://altinn.lokalt.no
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       ENABLE_GRAPHIQL: true
@@ -111,12 +140,14 @@ services:
       REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
       PORT: 80
       NODE_ENV: production
-      COOKIE_SECURE: false
       APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
       APPLICATIONINSIGHTS_ENABLED: ${APPLICATIONINSIGHTS_ENABLED}
+      ENABLE_HTTPS: false
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bff.rule=Host(`app.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.bff.rule=Host(`altinn.lokalt.no`) && PathPrefix(`/api`)"
+    networks:
+      - traefik-network
     depends_on:
       db:
         condition: service_healthy
@@ -159,7 +190,7 @@ services:
       target: build
     environment:
       DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      HOSTNAME: http://app.localhost
+      HOSTNAME: http://altinn.lokalt.no
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
@@ -177,10 +208,22 @@ services:
       context: .
       dockerfile: packages/frontend/Dockerfile
       target: build
+    ports:
+      - "3030:3030"
+    environment:
+      PORT: 3030
+    networks:
+      - traefik-network
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.frontend.rule=Host(`altinn.lokalt.no`)"
+    #   - "traefik.http.services.myservice.loadbalancer.server.port=80"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`app.localhost`)"
-      - "traefik.http.services.myservice.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.rule=Host(`altinn.lokalt.no`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      # - "traefik.http.routers.app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3030"
     develop:
       watch:
         - action: sync
@@ -227,3 +270,8 @@ volumes:
   postgres_data:
   redisinsight_cache:
     driver: local
+
+networks:
+  traefik-network:
+    name: traefik-network
+    external: true
