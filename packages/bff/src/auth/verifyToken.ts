@@ -101,7 +101,6 @@ const plugin: FastifyPluginAsync = async (fastify, _) => {
     return async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const validationStatus: ValidationStatus = await getIsTokenValid(request, allowTokenRefresh, fastify);
-
         if (validationStatus === 'refresh_token_expired' || validationStatus === 'missing_token') {
           // Redirect to force a new login if the refresh token has expired or if the token is missing
           return handleLogout(request, reply);
@@ -116,6 +115,6 @@ const plugin: FastifyPluginAsync = async (fastify, _) => {
 };
 
 export default fp(plugin, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: 'fastify-verify-token',
 });
