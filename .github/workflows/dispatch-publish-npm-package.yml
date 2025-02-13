@@ -9,6 +9,10 @@ on:
       version:
         required: true
         type: string
+      ref:
+        required: false
+        type: string
+        default: ${{ github.ref }}
     secrets:
       NPM_TOKEN:
         required: true
@@ -27,6 +31,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: 'Setting up Node'
         uses: actions/setup-node@v4
@@ -58,6 +64,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: 'Installing Dependencies'
         uses: ./.github/actions/install
