@@ -44,10 +44,11 @@ const startServer = async (): Promise<void> => {
   // Session setup
   const cookieSessionConfig: FastifySessionOptions = {
     secret,
+    rolling: true,
+    cookieName: 'arbeidsflate',
     cookie: {
-      secure: cookieConfig.secure,
+      secure: false,
       httpOnly: true,
-      maxAge: cookieConfig.maxAge,
     },
   };
   if (redisConnectionString) {
@@ -75,6 +76,7 @@ const startServer = async (): Promise<void> => {
   server.register(userApi);
   server.register(graphqlApi);
   server.register(graphqlStream);
+
   if (enableGraphiql) {
     server.register(fastifyGraphiql, {
       url: '/api/graphiql',
