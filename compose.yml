@@ -1,5 +1,9 @@
+version: '3.8'
+
 services:
   reverse-proxy:
+    profiles:
+      - http
     container_name: reverse-proxy
     image: traefik:v2.10
     command:
@@ -16,6 +20,37 @@ services:
       - "traefik.http.routers.dashboard.service=api@internal"
       - "homarr.relativeSubdomain=dashboard"
       - "homarr.icon=simple-icons:traefikproxy"
+      - "--providers.docker.network=http-network"
+    networks:
+      - http-network
+
+  traefik:
+    profiles:
+      - https
+    image: "traefik:v3.1"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8086:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.yml:/etc/traefik/traefik.yml" # Static configuration
+      - "./dynamic.yml:/etc/traefik/dynamic.yml" # Dynamic configuration
+      - "./letsencrypt:/letsencrypt" # Let's Encrypt certificates
+      - "./certs:/certs"
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.certificates.certFile=/certs/cert.pem"
+      - "--entrypoints.websecure.http.tls.certificates.keyFile=/certs/key.pem"
+      - "--providers.docker=true"
+      - "--providers.docker.network=https-network"
+      - "--providers.docker.exposedByDefault=false"
+    restart: always
+    networks:
+      - https-network
 
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -33,6 +68,9 @@ services:
       - "traefik.http.routers.homepage.rule=Host(`localhost`)"
     ports:
       - 3000:3000
+    networks:
+      - https-network
+      - http-network
 
   redis:
     container_name: redis
@@ -41,14 +79,16 @@ services:
     ports:
       - 6379:6379
     command: >
-      redis-server --save 20 1 --loglevel warning --requirepass mysecretpassword
+      redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 2s
       timeout: 5s
       retries: 5
+    networks:
+      - https-network
+      - http-network
 
-  # GUI for checking what's in Redis
   redisinsight:
     container_name: redisinsight
     image: redis/redisinsight
@@ -65,13 +105,16 @@ services:
       - "homarr.icon=devicon-plain:redis-wordmark"
     volumes:
       - redisinsight_cache:/data
+    networks:
+      - https-network
+      - http-network
 
   db:
     container_name: db
     image: postgres:16
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: dialogporten
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d dialogporten" ]
@@ -82,6 +125,9 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - https-network
+      - http-network
 
   pgadmin4:
     container_name: pgadmin4
@@ -94,21 +140,29 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.localhost`)"
+    networks:
+      - https-network
+      - http-network
+
   bff:
+    profiles:
+      - http
     container_name: bff
     restart: always
+    networks:
+      - http-network
     build:
       context: .
       dockerfile: ./packages/bff/Dockerfile
       target: build
     environment:
-      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
+      DB_CONNECTION_STRING: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/dialogporten
       HOSTNAME: http://app.localhost
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       ENABLE_GRAPHIQL: true
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      REDIS_CONNECTION_STRING: redis://:${REDIS_PASSWORD}@redis:6379/0
       PORT: 80
       NODE_ENV: production
       COOKIE_SECURE: false
@@ -150,6 +204,65 @@ services:
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
 
+  bff-https:
+    profiles:
+      - https
+    container_name: bff-https
+    restart: always
+    build:
+      context: .
+      dockerfile: ./packages/bff/Dockerfile
+      target: build
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/dialogporten
+      HOSTNAME: https://altinn.lokalt.no
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      ENABLE_GRAPHIQL: true
+      SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
+      REDIS_CONNECTION_STRING: redis://:${REDIS_PASSWORD}@redis:6379/0
+      PORT: 80
+      NODE_ENV: production
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
+      APPLICATIONINSIGHTS_ENABLED: ${APPLICATIONINSIGHTS_ENABLED}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bff.rule=Host(`altinn.lokalt.no`) && PathPrefix(`/api`)"
+    networks:
+      - https-network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: sh -c "pnpm --filter bff run docker"
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/bff/
+          target: /app/packages/bff/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync+restart
+          path: ./packages/bff-types-generated/
+          target: /app/packages/bff-types-generated/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync+restart
+          path: ./packages/fastify-graphiql/
+          target: /app/packages/fastify-graphiql/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
+
   bff-migration:
     container_name: bff-migration
     command: sh -c "pnpm --filter bff run docker"
@@ -158,21 +271,27 @@ services:
       dockerfile: ./packages/bff/Dockerfile
       target: build
     environment:
-      DB_CONNECTION_STRING: postgres://postgres:mysecretpassword@db:5432/dialogporten
-      HOSTNAME: http://app.localhost
+      DB_CONNECTION_STRING: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/dialogporten
+      HOSTNAME: http://altinn.lokalt.no
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
       SESSION_SECRET: IDPortenSessionSecret2023MoreLettersBlaBla
-      REDIS_CONNECTION_STRING: redis://:mysecretpassword@redis:6379/0
+      REDIS_CONNECTION_STRING: redis://:${REDIS_PASSWORD}@redis:6379/0
       TYPEORM_MIGRATIONS: src/migrations/*.ts
       TYPEORM_MIGRATIONS_DIR: src/migrations
       MIGRATION_RUN: true
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - https-network
 
   frontend:
+    profiles:
+      - http
     container_name: frontend
+    networks:
+      - http-network
     build:
       context: .
       dockerfile: packages/frontend/Dockerfile
@@ -200,8 +319,52 @@ services:
         - action: rebuild
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
+
+  frontend-https:
+    profiles:
+      - https
+    container_name: frontend-https
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+      target: build
+    ports:
+      - "3030:3030"
+    environment:
+      PORT: 3030
+      ENABLE_HTTPS: true
+    networks:
+      - https-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`altinn.lokalt.no`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3030"
+    develop:
+      watch:
+        - action: sync
+          path: ./packages/frontend/
+          target: /app/packages/frontend/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: sync+restart
+          path: ./packages/bff-types-generated/
+          target: /app/packages/bff-types-generated/
+          ignore:
+            - node_modules/
+            - .azure/
+            - .git/
+        - action: rebuild
+          path: pnpm-lock.yaml
+          target: /app/pnpm-lock.yaml
+
   docs:
     container_name: docs
+    networks:
+      - https-network
+      - http-network
     build:
       context: .
       dockerfile: ./packages/docs/Dockerfile
@@ -227,3 +390,9 @@ volumes:
   postgres_data:
   redisinsight_cache:
     driver: local
+
+networks:
+  http-network:
+    name: http-network
+  https-network:
+    name: https-network
