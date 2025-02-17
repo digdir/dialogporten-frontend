@@ -1,43 +1,34 @@
-﻿name: CI/CD Staging
+﻿# Deploys the created release to staging
+name: CI/CD Staging
+run-name: CI/CD Staging ${{ github.event.client_payload.version && format('({0})', github.event.client_payload.version) || '' }}
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "v*.*.*"
+  repository_dispatch:
+    types: [release_created]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 
 jobs:
-  # Get changed files between previous tag and current tag: https://github.com/marketplace/actions/changed-files
+  get-versions-from-github:
+    name: Get Latest Deployed Version Info from GitHub
+    uses: ./.github/workflows/workflow-get-latest-deployed-version-info-from-github.yml
+    with:
+      environment: staging
+    secrets:
+      GH_TOKEN: ${{ secrets.RELEASE_VERSION_STORAGE_PAT }}
+
   check-for-changes:
     name: Check for changes
+    needs: [get-versions-from-github]
     uses: ./.github/workflows/workflow-check-for-changes.yml
-
-  get-current-version:
-    name: Get current version
-    uses: ./.github/workflows/workflow-get-current-version.yml
-
-  docker-build-and-push:
-    name: Build and publish docker images
-    if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasApplicationChanges == 'true' }}
-    uses: ./.github/workflows/workflow-docker-build-and-push.yml
-    needs:
-      [
-        check-for-changes,
-        get-current-version
-      ]
-    # todo: only run this if necessary (the appropriate files have changed)
-    secrets:
-      GCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     with:
-      dockerImageBaseName: ghcr.io/altinn/dialogporten-frontend-
-      version: ${{ needs.get-current-version.outputs.version }}
+      infra_base_sha: ${{ needs.get-versions-from-github.outputs.infra_version_sha }}
+      apps_base_sha: ${{ needs.get-versions-from-github.outputs.apps_version_sha }}
 
   deploy-infrastructure:
     uses: ./.github/workflows/workflow-deploy-infrastructure.yml
-    needs: [check-for-changes, get-current-version]
+    needs: [check-for-changes]
     if: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasInfrastructureChanges == 'true' }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -51,15 +42,26 @@ jobs:
     with:
       environment: staging
       region: norwayeast
-      version: ${{ needs.get-current-version.outputs.version }}
+      version: ${{ github.event.client_payload.version }}
+      ref: "refs/tags/v${{ github.event.client_payload.version }}"
+
+  store-infra-version:
+    name: Store Latest Deployed Infra Version as GitHub Variable
+    needs: [deploy-infrastructure]
+    if: ${{ needs.deploy-infrastructure.result == 'success' }}
+    uses: ./.github/workflows/workflow-store-github-env-variable.yml
+    with:
+      variable_name: LATEST_DEPLOYED_INFRA_VERSION
+      variable_value: ${{ github.event.client_payload.version }}
+      environment: staging
+    secrets:
+      GH_TOKEN: ${{ secrets.RELEASE_VERSION_STORAGE_PAT }}
 
   deploy-apps:
     name: Deploy apps to staging
     needs:
       [
-        get-current-version,
         check-for-changes,
-        docker-build-and-push,
         deploy-infrastructure,
       ]
     # we want deployment of apps to be dependent on deployment of infrastructure, but if infrastructure is skipped, we still want to deploy the apps
@@ -79,24 +81,36 @@ jobs:
     with:
       environment: staging
       region: norwayeast
-      version: ${{ needs.get-current-version.outputs.version }}
+      version: ${{ github.event.client_payload.version }}
       runMigration: ${{ github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasMigrationChanges == 'true' }}
+      ref: "refs/tags/v${{ github.event.client_payload.version }}"
 
+  store-apps-version:
+    name: Store Latest Deployed Apps Version as GitHub Variable
+    needs: [deploy-apps]
+    if: ${{ always() && !failure() && needs.deploy-apps.outputs.deployment_executed == 'true' }}
+    uses: ./.github/workflows/workflow-store-github-env-variable.yml
+    with:
+      variable_name: LATEST_DEPLOYED_APPS_VERSION
+      variable_value: ${{ github.event.client_payload.version }}
+      environment: staging
+    secrets:
+      GH_TOKEN: ${{ secrets.RELEASE_VERSION_STORAGE_PAT }}
+  
   publish-node-logger-to-npm:
-    needs: [get-current-version, check-for-changes, deploy-apps]
+    needs: [check-for-changes, deploy-apps]
     if: ${{ always() && !failure() && !cancelled() && (github.event_name == 'workflow_dispatch' || needs.check-for-changes.outputs.hasNodeLoggerChanges == 'true') }}
     uses: ./.github/workflows/dispatch-publish-npm-package.yml
     with:
-      version: ${{ needs.get-current-version.outputs.version }}
+      version: ${{ github.event.client_payload.version }}
       pathToPackage: packages/node-logger
+      ref: "refs/tags/v${{ github.event.client_payload.version }}"
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
 
   send-slack-message-on-failure:
     name: Send Slack message on failure
     needs: [
-      docker-build-and-push,
       deploy-infrastructure,
       deploy-apps,
       publish-node-logger-to-npm,
@@ -104,8 +118,7 @@ jobs:
     if: ${{ always() && failure() && !cancelled() }}
     uses: ./.github/workflows/workflow-send-ci-cd-status-slack-message.yml
     with:
-      environment: test
-      docker_build_and_push_status: ${{ needs.docker-build-and-push.result }}
+      environment: staging
       infra_status: ${{ needs.deploy-infrastructure.result }}
       apps_status: ${{ needs.deploy-apps.result }}
       publish_node_logger_to_npm_status: ${{ needs.publish-node-logger-to-npm.result }}

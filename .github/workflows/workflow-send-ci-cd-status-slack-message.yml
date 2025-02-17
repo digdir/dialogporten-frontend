@@ -26,6 +26,14 @@ on:
         type: string
         description: "Status of the publish node logger to npm job"
         default: "skipped"
+      release_please_status:
+        type: string
+        description: "Status of the release please job"
+        default: "skipped"
+      notify_release_created_status:
+        type: string
+        description: "Status of the notify release created job"
+        default: "skipped"
     secrets:
       SLACK_BOT_TOKEN:
         required: true
@@ -59,6 +67,8 @@ jobs:
             echo "BUILD_AND_TEST_EMOJI=$(determine_emoji "${{ inputs.build_and_test_status }}")"
             echo "DOCKER_BUILD_AND_PUSH_EMOJI=$(determine_emoji "${{ inputs.docker_build_and_push_status }}")"
             echo "PUBLISH_NODE_LOGGER_TO_NPM_EMOJI=$(determine_emoji "${{ inputs.publish_node_logger_to_npm_status }}")"
+            echo "RELEASE_PLEASE_EMOJI=$(determine_emoji "${{ inputs.release_please_status }}")"
+            echo "NOTIFY_RELEASE_CREATED_EMOJI=$(determine_emoji "${{ inputs.notify_release_created_status }}")"
           } >> "$GITHUB_OUTPUT"
 
       - name: Send GitHub slack message
@@ -73,6 +83,8 @@ jobs:
           BUILD_AND_TEST_STATUS: "${{ steps.status-emojis.outputs.BUILD_AND_TEST_EMOJI }}"
           DOCKER_BUILD_AND_PUSH_STATUS: "${{ steps.status-emojis.outputs.DOCKER_BUILD_AND_PUSH_EMOJI }}"
           PUBLISH_NODE_LOGGER_TO_NPM_STATUS: "${{ steps.status-emojis.outputs.PUBLISH_NODE_LOGGER_TO_NPM_EMOJI }}"
+          RELEASE_PLEASE_STATUS: "${{ steps.status-emojis.outputs.RELEASE_PLEASE_EMOJI }}"
+          NOTIFY_RELEASE_CREATED_STATUS: "${{ steps.status-emojis.outputs.NOTIFY_RELEASE_CREATED_EMOJI }}"
         uses: slackapi/slack-github-action@v1.27.1
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
