@@ -36,6 +36,7 @@ jobs:
         id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_PAT }}
+          release-type: node
 
   check-for-changes:
     name: Check for changes
