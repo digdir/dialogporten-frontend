@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/Altinn/dialogporten-frontend/compare/v1.15.1...v1.16.0) (2025-02-17)
+
+
+### Features
+
+* Improve ID-porten integration ([#1796](https://github.com/Altinn/dialogporten-frontend/issues/1796)) ([d394707](https://github.com/Altinn/dialogporten-frontend/commit/d394707d2dfd3f339a58b66c3c119dd74ee423ea))
+
 ## [1.15.1](https://github.com/Altinn/dialogporten-frontend/compare/v1.15.0...v1.15.1) (2025-02-07)
 
 
