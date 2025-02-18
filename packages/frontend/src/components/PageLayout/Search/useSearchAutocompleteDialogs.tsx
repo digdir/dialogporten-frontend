@@ -11,7 +11,9 @@ import {
   mapAutocompleteDialogsDtoToInboxItem,
   searchAutocompleteDialogs,
 } from '../../../api/useDialogs.tsx';
+import { useDialogs } from '../../../api/useDialogs.tsx';
 import { QUERY_KEYS } from '../../../constants/queryKeys.ts';
+import type { InboxItemInput } from '../../InboxItem/InboxItem.tsx';
 import { useSearchString } from './useSearchString.tsx';
 
 interface searchDialogsProps {
@@ -65,7 +67,6 @@ const createAutocomplete = (
     searchResults.slice(0, resultsSize).map((item) => ({
       id: item.id,
       groupId: 'searchResults',
-      //@ts-ignore: next line
       as: (props: AutocompleteItemProps) => <Link to={`/inbox/${item.id}${location.search}`} {...props} />,
       title: item.title,
       description: item.summary,
@@ -133,6 +134,8 @@ export const useSearchAutocompleteDialogs = ({
   const partyURIs = flattenParties(selectedParties);
   const debouncedSearchString = useDebounce(searchValue, 300)[0];
   const { onSearch } = useSearchString();
+  const { dialogs } = useDialogs(selectedParties);
+
   const enabled = !!debouncedSearchString && debouncedSearchString.length > 2 && selectedParties.length > 0;
   const {
     data: hits,
@@ -146,15 +149,95 @@ export const useSearchAutocompleteDialogs = ({
     enabled,
   });
 
+  const generatedSendersAutocomplete = generateSendersAutocompleteBySearchString(searchValue!, dialogs, onSearch);
+
   const autocomplete: AutocompleteProps = useMemo(() => {
     const results = hits?.searchDialogs?.items ?? [];
     return createAutocomplete(mapAutocompleteDialogsDtoToInboxItem(results), isLoading, searchValue, onSearch);
   }, [hits, isLoading, searchValue, onSearch]);
 
+  const mergedAutocomplete = {
+    groups: { ...autocomplete.groups, ...generatedSendersAutocomplete.groups },
+    items: [...autocomplete.items, ...generatedSendersAutocomplete.items],
+  };
+
   return {
     isLoading,
     isSuccess,
-    autocomplete,
+    autocomplete: mergedAutocomplete,
     isFetching,
+  };
+};
+
+export const generateSendersAutocompleteBySearchString = (
+  searchValue: string,
+  dialogs: InboxItemInput[],
+  onSearch?: (searchString: string, sender?: string) => void,
+): AutocompleteProps => {
+  const SENDERS_GROUP_ID = 'senders';
+  const TYPE_SUGGEST = 'suggest';
+
+  if (!searchValue) {
+    return {
+      items: [],
+      groups: {
+        noHits: { title: 'noHits' },
+      },
+    };
+  }
+
+  const splittedSearchValue = searchValue.split(/\s+/).filter(Boolean);
+
+  const { items } = splittedSearchValue.reduce(
+    (acc, searchString, _, array) => {
+      const senderDetected = dialogs.find((dialog) =>
+        dialog.sender.name.toLowerCase().includes(searchString.toLowerCase()),
+      );
+
+      if (senderDetected) {
+        const unmatchedSearchArr = array.filter((s) => s.toLowerCase() !== searchString.toLowerCase());
+
+        acc.items.push({
+          id: senderDetected.id,
+          groupId: SENDERS_GROUP_ID,
+          title: senderDetected.sender.name,
+          params: [{ type: 'filter', label: senderDetected.sender.name }],
+          type: TYPE_SUGGEST,
+          onClick: () => {
+            onSearch?.(unmatchedSearchArr.join(' '), senderDetected.org);
+          },
+        });
+      }
+
+      return acc;
+    },
+    {
+      items: [] as AutocompleteItemProps[],
+    },
+  );
+
+  const mappedSenderWithKeywords = items.map((item) => {
+    const filteredSearchValues = splittedSearchValue.filter(
+      (searchString) => !item.title!.toLowerCase().includes(searchString.toLowerCase()),
+    );
+
+    return {
+      ...item,
+      params: [
+        //@ts-ignore Property 'params' does not exist on type 'AutocompleteItemProps'.
+        ...item.params,
+        ...filteredSearchValues.map((searchString) => ({
+          type: 'search',
+          label: searchString,
+        })),
+      ],
+    };
+  });
+
+  return {
+    items: [...mappedSenderWithKeywords],
+    groups: {
+      [SENDERS_GROUP_ID]: { title: `${t('search.suggestions')}` },
+    },
   };
 };
