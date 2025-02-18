@@ -1,7 +1,4 @@
 import { ActorType, DialogStatus, type SearchDialogFieldsFragment, SystemLabel } from 'bff-types-generated';
-
-
-
 export const dialogs: SearchDialogFieldsFragment[] = [
     {
         id: '1',

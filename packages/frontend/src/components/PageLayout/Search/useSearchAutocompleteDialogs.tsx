@@ -169,7 +169,7 @@ export const useSearchAutocompleteDialogs = ({
   };
 };
 
-const generateSendersAutocompleteBySearchString = (
+export const generateSendersAutocompleteBySearchString = (
   searchValue: string,
   dialogs: InboxItemInput[],
   onSearch?: (searchString: string, sender?: string) => void,
@@ -224,7 +224,7 @@ const generateSendersAutocompleteBySearchString = (
     return {
       ...item,
       params: [
-        //@ts-ignore
+        //@ts-ignore Property 'params' does not exist on type 'AutocompleteItemProps'.
         ...item.params,
         ...filteredSearchValues.map((searchString) => ({
           type: 'search',
