@@ -9,6 +9,7 @@ export default () => {
     ...(process.env.PORT && {
       server: {
         port: Number.parseInt(process.env.PORT),
+        ...(process.env.ENABLE_HTTPS && { allowedHosts: ['altinn.lokalt.no'] }),
       },
     }),
     define: {

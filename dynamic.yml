@@ -1,0 +1,33 @@
+tls:
+  certificates:
+    - certFile: "/certs/cert.pem"
+      keyFile: "/certs/key.pem"
+
+http:
+  routers:
+    app-router:
+      rule: "Host(`altinn.lokalt.no`)"
+      entryPoints:
+        - websecure
+      service: app-service
+      tls: {}
+
+    # Router for the backend, listens on /api
+    backend-router:
+      rule: "Host(`altinn.lokalt.no`) && PathPrefix(`/api`)"
+      entryPoints:
+        - websecure
+      service: backend-service
+      tls: {}
+
+  services:
+    app-service:
+      loadBalancer:
+        servers:
+          - url: "http://frontend-https:3030" # Backend service
+
+    # Service for the backend
+    backend-service:
+      loadBalancer:
+        servers:
+          - url: "http://bff-https:80"
